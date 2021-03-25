@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 public class Zone {
+    private String id;
     private int zoneNumber;
     private char letter;
     private int maximumCapacity;
@@ -12,6 +13,14 @@ public class Zone {
     private String naturalArea;
 
     public Zone(){
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getZoneNumber() {

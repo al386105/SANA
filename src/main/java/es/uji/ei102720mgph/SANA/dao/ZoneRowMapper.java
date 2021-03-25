@@ -10,6 +10,7 @@ public final class ZoneRowMapper implements RowMapper<Zone> {
 
     public Zone mapRow(ResultSet rs, int rowNum) throws SQLException {
         Zone zone = new Zone();
+        zone.setId(rs.getString("id"));
         zone.setZoneNumber(rs.getInt("zoneNumber"));
         zone.setLetter((Character) rs.getObject("letter")); //???????????
         zone.setMaximumCapacity(rs.getInt("maximumCapacity"));

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,30 +22,30 @@ public class ZoneDao {
     /* Afegeix el zone a la base de dades */
     public void addZone(Zone zone) {
         jdbcTemplate.update(
-                "INSERT INTO Zone VALUES(?, ?, ?, ?, ?)",
-                zone.getZoneNumber(), zone.getLetter(), zone.getMaximumCapacity(),
+                "INSERT INTO Zone VALUES(?, ?, ?, ?, ?, ?)",
+                zone.getId(), zone.getZoneNumber(), zone.getLetter(), zone.getMaximumCapacity(),
                 zone.getCreationDate(), zone.getNaturalArea());
     }
 
     /* Esborra el zone de la base de dades */
-    public void deleteZone(int zoneNumber, char letter) {
-        jdbcTemplate.update("DELETE FROM Zone WHERE zoneNumber =? AND letter =?", zoneNumber, letter);
+    public void deleteZone(String id) {
+        jdbcTemplate.update("DELETE FROM Zone WHERE id =?", id);
     }
 
     /* Actualitza els atributs del zone */
     public void updateZone(Zone zone) {
-        jdbcTemplate.update("UPDATE Zone SET maximumCapacity = ?, creationDate = ?, naturalArea = ? " +
-                        "WHERE zoneNumber = ? AND letter = ?",
-                zone.getMaximumCapacity(), zone.getCreationDate(), zone.getNaturalArea(),
-                zone.getZoneNumber(), zone.getLetter());
+        jdbcTemplate.update("UPDATE Zone SET zoneNumber = ?, letter = ?, maximumCapacity = ?, creationDate = ?, " +
+                        "naturalArea = ? WHERE id = ?",
+                zone.getZoneNumber(), zone.getLetter(), zone.getMaximumCapacity(), zone.getCreationDate(),
+                zone.getNaturalArea(), zone.getId());
     }
 
-    /* Obté el zone amb el zoneNumber y letter donat. Torna null si no existeix. */
-    public Zone getZone(int zoneNumber, char letter) {
+    /* Obté el zone amb el id donat. Torna null si no existeix. */
+    public Zone getZone(String id) {
         try {
             return jdbcTemplate.queryForObject(
-                    "SELECT * FROM Zone WHERE zoneNumber = ? AND letter = ?",
-                    new ZoneRowMapper(), zoneNumber, letter);
+                    "SELECT * FROM Zone WHERE id = ?",
+                    new ZoneRowMapper(), id);
         }
         catch(EmptyResultDataAccessException e) {
             return null;

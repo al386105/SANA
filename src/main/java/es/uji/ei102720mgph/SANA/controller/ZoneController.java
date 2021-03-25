@@ -47,9 +47,9 @@ public class ZoneController {
     }
 
     // Operació actualitzar
-    @RequestMapping(value="/update/{zoneNumber}/{letter}", method = RequestMethod.GET)
-    public String editZone(Model model, @PathVariable int zoneNumber, @PathVariable char letter) {
-        model.addAttribute("zone", zoneDao.getZone(zoneNumber, letter));
+    @RequestMapping(value="/update/{id}", method = RequestMethod.GET)
+    public String editZone(Model model, @PathVariable String id) {
+        model.addAttribute("zone", zoneDao.getZone(id));
         return "zone/update";
     }
 
@@ -64,9 +64,9 @@ public class ZoneController {
     }
 
     // Operació esborrar
-    @RequestMapping(value="/delete/{zoneNumber}/{letter}")
-    public String processDelete(@PathVariable int zoneNumber, @PathVariable char letter) {
-        zoneDao.deleteZone(zoneNumber, letter);
+    @RequestMapping(value="/delete/{id}")
+    public String processDelete(@PathVariable String id) {
+        zoneDao.deleteZone(id);
         return "redirect:../list";
     }
 }

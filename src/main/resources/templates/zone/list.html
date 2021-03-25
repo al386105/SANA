@@ -10,6 +10,7 @@
 <table class="table table-striped">
     <thead>
     <tr>
+        <th scope="col">Id</th>
         <th scope="col">Número zona</th>
         <th scope="col">Letra</th>
         <th scope="col">Capacidad máx.</th>
@@ -21,16 +22,17 @@
     </thead>
     <tbody>
     <tr th:each="zone: ${zones}">
-        <td scope="row" th:text="${zone.zoneNumber}"></td>
+        <td scope="row" th:text="${zone.id}"></td>
+        <td th:text="${zone.zoneNumber}"></td>
         <td th:text="${zone.letter}"></td>
         <td th:text="${zone.maximumCapacity}"></td>
         <td th:text="${zone.creationDate}"></td>
         <td th:text="${zone.naturalArea}"></td>
-        <td><a th:href="@{/zone/update/{zoneNumber}/{letter}(zoneNumber=${zone.zoneNumber}, letter=${zone.letter})}">
+        <td><a th:href="@{/zone/update/{id}(id=${zone.id})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>
         </td>
-        <td><a th:href="@{/zone/delete/{zoneNumber}/{letter}(zoneNumber=${zone.zoneNumber}, letter=${zone.letter})}">
+        <td><a th:href="@{/zone/delete/{id}(id=${zone.id})}">
             <button type="button" class="btn btn-danger">Elimina</button>
         </a>
         </td>

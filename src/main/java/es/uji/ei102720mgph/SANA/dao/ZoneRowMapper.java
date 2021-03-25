@@ -11,7 +11,7 @@ public final class ZoneRowMapper implements RowMapper<Zone> {
     public Zone mapRow(ResultSet rs, int rowNum) throws SQLException {
         Zone zone = new Zone();
         zone.setZoneNumber(rs.getInt("zoneNumber"));
-        //zone.setLetter(rs.getChar("letter"));
+        zone.setLetter((Character) rs.getObject("letter")); //???????????
         zone.setMaximumCapacity(rs.getInt("maximumCapacity"));
         zone.setCreationDate(rs.getObject("creationDate", LocalDate.class));
         zone.setNaturalArea(rs.getString("naturalArea"));

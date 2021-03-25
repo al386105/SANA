@@ -10,7 +10,7 @@ public class Reservation {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reservationDate;
     private LocalDate creationDate;
-    @DateTimeFormat(pattern = "HH:mm:ss.SSS")
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime creationTime;
     private int numberOfPeople;
     private ReservationState state;

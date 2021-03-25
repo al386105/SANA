@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Modificar zona</title>
     <meta charset="UTF-8" />
@@ -7,34 +7,53 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
 </head>
 <body>
-<h2>Modificar zona</h2>
-<form action="#" th:action="@{/zone/update}"
-      th:object="${zone}" method="post">
-    <table>
-        <tr>
-            <td><label>Número zona</label></td>
-            <td><input type="number" th:field="*{zoneNumber}" /></td>
-        </tr>
-        <tr>
-            <td><label>Letra</label></td>
-            <td><input type="text" th:field="*{letter}" /></td>
-        </tr>
-        <tr>
-            <td><label>Capacidad máx.</label></td>
-            <td><input type="number" th:field="*{maximumCapacity}" /></td>
-        </tr>
-        <tr>
-            <td><label>Fecha creación (yyyy-MM-dd)</label></td>
-            <td><input type="number" th:field="*{creationDate}" /></td>
-        </tr>
-        <tr>
-            <td><label>Área natural (nombre)</label></td>
-            <td><input type="text" th:field="*{naturalArea}" /></td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" value="Actualizar zona" /></td>
-        </tr>
-    </table>
-</form>
+<div class="container">
+    <h2>Modificar zona</h2>
+    <form class="form-horizontal" action="#" th:action="@{/zone/update}"
+          th:object="${zone}" method="post">
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="zoneNumber">Número zona:</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="zoneNumber" th:field="*{zoneNumber}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="letter">Letra:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="letter" th:field="*{letter}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="number">Número:</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="number" th:field="*{number}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="maximumCapacity">Capacidad máx.:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="maximumCapacity" th:field="*{maximumCapacity}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="naturalArea">Área natural (nombre):</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-primary">Actualizar zona</button>
+            </div>
+        </div>
+
+    </form>
+</div>
 </body>
 </html>

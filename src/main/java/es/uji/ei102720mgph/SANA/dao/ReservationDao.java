@@ -1,5 +1,6 @@
 package es.uji.ei102720mgph.SANA.dao;
 
+import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -7,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +27,9 @@ public class ReservationDao {
     public void addReservation(Reservation reservation) {
         jdbcTemplate.update(
                 "INSERT INTO Reservation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                reservation.getReservationNumber(), reservation.getReservationDate(), reservation.getCreationDate(),
-                reservation.getCreationTime(), reservation.getNumberOfPeople(), reservation.getState(),
-                reservation.getQRcode(), reservation.getCancellationDate(), reservation.getCancellationReason(),
+                reservation.getReservationNumber(), reservation.getReservationDate(), LocalDate.now(),
+                LocalTime.now(), reservation.getNumberOfPeople(), ReservationState.created,
+                reservation.getQRcode(), null, null,
                 reservation.getCitizenId(), reservation.getTimeSlotId());
     }
 

@@ -16,31 +16,19 @@
             <td><input type="text" th:field="*{reservationNumber}" /></td>
         </tr>
         <tr>
-            <td><label>Fecha reserva</label></td>
+            <td><label>Fecha reserva (yyyy-MM-dd)</label></td>
             <td><input type="text" th:field="*{reservationDate}" /></td>
-        </tr>
-        <tr>
-            <td><label>Fecha creación (por defecto)</label></td>
-            <td><input type="text" th:field="*{creationDate}" /></td>
-        </tr>
-        <tr>
-            <td><label>Hora creación (por defecto)</label></td>
-            <td><input type="number" th:field="*{creationTime}" /></td>
         </tr>
         <tr>
             <td><label>Num. personas</label></td>
             <td><input type="number" th:field="*{numberOfPeople}" /></td>
         </tr>
         <tr>
-            <td><label>Estado reserva (por defecto created)</label></td>
-            <td><input type="text" th:field="*{state}" /></td>
-        </tr>
-        <tr>
             <td><label>Código QR</label></td>
             <td><input type="text" th:field="*{QRcode}" /></td>
         </tr>
         <tr>
-            <td><label>Fecha cancelación (por defecto null)</label></td>
+            <td><label>Fecha cancelación (yyyy-MM-dd)(por defecto null)</label></td>
             <td><input type="text" th:field="*{cancellationDate}" /></td>
         </tr>
         <tr>

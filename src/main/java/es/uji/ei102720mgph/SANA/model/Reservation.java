@@ -2,7 +2,7 @@ package es.uji.ei102720mgph.SANA.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import enums.ReservationState;
+import es.uji.ei102720mgph.SANA.enums.ReservationState;
 
 public class Reservation {
     private int reservationNumber;

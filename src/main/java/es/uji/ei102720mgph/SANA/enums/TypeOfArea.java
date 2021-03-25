@@ -6,5 +6,5 @@ public enum TypeOfArea {
     pond,
     lake,
     forest,
-    others
+    others;
 }

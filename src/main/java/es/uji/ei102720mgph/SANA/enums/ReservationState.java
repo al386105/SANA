@@ -6,5 +6,5 @@ public enum ReservationState {
     inUse,
     cancelledMunicipalManager,
     cancelledCitizen,
-    cancelledControlStaff
+    cancelledControlStaff;
 }

@@ -16,12 +16,12 @@ public final class RegisteredCitizenRowMapper  implements RowMapper<RegisteredCi
         registeredCitizen.setID(rs.getString("id"));
         registeredCitizen.setEmail(rs.getString("email"));
         registeredCitizen.setMobilePhoneNumber(rs.getString("mobilePhoneNumber"));
-        registeredCitizen.setAddres(rs.getString("address"));
+        registeredCitizen.setAddress(rs.getString("address"));
         registeredCitizen.setDateOfBirth(rs.getDate("dateOfBirth"));
         registeredCitizen.setCitizenCode(rs.getString("citizenCode"));
         registeredCitizen.setPin(rs.getInt("pin"));
         registeredCitizen.setRegistrationDate(rs.getDate("registrationDate"));
-        registeredCitizen.setIdAddres(rs.getString("idAddress"));
+        registeredCitizen.setIdAddress(rs.getString("idAddress"));
         return registeredCitizen;
 
     }

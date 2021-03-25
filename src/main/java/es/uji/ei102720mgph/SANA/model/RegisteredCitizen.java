@@ -2,7 +2,6 @@ package es.uji.ei102720mgph.SANA.model;
 
 import java.util.Date;
 
-
 public class RegisteredCitizen {
 
     private String name;
@@ -10,12 +9,12 @@ public class RegisteredCitizen {
     private String id;
     private String email;
     private String mobilePhoneNumber;
-    private String addres;
+    private String address;
     private Date dateOfBirth;
     private String citizenCode;
     private int pin;
     private Date registrationDate;
-    private String idAddres;
+    private String idAddress;
 
     public RegisteredCitizen(){
     }
@@ -60,12 +59,12 @@ public class RegisteredCitizen {
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
 
-    public String getAddres() {
-        return addres;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddres(String addres) {
-        this.addres = addres;
+    public void setAddress(String addres) {
+        this.address = addres;
     }
 
     public Date getDateOfBirth() {
@@ -100,12 +99,12 @@ public class RegisteredCitizen {
         this.registrationDate = registrationDate;
     }
 
-    public String getIdAddres() {
-        return idAddres;
+    public String getIdAddress() {
+        return idAddress;
     }
 
-    public void setIdAddres(String idAddres) {
-        this.idAddres = idAddres;
+    public void setIdAddress(String idAddress) {
+        this.idAddress = idAddress;
     }
 
 
@@ -117,12 +116,12 @@ public class RegisteredCitizen {
                 "id='" + id + "\'" +
                 "email'=" + email + "\'" +
                 "mobilePhoneNumber='" + mobilePhoneNumber + "\'" +
-                "addres='" + addres + "\'" +
+                "address='" + address + "\'" +
                 "dateOfBirth='" + dateOfBirth + "\'" +
                 "citizenCode='" + citizenCode + "\'" +
                 "pin='" + pin + "\'" +
                 "registrationDate='" + registrationDate + "\'" +
-                "ideAddres='" + idAddres + "\'" +
+                "ideAddress='" + idAddress + "\'" +
                 "}";
     }
 

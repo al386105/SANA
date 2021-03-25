@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
 import javax.sql.DataSource;
 import java.util.List;
 
@@ -22,8 +21,8 @@ public class RegisteredCitizenDao {
     public void addRegisteredCitizen(RegisteredCitizen registeredCitizen){
         jdbcTemplate.update("INSERT INTO RegisteredCitizen VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 registeredCitizen.getName(), registeredCitizen.getSurname(), registeredCitizen.getId(), registeredCitizen.getEmail(),
-                registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getAddres(), registeredCitizen.getDateOfBirth(), registeredCitizen.getCitizenCode(),
-                registeredCitizen.getPin(), registeredCitizen.getRegistrationDate(), registeredCitizen.getIdAddres());
+                registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getAddress(), registeredCitizen.getDateOfBirth(), registeredCitizen.getCitizenCode(),
+                registeredCitizen.getPin(), registeredCitizen.getRegistrationDate(), registeredCitizen.getIdAddress());
     }
 
     public void deleteRegisteredCitizen(RegisteredCitizen registeredCitizen){

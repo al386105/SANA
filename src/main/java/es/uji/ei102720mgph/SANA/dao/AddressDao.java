@@ -54,7 +54,7 @@ public class AddressDao {
     }
 
     /* Obté tots els addresss. Torna una llista buida si no n'hi ha cap. */
-    public List<Address> getAddresss() {
+    public List<Address> getAddresses() {
         try {
             return jdbcTemplate.query(
                     "SELECT * FROM Address",

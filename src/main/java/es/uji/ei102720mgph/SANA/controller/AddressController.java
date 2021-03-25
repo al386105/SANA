@@ -24,12 +24,12 @@ public class AddressController {
 
     // Operació llistar
     @RequestMapping("/list")
-    public String listAddresss(Model model) {
-        model.addAttribute("addresss", addressDao.getAddresss());
+    public String listAddresses(Model model) {
+        model.addAttribute("addresses", addressDao.getAddresses());
         return "address/list";
     }
 
-    // Operació crear, creació d'objectes
+    // Operació crear
     @RequestMapping(value="/add")
     public String addAddress(Model model) {
         model.addAttribute("address", new Address());
@@ -46,10 +46,10 @@ public class AddressController {
         return "redirect:list"; //redirigim a la lista per a veure el address afegit, post/redirect/get
     }
 
-    // Operació actualitzar, modificació d'objectes
-    @RequestMapping(value="/update/{nom}", method = RequestMethod.GET)
-    public String editAddress(Model model, @PathVariable String nom) {
-        model.addAttribute("address", addressDao.getAddress(nom));
+    // Operació actualitzar
+    @RequestMapping(value="/update/{id}", method = RequestMethod.GET)
+    public String editAddress(Model model, @PathVariable String id) {
+        model.addAttribute("address", addressDao.getAddress(id));
         return "address/update";
     }
 
@@ -63,10 +63,10 @@ public class AddressController {
         return "redirect:list";
     }
 
-    // Operació esborrar, mètode d'esborrat
-    @RequestMapping(value="/delete/{nom}")
-    public String processDelete(@PathVariable String nom) {
-        addressDao.deleteAddress(nom);
+    // Operació esborrar
+    @RequestMapping(value="/delete/{id}")
+    public String processDelete(@PathVariable String id) {
+        addressDao.deleteAddress(id);
         return "redirect:../list";
     }
 }

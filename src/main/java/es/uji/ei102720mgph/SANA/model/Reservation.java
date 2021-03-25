@@ -3,11 +3,14 @@ package es.uji.ei102720mgph.SANA.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class Reservation {
     private int reservationNumber;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reservationDate;
     private LocalDate creationDate;
+    @DateTimeFormat(pattern = "HH:mm:ss.SSS")
     private LocalTime creationTime;
     private int numberOfPeople;
     private ReservationState state;

@@ -1,10 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Gestionar Direcciones</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
 </head>
 <body>
-
+<h1>Lista de Direcciones</h1>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Dirección Id</th>
+        <th scope="col">Calle</th>
+        <th scope="col">Número</th>
+        <th scope="col">Piso y Puerta</th>
+        <th scope="col">Código Postal</th>
+        <th scope="col">Ciudad</th>
+        <th scope="col">País</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="address: ${addresss}">
+        <td scope="row" th:text="${address.id}"></td>
+        <td th:text="${address.street}"></td>
+        <td th:text="${address.number}"></td>
+        <td th:text="${address.floorDoor}"></td>
+        <td th:text="${address.postalCode}"></td>
+        <td th:text="${address.city}"></td>
+        <td th:text="${address.country}"></td>
+        <td><a th:href="@{/address/update/{id}(id=${address.id})}">
+            <button type="button" class="btn btn-warning">Edita</button>
+        </a>
+        </td>
+        <td><a th:href="@{/address/delete/{id}(id=${address.id})}">
+            <button type="button" class="btn btn-danger">Elimina</button>
+        </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="add"><button type="button" class="btn btn-success">Añadir dirección</button></a>
 </body>
 </html>

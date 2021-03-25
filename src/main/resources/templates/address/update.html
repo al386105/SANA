@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modificar dirección</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+</head>
+<body>
+<h2>Modificar dirección</h2>
+<form action="#" th:action="@{/address/update}"
+      th:object="${address}" method="post">
+    <table>
+        <tr>
+            <td><label>Id</label></td>
+            <td><input type="text" th:field="*{id}" /></td>
+        </tr>
+        <tr>
+            <td><label>Calle</label></td>
+            <td><input type="text" th:field="*{street}" /></td>
+        </tr>
+        <tr>
+            <td><label>Número</label></td>
+            <td><input type="number" th:field="*{number}" /></td>
+        </tr>
+        <tr>
+            <td><label>Piso y puerta</label></td>
+            <td><input type="number" th:field="*{floorDoor}" /></td>
+        </tr>
+        <tr>
+            <td><label>Código Postal</label></td>
+            <td><input type="text" th:field="*{postalCode}" /></td>
+        </tr>
+        <tr>
+            <td><label>Ciudad</label></td>
+            <td><input type="text" th:field="*{city}" /></td>
+        </tr>
+        <tr>
+            <td><label>País</label></td>
+            <td><input type="text" th:field="*{country}" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Actualizar dirección" /></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

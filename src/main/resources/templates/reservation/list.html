@@ -1,10 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Gestionar Reservas</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
 </head>
 <body>
-
+<h1>Lista de Reservas</h1>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Número reserva</th>
+        <th scope="col">Fecha reserva</th>
+        <th scope="col">Fecha creación</th>
+        <th scope="col">Hora creación</th>
+        <th scope="col">Num. personas</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Código QR</th>
+        <th scope="col">Fecha cancelación</th>
+        <th scope="col">Razón cancelación</th>
+        <th scope="col">Ciudadano</th>
+        <th scope="col">Franja horaria id</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="reservation: ${reservations}">
+        <td scope="row" th:text="${reservation.reservationNumber}"></td>
+        <td th:text="${reservation.reservationDate}"></td>
+        <td th:text="${reservation.creationDate}"></td>
+        <td th:text="${reservation.creationTime}"></td>
+        <td th:text="${reservation.numberOfPeople}"></td>
+        <td th:text="${reservation.state}"></td>
+        <td th:text="${reservation.QRcode}"></td>
+        <td th:text="${reservation.cancellationDate}"></td>
+        <td th:text="${reservation.cancellationReason}"></td>
+        <td th:text="${reservation.citizenId}"></td>
+        <td th:text="${reservation.timeSlotId}"></td>
+        <td><a th:href="@{/reservation/update/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+            <button type="button" class="btn btn-warning">Edita</button>
+        </a>
+        </td>
+        <td><a th:href="@{/reservation/delete/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+            <button type="button" class="btn btn-danger">Elimina</button>
+        </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="add"><button type="button" class="btn btn-success">Añadir reserva</button></a>
 </body>
 </html>

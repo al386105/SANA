@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Gestionar Zonas</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
 </head>
 <body>
-
+<h1>Lista de Zonas</h1>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Número zona</th>
+        <th scope="col">Letra</th>
+        <th scope="col">Capacidad máx.</th>
+        <th scope="col">Fecha creación</th>
+        <th scope="col">Área natural</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="zone: ${zones}">
+        <td scope="row" th:text="${zone.zoneNumber}"></td>
+        <td th:text="${zone.letter}"></td>
+        <td th:text="${zone.maximumCapacity}"></td>
+        <td th:text="${zone.creationDate}"></td>
+        <td th:text="${zone.naturalArea}"></td>
+        <td><a th:href="@{/zone/update/{zoneNumber}/{letter}(zoneNumber=${zone.zoneNumber}, letter=${zone.letter})}">
+            <button type="button" class="btn btn-warning">Edita</button>
+        </a>
+        </td>
+        <td><a th:href="@{/zone/delete/{zoneNumber}/{letter}(zoneNumber=${zone.zoneNumber}, letter=${zone.letter})}">
+            <button type="button" class="btn btn-danger">Elimina</button>
+        </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="add"><button type="button" class="btn btn-success">Añadir zona</button></a>
 </body>
 </html>

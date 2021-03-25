@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modificar reserva</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+</head>
+<body>
+<h2>Modificar reserva</h2>
+<form action="#" th:action="@{/reservation/update}"
+      th:object="${reservation}" method="post">
+    <table>
+        <tr>
+            <td><label>Número reserva</label></td>
+            <td><input type="text" th:field="*{reservationNumber}" /></td>
+        </tr>
+        <tr>
+            <td><label>Fecha reserva</label></td>
+            <td><input type="text" th:field="*{reservationDate}" /></td>
+        </tr>
+        <tr>
+            <td><label>Fecha creación (por defecto)</label></td>
+            <td><input type="text" th:field="*{creationDate}" /></td>
+        </tr>
+        <tr>
+            <td><label>Hora creación (por defecto)</label></td>
+            <td><input type="number" th:field="*{creationTime}" /></td>
+        </tr>
+        <tr>
+            <td><label>Num. personas</label></td>
+            <td><input type="number" th:field="*{numberOfPeople}" /></td>
+        </tr>
+        <tr>
+            <td><label>Estado reserva (por defecto created)</label></td>
+            <td><input type="text" th:field="*{state}" /></td>
+        </tr>
+        <tr>
+            <td><label>Código QR</label></td>
+            <td><input type="text" th:field="*{QRcode}" /></td>
+        </tr>
+        <tr>
+            <td><label>Fecha cancelación (por defecto null)</label></td>
+            <td><input type="text" th:field="*{cancellationDate}" /></td>
+        </tr>
+        <tr>
+            <td><label>Razón cancelación (por defecto null)</label></td>
+            <td><input type="text" th:field="*{cancellationReason}" /></td>
+        </tr>
+        <tr>
+            <td><label>Ciudadano (id)</label></td>
+            <td><input type="text" th:field="*{citizenId}" /></td>
+        </tr>
+        <tr>
+            <td><label>Franja horaria (id)</label></td>
+            <td><input type="text" th:field="*{timeSlotId}" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Actualizar reserva" /></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

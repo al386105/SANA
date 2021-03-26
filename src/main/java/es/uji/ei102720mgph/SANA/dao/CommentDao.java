@@ -31,6 +31,11 @@ public class CommentDao {
                 comment.getCommentId());
     }
 
+    public void deleteComment(String commentId){
+        jdbcTemplate.update("DELETE FROM Comment WHERE commentId = ?",
+                commentId);
+    }
+
     public void updateComment(Comment comment){
         jdbcTemplate.update("UPDATE Comment" +
                 "SET commentBody = ?, score = ?, date = ?, " +
@@ -52,7 +57,18 @@ public class CommentDao {
         }
     }
 
-    public List<Comment> getProves() {
+    public List<Comment> getCommentsOfNaturalArea(String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Comment WHERE naturalArea = ?",
+                    new CommentRowMapper(),
+                    naturalArea);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Comment>();
+        }
+    }
+
+    public List<Comment> getComments() {
         try {
             return jdbcTemplate.query("SELECT * FROM Comment",
                     new CommentRowMapper());

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestionar Emails</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<h1>Lista de Emails</h1>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Asunto</th>
+        <th scope="col">Contenido</th>
+        <th scope="col">Emisor</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Receptor</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="email: ${emails}">
+        <td scope="row" th:text="${email.id}"></td>
+        <td th:text="${email.subject}"></td>
+        <td th:text="${email.textBody}"></td>
+        <td th:text="${email.sender}"></td>
+        <td th:text="${email.date}"></td>
+        <td th:text="${email.receiver}"></td>
+        <td><a th:href="@{/email/update/{id}(id=${email.id})}">
+            <button type="button" class="btn btn-warning">Edita</button>
+        </a>
+        </td>
+        <td><a th:href="@{/email/delete/{id}(id=${email.id})}">
+            <button type="button" class="btn btn-danger">Elimina</button>
+        </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="add"><button type="button" class="btn btn-success">Añadir email</button></a>
+</body>
+</html>

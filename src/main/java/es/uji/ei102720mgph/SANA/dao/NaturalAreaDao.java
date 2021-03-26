@@ -32,6 +32,11 @@ public class NaturalAreaDao {
                 naturalArea.getName());
     }
 
+    public void deleteNaturalArea(String naturalAreaName) {
+        jdbcTemplate.update("DELETE FROM NaturalArea WHERE name = ?",
+                naturalAreaName);
+    }
+
     public void updateNaturalArea(NaturalArea naturalArea) {
         jdbcTemplate.update("UPDATE NaturalArea " +
                         "SET typeOfAccess = ?, geographicalLocation = ?, typeOfArea = ?, " +

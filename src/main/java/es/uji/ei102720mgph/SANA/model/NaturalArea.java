@@ -3,6 +3,7 @@ package es.uji.ei102720mgph.SANA.model;
 import es.uji.ei102720mgph.SANA.enums.Orientation;
 import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -16,6 +17,7 @@ public class NaturalArea {
     private String physicalCharacteristics;
     private String description;
     private Orientation orientation;
+    @DateTimeFormat(pattern = "yyyy-MM-ss")
     private LocalDate restrictionTimePeriod;
     private float occupancyRate;
     private String municipality;

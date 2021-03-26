@@ -19,7 +19,7 @@
         <th scope="col">Código QR</th>
         <th scope="col">Fecha cancelación</th>
         <th scope="col">Razón cancelación</th>
-        <th scope="col">Ciudadano</th>
+        <th scope="col">Email ciudadano</th>
         <th scope="col">Franja horaria id</th>
         <th scope="col"></th>
         <th scope="col"></th>
@@ -36,7 +36,7 @@
         <td th:text="${reservation.QRcode}"></td>
         <td th:text="${reservation.cancellationDate}"></td>
         <td th:text="${reservation.cancellationReason}"></td>
-        <td th:text="${reservation.citizenId}"></td>
+        <td th:text="${reservation.citizenEmail}"></td>
         <td th:text="${reservation.timeSlotId}"></td>
         <td><a th:href="@{/reservation/update/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
             <button type="button" class="btn btn-warning">Edita</button>

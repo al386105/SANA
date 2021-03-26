@@ -29,7 +29,7 @@ public class ReservationDao {
                 "INSERT INTO Reservation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 reservation.getReservationNumber(), reservation.getReservationDate(), LocalDate.now(),
                 LocalTime.now(), reservation.getNumberOfPeople(), ReservationState.created, reservation.getQRcode(),
-                null, null, reservation.getCitizenId(), reservation.getTimeSlotId());
+                null, null, reservation.getCitizenEmail(), reservation.getTimeSlotId());
     }
 
     /* Esborra el reservation de la base de dades */
@@ -41,10 +41,10 @@ public class ReservationDao {
     public void updateReservation(Reservation reservation) {
         jdbcTemplate.update("UPDATE Reservation SET reservationDate = ?, creationDate = ?, creationTime = ?, " +
                         "numberOfPeople = ?, state = ?, QRcode = ?, cancellationDate = ?, cancellationReason = ?," +
-                        "citizenId = ?, timeSlotId = ? WHERE reservationNumber =?",
+                        "citizenEmail = ?, timeSlotId = ? WHERE reservationNumber =?",
                 reservation.getReservationDate(), reservation.getCreationDate(), reservation.getCreationTime(),
                 reservation.getNumberOfPeople(), reservation.getState(), reservation.getQRcode(),
-                reservation.getCancellationDate(), reservation.getCancellationReason(), reservation.getCitizenId(),
+                reservation.getCancellationDate(), reservation.getCancellationReason(), reservation.getCitizenEmail(),
                 reservation.getTimeSlotId(), reservation.getReservationNumber());
     }
 

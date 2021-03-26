@@ -3,6 +3,8 @@ package es.uji.ei102720mgph.SANA.dao;
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.Reservation;
 import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -17,11 +19,12 @@ public final class ReservationRowMapper implements RowMapper<Reservation> {
         reservation.setCreationDate(rs.getObject("creationDate", LocalDate.class));
         reservation.setCreationTime(rs.getObject("creationTime", LocalTime.class));
         reservation.setNumberOfPeople(rs.getInt("numberOfPeople"));
-        reservation.setState(rs.getObject("state", ReservationState.class)); //????
+        reservation.setState(rs.getObject("state", ReservationState.class));
         reservation.setQRcode(rs.getString("QRcode"));
-        reservation.setCancellationDate(rs.getObject("cancellationDate", LocalDate.class));
+        Date d = rs.getDate("cancellationDate");
+        reservation.setCancellationDate(d != null ? d.toLocalDate() : null);
         reservation.setCancellationReason(rs.getString("cancellationReason"));
-        reservation.setCitizenId(rs.getString("citizenId"));
+        reservation.setCitizenEmail(rs.getString("citizenEmail"));
         reservation.setTimeSlotId(rs.getString("timeSlotId"));
         return reservation;
     }

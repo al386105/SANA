@@ -66,7 +66,8 @@ public class Zone {
     @Override
     public String toString() {
         return "Zone{" +
-                "zoneNumber=" + zoneNumber +
+                "id='" + id + '\'' +
+                ", zoneNumber=" + zoneNumber +
                 ", letter=" + letter +
                 ", maximumCapacity=" + maximumCapacity +
                 ", creationDate=" + creationDate +

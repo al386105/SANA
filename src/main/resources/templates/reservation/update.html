@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Modificar reserva</title>
     <meta charset="UTF-8" />
@@ -7,46 +7,74 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
 </head>
 <body>
-<h2>Modificar reserva</h2>
-<form action="#" th:action="@{/reservation/update}"
-      th:object="${reservation}" method="post">
-    <table>
-        <tr>
-            <td><label>Número reserva</label></td>
-            <td><input type="text" th:field="*{reservationNumber}" /></td>
-        </tr>
-        <tr>
-            <td><label>Fecha reserva (yyyy-MM-dd)</label></td>
-            <td><input type="text" th:field="*{reservationDate}" /></td>
-        </tr>
-        <tr>
-            <td><label>Num. personas</label></td>
-            <td><input type="number" th:field="*{numberOfPeople}" /></td>
-        </tr>
-        <tr>
-            <td><label>Código QR</label></td>
-            <td><input type="text" th:field="*{QRcode}" /></td>
-        </tr>
-        <tr>
-            <td><label>Fecha cancelación (yyyy-MM-dd)(por defecto null)</label></td>
-            <td><input type="text" th:field="*{cancellationDate}" /></td>
-        </tr>
-        <tr>
-            <td><label>Razón cancelación (por defecto null)</label></td>
-            <td><input type="text" th:field="*{cancellationReason}" /></td>
-        </tr>
-        <tr>
-            <td><label>Ciudadano (id)</label></td>
-            <td><input type="text" th:field="*{citizenId}" /></td>
-        </tr>
-        <tr>
-            <td><label>Franja horaria (id)</label></td>
-            <td><input type="text" th:field="*{timeSlotId}" /></td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" value="Actualizar reserva" /></td>
-        </tr>
-    </table>
-</form>
+<div class="container">
+    <h2>Modificar reserva</h2>
+    <form class="form-horizontal" action="#" th:action="@{/reservation/add}"
+          th:object="${reservation}" method="post">
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="reservationNumber">Número reserva:</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="reservationNumber" th:field="*{reservationNumber}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="reservationDate">Fecha reserva (yyyy-MM-dd):</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="reservationDate" th:field="*{reservationDate}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="numberOfPeople">Num. personas:</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="numberOfPeople" th:field="*{numberOfPeople}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="QRcode">Código QR:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="QRcode" th:field="*{QRcode}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="cancellationDate">Fecha cancelación:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="cancellationDate" th:field="*{cancellationDate}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="cancellationReason">Razón cancelación:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="cancellationReason" th:field="*{cancellationReason}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="citizenEmail">Ciudadano (email):</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="citizenEmail" th:field="*{citizenEmail}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="timeSlotId">Franja horaria (id):</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="timeSlotId" th:field="*{timeSlotId}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-primary">Actualizar reserva</button>
+            </div>
+        </div>
+
+    </form>
+</div>
 </body>
 </html>

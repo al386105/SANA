@@ -9,15 +9,17 @@ public class Reservation {
     private int reservationNumber;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reservationDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate creationDate;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime creationTime;
     private int numberOfPeople;
     private ReservationState state;
     private String QRcode;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate cancellationDate;
     private String cancellationReason;
-    private String citizenId;
+    private String citizenEmail;
     private String timeSlotId;
 
     public Reservation(){
@@ -95,12 +97,12 @@ public class Reservation {
         this.cancellationReason = cancellationReason;
     }
 
-    public String getCitizenId() {
-        return citizenId;
+    public String getCitizenEmail() {
+        return citizenEmail;
     }
 
-    public void setCitizenId(String citizenId) {
-        this.citizenId = citizenId;
+    public void setCitizenEmail(String citizenEmail) {
+        this.citizenEmail = citizenEmail;
     }
 
     public String getTimeSlotId() {
@@ -123,7 +125,7 @@ public class Reservation {
                 ", QRcode='" + QRcode + '\'' +
                 ", cancellationDate=" + cancellationDate +
                 ", cancellationReason='" + cancellationReason + '\'' +
-                ", citizenId='" + citizenId + '\'' +
+                ", citizenEmail='" + citizenEmail + '\'' +
                 ", timeSlotId='" + timeSlotId + '\'' +
                 '}';
     }

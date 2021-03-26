@@ -28,9 +28,8 @@ public class ReservationDao {
         jdbcTemplate.update(
                 "INSERT INTO Reservation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 reservation.getReservationNumber(), reservation.getReservationDate(), LocalDate.now(),
-                LocalTime.now(), reservation.getNumberOfPeople(), ReservationState.created,
-                reservation.getQRcode(), null, null,
-                reservation.getCitizenId(), reservation.getTimeSlotId());
+                LocalTime.now(), reservation.getNumberOfPeople(), ReservationState.created, reservation.getQRcode(),
+                null, null, reservation.getCitizenId(), reservation.getTimeSlotId());
     }
 
     /* Esborra el reservation de la base de dades */

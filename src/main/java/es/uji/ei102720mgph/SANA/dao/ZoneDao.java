@@ -6,6 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ZoneDao {
         jdbcTemplate.update(
                 "INSERT INTO Zone VALUES(?, ?, ?, ?, ?, ?)",
                 zone.getId(), zone.getZoneNumber(), zone.getLetter(), zone.getMaximumCapacity(),
-                zone.getCreationDate(), zone.getNaturalArea());
+                LocalDate.now(), zone.getNaturalArea());
     }
 
     /* Esborra el zone de la base de dades */

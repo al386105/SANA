@@ -1,4 +1,4 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-public class EmailToControlStaffController {
+public class EmailController {
 }

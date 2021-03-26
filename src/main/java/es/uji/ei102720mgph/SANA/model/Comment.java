@@ -8,7 +8,7 @@ public class Comment {
     private String commentBody;
     private Integer score;
     private LocalDate date;
-    private String citizenId;
+    private String citizenEmail;
     private String naturaArea;
 
     public Comment(){
@@ -47,12 +47,12 @@ public class Comment {
         this.date = date;
     }
 
-    public String getCitizenId() {
-        return citizenId;
+    public String getCitizenEmail() {
+        return citizenEmail;
     }
 
-    public void setCitizenId(String citizenId) {
-        this.citizenId = citizenId;
+    public void setCitizenEmail(String citizenId) {
+        this.citizenEmail = citizenId;
     }
 
     public String getNaturaArea() {
@@ -70,7 +70,7 @@ public class Comment {
                 ", commentBody='" + commentBody + '\'' +
                 ", score=" + score +
                 ", date=" + date +
-                ", citizenId='" + citizenId + '\'' +
+                ", citizenEmail='" + citizenEmail + '\'' +
                 ", naturaArea='" + naturaArea + '\'' +
                 '}';
     }

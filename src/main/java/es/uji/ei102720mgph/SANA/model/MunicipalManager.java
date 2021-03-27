@@ -36,6 +36,7 @@ public class MunicipalManager {
         return password;
     }
 
+    //Si el password es readOnly, no se debería poder hacer un set ¿no?
     public void setPassword(String password) {
         this.password = password;
     }

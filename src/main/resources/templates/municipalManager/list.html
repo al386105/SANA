@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestionar Municipal Managers</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<h1>Lista de Municipal Managers</h1>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Email</th>
+        <th scope="col">Username</th>
+        <th scope="col">Password</th>
+        <th scope="col">Municipality</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="municipalManager: ${municipalManagers}">
+        <td scope="row" th:text="${municipalManager.email}"></td>
+        <td th:text="${municipalManager.username}"></td>
+        <td th:text="${municipalManager.password}"></td>
+        <td th:text="${municipalManager.municipality}"></td>
+        <td><a th:href="@{/reservation/update/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+            <button type="button" class="btn btn-warning">Edita</button>
+        </a>
+        </td>
+        <td><a th:href="@{/reservation/delete/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+            <button type="button" class="btn btn-danger">Elimina</button>
+        </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="add"><button type="button" class="btn btn-success">Añadir Municipal Manager</button></a>
+<a href="../"><button type="button" class="btn btn-success">Volver al menú principal</button></a>
+</body>
+</html>

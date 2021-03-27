@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Natural Areas</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<h1>Llista de Areas Naturales</h1>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Acceso</th>
+        <th scope="col">Localización</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="naturalArea: ${naturalAreas}">
+        <td th:text="${naturalArea.name}"></td>
+        <td th:text="${naturalArea.typeOfAccess}"></td>
+        <td th:text="${naturalArea.geographicalLocation}"></td>
+        <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-warning">Edita</button>
+        </a>
+        </td>
+        <td><a th:href="@{/naturalArea/delete/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-danger">Esborra</button>
+        </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="add"><button type="button" class="btn btn-success">Añade Area Natural </button></a>
+</body>
+</html>

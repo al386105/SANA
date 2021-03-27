@@ -1,46 +1,24 @@
 package es.uji.ei102720mgph.SANA.model;
 
-import java.util.Date;
 
 public class RegisteredCitizen {
 
-    private String name;
-    private String surname;
-    private String id;
+    private String idNumber;
     private String email;
     private String mobilePhoneNumber;
-    private String address;
-    private Date dateOfBirth;
     private String citizenCode;
     private int pin;
-    private Date registrationDate;
-    private String idAddress;
+    private String addressId;
 
     public RegisteredCitizen(){
     }
 
-    public String getName() {
-        return name;
+    public String getIdNumber() {
+        return idNumber;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setID(String id) {
-        this.id = id;
+    public void setIdNumber(String id) {
+        this.idNumber = id;
     }
 
     public String getEmail() {
@@ -59,21 +37,6 @@ public class RegisteredCitizen {
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String addres) {
-        this.address = addres;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
 
     public String getCitizenCode() {
         return citizenCode;
@@ -91,37 +54,24 @@ public class RegisteredCitizen {
         this.pin = pin;
     }
 
-    public Date getRegistrationDate() {
-        return registrationDate;
+    public String getAddressId() {
+        return addressId;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    public String getIdAddress() {
-        return idAddress;
-    }
-
-    public void setIdAddress(String idAddress) {
-        this.idAddress = idAddress;
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
     }
 
 
     @Override
     public String toString(){
         return "RegisteredCitizen{" +
-                "name='" + name + "\'" +
-                "surname='" + surname + "\'" +
-                "id='" + id + "\'" +
+                "id='" + idNumber + "\'" +
                 "email'=" + email + "\'" +
                 "mobilePhoneNumber='" + mobilePhoneNumber + "\'" +
-                "address='" + address + "\'" +
-                "dateOfBirth='" + dateOfBirth + "\'" +
                 "citizenCode='" + citizenCode + "\'" +
                 "pin='" + pin + "\'" +
-                "registrationDate='" + registrationDate + "\'" +
-                "ideAddress='" + idAddress + "\'" +
+                "ideAddress='" + addressId + "\'" +
                 "}";
     }
 

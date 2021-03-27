@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestionar Direcciones</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<h1>Lista de Ciudadanos Registrados</h1>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Email</th>
+        <th scope="col">ID Number</th>
+        <th scope="col">Número de Teléfono</th>
+        <th scope="col">Código de ciudadano</th>
+        <th scope="col">Pin</th>
+        <th scope="col">Dirección</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="registeredCitizen: ${registeredCitizen}">
+        <td scope="row" th:text="${registeredCitizen.email}"></td>
+        <td th:text="${registeredCitizen.idNumber}"></td>
+        <td th:text="${registeredCitizen.mobilePhoneNumber}"></td>
+        <td th:text="${registeredCitizen.citizenCode}"></td>
+        <td th:text="${registeredCitizen.pin}"></td>
+        <td th:text="${registeredCitizen.addressId}"></td>
+        <td><a th:href="@{/registeredCitizen/update/{email}(email=${registeredCitizen.email})}">
+            <button type="button" class="btn btn-warning">Edita</button>
+        </a>
+        </td>
+        <td><a th:href="@{/registeredCitizen/delete/{email}(email=${registeredCitizen.email})}">
+            <button type="button" class="btn btn-danger">Elimina</button>
+        </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="add"><button type="button" class="btn btn-success">Añadir Ciudadano Registrado</button></a>
+</body>
+</html>

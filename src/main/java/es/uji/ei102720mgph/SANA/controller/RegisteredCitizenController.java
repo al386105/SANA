@@ -2,6 +2,8 @@ package es.uji.ei102720mgph.SANA.controller;
 
 
 import es.uji.ei102720mgph.SANA.dao.RegisteredCitizenDao;
+import es.uji.ei102720mgph.SANA.model.Address;
+import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,47 @@ public class RegisteredCitizenController {
     public String listRegisteredCitizens(Model model){
         model.addAttribute("redisteredCitizens", registeredCitizenDao.getRegisteredCitizens());
         return "registeredCitizen/list";
+    }
+
+    // Operació crear
+    @RequestMapping(value="/add")
+    public String addRegisteredCitizen(Model model) {
+        model.addAttribute("registeredCitizen", new RegisteredCitizen());
+        return "registeredCitizen/add";
+    }
+
+    // Gestió de la resposta del formulari de creació d'objectes
+    @RequestMapping(value="/add", method=RequestMethod.POST)
+    public String processAddSubmit(@ModelAttribute("registeredCitizen")RegisteredCitizen registeredCitizen,
+                                   BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return "registeredCitizen/add"; //tornem al formulari per a que el corregisca
+        registeredCitizenDao.addRegisteredCitizen(registeredCitizen); //usem el dao per a inserir el address
+        return "redirect:list"; //redirigim a la lista per a veure el address afegit, post/redirect/get
+    }
+
+    // Operació actualitzar
+    @RequestMapping(value="/update/{id}", method = RequestMethod.GET)
+    public String editRegisteredCitizen(Model model, @PathVariable String email) {
+        model.addAttribute("registeredCitizen", registeredCitizenDao.getRegisteredCitizen(email));
+        return "registeredCitizen/update";
+    }
+
+    // Resposta de modificació d'objectes
+    @RequestMapping(value="/update", method = RequestMethod.POST)
+    public String processUpdateSubmit(@ModelAttribute("registeredCitizen") RegisteredCitizen registeredCitizen,
+                                      BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return "registeredCitizen/update";
+        registeredCitizenDao.updateRegisteredCitizen(registeredCitizen);
+        return "redirect:list";
+    }
+
+    // Operació esborrar
+    @RequestMapping(value="/delete/{id}")
+    public String processDelete(@PathVariable String email) {
+        registeredCitizenDao.deleteRegisteredCitizen(email);
+        return "redirect:../list";
     }
 
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestionar Direcciones</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<h1>Lista de TemporalService</h1>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">OpenningDays</th>
+        <th scope="col">BeginningTime</th>
+        <th scope="col">EndTime</th>
+        <th scope="col">BeginningDate</th>
+        <th scope="col">EndDate</th>
+        <th scope="col">Service</th>
+        <th scope="col">NaturalArea</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="temporalService: ${temporalService}">
+        <td th:text="${temporalService.openningDays}"></td>
+        <td th:text="${temporalService.beginningTime}"></td>
+        <td th:text="${temporalService.endTime}"></td>
+        <td th:text="${temporalService.beginningDate}"></td>
+        <td th:text="${temporalService.endDate}"></td>
+        <td scope="row" th:text="${temporalService.service}"></td>
+        <td scope="row" th:text="${temporalService.naturalArea}"></td>
+
+        <td><a th:href="@{/temporalService/update/{service,naturalArea}(service=${temporalService.service})(naturalArea=${temporalService.naturalArea})}">
+            <button type="button" class="btn btn-warning">Edita</button>
+        </a>
+        </td>
+        <td><a th:href="@{/temporalService/delete/{service,naturalArea}(service=${temporalService.service})(naturalArea=${temporalService.naturalArea})}">
+            <button type="button" class="btn btn-danger">Elimina</button>
+        </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="add"><button type="button" class="btn btn-success">Añadir temporalService</button></a>
+</body>
+</html>

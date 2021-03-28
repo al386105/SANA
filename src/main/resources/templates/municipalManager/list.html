@@ -24,11 +24,11 @@
         <td th:text="${municipalManager.username}"></td>
         <td th:text="${municipalManager.password}"></td>
         <td th:text="${municipalManager.municipality}"></td>
-        <td><a th:href="@{/reservation/update/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+        <td><a th:href="@{/municipalManager/update/{email}(email=${municipalManager.email})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>
         </td>
-        <td><a th:href="@{/reservation/delete/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+        <td><a th:href="@{/municipalManager/delete/{email}(email=${municipalManager.email})}">
             <button type="button" class="btn btn-danger">Elimina</button>
         </a>
         </td>

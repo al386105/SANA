@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestionar TimeSlot</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<h1>Lista de TimeSlots</h1>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Fecha inicio</th>
+        <th scope="col">Fecha fin</th>
+        <th scope="col">Hora inicio</th>
+        <th scope="col">Hora fin</th>
+        <th scope="col">Area Natural</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="timeSlot: ${timeSlots}">
+        <td scope="row" th:text="${timeSlot.id}"></td>
+        <td th:text="${timeSlot.beginningDate}"></td>
+        <td th:text="${timeSlot.endDate}"></td>
+        <td th:text="${timeSlot.beginningTime}"></td>
+        <td th:text="${timeSlot.endTime}"></td>
+        <td th:text="${timeSlot.naturalArea}"></td>
+        <td><a th:href="@{/timeSlot/update/{id}(id=${timeSlot.id})}">
+            <button type="button" class="btn btn-warning">Edita</button>
+        </a>
+        </td>
+        <td><a th:href="@{/timeSlot/delete/{id}(id=${timeSlot.id})}">
+            <button type="button" class="btn btn-danger">Elimina</button>
+        </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="add"><button type="button" class="btn btn-success">Añadir TimeSlot</button></a>
+<a href="../"><button type="button" class="btn btn-success">Volver al menú principal</button></a>
+</body>
+</html>

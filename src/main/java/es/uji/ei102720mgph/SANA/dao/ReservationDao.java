@@ -25,7 +25,7 @@ public class ReservationDao {
         jdbcTemplate.update(
                 "INSERT INTO Reservation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 reservation.getReservationNumber(), reservation.getReservationDate(), reservation.getCreationDate(),
-                reservation.getCreationTime(), reservation.getNumberOfPeople(), reservation.getState(), reservation.getQRcode(),
+                reservation.getCreationTime(), reservation.getNumberOfPeople(), reservation.getState().name(), reservation.getQRcode(),
                 null, null, reservation.getCitizenEmail(), reservation.getTimeSlotId());
     }
 
@@ -40,7 +40,7 @@ public class ReservationDao {
                         "numberOfPeople = ?, state = ?, QRcode = ?, cancellationDate = ?, cancellationReason = ?," +
                         "citizenEmail = ?, timeSlotId = ? WHERE reservationNumber =?",
                 reservation.getReservationDate(), reservation.getCreationDate(), reservation.getCreationTime(),
-                reservation.getNumberOfPeople(), reservation.getState(), reservation.getQRcode(),
+                reservation.getNumberOfPeople(), reservation.getState().name(), reservation.getQRcode(),
                 reservation.getCancellationDate(), reservation.getCancellationReason(), reservation.getCitizenEmail(),
                 reservation.getTimeSlotId(), reservation.getReservationNumber());
     }

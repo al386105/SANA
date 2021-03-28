@@ -25,7 +25,7 @@ public class ZoneDao {
         jdbcTemplate.update(
                 "INSERT INTO Zone VALUES(?, ?, ?, ?, ?, ?)",
                 zone.getId(), zone.getZoneNumber(), zone.getLetter(), zone.getMaximumCapacity(),
-                LocalDate.now(), zone.getNaturalArea());
+                zone.getCreationDate(), zone.getNaturalArea());
     }
 
     /* Esborra el zone de la base de dades */

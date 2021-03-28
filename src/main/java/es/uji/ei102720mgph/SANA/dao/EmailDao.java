@@ -37,7 +37,7 @@ public class EmailDao {
     public void updateEmail(Email email) {
         jdbcTemplate.update("UPDATE Email SET subject = ?, textBody = ?, sender = ?, date = ?, receiver = ?" +
                         " WHERE id =?",
-                email.getSubject(), email.getTextBody(), email.getSender(), LocalDate.now(), email.getReceiver(),
+                email.getSubject(), email.getTextBody(), email.getSender(), email.getDate(), email.getReceiver(),
                 email.getId());
     }
 

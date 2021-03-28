@@ -12,7 +12,7 @@ public final class ZoneRowMapper implements RowMapper<Zone> {
         Zone zone = new Zone();
         zone.setId(rs.getString("id"));
         zone.setZoneNumber(rs.getInt("zoneNumber"));
-        zone.setLetter((Character) rs.getObject("letter"));
+        zone.setLetter(rs.getString("letter").charAt(0));
         zone.setMaximumCapacity(rs.getInt("maximumCapacity"));
         zone.setCreationDate(rs.getObject("creationDate", LocalDate.class));
         zone.setNaturalArea(rs.getString("naturalArea"));

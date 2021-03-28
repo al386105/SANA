@@ -19,8 +19,7 @@ public final class ReservationRowMapper implements RowMapper<Reservation> {
         reservation.setCreationDate(rs.getObject("creationDate", LocalDate.class));
         reservation.setCreationTime(rs.getObject("creationTime", LocalTime.class));
         reservation.setNumberOfPeople(rs.getInt("numberOfPeople"));
-        ReservationState s = ReservationState.valueOf(rs.getString("state"));
-        reservation.setState(s);
+        reservation.setState(ReservationState.values()[rs.getInt("state")] );
         reservation.setQRcode(rs.getString("QRcode"));
         Date d = rs.getDate("cancellationDate");
         reservation.setCancellationDate(d != null ? d.toLocalDate() : null);

@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class MunicipalityDao {
     public void addMunicipality(Municipality muni) {
         jdbcTemplate.update(
                 "INSERT INTO Municipality VALUES(?, ?, ?)",
-                muni.getName(), muni.getDescription(), muni.getRegistrationDate());
+                muni.getName(), muni.getDescription(), LocalDate.now());
     }
 
     public void deleteMunicipality(String name) {

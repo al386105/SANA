@@ -12,7 +12,6 @@
     <tr>
         <th scope="col">Email</th>
         <th scope="col">DNI/NIE</th>
-        <th scope="col">Nombre</th>
         <th scope="col">Número de Teléfono</th>
         <th scope="col">Código de ciudadano</th>
         <th scope="col">Pin</th>
@@ -25,7 +24,6 @@
     <tr th:each="registeredCitizen: ${registeredCitizen}">
         <td scope="row" th:text="${registeredCitizen.email}"></td>
         <td th:text="${registeredCitizen.idNumber}"></td>
-        <td th:text="${registeredCitizen.name}"></td>
         <td th:text="${registeredCitizen.mobilePhoneNumber}"></td>
         <td th:text="${registeredCitizen.citizenCode}"></td>
         <td th:text="${registeredCitizen.pin}"></td>

@@ -1,10 +1,10 @@
 package es.uji.ei102720mgph.SANA.model;
 
 
-public class RegisteredCitizen {
+public class RegisteredCitizen extends Receiver {
 
-    private String idNumber;
     private String email;
+    private String idNumber;
     private String mobilePhoneNumber;
     private String citizenCode;
     private int pin;
@@ -13,20 +13,20 @@ public class RegisteredCitizen {
     public RegisteredCitizen(){
     }
 
-    public String getIdNumber() {
-        return idNumber;
-    }
-
-    public void setIdNumber(String id) {
-        this.idNumber = id;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String id) {
+        this.idNumber = id;
     }
 
     public String getMobilePhoneNumber() {
@@ -66,8 +66,8 @@ public class RegisteredCitizen {
     @Override
     public String toString(){
         return "RegisteredCitizen{" +
-                "id='" + idNumber + "\'" +
                 "email'=" + email + "\'" +
+                "id='" + idNumber + "\'" +
                 "mobilePhoneNumber='" + mobilePhoneNumber + "\'" +
                 "citizenCode='" + citizenCode + "\'" +
                 "pin='" + pin + "\'" +

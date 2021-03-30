@@ -7,13 +7,13 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class RegisteredCitizenRowMapper  implements RowMapper<RegisteredCitizen> {
+public final class RegisteredCitizenRowMapper implements RowMapper<RegisteredCitizen> {
 
     public RegisteredCitizen mapRow(ResultSet rs, int rowNum) throws SQLException {
         RegisteredCitizen registeredCitizen = new RegisteredCitizen();
 
-        registeredCitizen.setIdNumber(rs.getString("idNumber"));
         registeredCitizen.setEmail(rs.getString("email"));
+        registeredCitizen.setIdNumber(rs.getString("idNumber"));
         registeredCitizen.setMobilePhoneNumber(rs.getString("mobilePhoneNumber"));
         registeredCitizen.setCitizenCode(rs.getString("citizenCode"));
         registeredCitizen.setPin(rs.getInt("pin"));
@@ -21,7 +21,4 @@ public final class RegisteredCitizenRowMapper  implements RowMapper<RegisteredCi
         return registeredCitizen;
 
     }
-
-
-
 }

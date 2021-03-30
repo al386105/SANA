@@ -1,5 +1,6 @@
 package es.uji.ei102720mgph.SANA.dao;
 
+import es.uji.ei102720mgph.SANA.model.PostalCodeMunicipality;
 import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -47,6 +48,16 @@ public class ZoneDao {
             return jdbcTemplate.queryForObject(
                     "SELECT * FROM Zone WHERE id = ?",
                     new ZoneRowMapper(), id);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public List<Zone> getZonesOfNaturalArea(String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Zone WHERE naturalArea =?",
+                    new ZoneRowMapper(), naturalArea);
         }
         catch(EmptyResultDataAccessException e) {
             return null;

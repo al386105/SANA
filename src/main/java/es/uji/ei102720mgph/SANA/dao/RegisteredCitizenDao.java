@@ -22,20 +22,20 @@ public class RegisteredCitizenDao {
 
     public void addRegisteredCitizen(RegisteredCitizen registeredCitizen){
         jdbcTemplate.update("INSERT INTO RegisteredCitizen VALUES(?, ?, ?, ?, ?, ?)",
-                registeredCitizen.getIdNumber(), registeredCitizen.getEmail(),
+                registeredCitizen.getEmail(), registeredCitizen.getIdNumber(),
                 registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
                 registeredCitizen.getPin(),  registeredCitizen.getAddressId());
     }
 
-    public void deleteRegisteredCitizen(String idNumber){
-        jdbcTemplate.update("DELETE FROM RegisteredCitizen WHERE idNumber =?", idNumber);
+    public void deleteRegisteredCitizen(String email){
+        jdbcTemplate.update("DELETE FROM RegisteredCitizen WHERE email =?", email);
     }
 
     public void updateRegisteredCitizen(RegisteredCitizen registeredCitizen){
-        jdbcTemplate.update("UPDATE RegisteredCitizen SET email = ?, mobilePhoneNumber = ?, citizenCode = ?," +
-                        "pin = ?, addressId = ? WHERE idNumber =?",
-                registeredCitizen.getEmail(), registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
-                registeredCitizen.getPin(), registeredCitizen.getAddressId(), registeredCitizen.getIdNumber());
+        jdbcTemplate.update("UPDATE RegisteredCitizen SET idNumber = ?, mobilePhoneNumber = ?, citizenCode = ?," +
+                        "pin = ?, addressId = ? WHERE email =?",
+                registeredCitizen.getIdNumber(), registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
+                registeredCitizen.getPin(), registeredCitizen.getAddressId(), registeredCitizen.getEmail());
     }
 
     public  RegisteredCitizen getRegisteredCitizen(String email){

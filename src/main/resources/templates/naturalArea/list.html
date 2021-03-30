@@ -24,6 +24,8 @@
         <td th:text="${naturalArea.name}"></td>
         <td th:text="${naturalArea.typeOfAccess}"></td>
         <td th:text="${naturalArea.geographicalLocation}"></td>
+        <td><a class="btn btn-success" th:href="@{/zone/porNaturalArea/{area}(area=${naturalArea.name})}" role="button">Zonas</a>
+        </td>
         <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>

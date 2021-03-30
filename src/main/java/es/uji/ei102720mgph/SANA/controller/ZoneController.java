@@ -63,6 +63,13 @@ public class ZoneController {
         return "redirect:list";
     }
 
+    // Operacio de llistar totes les zones d'un area natural
+    @RequestMapping("/porNaturalArea/{naturalArea}")
+    public String listZonesOfNaturalArea(Model model, @PathVariable String naturalArea) {
+        model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
+        return "zone/porNaturalArea";
+    }
+
     // Operació esborrar
     @RequestMapping(value="/delete/{id}")
     public String processDelete(@PathVariable String id) {

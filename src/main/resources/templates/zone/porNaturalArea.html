@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Consulta de zonas</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<h1>Lista de Zonas</h1>
+<h2 th:text="${naturalArea}"></h2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Número zona</th>
+        <th scope="col">Letra</th>
+        <th scope="col">Capacidad máx.</th>
+        <th scope="col">Fecha creación</th>
+        <th scope="col">Área natural</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="zone: ${zones}">
+        <td scope="row" th:text="${zone.id}"></td>
+        <td th:text="${zone.zoneNumber}"></td>
+        <td th:text="${zone.letter}"></td>
+        <td th:text="${zone.maximumCapacity}"></td>
+        <td th:text="${zone.creationDate}"></td>
+        <td th:text="${zone.naturalArea}"></td>
+    </tr>
+    </tbody>
+</table>
+<a href="/naturalArea/list"><button type="button" class="btn btn-success">Volver</button></a>
+</body>
+</html>

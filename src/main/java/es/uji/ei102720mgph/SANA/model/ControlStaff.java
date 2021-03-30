@@ -1,6 +1,6 @@
 package es.uji.ei102720mgph.SANA.model;
 
-public class ControlStaff {
+public class ControlStaff extends Receiver {
     private String email;
     private String userName;
     private String password; //hacer encrypted

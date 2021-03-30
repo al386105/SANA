@@ -15,6 +15,7 @@
         <th scope="col">Fecha registro</th>
         <th scope="col"></th>
         <th scope="col"></th>
+        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -22,6 +23,8 @@
         <td scope="row" th:text="${municipality.name}"></td>
         <td th:text="${municipality.description}"></td>
         <td th:text="${municipality.registrationDate}"></td>
+        <td><a class="btn btn-success" th:href="@{/postalCode/list/{muni}(muni=${municipality.name})}" role="button">CP</a>
+        </td>
         <td><a th:href="@{/municipality/update/{name}(name=${municipality.name})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>

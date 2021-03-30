@@ -25,7 +25,7 @@ public class EmailDao {
         jdbcTemplate.update(
                 "INSERT INTO Email VALUES(?, ?, ?, ?, ?, ?)",
                 email.getId(), email.getSubject(), email.getTextBody(), email.getSender(),
-                email.getDate(), email.getReceiver());
+                LocalDate.now(), email.getReceiver());
     }
 
     /* Esborra el email de la base de dades */

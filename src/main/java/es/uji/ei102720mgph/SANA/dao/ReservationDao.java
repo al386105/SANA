@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +26,8 @@ public class ReservationDao {
     public void addReservation(Reservation reservation) {
         jdbcTemplate.update(
                 "INSERT INTO Reservation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                reservation.getReservationNumber(), reservation.getReservationDate(), reservation.getCreationDate(),
-                reservation.getCreationTime(), reservation.getNumberOfPeople(), reservation.getState().name(), reservation.getQRcode(),
+                reservation.getReservationNumber(), reservation.getReservationDate(), LocalDate.now(),
+                LocalTime.now(), reservation.getNumberOfPeople(), reservation.getState().name(), reservation.getQRcode(),
                 null, null, reservation.getCitizenEmail(), reservation.getTimeSlotId());
     }
 

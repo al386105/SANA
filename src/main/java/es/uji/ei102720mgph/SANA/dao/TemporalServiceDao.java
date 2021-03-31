@@ -29,7 +29,7 @@ public class TemporalServiceDao {
     }
 
 
-    public void deleteAddress(String service, String naturalArea) {
+    public void deleteTemporalService(String service, String naturalArea) {
         jdbcTemplate.update("DELETE FROM TemporalService WHERE service =? AND naturalArea=?", service, naturalArea);
     }
 

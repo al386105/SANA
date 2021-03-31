@@ -68,7 +68,7 @@ public class TemporalServiceController {
     // Operació esborrar
     @RequestMapping(value="/delete/{service, naturalArea}")
     public String processDelete(@PathVariable String service, @PathVariable String naturalArea) {
-        temporalServiceDao.deleteAddress(service, naturalArea);
+        temporalServiceDao.deleteTemporalService(service, naturalArea);
         return "redirect:../list";
     }
 }

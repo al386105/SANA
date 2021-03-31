@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestionar ServiceDate</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<h1>Lista de ServiceDates</h1>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">id</th>
+        <th scope="col">beginningDate</th>
+        <th scope="col">endDate</th>
+        <th scope="col">service</th>
+        <th scope="col">naturalArea</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="serviceDate: ${serviceDate}">
+        <td th:text="${serviceDate.id}"></td>
+        <td th:text="${serviceDate.beginningDate}"></td>
+        <td th:text="${serviceDate.endDate}"></td>
+        <td th:text="${serviceDate.service}"></td>
+        <td th:text="${serviceDate.naturalArea}"></td>
+
+        <td><a th:href="@{/serviceDate/update/{id}(serviceDate=${serviceDate.id})}">
+            <button type="button" class="btn btn-warning">Edita</button>
+        </a>
+        </td>
+        <td><a th:href="@{/serviceDate/delete/{id}(serviceDate=${serviceDate.id})}">
+            <button type="button" class="btn btn-danger">Elimina</button>
+        </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="add"><button type="button" class="btn btn-success">Añadir ServiceDate</button></a>
+<a href="../"><button type="button" class="btn btn-success">Volver al menú principal</button></a>
+</body>
+</html>

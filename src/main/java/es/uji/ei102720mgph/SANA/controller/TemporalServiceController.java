@@ -49,7 +49,7 @@ public class TemporalServiceController {
     }
 
     // Operació actualitzar
-    @RequestMapping(value="/update/{service,naturalArea}", method = RequestMethod.GET)
+    @RequestMapping(value="/update/{service}/{naturalArea}", method = RequestMethod.GET)
     public String editTemporalService(Model model, @PathVariable String service, @PathVariable String naturalArea) {
         model.addAttribute("temporalService", temporalServiceDao.getTemporalService(service, naturalArea));
         return "temporalService/update";
@@ -66,7 +66,7 @@ public class TemporalServiceController {
     }
 
     // Operació esborrar
-    @RequestMapping(value="/delete/{service, naturalArea}")
+    @RequestMapping(value="/delete/{service}/{naturalArea}")
     public String processDelete(@PathVariable String service, @PathVariable String naturalArea) {
         temporalServiceDao.deleteTemporalService(service, naturalArea);
         return "redirect:../list";

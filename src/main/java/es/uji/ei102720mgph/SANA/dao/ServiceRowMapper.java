@@ -1,6 +1,6 @@
 package es.uji.ei102720mgph.SANA.dao;
 
-import es.uji.ei102720mgph.SANA.model.Address;
+
 import es.uji.ei102720mgph.SANA.model.Service;
 import org.springframework.jdbc.core.RowMapper;
 

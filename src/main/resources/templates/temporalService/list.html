@@ -31,11 +31,11 @@
         <td scope="row" th:text="${temporalService.service}"></td>
         <td scope="row" th:text="${temporalService.naturalArea}"></td>
 
-        <td><a th:href="@{/temporalService/update/{service,naturalArea}(service=${temporalService.service})(naturalArea=${temporalService.naturalArea})}">
+        <td><a th:href="@{/temporalService/delete/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>
         </td>
-        <td><a th:href="@{/temporalService/delete/{service,naturalArea}(service=${temporalService.service})(naturalArea=${temporalService.naturalArea})}">
+        <td><a th:href="@{/temporalService/delete/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
             <button type="button" class="btn btn-danger">Elimina</button>
         </a>
         </td>
@@ -46,3 +46,4 @@
 <a href="../"><button type="button" class="btn btn-success">Volver al menú principal</button></a>
 </body>
 </html>
+

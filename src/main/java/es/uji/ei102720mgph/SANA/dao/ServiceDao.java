@@ -14,6 +14,7 @@ import java.util.List;
 
 @Repository
 public class ServiceDao {
+
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -36,7 +37,7 @@ public class ServiceDao {
 
     /* Actualitza els atributs del address (excepte el id, que és la clau primària) */
     public void updateService(Service service) {
-        jdbcTemplate.update("UPDATE Service SET temporality = ?, description = ?, hiringPlace = ?  WHERE nameOfService =?",
+        jdbcTemplate.update("UPDATE Service SET temporality = ?, description = ?, hiringPlace = ?  WHERE nameOfService = ?",
                 service.getTemporality(), service.getDescription(), service.getHiringPlace(),
                 service.getNameOfService() );
     }

@@ -21,18 +21,20 @@
 
     <tbody>
     <tr th:each="naturalArea: ${naturalAreas}">
+
         <td th:text="${naturalArea.name}"></td>
         <td th:text="${naturalArea.typeOfAccess}"></td>
         <td th:text="${naturalArea.geographicalLocation}"></td>
-        <td><a class="btn btn-primary" th:href="@{/zone/porNaturalArea/{area}(area=${naturalArea.name})}" role="button">Zonas</a>
+
+        <td><a th:href="@{/naturalArea/get/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-primary"> Mas </button> </a>
         </td>
+
         <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-warning">Edita</button>
-        </a>
+            <button type="button" class="btn btn-warning">Edita</button> </a>
         </td>
         <td><a th:href="@{/naturalArea/delete/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-danger">Esborra</button>
-        </a>
+            <button type="button" class="btn btn-danger">Esborra</button> </a>
         </td>
     </tr>
     </tbody>

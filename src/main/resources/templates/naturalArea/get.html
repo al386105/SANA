@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Area natural</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <h2><span th:text="${naturalArea.name}"> </span></h2>
+    <p><b>Acceso:</b> <span th:text="${naturalArea.typeOfAccess}"> </span></p>
+    <p><b>Localizacion:</b> <span th:text="${naturalArea.geographicalLocation}"> </span></p>
+    <p><b>Area:</b> <span th:text="${naturalArea.typeOfArea}"> </span></p>
+    <p><b>Largo:</b> <span th:text="${naturalArea.length}"> </span></p>
+    <p><b>Ancho:</b> <span th:text="${naturalArea.width}"> </span></p>
+    <p><b>Características:</b> <span th:text="${naturalArea.physicalCharacteristics}"> </span></p>
+    <p><b>Descripción:</b> <span th:text="${naturalArea.description}"> </span></p>
+    <p><b>Orientación:</b> <span th:text="${naturalArea.orientation}"> </span></p>
+    <p><b>Restringido hasta:</b> <span th:text="${naturalArea.restrictionTimePeriod}"> </span></p>
+    <p><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"> </span></p>
+    <p><b>Municipio:</b> <span th:text="${naturalArea.municipality}"> </span></p>
+
+    <td><a th:href="@{/zone/porNaturalArea/{area}(area=${naturalArea.name})}">
+        <button type="button" class="btn btn-primary"> Zonas</button> </a>
+    </td>
+
+</div>
+</body>
+</html>

@@ -19,7 +19,13 @@ public class NaturalAreaController {
     @Autowired
     public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){ this.naturalAreaDao = naturalAreaDao; }
 
-    @RequestMapping("/list")
+    @RequestMapping(value="/get/{naturalArea}")
+    public String getNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea){
+        model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
+        return "/naturalArea/get";
+    }
+
+    @RequestMapping(value="/list")
     public String listNaturalAreas(Model model){
         model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
         return "naturalArea/list";
@@ -41,14 +47,14 @@ public class NaturalAreaController {
     }
 
     // Update
-    @RequestMapping(value="/update/{naturalArea}", method = RequestMethod.GET)
+    @RequestMapping(value="/update/{naturalArea}", method=RequestMethod.GET)
     public String editNaturalArea(Model model, @PathVariable String naturalArea) {
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
         return "naturalArea/update";
     }
 
     // Resposta de modificació d'objectes
-    @RequestMapping(value="/update", method = RequestMethod.POST)
+    @RequestMapping(value="/update", method=RequestMethod.POST)
     public String processUpdateSubmit(@ModelAttribute("naturalArea") NaturalArea naturalArea,
                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors())

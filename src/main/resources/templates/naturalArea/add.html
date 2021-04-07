@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Modificar area natural</title>
+    <title>Crear area natural</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
 </head>
 <body>
 <div class="container">
-    <h2>Modificar area natural</h2>
-    <form class="form-horizontal" action="#" th:action="@{/naturalArea/update}"
+    <h2>Nueva area natural</h2>
+    <form class="form-horizontal" action="#" th:action="@{/naturalArea/add}"
           th:object="${naturalArea}" method="post">
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="name">Nombre:</label>
             <div class="col-sm-4">
-                <input readonly type="text" class="form-control" id="name" th:field="*{name}" />
+                <input type="text" class="form-control" id="name" th:field="*{name}" />
             </div>
         </div>
 
@@ -101,7 +101,7 @@
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
                 <a href="/naturalArea/list"><button type="button" class="btn btn-primary">Volver</button></a>
-                <button type="submit" class="btn btn-success">Modificar area natural</button>
+                <button type="submit" class="btn btn-success">Crear area natural</button>
             </div>
         </div>
 

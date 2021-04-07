@@ -21,9 +21,9 @@ public class NaturalAreaDao {
 
     public void addNaturalArea(NaturalArea naturalArea) {
         jdbcTemplate.update("INSERT INTO NaturalArea VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                naturalArea.getName(), naturalArea.getTypeOfAccess(), naturalArea.getGeographicalLocation(),
-                naturalArea.getTypeOfArea(), naturalArea.getLength(), naturalArea.getWidth(),
-                naturalArea.getPhysicalCharacteristics(), naturalArea.getDescription(), naturalArea.getOrientation(),
+                naturalArea.getName(), naturalArea.getTypeOfAccess().toString(), naturalArea.getGeographicalLocation(),
+                naturalArea.getTypeOfArea().toString(), naturalArea.getLength(), naturalArea.getWidth(),
+                naturalArea.getPhysicalCharacteristics(), naturalArea.getDescription(), naturalArea.getOrientation().toString(),
                 naturalArea.getRestrictionTimePeriod(), naturalArea.getOccupancyRate(), naturalArea.getMunicipality());
     }
 
@@ -40,20 +40,20 @@ public class NaturalAreaDao {
     public void updateNaturalArea(NaturalArea naturalArea) {
         jdbcTemplate.update("UPDATE NaturalArea " +
                         "SET typeOfAccess = ?, geographicalLocation = ?, typeOfArea = ?, " +
-                        "length = ?, width = ?, physicalCharacterisitics = ?," +
+                        "length = ?, width = ?, physicalCharacteristics = ?," +
                         "description = ?, orientation = ?, restrictionTimePeriod = ?," +
                         "occupancyRate = ?, municipality = ?" +
                         "WHERE name = ?",
-                naturalArea.getTypeOfAccess(), naturalArea.getGeographicalLocation(),
-                naturalArea.getTypeOfArea(), naturalArea.getLength(), naturalArea.getWidth(),
-                naturalArea.getPhysicalCharacteristics(), naturalArea.getDescription(), naturalArea.getOrientation(),
+                naturalArea.getTypeOfAccess().toString(), naturalArea.getGeographicalLocation(),
+                naturalArea.getTypeOfArea().toString(), naturalArea.getLength(), naturalArea.getWidth(),
+                naturalArea.getPhysicalCharacteristics(), naturalArea.getDescription(), naturalArea.getOrientation().toString(),
                 naturalArea.getRestrictionTimePeriod(), naturalArea.getOccupancyRate(), naturalArea.getMunicipality(),
                 naturalArea.getName());
     }
 
     public NaturalArea getNaturalArea(String name) {
         try {
-            return jdbcTemplate.queryForObject("SELECT * FROM NaturalArea WHERE nom = ?",
+            return jdbcTemplate.queryForObject("SELECT * FROM NaturalArea WHERE name = ?",
                     new NaturalAreaRowMapper(),
                     name);
         }

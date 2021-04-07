@@ -24,7 +24,7 @@
         <td th:text="${naturalArea.name}"></td>
         <td th:text="${naturalArea.typeOfAccess}"></td>
         <td th:text="${naturalArea.geographicalLocation}"></td>
-        <td><a class="btn btn-success" th:href="@{/zone/porNaturalArea/{area}(area=${naturalArea.name})}" role="button">Zonas</a>
+        <td><a class="btn btn-primary" th:href="@{/zone/porNaturalArea/{area}(area=${naturalArea.name})}" role="button">Zonas</a>
         </td>
         <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-warning">Edita</button>
@@ -38,6 +38,6 @@
     </tbody>
 </table>
 <a href="add"><button type="button" class="btn btn-success">Añade Area Natural </button></a>
-<a href="../"><button type="button" class="btn btn-success">Volver al menú principal</button></a>
+<a href="../"><button type="button" class="btn btn-primary">Volver al menú principal</button></a>
 </body>
 </html>

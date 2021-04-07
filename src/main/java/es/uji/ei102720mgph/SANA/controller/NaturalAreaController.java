@@ -40,7 +40,7 @@ public class NaturalAreaController {
         return "redirect:list"; //redirigim a la lista per a veure la naturalArea afegida, post/redirect/get
     }
 
-    // Operació actualitzar
+    // Update
     @RequestMapping(value="/update/{naturalArea}", method = RequestMethod.GET)
     public String editNaturalArea(Model model, @PathVariable String naturalArea) {
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));

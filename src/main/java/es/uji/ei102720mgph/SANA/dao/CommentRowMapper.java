@@ -14,7 +14,7 @@ public final class CommentRowMapper implements RowMapper<Comment> {
         comment.setScore(rs.getInt("score"));
         comment.setDate(rs.getObject("date", LocalDate.class));
         comment.setCitizenEmail(rs.getString("citizenEmail"));
-        comment.setNaturaArea(rs.getString("naturalArea"));
+        comment.setNaturalArea(rs.getString("naturalArea"));
         return comment;
     }
 }

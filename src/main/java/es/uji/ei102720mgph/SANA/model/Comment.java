@@ -9,7 +9,7 @@ public class Comment {
     private Integer score;
     private LocalDate date;
     private String citizenEmail;
-    private String naturaArea;
+    private String naturalArea;
 
     public Comment(){
 
@@ -55,12 +55,12 @@ public class Comment {
         this.citizenEmail = citizenId;
     }
 
-    public String getNaturaArea() {
-        return naturaArea;
+    public String getNaturalArea() {
+        return naturalArea;
     }
 
-    public void setNaturaArea(String naturaArea) {
-        this.naturaArea = naturaArea;
+    public void setNaturalArea(String naturaArea) {
+        this.naturalArea = naturaArea;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class Comment {
                 ", score=" + score +
                 ", date=" + date +
                 ", citizenEmail='" + citizenEmail + '\'' +
-                ", naturaArea='" + naturaArea + '\'' +
+                ", naturaArea='" + naturalArea + '\'' +
                 '}';
     }
 }

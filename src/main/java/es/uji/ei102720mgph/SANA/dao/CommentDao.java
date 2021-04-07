@@ -23,7 +23,7 @@ public class CommentDao {
     public void addComment(Comment comment){
         jdbcTemplate.update("INSERT INTO Comment VALUES(?, ?, ?, ?, ?, ?)",
                 comment.getCommentId(), comment.getCommentBody(), comment.getScore(),
-                comment.getDate(), comment.getCitizenEmail(), comment.getNaturaArea());
+                comment.getDate(), comment.getCitizenEmail(), comment.getNaturalArea());
     }
 
     public void deleteComment(Comment comment){
@@ -42,7 +42,7 @@ public class CommentDao {
                 "citizenId = ?, naturalArea = ?" +
                 "WHERE commentId = ?",
                 comment.getCommentBody(), comment.getScore(), comment.getDate(),
-                comment.getCitizenEmail(), comment.getNaturaArea(),
+                comment.getCitizenEmail(), comment.getNaturalArea(),
                 comment.getCommentId());
     }
 

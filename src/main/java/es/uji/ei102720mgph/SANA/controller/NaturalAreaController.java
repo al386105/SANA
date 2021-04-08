@@ -1,5 +1,6 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+import es.uji.ei102720mgph.SANA.dao.CommentDao;
 import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class NaturalAreaController {
     private NaturalAreaDao naturalAreaDao;
     private ZoneDao zoneDao;
+    private CommentDao commentDao;
 
     @Autowired
     public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){ this.naturalAreaDao = naturalAreaDao; }
@@ -25,10 +27,14 @@ public class NaturalAreaController {
     @Autowired
     public void setZoneDao(ZoneDao zoneDao){ this.zoneDao = zoneDao; }
 
+    @Autowired
+    public void setCommentDao(CommentDao commentDao) { this.commentDao = commentDao; }
+
     @RequestMapping(value="/get/{naturalArea}")
     public String getNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea){
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
+        model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
         return "/naturalArea/get";
     }
 

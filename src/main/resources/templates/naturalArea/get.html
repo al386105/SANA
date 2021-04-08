@@ -44,6 +44,45 @@
         </tr>
         </tbody>
     </table>
+
+    <h3>Comentarios</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Comentario</th>
+            <th scope="col">Puntuacion</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Usuario</th>
+            <th scope="col">Area natural</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment: ${comments}">
+            <td scope="row" th:text="${comment.commentId}"></td>
+            <td th:text="${comment.commentBody}"></td>
+            <td th:text="${comment.score}"></td>
+            <td th:text="${comment.date}"></td>
+            <td th:text="${comment.citizenEmail}"></td>
+            <td th:text="${comment.naturalArea}"></td>
+
+
+            <td><a th:href="@{/comment/update/{commentId}(commentId=${comment.commentId})}">
+                <button type="button" class="btn btn-warning">Edita</button>
+            </a>
+            </td>
+            <td><a th:href="@{/comment/delete/{commentId}(commentId=${comment.commentId})}">
+                <button type="button" class="btn btn-danger">Elimina</button>
+            </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="add"><button type="button" class="btn btn-success">Añadir Comentario</button></a>
+
     <a href="/naturalArea/list"><button type="button" class="btn btn-primary">Volver</button></a>
 
 </div>

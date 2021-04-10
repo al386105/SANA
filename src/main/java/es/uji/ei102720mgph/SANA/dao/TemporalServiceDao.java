@@ -54,6 +54,7 @@ public class TemporalServiceDao {
 
 
     public List<TemporalService> getTemporalServices() {
+
         try {
             return jdbcTemplate.query(
                     "SELECT * FROM TemporalService",

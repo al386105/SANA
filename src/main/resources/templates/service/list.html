@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Gestionar Direcciones</title>
+    <title>Gestionar Service</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
 </head>
@@ -25,11 +25,11 @@
         <td th:text="${service.description}"></td>
         <td th:text="${service.hiringPlace}"></td>
 
-        <td><a th:href="@{/service/update/{nameOfService}(service=${service.nameOfService})}">
+        <td><a th:href="@{/service/update/{nameOfService}(nameOfService=${service.nameOfService})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>
         </td>
-        <td><a th:href="@{/service/delete/{nameOfService}(service=${service.nameOfService})}">
+        <td><a th:href="@{/service/delete/{nameOfService}(nameOfService=${service.nameOfService})}">
             <button type="button" class="btn btn-danger">Elimina</button>
         </a>
         </td>

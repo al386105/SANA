@@ -41,6 +41,14 @@ public class Service {
         this.hiringPlace = hiringPlace;
     }
 
-
+    @Override
+    public String toString() {
+        return "Service{" +
+                "nameOfService='" + nameOfService + '\'' +
+                ", temporality='" + temporality + '\'' +
+                ", description=" + description +
+                ", hiringPlace='" + hiringPlace + '\'' +
+                '}';
+    }
 
 }

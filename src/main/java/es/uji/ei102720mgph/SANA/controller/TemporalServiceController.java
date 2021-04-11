@@ -70,6 +70,6 @@ public class TemporalServiceController {
     public String processDelete(@PathVariable String service, @PathVariable String naturalArea) {
         //System.out.println("TemporalService Delete Controller: "+service + naturalArea);
         temporalServiceDao.deleteTemporalService(service, naturalArea);
-        return "redirect:../list";
+        return "redirect:../../list";
     }
 }

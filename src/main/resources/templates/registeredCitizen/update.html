@@ -15,42 +15,42 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="email">Email:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="email" th:field="*{email}" />
+                <input type="text" required readonly class="form-control" id="email" th:field="*{email}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="idNumber">DNI/NIE:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="idNumber" th:field="*{idNumber}" />
+                <input type="text" required class="form-control" id="idNumber" th:field="*{idNumber}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="mobilePhoneNumber">Número de teléfono:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="mobilePhoneNumber" th:field="*{mobilePhoneNumber}" />
+                <input type="text" required class="form-control" id="mobilePhoneNumber" th:field="*{mobilePhoneNumber}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="citizenCode">Codigo de ciudadano:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="citizenCode" th:field="*{citizenCode}"/>
+                <input type="text" required class="form-control" id="citizenCode" th:field="*{citizenCode}"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="pin">Pin:</label>
             <div class="col-sm-4">
-                <input type="number" class="form-control" id="pin" th:field="*{pin}"/>
+                <input type="text" required class="form-control" id="pin" th:field="*{pin}"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="addressId">Id dirección:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="addressId" th:field="*{addressId}"/>
+                <input type="text" required class="form-control" id="addressId" th:field="*{addressId}"/>
             </div>
         </div>
 

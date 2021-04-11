@@ -22,7 +22,7 @@ public class CommentController {
 
     // Operació llistar
     @RequestMapping("/list")
-    public String listReservations(Model model) {
+    public String listComments(Model model) {
         model.addAttribute("comments", commentDao.getComments());
         return "comment/list";
     }
@@ -41,14 +41,14 @@ public class CommentController {
         if (bindingResult.hasErrors())
             return "comment/add"; //tornem al formulari per a que el corregisca
         commentDao.addComment(comment);
-        return "redirect:list"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
+        return "redirect:list"; //redirigim a la lista per a veure el comment afegit, post/redirect/get
     }
 
     // Operació actualitzar
     @RequestMapping(value="/update/{commentId}", method = RequestMethod.GET)
     public String editComment(Model model, @PathVariable String commentId) {
         model.addAttribute("comment", commentDao.getComment(commentId));
-        return "reservation/update";
+        return "comment/update";
     }
 
     // Resposta de modificació d'objectes

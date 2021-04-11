@@ -15,42 +15,42 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="id">Id:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="id" th:field="*{id}" />
+                <input type="text" required class="form-control" id="id" th:field="*{id}" readonly/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="zoneNumber">Número zona:</label>
             <div class="col-sm-4">
-                <input type="number" class="form-control" id="zoneNumber" th:field="*{zoneNumber}" />
+                <input type="number" min="1" required class="form-control" id="zoneNumber" th:field="*{zoneNumber}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="letter">Letra:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="letter" th:field="*{letter}" />
+                <input type="text" required maxlength="1" class="form-control" id="letter" th:field="*{letter}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="maximumCapacity">Capacidad máx.:</label>
             <div class="col-sm-4">
-                <input type="number" class="form-control" id="maximumCapacity" th:field="*{maximumCapacity}"/>
+                <input type="number" required class="form-control" id="maximumCapacity" th:field="*{maximumCapacity}"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="creationDate">Fecha creación:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="creationDate" th:field="*{creationDate}" readonly/>
+                <input type="date" required class="form-control" id="creationDate" th:field="*{creationDate}" readonly/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="naturalArea">Área natural (nombre):</label>
+            <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
+                <input type="text" required class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
             </div>
         </div>
 

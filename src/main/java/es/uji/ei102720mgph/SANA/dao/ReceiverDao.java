@@ -35,7 +35,7 @@ public class ReceiverDao {
 
     /* Actualitza els atributs del receiver (excepte el email, que és la clau primària) */
     public void updateReceiver(Receiver receiver) {
-        jdbcTemplate.update("UPDATE Receiver SET name = ?, surname = ?, dateOfBirth = ?, registrationDate = ?" +
+        jdbcTemplate.update("UPDATE Receiver SET name = ?, surname = ?, dateOfBirth = ?, registrationDate = ?, " +
                         "leavingDate = ? WHERE email =?", receiver.getName(), receiver.getSurname(),
                 receiver.getDateOfBirth(), receiver.getRegistrationDate(), receiver.getLeavingDate(),
                 receiver.getEmail());

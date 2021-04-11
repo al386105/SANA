@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class TemporalServiceRowMapper implements RowMapper<TemporalService> {
     public TemporalService mapRow(ResultSet rs, int rowNum) throws SQLException {
         TemporalService temporalService = new TemporalService();
-        temporalService.setOpenningDays(rs.getInt("openingDays"));
+        temporalService.setOpenningDays(rs.getInt("openingdays"));
         temporalService.setBeginningTime(rs.getTime("beginningtime"));
         temporalService.setEndTime(rs.getTime("endtime"));
         temporalService.setBeginningDate(rs.getDate("beginningdate"));

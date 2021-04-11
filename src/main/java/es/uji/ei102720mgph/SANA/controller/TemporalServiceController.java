@@ -27,7 +27,7 @@ public class TemporalServiceController {
     // Operació llistar
     @RequestMapping("/list")
     public String listTemporalServices(Model model) {
-        model.addAttribute("temporalServices", temporalServiceDao.getTemporalServices());
+        model.addAttribute("temporalService", temporalServiceDao.getTemporalServices());
         return "temporalService/list";
     }
 
@@ -39,9 +39,10 @@ public class TemporalServiceController {
     }
 
     // Gestió de la resposta del formulari de creació d'objectes
-    @RequestMapping(value="/temporalService", method= RequestMethod.POST)
+    @RequestMapping(value="/add", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("temporalService") TemporalService temporalService,
                                    BindingResult bindingResult) {
+        System.out.println("Añadir Temporal Service COntroller: "+temporalService.toString());
         if (bindingResult.hasErrors())
             return "temporalService/add"; //tornem al formulari per a que el corregisca
         temporalServiceDao.addTemporalService(temporalService); //usem el dao per a inserir el temporalService

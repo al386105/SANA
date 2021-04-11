@@ -42,7 +42,6 @@ public class TemporalServiceController {
     @RequestMapping(value="/add", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("temporalService") TemporalService temporalService,
                                    BindingResult bindingResult) {
-        System.out.println("Añadir Temporal Service COntroller: "+temporalService.toString());
         if (bindingResult.hasErrors())
             return "temporalService/add"; //tornem al formulari per a que el corregisca
         temporalServiceDao.addTemporalService(temporalService); //usem el dao per a inserir el temporalService
@@ -69,6 +68,7 @@ public class TemporalServiceController {
     // Operació esborrar
     @RequestMapping(value="/delete/{service}/{naturalArea}")
     public String processDelete(@PathVariable String service, @PathVariable String naturalArea) {
+        //System.out.println("TemporalService Delete Controller: "+service + naturalArea);
         temporalServiceDao.deleteTemporalService(service, naturalArea);
         return "redirect:../list";
     }

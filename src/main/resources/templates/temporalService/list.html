@@ -31,7 +31,7 @@
         <td th:text="${temporalService.service}"></td>
         <td th:text="${temporalService.naturalArea}"></td>
 
-        <td><a th:href="@{/temporalService/delete/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
+        <td><a th:href="@{/temporalService/update/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>
         </td>

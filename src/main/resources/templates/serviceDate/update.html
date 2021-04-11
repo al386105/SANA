@@ -13,6 +13,13 @@
           th:object="${serviceDate}" method="post">
 
         <div class="form-group row">
+            <label class="control-label col-sm-2" for="id">id:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="id" th:field="*{id}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
             <label class="control-label col-sm-2" for="beginningDate">Fecha Inicio:</label>
             <div class="col-sm-4">
                 <input type="date" class="form-control" id="beginningDate" th:field="*{beginningDate}" />
@@ -44,8 +51,11 @@
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
                 <button type="submit" class="btn btn-primary">Modificar ServiceDate </button>
+                <a href="../"><button type="button" class="btn btn-success">Volver al menú principal</button></a>
             </div>
         </div>
+
+
 
     </form>
 </div>

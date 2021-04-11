@@ -27,14 +27,18 @@
         <td th:text="${serviceDate.service}"></td>
         <td th:text="${serviceDate.naturalArea}"></td>
 
-        <td><a th:href="@{/serviceDate/update/{id}(serviceDate=${serviceDate.id})}">
-            <button type="button" class="btn btn-warning">Edita</button>
-        </a>
+        <td>
+            <a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
+                <button type="button" class="btn btn-warning">Edita</button>
+            </a>
         </td>
-        <td><a th:href="@{/serviceDate/delete/{id}(serviceDate=${serviceDate.id})}">
-            <button type="button" class="btn btn-danger">Elimina</button>
-        </a>
+
+        <td>
+            <a th:href="@{/serviceDate/delete/{id}(id=${serviceDate.id})}">
+                <button type="button" class="btn btn-danger">Elimina</button>
+            </a>
         </td>
+
     </tr>
     </tbody>
 </table>

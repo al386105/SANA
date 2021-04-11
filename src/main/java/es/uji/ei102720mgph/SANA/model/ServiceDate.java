@@ -53,5 +53,17 @@ public class ServiceDate {
     }
 
 
+    @Override
+    public String toString() {
+        return "ServiceDate{" +
+                "id='" + id + '\'' +
+                ", beginningDate='" + beginningDate + '\'' +
+                ", endDate=" + endDate	 +
+                ", service='" + service + '\'' +
+                ", naturalArea='" + naturalArea + '\'' +
+                '}';
+    }
+
+
 
 }

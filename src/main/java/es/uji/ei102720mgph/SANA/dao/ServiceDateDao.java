@@ -34,8 +34,8 @@ public class ServiceDateDao {
 
 
     public void updateServiceDate(ServiceDate serviceDate) {
-        jdbcTemplate.update("UPDATE ServiceDate SET beginningDate = ?, endDate = ?, service = ?, naturalArea = ?," +
-                        " WHERE id =?",
+        jdbcTemplate.update("UPDATE ServiceDate SET beginningDate = ?, endDate = ?, service = ?, naturalArea = ?" +
+                        " WHERE id = ?",
                 serviceDate.getBeginningDate(), serviceDate.getEndDate(), serviceDate.getService(), serviceDate.getNaturalArea(),
                 serviceDate.getId());
     }

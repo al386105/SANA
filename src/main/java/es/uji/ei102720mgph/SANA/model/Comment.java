@@ -1,11 +1,14 @@
 package es.uji.ei102720mgph.SANA.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 public class Comment {
     private String commentId;
     private String commentBody;
     private Integer score;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private String citizenEmail;
     private String naturalArea;

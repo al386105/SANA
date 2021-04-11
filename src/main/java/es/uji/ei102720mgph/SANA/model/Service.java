@@ -47,18 +47,9 @@ public class Service {
     public String toString() {
         return "Service{" +
                 "nameOfService='" + nameOfService + '\'' +
-<<<<<<< Updated upstream
-                ", temporality='" + temporality + '\'' +
-                ", description=" + description +
-                ", hiringPlace='" + hiringPlace + '\'' +
-                '}';
-    }
-
-=======
                 ", temporality=" + temporality +
                 ", description='" + description + '\'' +
                 ", hiringPlace='" + hiringPlace + '\'' +
                 '}';
     }
->>>>>>> Stashed changes
 }

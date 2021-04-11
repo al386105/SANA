@@ -1,89 +1,3 @@
-<<<<<<< Updated upstream
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Crear nuevo Servicio Temporal</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-</head>
-<body>
-<div class="container">
-    <h2>Nuevo TemporalService</h2>
-    <form class="form-horizontal" action="#" th:action="@{/temporalService/update}"
-          th:object="${temporalService}" method="post">
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="openningDays">OpenningDays:</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="openningDays" th:field="*{openningDays}" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="beginningTime">Tiempo Inicio:</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="beginningTime" th:field="*{beginningTime}" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="endTime">Tiempo Finalización:</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="endTime" th:field="*{endTime}" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="beginningDate">Fecha Inicio:</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="beginningDate" th:field="*{beginningDate}"/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="endDate">Fecha Fin:</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="endDate" th:field="*{endDate}"/>
-            </div>
-        </div>
-
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="service">Servicio:</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="service" th:field="*{service}"/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="naturalArea">Area natural:</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-sm-offset-2 col-sm-4">
-                <a href="/temporalService/list"><button type="button" class="btn btn-primary">Volver</button></a>
-                <button type="submit" class="btn btn-primary">Modificar Servicio Temporal</button>
-            </div>
-        </div>
-
-    </form>
-</div>
-</body>
-</html>
-
-</body>
-=======
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,28 +27,28 @@
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="beginningTime">Tiempo Inicio:</label>
+            <label class="control-label col-sm-2" for="beginningTime">Hora de inicio:</label>
             <div class="col-sm-4">
                 <input type="time" class="form-control" id="beginningTime" th:field="*{beginningTime}" />
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="endTime">Tiempo Finalización:</label>
+            <label class="control-label col-sm-2" for="endTime">Hora de fin:</label>
             <div class="col-sm-4">
                 <input type="time" class="form-control" id="endTime" th:field="*{endTime}" />
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="beginningDate">Fecha Inicio:</label>
+            <label class="control-label col-sm-2" for="beginningDate">Fecha de inicio:</label>
             <div class="col-sm-4">
                 <input type="date" class="form-control" id="beginningDate" th:field="*{beginningDate}"/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="endDate">Fecha Fin:</label>
+            <label class="control-label col-sm-2" for="endDate">Fecha de fin:</label>
             <div class="col-sm-4">
                 <input type="date" class="form-control" id="endDate" th:field="*{endDate}"/>
             </div>
@@ -164,8 +78,4 @@
     </form>
 </div>
 </body>
-</html>
-
-</body>
->>>>>>> Stashed changes
 </html>

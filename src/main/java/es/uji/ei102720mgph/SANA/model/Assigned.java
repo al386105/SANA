@@ -1,8 +1,14 @@
 package es.uji.ei102720mgph.SANA.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+
 public class Assigned {
     private String controlStaffEmail;
     private String naturalArea;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
     public Assigned(){
     }
@@ -23,11 +29,20 @@ public class Assigned {
         this.naturalArea = naturalArea;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "Assigned{" +
                 "controlStaffEmail='" + controlStaffEmail + '\'' +
                 ", naturalArea='" + naturalArea + '\'' +
+                ", date=" + date +
                 '}';
     }
 }

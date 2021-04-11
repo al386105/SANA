@@ -1,6 +1,5 @@
 package es.uji.ei102720mgph.SANA.model;
 
-
 public class RegisteredCitizen extends Receiver {
 
     private String email;
@@ -37,7 +36,6 @@ public class RegisteredCitizen extends Receiver {
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
 
-
     public String getCitizenCode() {
         return citizenCode;
     }
@@ -62,7 +60,6 @@ public class RegisteredCitizen extends Receiver {
         this.addressId = addressId;
     }
 
-
     @Override
     public String toString(){
         return "RegisteredCitizen{" +
@@ -74,5 +71,4 @@ public class RegisteredCitizen extends Receiver {
                 "ideAddress='" + addressId + "\'" +
                 "}";
     }
-
 }

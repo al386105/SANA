@@ -8,10 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public final class RegisteredCitizenRowMapper implements RowMapper<RegisteredCitizen> {
-
     public RegisteredCitizen mapRow(ResultSet rs, int rowNum) throws SQLException {
         RegisteredCitizen registeredCitizen = new RegisteredCitizen();
-
         registeredCitizen.setEmail(rs.getString("email"));
         registeredCitizen.setIdNumber(rs.getString("idNumber"));
         registeredCitizen.setMobilePhoneNumber(rs.getString("mobilePhoneNumber"));

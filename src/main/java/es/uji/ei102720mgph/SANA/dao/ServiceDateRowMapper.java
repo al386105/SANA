@@ -1,6 +1,5 @@
 package es.uji.ei102720mgph.SANA.dao;
 
-
 import es.uji.ei102720mgph.SANA.model.ServiceDate;
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;

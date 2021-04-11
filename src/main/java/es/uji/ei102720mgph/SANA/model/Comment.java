@@ -1,6 +1,5 @@
 package es.uji.ei102720mgph.SANA.model;
 
-
 import java.time.LocalDate;
 
 public class Comment {
@@ -12,7 +11,6 @@ public class Comment {
     private String naturalArea;
 
     public Comment(){
-
     }
 
     public String getCommentId() {

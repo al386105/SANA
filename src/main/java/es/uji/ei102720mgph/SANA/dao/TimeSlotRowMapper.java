@@ -8,8 +8,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public final class TimeSlotRowMapper implements RowMapper {
-    @Override
+public final class TimeSlotRowMapper implements RowMapper<TimeSlot> {
     public TimeSlot mapRow(ResultSet rs, int rowNum) throws SQLException {
         TimeSlot timeSlot = new TimeSlot();
         timeSlot.setId(rs.getString("id"));

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -66,3 +67,73 @@
 </div>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crear ciudadano registrado</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <h2>Nuevo ciudadano registrado</h2>
+    <form class="form-horizontal" action="#" th:action="@{/registeredCitizen/add}"
+          th:object="${registeredCitizen}" method="post">
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="email">email:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="email" th:field="*{email}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="idNumber">idNumber:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="idNumber" th:field="*{idNumber}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="mobilePhoneNumber">Número Telefono:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="mobilePhoneNumber" th:field="*{mobilePhoneNumber}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="citizenCode">Codigo Ciudadano:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="citizenCode" th:field="*{citizenCode}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="pin">Pin:</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="pin" th:field="*{pin}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="addressId">ID Dirección:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="addressId" th:field="*{addressId}"/>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-4">
+                <a href="/registeredCitizen/list"><button type="button" class="btn btn-primary">Volver</button></a>
+                <button type="submit" class="btn btn-primary">Añadir ciudadano registrado</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>
+>>>>>>> Stashed changes

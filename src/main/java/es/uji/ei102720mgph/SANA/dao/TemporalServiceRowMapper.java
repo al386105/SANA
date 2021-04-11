@@ -16,8 +16,12 @@ public class TemporalServiceRowMapper implements RowMapper<TemporalService> {
         temporalService.setBeginningDate(rs.getDate("beginningdate"));
         temporalService.setEndDate(rs.getDate("enddate"));
         temporalService.setService(rs.getString("service"));
+<<<<<<< Updated upstream
         temporalService.setNaturalArea(rs.getString("naturalarea"));
 
+=======
+        temporalService.setNaturalArea(rs.getString("naturalArea"));
+>>>>>>> Stashed changes
         return temporalService;
     }
 }

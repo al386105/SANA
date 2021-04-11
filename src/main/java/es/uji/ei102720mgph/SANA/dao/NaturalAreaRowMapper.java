@@ -10,7 +10,6 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 public final class NaturalAreaRowMapper implements RowMapper<NaturalArea> {
     public NaturalArea mapRow(ResultSet rs, int rowNum) throws SQLException{
         NaturalArea naturalArea = new NaturalArea();

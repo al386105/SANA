@@ -1,8 +1,10 @@
 package es.uji.ei102720mgph.SANA.model;
 
+import es.uji.ei102720mgph.SANA.enums.Temporality;
+
 public class Service {
     private  String nameOfService;
-    private int temporality;
+    private Temporality temporality;
     private String description;
     private String hiringPlace;
 
@@ -17,11 +19,11 @@ public class Service {
         this.nameOfService = nameOfService;
     }
 
-    public int getTemporality() {
+    public Temporality getTemporality() {
         return temporality;
     }
 
-    public void setTemporality(int temporality) {
+    public void setTemporality(Temporality temporality) {
         this.temporality = temporality;
     }
 
@@ -45,10 +47,18 @@ public class Service {
     public String toString() {
         return "Service{" +
                 "nameOfService='" + nameOfService + '\'' +
+<<<<<<< Updated upstream
                 ", temporality='" + temporality + '\'' +
                 ", description=" + description +
                 ", hiringPlace='" + hiringPlace + '\'' +
                 '}';
     }
 
+=======
+                ", temporality=" + temporality +
+                ", description='" + description + '\'' +
+                ", hiringPlace='" + hiringPlace + '\'' +
+                '}';
+    }
+>>>>>>> Stashed changes
 }

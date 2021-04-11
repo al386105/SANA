@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -107,3 +108,114 @@
 </div>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crear area natural</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <h2>Nueva area natural</h2>
+    <form class="form-horizontal" action="#" th:action="@{/naturalArea/add}"
+          th:object="${naturalArea}" method="post">
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="name">Nombre:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="name" th:field="*{name}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="typeOfAccess">Acceso:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="typeOfAccess" th:field="*{typeOfAccess}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="geographicalLocation">Localización:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="geographicalLocation" th:field="*{geographicalLocation}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="typeOfArea">Tipo de area:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="typeOfArea" th:field="*{typeOfArea}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="length">Largo:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="length" th:field="*{length}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="width">Ancho:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="width" th:field="*{width}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="physicalCharacteristics">Características:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="physicalCharacteristics" th:field="*{physicalCharacteristics}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="description">Descripción:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="description" th:field="*{description}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="orientation">Orientación:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="orientation" th:field="*{orientation}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="restrictionTimePeriod">Restringido hasta:</label>
+            <div class="col-sm-4">
+                <input type="date" class="form-control" id="restrictionTimePeriod" th:field="*{restrictionTimePeriod}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="occupancyRate">Ratio ocupación:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="occupancyRate" th:field="*{occupancyRate}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="municipality">Municipio:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="municipality" th:field="*{municipality}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-4">
+                <a href="/naturalArea/list"><button type="button" class="btn btn-primary">Volver</button></a>
+                <button type="submit" class="btn btn-success">Añadir area natural</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>
+>>>>>>> Stashed changes

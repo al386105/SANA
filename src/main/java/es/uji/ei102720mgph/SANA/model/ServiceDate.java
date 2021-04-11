@@ -52,18 +52,29 @@ public class ServiceDate {
         this.naturalArea = naturalArea;
     }
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     @Override
     public String toString() {
         return "ServiceDate{" +
                 "id='" + id + '\'' +
+<<<<<<< Updated upstream
                 ", beginningDate='" + beginningDate + '\'' +
                 ", endDate=" + endDate	 +
+=======
+                ", beginningDate=" + beginningDate +
+                ", endDate=" + endDate +
+>>>>>>> Stashed changes
                 ", service='" + service + '\'' +
                 ", naturalArea='" + naturalArea + '\'' +
                 '}';
     }
+<<<<<<< Updated upstream
 
 
 
+=======
+>>>>>>> Stashed changes
 }

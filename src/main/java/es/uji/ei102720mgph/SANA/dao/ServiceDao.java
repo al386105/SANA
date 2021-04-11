@@ -1,7 +1,5 @@
 package es.uji.ei102720mgph.SANA.dao;
 
-
-
 import es.uji.ei102720mgph.SANA.model.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,8 +24,7 @@ public class ServiceDao {
     public void addService(Service service) {
         jdbcTemplate.update(
                 "INSERT INTO Service VALUES(?, ?, ?, ?)", service.getNameOfService(),
-                service.getTemporality(), service.getDescription(), service.getHiringPlace()
-                );
+                service.getTemporality().name(), service.getDescription(), service.getHiringPlace());
     }
 
     /* Esborra el address de la base de dades */
@@ -38,8 +35,8 @@ public class ServiceDao {
     /* Actualitza els atributs del address (excepte el id, que és la clau primària) */
     public void updateService(Service service) {
         jdbcTemplate.update("UPDATE Service SET temporality = ?, description = ?, hiringPlace = ?  WHERE nameOfService = ?",
-                service.getTemporality(), service.getDescription(), service.getHiringPlace(),
-                service.getNameOfService() );
+                service.getTemporality().name(), service.getDescription(), service.getHiringPlace(),
+                service.getNameOfService());
     }
 
     /* Obté el address amb el id donat. Torna null si no existeix. */
@@ -65,5 +62,4 @@ public class ServiceDao {
             return new ArrayList<Service>();
         }
     }
-
 }

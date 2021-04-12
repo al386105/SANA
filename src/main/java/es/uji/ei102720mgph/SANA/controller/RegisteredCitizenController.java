@@ -26,7 +26,7 @@ public class RegisteredCitizenController {
 
     @RequestMapping("/list")
     public String listRegisteredCitizens(Model model){
-        model.addAttribute("redisteredCitizens", registeredCitizenDao.getRegisteredCitizens());
+        model.addAttribute("registeredCitizens", registeredCitizenDao.getRegisteredCitizens());
         return "registeredCitizen/list";
     }
 

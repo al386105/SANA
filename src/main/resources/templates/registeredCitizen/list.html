@@ -21,20 +21,24 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="registeredCitizen: ${registeredCitizen}">
-        <td scope="row" th:text="${registeredCitizen.email}"></td>
+    <tr th:each="registeredCitizen: ${registeredCitizens}">
+        <td th:text="${registeredCitizen.email}"></td>
         <td th:text="${registeredCitizen.idNumber}"></td>
         <td th:text="${registeredCitizen.mobilePhoneNumber}"></td>
         <td th:text="${registeredCitizen.citizenCode}"></td>
         <td th:text="${registeredCitizen.pin}"></td>
         <td th:text="${registeredCitizen.addressId}"></td>
-        <td><a th:href="@{/registeredCitizen/update/{email}(email=${registeredCitizen.email})}">
-            <button type="button" class="btn btn-warning">Edita</button>
-        </a>
+
+        <td>
+            <a th:href="@{/registeredCitizen/update/{email}(email=${registeredCitizen.email})}">
+                <button type="button" class="btn btn-warning">Edita</button>
+            </a>
         </td>
-        <td><a th:href="@{/registeredCitizen/delete/{email}(email=${registeredCitizen.email})}">
-            <button type="button" class="btn btn-danger">Elimina</button>
-        </a>
+
+        <td>
+            <a th:href="@{/registeredCitizen/delete/{email}(email=${registeredCitizen.email})}">
+                <button type="button" class="btn btn-danger">Elimina</button>
+            </a>
         </td>
     </tr>
     </tbody>

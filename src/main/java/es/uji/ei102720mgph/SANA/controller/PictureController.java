@@ -23,7 +23,7 @@ public class PictureController {
     @RequestMapping("/list")
     public String listPictures(Model model) {
         model.addAttribute("pictures", pictureDao.getPictures());
-        return "pictures/list";
+        return "picture/list";
     }
 
     //TODO Operació llistar pictures de un naturalArea

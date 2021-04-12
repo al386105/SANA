@@ -64,11 +64,11 @@ public class RegisteredCitizen extends Receiver {
     public String toString(){
         return "RegisteredCitizen{" +
                 "email'=" + email + "\'" +
-                "id='" + idNumber + "\'" +
+                "idNumber='" + idNumber + "\'" +
                 "mobilePhoneNumber='" + mobilePhoneNumber + "\'" +
                 "citizenCode='" + citizenCode + "\'" +
                 "pin='" + pin + "\'" +
-                "ideAddress='" + addressId + "\'" +
+                "addressId='" + addressId + "\'" +
                 "}";
     }
 }

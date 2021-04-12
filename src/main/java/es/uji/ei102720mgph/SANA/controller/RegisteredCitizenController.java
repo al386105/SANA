@@ -26,7 +26,7 @@ public class RegisteredCitizenController {
 
     @RequestMapping("/list")
     public String listRegisteredCitizens(Model model){
-        model.addAttribute("redisteredCitizens", registeredCitizenDao.getRegisteredCitizens());
+        model.addAttribute("registeredCitizens", registeredCitizenDao.getRegisteredCitizens());
         return "registeredCitizen/list";
     }
 
@@ -48,8 +48,9 @@ public class RegisteredCitizenController {
     }
 
     // Operació actualitzar
-    @RequestMapping(value="/update/{id}", method = RequestMethod.GET)
+    @RequestMapping(value="/update/{email}", method = RequestMethod.GET)
     public String editRegisteredCitizen(Model model, @PathVariable String email) {
+        System.out.println("Controller llamada: " + email);
         model.addAttribute("registeredCitizen", registeredCitizenDao.getRegisteredCitizen(email));
         return "registeredCitizen/update";
     }
@@ -65,7 +66,7 @@ public class RegisteredCitizenController {
     }
 
     // Operació esborrar
-    @RequestMapping(value="/delete/{id}")
+    @RequestMapping(value="/delete/{email}")
     public String processDelete(@PathVariable String email) {
         registeredCitizenDao.deleteRegisteredCitizen(email);
         return "redirect:../list";

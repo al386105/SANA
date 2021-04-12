@@ -27,6 +27,8 @@ public class CommentController {
         return "comment/list";
     }
 
+
+
     // Operació crear
     @RequestMapping(value="/add")
     public String addComment(Model model) {

@@ -30,12 +30,13 @@ public class TemporalServiceDao {
 
 
     public void deleteTemporalService(String service, String naturalArea) {
+        //System.out.println("TemporalService Delete Dao: "+service + naturalArea);
         jdbcTemplate.update("DELETE FROM TemporalService WHERE service =? AND naturalArea=?", service, naturalArea);
     }
 
 
     public void updateTemporalService(TemporalService temporalService) {
-        jdbcTemplate.update("UPDATE Address SET openningDays = ?, beginningTime = ?, endTime = ?, beginningDate = ?," +
+        jdbcTemplate.update("UPDATE TemporalService SET openingDays = ?, beginningTime = ?, endTime = ?, beginningDate = ?," +
                         "endDate = ? WHERE service =? AND naturalArea = ?",
                 temporalService.getOpenningDays(), temporalService.getBeginningTime(), temporalService.getEndTime(),
                 temporalService.getBeginningDate(), temporalService.getEndDate(), temporalService.getService(), temporalService.getNaturalArea());
@@ -54,6 +55,7 @@ public class TemporalServiceDao {
 
 
     public List<TemporalService> getTemporalServices() {
+
         try {
             return jdbcTemplate.query(
                     "SELECT * FROM TemporalService",

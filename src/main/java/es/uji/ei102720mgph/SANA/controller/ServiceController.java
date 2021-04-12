@@ -50,6 +50,7 @@ public class ServiceController {
     // Operació actualitzar
     @RequestMapping(value="/update/{nameOfService}", method = RequestMethod.GET)
     public String editService(Model model, @PathVariable String nameOfService) {
+
         model.addAttribute("service", serviceDao.getService(nameOfService));
         return "service/update";
     }

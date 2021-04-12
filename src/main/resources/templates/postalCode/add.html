@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Crear nuevo Código Postal</title>
+    <title>Crear código postal</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
 </head>
 <body>
 <div class="container">
-    <h2>Nuevo Código postal</h2>
+    <h2>Nuevo código postal</h2>
     <form class="form-horizontal" action="#" th:action="@{/postalCode/add}"
           th:object="${postalCode}" method="post">
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="municipality">Municipio:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="municipality" th:field="*{municipality}" />
+                <input type="text" required class="form-control" id="municipality" th:field="*{municipality}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="cp">Código postal:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="cp" th:field="*{postalCode}" />
+                <input type="text" required class="form-control" id="cp" th:field="*{postalCode}" />
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
                 <a href="/postalCode/list"><button type="button" class="btn btn-primary">Volver</button></a>
-                <button type="submit" class="btn btn-primary">Añadir Código Postal</button>
+                <button type="submit" class="btn btn-success">Añadir código postal</button>
             </div>
         </div>
 

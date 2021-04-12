@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Crear nuevo email</title>
+    <title>Crear email</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
@@ -15,28 +15,28 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="id">Id:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="id" th:field="*{id}" />
+                <input type="text" required class="form-control" id="id" th:field="*{id}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="subject">Asunto:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="subject" th:field="*{subject}" />
+                <input type="text" required class="form-control" id="subject" th:field="*{subject}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="textBody">Contenido:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="textBody" th:field="*{textBody}" />
+                <input type="text" required class="form-control" id="textBody" th:field="*{textBody}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="sender">Emisor:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="sender" th:field="*{sender}"/>
+                <input type="text" required class="form-control" id="sender" th:field="*{sender}"/>
             </div>
         </div>
 
@@ -44,7 +44,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="date">Fecha envío:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="date" th:field="*{date}"/>
+                <input type="date" class="form-control" id="date" th:field="*{date}"/>
             </div>
         </div>
         -->
@@ -52,14 +52,14 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="receiver">Receptor:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="receiver" th:field="*{receiver}" />
+                <input type="text" required class="form-control" id="receiver" th:field="*{receiver}" />
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
                 <a href="/email/list"><button type="button" class="btn btn-primary">Volver</button></a>
-                <button type="submit" class="btn btn-primary">Añadir email</button>
+                <button type="submit" class="btn btn-success">Añadir email</button>
             </div>
         </div>
 

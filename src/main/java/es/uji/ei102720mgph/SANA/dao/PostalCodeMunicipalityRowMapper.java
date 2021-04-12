@@ -6,12 +6,11 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class PostalCodeMunicipalityRowMapper implements RowMapper {
-    @Override
+public final class PostalCodeMunicipalityRowMapper implements RowMapper<PostalCodeMunicipality> {
     public PostalCodeMunicipality mapRow(ResultSet rs, int rowNum) throws SQLException {
-        PostalCodeMunicipality pc = new PostalCodeMunicipality();
-        pc.setMunicipality(rs.getString("municipality"));
-        pc.setPostalCode(rs.getString("postalCode"));
-        return pc;
+        PostalCodeMunicipality postalCode = new PostalCodeMunicipality();
+        postalCode.setMunicipality(rs.getString("municipality"));
+        postalCode.setPostalCode(rs.getString("postalCode"));
+        return postalCode;
     }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Crear nueva dirección</title>
+    <title>Crear dirección</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
@@ -15,56 +15,56 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="id">Id:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="id" th:field="*{id}" />
+                <input type="text" required class="form-control" id="id" th:field="*{id}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="street">Calle:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="street" th:field="*{street}" />
+                <input type="text" required class="form-control" id="street" th:field="*{street}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="number">Número:</label>
             <div class="col-sm-4">
-                <input type="number" class="form-control" id="number" th:field="*{number}" />
+                <input type="number" min="1" required class="form-control" id="number" th:field="*{number}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="floorDoor">Piso y puerta:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="floorDoor" th:field="*{floorDoor}"/>
+                <input type="text" required class="form-control" id="floorDoor" th:field="*{floorDoor}"/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="postalCode">Código Postal:</label>
+            <label class="control-label col-sm-2" for="postalCode">Código postal:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="postalCode" th:field="*{postalCode}"/>
+                <input type="text" required class="form-control" id="postalCode" th:field="*{postalCode}"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="city">Ciudad:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="city" th:field="*{city}"/>
+                <input type="text" required class="form-control" id="city" th:field="*{city}"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="country">País:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="country" th:field="*{country}"/>
+                <input type="text" required class="form-control" id="country" th:field="*{country}"/>
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
                 <a href="/address/list"><button type="button" class="btn btn-primary">Volver</button></a>
-                <button type="submit" class="btn btn-primary">Añadir dirección</button>
+                <button type="submit" class="btn btn-success">Añadir dirección</button>
             </div>
         </div>
 

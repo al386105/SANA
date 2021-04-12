@@ -7,13 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public final class MunicipalityRowMapper implements RowMapper {
-    @Override
+public final class MunicipalityRowMapper implements RowMapper<Municipality> {
     public Municipality mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Municipality muni = new Municipality();
-        muni.setName(rs.getString("name"));
-        muni.setDescription(rs.getString("description"));
-        muni.setRegistrationDate(rs.getObject("registrationDate", LocalDate.class));
-        return muni;
+        Municipality municipality = new Municipality();
+        municipality.setName(rs.getString("name"));
+        municipality.setDescription(rs.getString("description"));
+        municipality.setRegistrationDate(rs.getObject("registrationDate", LocalDate.class));
+        return municipality;
     }
 }

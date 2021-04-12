@@ -1,11 +1,15 @@
 package es.uji.ei102720mgph.SANA.model;
 
-import java.sql.Date;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 public class ServiceDate {
     private String id;
-    private Date beginningDate;
-    private Date endDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate beginningDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
     private String service;
     private String naturalArea;
 
@@ -20,19 +24,19 @@ public class ServiceDate {
         this.id = id;
     }
 
-    public Date getBeginningDate() {
+    public LocalDate getBeginningDate() {
         return beginningDate;
     }
 
-    public void setBeginningDate(Date beginningDate) {
+    public void setBeginningDate(LocalDate beginningDate) {
         this.beginningDate = beginningDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -52,6 +56,14 @@ public class ServiceDate {
         this.naturalArea = naturalArea;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "ServiceDate{" +
+                "id='" + id + '\'' +
+                ", beginningDate=" + beginningDate +
+                ", endDate=" + endDate +
+                ", service='" + service + '\'' +
+                ", naturalArea='" + naturalArea + '\'' +
+                '}';
+    }
 }

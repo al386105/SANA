@@ -1,8 +1,8 @@
 package es.uji.ei102720mgph.SANA.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
+
 
 /** This class must be extended by RegisteredCitizen, ControlStaff and MunicipalManager*/
 public class Receiver {

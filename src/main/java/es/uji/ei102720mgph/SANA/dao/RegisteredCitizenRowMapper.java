@@ -8,10 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public final class RegisteredCitizenRowMapper implements RowMapper<RegisteredCitizen> {
-
     public RegisteredCitizen mapRow(ResultSet rs, int rowNum) throws SQLException {
         RegisteredCitizen registeredCitizen = new RegisteredCitizen();
-
         registeredCitizen.setEmail(rs.getString("email"));
         registeredCitizen.setIdNumber(rs.getString("idNumber"));
         registeredCitizen.setMobilePhoneNumber(rs.getString("mobilePhoneNumber"));
@@ -19,6 +17,5 @@ public final class RegisteredCitizenRowMapper implements RowMapper<RegisteredCit
         registeredCitizen.setPin(rs.getInt("pin"));
         registeredCitizen.setAddressId(rs.getString("addressId"));
         return registeredCitizen;
-
     }
 }

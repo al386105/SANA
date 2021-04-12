@@ -27,7 +27,7 @@ public class TemporalServiceController {
     // Operació llistar
     @RequestMapping("/list")
     public String listTemporalServices(Model model) {
-        model.addAttribute("temporalServices", temporalServiceDao.getTemporalServices());
+        model.addAttribute("temporalService", temporalServiceDao.getTemporalServices());
         return "temporalService/list";
     }
 
@@ -39,7 +39,7 @@ public class TemporalServiceController {
     }
 
     // Gestió de la resposta del formulari de creació d'objectes
-    @RequestMapping(value="/temporalService", method= RequestMethod.POST)
+    @RequestMapping(value="/add", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("temporalService") TemporalService temporalService,
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors())
@@ -68,7 +68,8 @@ public class TemporalServiceController {
     // Operació esborrar
     @RequestMapping(value="/delete/{service}/{naturalArea}")
     public String processDelete(@PathVariable String service, @PathVariable String naturalArea) {
+        //System.out.println("TemporalService Delete Controller: "+service + naturalArea);
         temporalServiceDao.deleteTemporalService(service, naturalArea);
-        return "redirect:../list";
+        return "redirect:../../list";
     }
 }

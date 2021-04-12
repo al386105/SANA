@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class CommentDao {
     public void addComment(Comment comment){
         jdbcTemplate.update("INSERT INTO Comment VALUES(?, ?, ?, ?, ?, ?)",
                 comment.getCommentId(), comment.getCommentBody(), comment.getScore(),
-                comment.getDate(), comment.getCitizenEmail(), comment.getNaturalArea());
+                LocalDate.now(), comment.getCitizenEmail(), comment.getNaturalArea());
     }
 
     public void deleteComment(Comment comment){
@@ -39,7 +40,7 @@ public class CommentDao {
     public void updateComment(Comment comment){
         jdbcTemplate.update("UPDATE Comment" +
                 "SET commentBody = ?, score = ?, date = ?, " +
-                "citizenId = ?, naturalArea = ?" +
+                "citizenEmail = ?, naturalArea = ?" +
                 "WHERE commentId = ?",
                 comment.getCommentBody(), comment.getScore(), comment.getDate(),
                 comment.getCitizenEmail(), comment.getNaturalArea(),

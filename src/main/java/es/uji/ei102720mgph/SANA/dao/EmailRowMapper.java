@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public final class EmailRowMapper implements RowMapper<Email>{
-
+public final class EmailRowMapper implements RowMapper<Email> {
     public Email mapRow(ResultSet rs, int rowNum) throws SQLException {
         Email email = new Email();
         email.setId(rs.getString("id"));

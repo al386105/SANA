@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Gestionar Direcciones</title>
+    <title>Gestionar servicios</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
 </head>
 <body>
-<h1>Lista de Service</h1>
+<h1>Lista de servicios</h1>
 <table class="table table-striped">
     <thead>
     <tr>
-        <th scope="col">nameOfService</th>
-        <th scope="col">temporality</th>
-        <th scope="col">description</th>
-        <th scope="col">hiringPlace</th>
+        <th scope="col">Nombre del servicio</th>
+        <th scope="col">Temporalidad</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Sitio de contratación</th>
         <th scope="col"></th>
         <th scope="col"></th>
     </tr>
@@ -25,11 +25,11 @@
         <td th:text="${service.description}"></td>
         <td th:text="${service.hiringPlace}"></td>
 
-        <td><a th:href="@{/service/update/{nameOfService}(service=${service.nameOfService})}">
+        <td><a th:href="@{/service/update/{nameOfService}(nameOfService=${service.nameOfService})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>
         </td>
-        <td><a th:href="@{/service/delete/{nameOfService}(service=${service.nameOfService})}">
+        <td><a th:href="@{/service/delete/{nameOfService}(nameOfService=${service.nameOfService})}">
             <button type="button" class="btn btn-danger">Elimina</button>
         </a>
         </td>
@@ -37,6 +37,6 @@
     </tbody>
 </table>
 <a href="add"><button type="button" class="btn btn-success">Añadir Service</button></a>
-<a href="../"><button type="button" class="btn btn-success">Volver al menú principal</button></a>
+<a href="../"><button type="button" class="btn btn-primary">Volver al menú principal</button></a>
 </body>
 </html>

@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public final class AddressRowMapper implements RowMapper<Address> {
-
     public Address mapRow(ResultSet rs, int rowNum) throws SQLException {
         Address address = new Address();
         address.setId(rs.getString("id"));

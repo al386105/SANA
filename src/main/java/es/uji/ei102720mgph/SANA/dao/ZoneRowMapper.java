@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public final class ZoneRowMapper implements RowMapper<Zone> {
-
     public Zone mapRow(ResultSet rs, int rowNum) throws SQLException {
         Zone zone = new Zone();
         zone.setId(rs.getString("id"));

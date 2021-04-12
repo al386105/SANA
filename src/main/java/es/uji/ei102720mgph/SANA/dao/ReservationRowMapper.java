@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public final class ReservationRowMapper implements RowMapper<Reservation> {
-
     public Reservation mapRow(ResultSet rs, int rowNum) throws SQLException {
         Reservation reservation = new Reservation();
         reservation.setReservationNumber(rs.getInt("reservationNumber"));

@@ -39,7 +39,8 @@ public class RegisteredCitizenDao {
 
     public  RegisteredCitizen getRegisteredCitizen(String email){
         try{
-            return jdbcTemplate.queryForObject("SELECT * FROM RegsiteredCitizen WHERE email =?",
+            System.out.println(email);
+            return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen WHERE email =?",
                     new RegisteredCitizenRowMapper(), email);
         }
         catch (EmptyResultDataAccessException e){

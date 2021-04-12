@@ -37,7 +37,7 @@ public class PictureDao {
 
     public void updatePicture(Picture picture){
         jdbcTemplate.update("UPDATE Picture" +
-                "SET naturalArea = ?" +
+                "SET naturalArea = ? " +
                 "WHERE picturePath = ?",
                 picture.getNaturalArea(),
                 picture.getPicturePath());

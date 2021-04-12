@@ -50,7 +50,6 @@ public class RegisteredCitizenController {
     // Operació actualitzar
     @RequestMapping(value="/update/{email}", method = RequestMethod.GET)
     public String editRegisteredCitizen(Model model, @PathVariable String email) {
-        System.out.println("Controller llamada: " + email);
         model.addAttribute("registeredCitizen", registeredCitizenDao.getRegisteredCitizen(email));
         return "registeredCitizen/update";
     }

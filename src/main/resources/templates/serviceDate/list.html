@@ -22,8 +22,8 @@
     <tbody>
     <tr th:each="serviceDate: ${serviceDate}">
         <td th:text="${serviceDate.id}"></td>
-        <td th:text="${serviceDate.beginningDate}"></td>
-        <td th:text="${serviceDate.endDate}"></td>
+        <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
         <td th:text="${serviceDate.service}"></td>
         <td th:text="${serviceDate.naturalArea}"></td>
 

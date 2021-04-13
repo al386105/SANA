@@ -26,8 +26,8 @@
         <td th:text="${temporalService.openningDays}"></td>
         <td th:text="${temporalService.beginningTime}"></td>
         <td th:text="${temporalService.endTime}"></td>
-        <td th:text="${temporalService.beginningDate}"></td>
-        <td th:text="${temporalService.endDate}"></td>
+        <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
         <td th:text="${temporalService.service}"></td>
         <td th:text="${temporalService.naturalArea}"></td>
 

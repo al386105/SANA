@@ -25,9 +25,9 @@
         <td scope="row" th:text="${receiver.email}"></td>
         <td th:text="${receiver.name}"></td>
         <td th:text="${receiver.surname}"></td>
-        <td th:text="${receiver.dateOfBirth}"></td>
-        <td th:text="${receiver.registrationDate}"></td>
-        <td th:text="${receiver.leavingDate}"></td>
+        <td th:text="${#temporals.format(receiver.dateOfBirth,'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(receiver.registrationDate,'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(receiver.leavingDate,'dd/MM/yyyy')}"></td>
         <td><a th:href="@{/receiver/update/{email}(email=${receiver.email})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>

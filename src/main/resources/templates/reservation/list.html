@@ -28,13 +28,13 @@
     <tbody>
     <tr th:each="reservation: ${reservations}">
         <td scope="row" th:text="${reservation.reservationNumber}"></td>
-        <td th:text="${reservation.reservationDate}"></td>
-        <td th:text="${reservation.creationDate}"></td>
+        <td th:text="${#temporals.format(reservation.reservationDate,'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(reservation.creationDate,'dd/MM/yyyy')}"></td>
         <td th:text="${reservation.creationTime}"></td>
         <td th:text="${reservation.numberOfPeople}"></td>
         <td th:text="${reservation.state}"></td>
         <td th:text="${reservation.QRcode}"></td>
-        <td th:text="${reservation.cancellationDate}"></td>
+        <td th:text="${#temporals.format(reservation.cancellationDate,'dd/MM/yyyy')}"></td>
         <td th:text="${reservation.cancellationReason}"></td>
         <td th:text="${reservation.citizenEmail}"></td>
         <td th:text="${reservation.timeSlotId}"></td>

@@ -26,7 +26,7 @@
         <td th:text="${email.subject}"></td>
         <td th:text="${email.textBody}"></td>
         <td th:text="${email.sender}"></td>
-        <td th:text="${email.date}"></td>
+        <td th:text="${#temporals.format(email.date,'dd/MM/yyyy')}"></td>
         <td th:text="${email.receiver}"></td>
         <td><a th:href="@{/email/update/{id}(id=${email.id})}">
             <button type="button" class="btn btn-warning">Edita</button>

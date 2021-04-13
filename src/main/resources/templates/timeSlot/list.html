@@ -23,8 +23,8 @@
     <tbody>
     <tr th:each="timeSlot: ${timeSlots}">
         <td scope="row" th:text="${timeSlot.id}"></td>
-        <td th:text="${timeSlot.beginningDate}"></td>
-        <td th:text="${timeSlot.endDate}"></td>
+        <td th:text="${#temporals.format(timeSlot.beginningDate,'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(timeSlot.endDate,'dd/MM/yyyy')}"></td>
         <td th:text="${timeSlot.beginningTime}"></td>
         <td th:text="${timeSlot.endTime}"></td>
         <td th:text="${timeSlot.naturalArea}"></td>

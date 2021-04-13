@@ -22,7 +22,7 @@
     <tr th:each="municipality: ${municipalities}">
         <td scope="row" th:text="${municipality.name}"></td>
         <td th:text="${municipality.description}"></td>
-        <td th:text="${municipality.registrationDate}"></td>
+        <td th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></td>
         <td><a class="btn btn-success" th:href="@{/postalCode/list/{muni}(muni=${municipality.name})}" role="button">CP</a>
         </td>
         <td><a th:href="@{/municipality/update/{name}(name=${municipality.name})}">

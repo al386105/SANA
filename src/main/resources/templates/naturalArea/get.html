@@ -17,7 +17,7 @@
     <p><b>Características:</b> <span th:text="${naturalArea.physicalCharacteristics}"> </span></p>
     <p><b>Descripción:</b> <span th:text="${naturalArea.description}"> </span></p>
     <p><b>Orientación:</b> <span th:text="${naturalArea.orientation}"> </span></p>
-    <p><b>Restringido hasta:</b> <span th:text="${naturalArea.restrictionTimePeriod}"> </span></p>
+    <p><b>Restringido hasta:</b> <span th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"> </span></p>
     <p><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"> </span></p>
     <p><b>Municipio:</b> <span th:text="${naturalArea.municipality}"> </span></p>
 
@@ -39,7 +39,7 @@
             <td th:text="${zone.zoneNumber}"></td>
             <td th:text="${zone.letter}"></td>
             <td th:text="${zone.maximumCapacity}"></td>
-            <td th:text="${zone.creationDate}"></td>
+            <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
             <td th:text="${zone.naturalArea}"></td>
         </tr>
         </tbody>
@@ -64,7 +64,7 @@
             <td scope="row" th:text="${comment.commentId}"></td>
             <td th:text="${comment.commentBody}"></td>
             <td th:text="${comment.score}"></td>
-            <td th:text="${comment.date}"></td>
+            <td th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></td>
             <td th:text="${comment.citizenEmail}"></td>
             <td th:text="${comment.naturalArea}"></td>
 

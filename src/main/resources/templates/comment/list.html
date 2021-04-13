@@ -26,7 +26,7 @@
         <td scope="row" th:text="${comment.commentId}"></td>
         <td th:text="${comment.commentBody}"></td>
         <td th:text="${comment.score}"></td>
-        <td th:text="${comment.date}"></td>
+        <td th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></td>
         <td th:text="${comment.citizenEmail}"></td>
         <td th:text="${comment.naturalArea}"></td>
 

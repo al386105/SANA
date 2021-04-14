@@ -7,14 +7,14 @@ import java.time.LocalTime;
 
 public class TemporalService {
 
-    private int openningDays;
+    private String openningDays;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime beginningTime;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime endTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate beginningDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate endDate;
     private String service;
     private String naturalArea;
@@ -23,11 +23,11 @@ public class TemporalService {
         super();
     }
 
-    public int getOpenningDays() {
+    public String getOpenningDays() {
         return openningDays;
     }
 
-    public void setOpenningDays(int openningDays) {
+    public void setOpenningDays(String openningDays) {
         this.openningDays = openningDays;
     }
 

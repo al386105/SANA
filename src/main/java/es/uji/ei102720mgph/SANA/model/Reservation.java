@@ -7,9 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class Reservation {
     private int reservationNumber;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate reservationDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate creationDate;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime creationTime;

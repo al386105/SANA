@@ -8,7 +8,7 @@ public class Email {
     private String subject;
     private String textBody;
     private String sender;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate date;
     private String receiver;
 

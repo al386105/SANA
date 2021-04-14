@@ -6,6 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +25,15 @@ public class RegisteredCitizenDao {
                 registeredCitizen.getEmail(), registeredCitizen.getIdNumber(),
                 registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
                 registeredCitizen.getPin(),  registeredCitizen.getAddressId());
+        jdbcTemplate.update("INSERT INTO Receiver VALUES(?, ?, ?, ?, ?, ?)",
+                registeredCitizen.getEmail(), registeredCitizen.getName(), registeredCitizen.getSurname(), registeredCitizen.getDateOfBirth(),
+                LocalDate.now(), null);
     }
 
     public void deleteRegisteredCitizen(String email){
         jdbcTemplate.update("DELETE FROM RegisteredCitizen WHERE email =?", email);
+        jdbcTemplate.update("DELETE FROM Receiver WHERE email =?", email);
+
     }
 
     public void updateRegisteredCitizen(RegisteredCitizen registeredCitizen){
@@ -35,12 +41,20 @@ public class RegisteredCitizenDao {
                         "pin = ?, addressId = ? WHERE email =?",
                 registeredCitizen.getIdNumber(), registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
                 registeredCitizen.getPin(), registeredCitizen.getAddressId(), registeredCitizen.getEmail());
+        jdbcTemplate.update("UPDATE Receiver SET name = ?, surname = ?, dateOfBirth = ?, " +
+                        "registrationDate = ?, leavingDate = ? " +
+                        "WHERE email =?",
+                registeredCitizen.getName(), registeredCitizen.getSurname(),
+                registeredCitizen.getDateOfBirth(), registeredCitizen.getRegistrationDate(), registeredCitizen.getLeavingDate(),
+                registeredCitizen.getEmail());
     }
 
     public  RegisteredCitizen getRegisteredCitizen(String email){
         try{
             System.out.println(email);
-            return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen WHERE email =?",
+            return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen " +
+                            "JOIN Receiver ON RegisteredCitizen.email = Receiver.email " +
+                            "WHERE Receiver.email = ? ",
                     new RegisteredCitizenRowMapper(), email);
         }
         catch (EmptyResultDataAccessException e){
@@ -50,7 +64,9 @@ public class RegisteredCitizenDao {
 
     public List<RegisteredCitizen> getRegisteredCitizens(){
         try{
-            return jdbcTemplate.query("SELECT * FROM RegisteredCitizen", new RegisteredCitizenRowMapper());
+            return jdbcTemplate.query("SELECT * FROM RegisteredCitizen " +
+                    "JOIN Receiver ON RegisteredCitizen.email = Receiver.email",
+                    new RegisteredCitizenRowMapper());
         }
         catch (EmptyResultDataAccessException e){
             return new ArrayList<RegisteredCitizen>();

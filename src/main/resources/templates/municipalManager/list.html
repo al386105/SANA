@@ -13,7 +13,13 @@
         <th scope="col">Email</th>
         <th scope="col">Nombre de usuario</th>
         <th scope="col">Contraseña</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellidos</th>
+        <th scope="col">Nacimiento</th>
         <th scope="col">Municipio</th>
+        <th scope="col">Fecha de alta</th>
+        <th scope="col">Fecha de baja</th>
+
         <th scope="col"></th>
         <th scope="col"></th>
     </tr>
@@ -23,7 +29,12 @@
         <td scope="row" th:text="${municipalManager.email}"></td>
         <td th:text="${municipalManager.username}"></td>
         <td th:text="${municipalManager.password}"></td>
+        <td th:text="${municipalManager.name}"></td>
+        <td th:text="${municipalManager.surname}"></td>
+        <td th:text="${municipalManager.dateOfBirth}"></td>
         <td th:text="${municipalManager.municipality}"></td>
+        <td th:text="${municipalManager.registrationDate}"></td>
+        <td th:text="${municipalManager.leavingDate}"></td>
         <td><a th:href="@{/municipalManager/update/{email}(email=${municipalManager.email})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>

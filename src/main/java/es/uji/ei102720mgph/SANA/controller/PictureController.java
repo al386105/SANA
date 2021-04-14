@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+
 @Controller
 @RequestMapping("/picture")
 public class PictureController {
@@ -42,6 +43,8 @@ public class PictureController {
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "picture/add"; //tornem al formulari per a que el corregisca
+        String nombre = picture.getPicturePath();
+        picture.setPicturePath("assets/img/naturalAreas/" + nombre);
         pictureDao.addPicture(picture); //usem el dao per a inserir la picture
         return "redirect:list"; //redirigim a la lista per a veure la picture afegit, post/redirect/get
     }
@@ -66,9 +69,9 @@ public class PictureController {
     */
 
     // Operació esborrar
-    @RequestMapping(value="/delete/{picturePath:.+}")
-    public String processDelete(@PathVariable String picturePath) {
-        pictureDao.deletePicture(picturePath);
-        return "redirect:../list";
+    @RequestMapping(value="/delete/assets/img/naturalAreas/{pictureName}")
+    public String processDelete(@PathVariable String pictureName) {
+        pictureDao.deletePicture("assets/img/naturalAreas/" + pictureName);
+        return "redirect:../../../../list";
     }
 }

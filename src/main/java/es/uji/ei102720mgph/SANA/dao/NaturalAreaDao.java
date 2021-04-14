@@ -40,9 +40,9 @@ public class NaturalAreaDao {
     public void updateNaturalArea(NaturalArea naturalArea) {
         jdbcTemplate.update("UPDATE NaturalArea " +
                         "SET typeOfAccess = ?, geographicalLocation = ?, typeOfArea = ?, " +
-                        "length = ?, width = ?, physicalCharacteristics = ?," +
-                        "description = ?, orientation = ?, restrictionTimePeriod = ?," +
-                        "occupancyRate = ?, municipality = ?" +
+                        "length = ?, width = ?, physicalCharacteristics = ?, " +
+                        "description = ?, orientation = ?, restrictionTimePeriod = ?, " +
+                        "occupancyRate = ?, municipality = ? " +
                         "WHERE name = ?",
                 naturalArea.getTypeOfAccess().toString(), naturalArea.getGeographicalLocation(),
                 naturalArea.getTypeOfArea().toString(), naturalArea.getLength(), naturalArea.getWidth(),

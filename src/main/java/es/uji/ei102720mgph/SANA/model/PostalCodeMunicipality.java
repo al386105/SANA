@@ -4,7 +4,7 @@ public class PostalCodeMunicipality {
     private String municipality;
     private String postalCode;
 
-    PostalCodeMunicipality(){
+    public PostalCodeMunicipality(){
         super();
     }
 

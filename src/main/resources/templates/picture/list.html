@@ -20,10 +20,6 @@
     <tr th:each="picture: ${pictures}">
         <td scope="row" th:text="${picture.picturePath}"></td>
         <td th:text="${picture.naturalArea}"></td>
-        <td><a th:href="@{/picture/update/{picturePath}(picturePath=${picture.picturePath})}">
-            <button type="button" class="btn btn-warning">Edita</button>
-        </a>
-        </td>
         <td><a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}">
             <button type="button" class="btn btn-danger">Elimina</button>
         </a>

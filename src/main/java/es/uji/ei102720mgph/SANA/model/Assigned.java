@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class Assigned {
     private String controlStaffEmail;
     private String naturalArea;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
     public Assigned(){

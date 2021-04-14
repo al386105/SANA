@@ -66,7 +66,7 @@ public class PictureController {
     */
 
     // Operació esborrar
-    @RequestMapping(value="/delete/{picturePath}")
+    @RequestMapping(value="/delete/{picturePath:.+}")
     public String processDelete(@PathVariable String picturePath) {
         pictureDao.deletePicture(picturePath);
         return "redirect:../list";

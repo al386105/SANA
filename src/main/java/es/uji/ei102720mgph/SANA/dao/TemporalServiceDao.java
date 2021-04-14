@@ -19,7 +19,6 @@ public class TemporalServiceDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
     public void addTemporalService(TemporalService temporalService) {
         jdbcTemplate.update(
                 "INSERT INTO TemporalService VALUES(?, ?, ?, ?, ?, ?, ?)",
@@ -28,12 +27,10 @@ public class TemporalServiceDao {
                 temporalService.getNaturalArea());
     }
 
-
     public void deleteTemporalService(String service, String naturalArea) {
         //System.out.println("TemporalService Delete Dao: "+service + naturalArea);
         jdbcTemplate.update("DELETE FROM TemporalService WHERE service =? AND naturalArea=?", service, naturalArea);
     }
-
 
     public void updateTemporalService(TemporalService temporalService) {
         jdbcTemplate.update("UPDATE TemporalService SET openingDays = ?, beginningTime = ?, endTime = ?, beginningDate = ?, " +
@@ -52,7 +49,6 @@ public class TemporalServiceDao {
             return null;
         }
     }
-
 
     public List<TemporalService> getTemporalServices() {
 

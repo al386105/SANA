@@ -7,9 +7,9 @@ import java.time.LocalTime;
 
 public class TimeSlot {
     private String id;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate beginningDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate endDate;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime beginningTime;

@@ -8,7 +8,7 @@ public class Comment {
     private String commentId;
     private String commentBody;
     private Integer score;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
     private LocalDate date;
     private String citizenEmail;
     private String naturalArea;

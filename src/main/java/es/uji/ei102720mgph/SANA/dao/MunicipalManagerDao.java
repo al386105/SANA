@@ -29,7 +29,6 @@ public class MunicipalManagerDao {
         jdbcTemplate.update(
                 "INSERT INTO MunicipalManager VALUES(?, ?, ?, ?)",
                 manager.getEmail(), manager.getUsername(), manager.getPassword(), manager.getMunicipality());
-
     }
 
     public void deleteMunicipalManager(String email) {

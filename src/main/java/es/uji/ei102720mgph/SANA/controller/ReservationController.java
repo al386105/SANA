@@ -42,6 +42,8 @@ public class ReservationController {
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "reservation/add"; //tornem al formulari per a que el corregisca
+        String nombreImagenQR = reservation.getQRcode();
+        reservation.setQRcode("assets/img/qrCodes/" + nombreImagenQR);
         reservationDao.addReservation(reservation); //usem el dao per a inserir el reservation
         return "redirect:list"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
     }

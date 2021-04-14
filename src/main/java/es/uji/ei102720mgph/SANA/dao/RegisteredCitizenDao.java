@@ -41,8 +41,10 @@ public class RegisteredCitizenDao {
                         "pin = ?, addressId = ? WHERE email =?",
                 registeredCitizen.getIdNumber(), registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
                 registeredCitizen.getPin(), registeredCitizen.getAddressId(), registeredCitizen.getEmail());
-        jdbcTemplate.update("UPDATE Receiver SET name = ?, surname = ?, dateOfBirth = ?, registrationDate = ?, " +
-                        "leavingDate = ? WHERE email =?", registeredCitizen.getName(), registeredCitizen.getSurname(),
+        jdbcTemplate.update("UPDATE Receiver SET name = ?, surname = ?, dateOfBirth = ?, " +
+                        "registrationDate = ?, leavingDate = ? " +
+                        "WHERE email =?",
+                registeredCitizen.getName(), registeredCitizen.getSurname(),
                 registeredCitizen.getDateOfBirth(), registeredCitizen.getRegistrationDate(), registeredCitizen.getLeavingDate(),
                 registeredCitizen.getEmail());
     }
@@ -50,7 +52,9 @@ public class RegisteredCitizenDao {
     public  RegisteredCitizen getRegisteredCitizen(String email){
         try{
             System.out.println(email);
-            return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen JOIN Receiver ON RegisteredCitizen.email = Receiver.email WHERE Receiver.email = ? ",
+            return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen " +
+                            "JOIN Receiver ON RegisteredCitizen.email = Receiver.email " +
+                            "WHERE Receiver.email = ? ",
                     new RegisteredCitizenRowMapper(), email);
         }
         catch (EmptyResultDataAccessException e){
@@ -60,7 +64,9 @@ public class RegisteredCitizenDao {
 
     public List<RegisteredCitizen> getRegisteredCitizens(){
         try{
-            return jdbcTemplate.query("SELECT * FROM RegisteredCitizen JOIN Receiver ON RegisteredCitizen.email = Receiver.email", new RegisteredCitizenRowMapper());
+            return jdbcTemplate.query("SELECT * FROM RegisteredCitizen " +
+                    "JOIN Receiver ON RegisteredCitizen.email = Receiver.email",
+                    new RegisteredCitizenRowMapper());
         }
         catch (EmptyResultDataAccessException e){
             return new ArrayList<RegisteredCitizen>();

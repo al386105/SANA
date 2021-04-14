@@ -9,6 +9,7 @@ public class Service {
     private String hiringPlace;
 
     public Service(){
+        super();
     }
 
     public String getNameOfService() {

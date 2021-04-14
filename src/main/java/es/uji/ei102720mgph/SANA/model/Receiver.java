@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 
 /** This class must be extended by RegisteredCitizen, ControlStaff and MunicipalManager*/
-public class Receiver {
+public abstract class Receiver {
     private String email;
     private String name;
     private String surname;
@@ -15,9 +15,6 @@ public class Receiver {
     private LocalDate registrationDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate leavingDate;
-
-    public Receiver(){
-    }
 
     public String getEmail() {
         return email;

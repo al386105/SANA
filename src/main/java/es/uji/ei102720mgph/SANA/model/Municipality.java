@@ -10,6 +10,10 @@ public class Municipality {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate registrationDate;
 
+    public Municipality(){
+        super();
+    }
+
     public String getName() {
         return name;
     }

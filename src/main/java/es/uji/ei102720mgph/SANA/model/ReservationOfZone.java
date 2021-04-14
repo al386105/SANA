@@ -6,6 +6,7 @@ public class ReservationOfZone {
     private String zoneId;
 
     public ReservationOfZone(){
+        super();
     }
 
     public String getId() {

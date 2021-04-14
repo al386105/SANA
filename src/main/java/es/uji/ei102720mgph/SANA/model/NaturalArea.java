@@ -23,7 +23,7 @@ public class NaturalArea {
     private String municipality;
 
     public NaturalArea(){
-
+        super();
     }
 
     public String getName() {

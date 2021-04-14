@@ -17,6 +17,10 @@ public class TimeSlot {
     private LocalTime endTime;
     private String naturalArea;
 
+    public TimeSlot(){
+        super();
+    }
+
     public String getId() {
         return id;
     }

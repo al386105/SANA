@@ -1,19 +1,12 @@
 package es.uji.ei102720mgph.SANA.model;
 
 public class MunicipalManager extends Receiver {
-    private String email;
     private String username;
     private String password;
     private String municipality;
 
-    public MunicipalManager(){}
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public MunicipalManager(){
+        super();
     }
 
     public String getMunicipality() {
@@ -44,7 +37,6 @@ public class MunicipalManager extends Receiver {
     @Override
     public String toString() {
         return "MunicipalManager{" +
-                "email=" + email +
                 ", usuario=" + username +
                 ", password=" + password +
                 ", municipality=" + municipality +

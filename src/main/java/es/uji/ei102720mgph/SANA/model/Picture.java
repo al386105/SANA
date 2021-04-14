@@ -5,6 +5,7 @@ public class Picture {
     private String naturalArea;
 
     public Picture(){
+        super();
     }
 
     public String getPicturePath() {

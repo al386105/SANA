@@ -10,6 +10,7 @@ public class Address {
     private String country;
 
     public Address() {
+        super();
     }
 
     public String getId() {

@@ -14,6 +14,7 @@ public class Comment {
     private String naturalArea;
 
     public Comment(){
+        super();
     }
 
     public String getCommentId() {

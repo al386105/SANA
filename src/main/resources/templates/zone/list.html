@@ -17,7 +17,6 @@
         <th scope="col">Fecha creación</th>
         <th scope="col">Área natural</th>
         <th scope="col"></th>
-        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -28,10 +27,6 @@
         <td th:text="${zone.maximumCapacity}"></td>
         <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
         <td th:text="${zone.naturalArea}"></td>
-        <td><a th:href="@{/zone/update/{id}(id=${zone.id})}">
-            <button type="button" class="btn btn-warning">Edita</button>
-        </a>
-        </td>
         <td><a th:href="@{/zone/delete/{id}(id=${zone.id})}">
             <button type="button" class="btn btn-danger">Elimina</button>
         </a>

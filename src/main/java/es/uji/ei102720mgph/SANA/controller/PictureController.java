@@ -46,8 +46,9 @@ public class PictureController {
         return "redirect:list"; //redirigim a la lista per a veure la picture afegit, post/redirect/get
     }
 
+    /*
     // Operació actualitzar
-    @RequestMapping(value="/update/{picturePath:.+}", method = RequestMethod.GET)
+    @RequestMapping(value="/update/{picturePath}", method = RequestMethod.GET)
     public String editPicture(Model model, @PathVariable String picturePath) {
         model.addAttribute("picture", pictureDao.getPicture(picturePath));
         return "picture/update";
@@ -62,9 +63,10 @@ public class PictureController {
         pictureDao.updatePicture(picture);
         return "redirect:list";
     }
+    */
 
     // Operació esborrar
-    @RequestMapping(value="/delete/{picturePath:.+}")
+    @RequestMapping(value="/delete/{picturePath}")
     public String processDelete(@PathVariable String picturePath) {
         pictureDao.deletePicture(picturePath);
         return "redirect:../list";

@@ -31,7 +31,7 @@ public class RegisteredCitizenDao {
     }
 
     public void updateRegisteredCitizen(RegisteredCitizen registeredCitizen){
-        jdbcTemplate.update("UPDATE RegisteredCitizen SET idNumber = ?, mobilePhoneNumber = ?, citizenCode = ?," +
+        jdbcTemplate.update("UPDATE RegisteredCitizen SET idNumber = ?, mobilePhoneNumber = ?, citizenCode = ?, " +
                         "pin = ?, addressId = ? WHERE email =?",
                 registeredCitizen.getIdNumber(), registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
                 registeredCitizen.getPin(), registeredCitizen.getAddressId(), registeredCitizen.getEmail());

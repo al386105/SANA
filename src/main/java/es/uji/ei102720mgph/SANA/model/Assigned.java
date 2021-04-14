@@ -11,6 +11,7 @@ public class Assigned {
     private LocalDate date;
 
     public Assigned(){
+        super();
     }
 
     public String getControlStaffEmail() {

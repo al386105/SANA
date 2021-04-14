@@ -39,7 +39,7 @@ public class ReservationDao {
     /* Actualitza els atributs del reservation */
     public void updateReservation(Reservation reservation) {
         jdbcTemplate.update("UPDATE Reservation SET reservationDate = ?, creationDate = ?, creationTime = ?, " +
-                        "numberOfPeople = ?, state = ?, QRcode = ?, cancellationDate = ?, cancellationReason = ?," +
+                        "numberOfPeople = ?, state = ?, QRcode = ?, cancellationDate = ?, cancellationReason = ?, " +
                         "citizenEmail = ?, timeSlotId = ? WHERE reservationNumber =?",
                 reservation.getReservationDate(), reservation.getCreationDate(), reservation.getCreationTime(),
                 reservation.getNumberOfPeople(), reservation.getState().name(), reservation.getQRcode(),

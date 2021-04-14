@@ -13,6 +13,7 @@ public class Email {
     private String receiver;
 
     public Email(){
+        super();
     }
 
     public String getId() {

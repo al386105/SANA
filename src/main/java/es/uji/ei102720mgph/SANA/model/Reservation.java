@@ -23,6 +23,7 @@ public class Reservation {
     private String timeSlotId;
 
     public Reservation(){
+        super();
     }
 
     public int getReservationNumber() {

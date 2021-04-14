@@ -1,19 +1,11 @@
 package es.uji.ei102720mgph.SANA.model;
 
 public class ControlStaff extends Receiver {
-    private String email;
     private String userName;
     private String password; //hacer encrypted
 
     public ControlStaff() {
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        super();
     }
 
     public String getUserName() {
@@ -35,7 +27,6 @@ public class ControlStaff extends Receiver {
     @Override
     public String toString() {
         return "ControlStaff{" +
-                "email='" + email + '\'' +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 '}';

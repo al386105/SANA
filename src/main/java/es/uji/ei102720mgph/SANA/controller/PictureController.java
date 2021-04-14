@@ -47,7 +47,7 @@ public class PictureController {
     }
 
     // Operació actualitzar
-    @RequestMapping(value="/update/{picturePath}", method = RequestMethod.GET)
+    @RequestMapping(value="/update/{picturePath:.+}", method = RequestMethod.GET)
     public String editPicture(Model model, @PathVariable String picturePath) {
         model.addAttribute("picture", pictureDao.getPicture(picturePath));
         return "picture/update";
@@ -64,7 +64,7 @@ public class PictureController {
     }
 
     // Operació esborrar
-    @RequestMapping(value="/delete/{picturePath}")
+    @RequestMapping(value="/delete/{picturePath:.+}")
     public String processDelete(@PathVariable String picturePath) {
         pictureDao.deletePicture(picturePath);
         return "redirect:../list";

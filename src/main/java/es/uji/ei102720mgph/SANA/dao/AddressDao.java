@@ -34,7 +34,7 @@ public class AddressDao {
 
     /* Actualitza els atributs del address (excepte el id, que és la clau primària) */
     public void updateAddress(Address address) {
-        jdbcTemplate.update("UPDATE Address SET street = ?, number = ?, floorDoor = ?, postalCode = ?," +
+        jdbcTemplate.update("UPDATE Address SET street = ?, number = ?, floorDoor = ?, postalCode = ?, " +
                         "city = ?, country = ? WHERE id =?",
                 address.getStreet(), address.getNumber(), address.getFloorDoor(),
                 address.getPostalCode(), address.getCity(), address.getCountry(), address.getId());

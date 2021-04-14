@@ -13,6 +13,7 @@ public class Zone {
     private String naturalArea;
 
     public Zone(){
+        super();
     }
 
     public String getId() {

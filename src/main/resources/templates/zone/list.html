@@ -26,7 +26,7 @@
         <td th:text="${zone.zoneNumber}"></td>
         <td th:text="${zone.letter}"></td>
         <td th:text="${zone.maximumCapacity}"></td>
-        <td th:text="${zone.creationDate}"></td>
+        <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
         <td th:text="${zone.naturalArea}"></td>
         <td><a th:href="@{/zone/update/{id}(id=${zone.id})}">
             <button type="button" class="btn btn-warning">Edita</button>

@@ -20,6 +20,7 @@ public class TemporalService {
     private String naturalArea;
 
     public TemporalService(){
+        super();
     }
 
     public int getOpenningDays() {

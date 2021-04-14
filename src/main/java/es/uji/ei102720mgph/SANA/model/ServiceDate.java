@@ -14,6 +14,7 @@ public class ServiceDate {
     private String naturalArea;
 
     public ServiceDate(){
+        super();
     }
 
     public String getId() {

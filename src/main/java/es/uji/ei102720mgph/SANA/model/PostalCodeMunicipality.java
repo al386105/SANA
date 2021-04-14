@@ -4,6 +4,10 @@ public class PostalCodeMunicipality {
     private String municipality;
     private String postalCode;
 
+    public PostalCodeMunicipality(){
+        super();
+    }
+
     public String getMunicipality() {
         return municipality;
     }

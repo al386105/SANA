@@ -38,9 +38,9 @@ public class CommentDao {
     }
 
     public void updateComment(Comment comment){
-        jdbcTemplate.update("UPDATE Comment" +
+        jdbcTemplate.update("UPDATE Comment " +
                 "SET commentBody = ?, score = ?, date = ?, " +
-                "citizenEmail = ?, naturalArea = ?" +
+                "citizenEmail = ?, naturalArea = ? " +
                 "WHERE commentId = ?",
                 comment.getCommentBody(), comment.getScore(), comment.getDate(),
                 comment.getCitizenEmail(), comment.getNaturalArea(),

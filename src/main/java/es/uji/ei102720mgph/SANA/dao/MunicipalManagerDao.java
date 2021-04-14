@@ -23,12 +23,13 @@ public class MunicipalManagerDao {
 
     public void addMunicipalManager(MunicipalManager manager) {
         jdbcTemplate.update(
-                "INSERT INTO MunicipalManager VALUES(?, ?, ?, ?)",
-                manager.getEmail(), manager.getUsername(), manager.getPassword(), manager.getMunicipality());
-        jdbcTemplate.update(
                 "INSERT INTO Receiver VALUES(?, ?, ?, ?, ?, ?)",
                 manager.getEmail(), manager.getName(), manager.getSurname(), manager.getDateOfBirth(),
                 LocalDate.now(), null);
+        jdbcTemplate.update(
+                "INSERT INTO MunicipalManager VALUES(?, ?, ?, ?)",
+                manager.getEmail(), manager.getUsername(), manager.getPassword(), manager.getMunicipality());
+
     }
 
     public void deleteMunicipalManager(String email) {

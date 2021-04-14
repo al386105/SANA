@@ -25,7 +25,6 @@ public final class RegisteredCitizenRowMapper implements RowMapper<RegisteredCit
         registeredCitizen.setCitizenCode(rs.getString("citizenCode"));
         registeredCitizen.setPin(rs.getInt("pin"));
         registeredCitizen.setAddressId(rs.getString("addressId"));
-        registeredCitizen.setName("");
         return registeredCitizen;
     }
 }

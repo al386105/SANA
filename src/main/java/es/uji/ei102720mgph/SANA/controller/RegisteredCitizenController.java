@@ -69,5 +69,4 @@ public class RegisteredCitizenController {
         registeredCitizenDao.deleteRegisteredCitizen(email);
         return "redirect:../list";
     }
-
 }

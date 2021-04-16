@@ -12,9 +12,9 @@ public class TemporalService {
     private LocalTime beginningTime;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime endTime;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate beginningDate;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     private String service;
     private String naturalArea;

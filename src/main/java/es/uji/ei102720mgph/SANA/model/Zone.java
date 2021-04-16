@@ -8,7 +8,7 @@ public class Zone {
     private int zoneNumber;
     private char letter;
     private int maximumCapacity;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate creationDate;
     private String naturalArea;
 

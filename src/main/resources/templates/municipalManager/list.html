@@ -31,10 +31,10 @@
         <td th:text="${municipalManager.password}"></td>
         <td th:text="${municipalManager.name}"></td>
         <td th:text="${municipalManager.surname}"></td>
-        <td th:text="${municipalManager.dateOfBirth}"></td>
+        <td th:text="${#temporals.format(municipalManager.dateOfBirth,'dd/MM/yyyy')}"></td>
         <td th:text="${municipalManager.municipality}"></td>
-        <td th:text="${municipalManager.registrationDate}"></td>
-        <td th:text="${municipalManager.leavingDate}"></td>
+        <td th:text="${#temporals.format(municipalManager.registrationDate,'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(municipalManager.leavingDate,'dd/MM/yyyy')}"></td>
         <td><a th:href="@{/municipalManager/update/{email}(email=${municipalManager.email})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>

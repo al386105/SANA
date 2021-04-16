@@ -30,9 +30,9 @@
         <td th:text="${registeredCitizen.email}"></td>
         <td th:text="${registeredCitizen.name}"></td>
         <td th:text="${registeredCitizen.surname}"></td>
-        <td th:text="${registeredCitizen.dateOfBirth}"></td>
-        <td th:text="${registeredCitizen.registrationDate}"></td>
-        <td th:text="${registeredCitizen.leavingDate}"></td>
+        <td th:text="${#temporals.format(registeredCitizen.dateOfBirth,'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(registeredCitizen.registrationDate,'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(registeredCitizen.leavingDate,'dd/MM/yyyy')}"></td>
         <td th:text="${registeredCitizen.idNumber}"></td>
         <td th:text="${registeredCitizen.mobilePhoneNumber}"></td>
         <td th:text="${registeredCitizen.citizenCode}"></td>

@@ -5,15 +5,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 /** This class must be extended by RegisteredCitizen, ControlStaff and MunicipalManager*/
-public abstract class User {
+public abstract class SanaUser {
     private String email;
     private String name;
     private String surname;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate registrationDate;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate leavingDate;
     private TypeOfUser typeOfUser;
 
@@ -75,13 +75,14 @@ public abstract class User {
 
     @Override
     public String toString() {
-        return "Receiver{" +
+        return "SanaUser{" +
                 "email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", registrationDate=" + registrationDate +
                 ", leavingDate=" + leavingDate +
+                ", typeOfUser=" + typeOfUser +
                 '}';
     }
 }

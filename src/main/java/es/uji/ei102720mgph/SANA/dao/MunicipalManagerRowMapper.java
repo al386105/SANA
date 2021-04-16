@@ -18,7 +18,7 @@ public final class MunicipalManagerRowMapper implements RowMapper<MunicipalManag
         municipalManager.setDateOfBirth(rs.getObject("dateOfBirth", LocalDate.class));
         municipalManager.setRegistrationDate(rs.getObject("registrationDate", LocalDate.class));
         Date d = rs.getDate("leavingDate");
-        TypeOfUser typeOfUser = TypeOfUser.valueOf(rs.getString("municipalManager"));
+        TypeOfUser typeOfUser = TypeOfUser.valueOf(rs.getString("typeOfUser"));
         municipalManager.setTypeOfUser(typeOfUser);
         municipalManager.setLeavingDate(d != null ? d.toLocalDate() : null);
         municipalManager.setUsername(rs.getString("username"));

@@ -7,16 +7,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class Reservation {
     private int reservationNumber;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reservationDate;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate creationDate;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime creationTime;
     private int numberOfPeople;
     private ReservationState state;
     private String QRcode;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate cancellationDate;
     private String cancellationReason;
     private String citizenEmail;

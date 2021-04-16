@@ -1,6 +1,6 @@
 package es.uji.ei102720mgph.SANA.model;
 
-public class MunicipalManager extends User {
+public class MunicipalManager extends SanaUser {
     private String username;
     private String password;
     private String municipality;

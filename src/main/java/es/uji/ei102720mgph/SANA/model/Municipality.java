@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class Municipality {
     private String name;
     private String description;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate registrationDate;
 
     public Municipality(){

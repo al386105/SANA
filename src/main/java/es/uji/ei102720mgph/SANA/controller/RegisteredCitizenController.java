@@ -1,6 +1,5 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-
 import es.uji.ei102720mgph.SANA.dao.RegisteredCitizenDao;
 import es.uji.ei102720mgph.SANA.model.Address;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;

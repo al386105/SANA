@@ -1,8 +1,8 @@
 package es.uji.ei102720mgph.SANA.dao;
 
+import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
+import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
-
-
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.Date;
@@ -19,6 +19,8 @@ public final class RegisteredCitizenRowMapper implements RowMapper<RegisteredCit
         registeredCitizen.setDateOfBirth(rs.getObject("dateOfBirth", LocalDate.class));
         registeredCitizen.setRegistrationDate(rs.getObject("registrationDate", LocalDate.class));
         Date d = rs.getDate("leavingDate");
+        TypeOfUser typeOfUser = TypeOfUser.valueOf(rs.getString("registeredCitizen"));
+        registeredCitizen.setTypeOfUser(typeOfUser);
         registeredCitizen.setLeavingDate(d != null ? d.toLocalDate() : null);
         registeredCitizen.setIdNumber(rs.getString("idNumber"));
         registeredCitizen.setMobilePhoneNumber(rs.getString("mobilePhoneNumber"));

@@ -1,5 +1,6 @@
 package es.uji.ei102720mgph.SANA.dao;
 
+import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,9 +22,9 @@ public class RegisteredCitizenDao {
     }
 
     public void addRegisteredCitizen(RegisteredCitizen registeredCitizen){
-        jdbcTemplate.update("INSERT INTO Receiver VALUES(?, ?, ?, ?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO Receiver VALUES(?, ?, ?, ?, ?, ?, ?)",
                 registeredCitizen.getEmail(), registeredCitizen.getName(), registeredCitizen.getSurname(), registeredCitizen.getDateOfBirth(),
-                LocalDate.now(), null);
+                LocalDate.now(), null, TypeOfUser.registeredCitizen);
         jdbcTemplate.update("INSERT INTO RegisteredCitizen VALUES(?, ?, ?, ?, ?, ?)",
                 registeredCitizen.getEmail(), registeredCitizen.getIdNumber(),
                 registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
@@ -41,10 +42,10 @@ public class RegisteredCitizenDao {
                 registeredCitizen.getIdNumber(), registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
                 registeredCitizen.getPin(), registeredCitizen.getAddressId(), registeredCitizen.getEmail());
         jdbcTemplate.update("UPDATE Receiver SET name = ?, surname = ?, dateOfBirth = ?, " +
-                        "registrationDate = ?, leavingDate = ? " +
+                        "registrationDate = ?, leavingDate = ?, typeOfUser = ? " +
                         "WHERE email =?",
-                registeredCitizen.getName(), registeredCitizen.getSurname(),
-                registeredCitizen.getDateOfBirth(), registeredCitizen.getRegistrationDate(), registeredCitizen.getLeavingDate(),
+                registeredCitizen.getName(), registeredCitizen.getSurname(), registeredCitizen.getDateOfBirth(),
+                registeredCitizen.getRegistrationDate(), registeredCitizen.getLeavingDate(), registeredCitizen.getTypeOfUser(),
                 registeredCitizen.getEmail());
     }
 

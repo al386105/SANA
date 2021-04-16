@@ -1,8 +1,8 @@
 package es.uji.ei102720mgph.SANA.model;
 
+import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
-
 
 /** This class must be extended by RegisteredCitizen, ControlStaff and MunicipalManager*/
 public abstract class User {
@@ -15,6 +15,7 @@ public abstract class User {
     private LocalDate registrationDate;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate leavingDate;
+    private TypeOfUser typeOfUser;
 
     public String getEmail() {
         return email;
@@ -62,6 +63,14 @@ public abstract class User {
 
     public void setLeavingDate(LocalDate leavingDate) {
         this.leavingDate = leavingDate;
+    }
+
+    public TypeOfUser getTypeOfUser() {
+        return typeOfUser;
+    }
+
+    public void setTypeOfUser(TypeOfUser typeOfUser) {
+        this.typeOfUser = typeOfUser;
     }
 
     @Override

@@ -21,7 +21,7 @@ public class RegisteredCitizenDao {
     }
 
     public void addRegisteredCitizen(RegisteredCitizen registeredCitizen){
-        jdbcTemplate.update("INSERT INTO Receiver VALUES(?, ?, ?, ?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO SanaUser VALUES(?, ?, ?, ?, ?, ?)",
                 registeredCitizen.getEmail(), registeredCitizen.getName(), registeredCitizen.getSurname(), registeredCitizen.getDateOfBirth(),
                 LocalDate.now(), null);
         jdbcTemplate.update("INSERT INTO RegisteredCitizen VALUES(?, ?, ?, ?, ?, ?)",
@@ -32,7 +32,7 @@ public class RegisteredCitizenDao {
 
     public void deleteRegisteredCitizen(String email){
         jdbcTemplate.update("DELETE FROM RegisteredCitizen WHERE email =?", email);
-        jdbcTemplate.update("DELETE FROM Receiver WHERE email =?", email);
+        jdbcTemplate.update("DELETE FROM SanaUser WHERE email =?", email);
     }
 
     public void updateRegisteredCitizen(RegisteredCitizen registeredCitizen){
@@ -40,7 +40,7 @@ public class RegisteredCitizenDao {
                         "pin = ?, addressId = ? WHERE email =?",
                 registeredCitizen.getIdNumber(), registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
                 registeredCitizen.getPin(), registeredCitizen.getAddressId(), registeredCitizen.getEmail());
-        jdbcTemplate.update("UPDATE Receiver SET name = ?, surname = ?, dateOfBirth = ?, " +
+        jdbcTemplate.update("UPDATE SanaUser SET name = ?, surname = ?, dateOfBirth = ?, " +
                         "registrationDate = ?, leavingDate = ? " +
                         "WHERE email =?",
                 registeredCitizen.getName(), registeredCitizen.getSurname(),
@@ -52,8 +52,8 @@ public class RegisteredCitizenDao {
         try{
             System.out.println(email);
             return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen " +
-                            "JOIN Receiver ON RegisteredCitizen.email = Receiver.email " +
-                            "WHERE Receiver.email = ? ",
+                            "JOIN SanaUser ON RegisteredCitizen.email = SanaUser.email " +
+                            "WHERE SanaUser.email = ? ",
                     new RegisteredCitizenRowMapper(), email);
         }
         catch (EmptyResultDataAccessException e){
@@ -64,7 +64,7 @@ public class RegisteredCitizenDao {
     public List<RegisteredCitizen> getRegisteredCitizens(){
         try{
             return jdbcTemplate.query("SELECT * FROM RegisteredCitizen " +
-                    "JOIN Receiver ON RegisteredCitizen.email = Receiver.email",
+                    "JOIN SanaUser ON RegisteredCitizen.email = SanaUser.email",
                     new RegisteredCitizenRowMapper());
         }
         catch (EmptyResultDataAccessException e){

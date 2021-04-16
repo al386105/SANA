@@ -16,7 +16,7 @@ public class Reservation {
     private int numberOfPeople;
     private ReservationState state;
     private String QRcode;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate cancellationDate;
     private String cancellationReason;
     private String citizenEmail;

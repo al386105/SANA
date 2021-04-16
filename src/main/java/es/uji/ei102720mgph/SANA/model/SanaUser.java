@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 
 /** This class must be extended by RegisteredCitizen, ControlStaff and MunicipalManager*/
-public abstract class User {
+public abstract class SanaUser {
     private String email;
     private String name;
     private String surname;

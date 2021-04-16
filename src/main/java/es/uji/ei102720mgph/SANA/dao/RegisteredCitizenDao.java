@@ -21,19 +21,18 @@ public class RegisteredCitizenDao {
     }
 
     public void addRegisteredCitizen(RegisteredCitizen registeredCitizen){
+        jdbcTemplate.update("INSERT INTO Receiver VALUES(?, ?, ?, ?, ?, ?)",
+                registeredCitizen.getEmail(), registeredCitizen.getName(), registeredCitizen.getSurname(), registeredCitizen.getDateOfBirth(),
+                LocalDate.now(), null);
         jdbcTemplate.update("INSERT INTO RegisteredCitizen VALUES(?, ?, ?, ?, ?, ?)",
                 registeredCitizen.getEmail(), registeredCitizen.getIdNumber(),
                 registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
                 registeredCitizen.getPin(),  registeredCitizen.getAddressId());
-        jdbcTemplate.update("INSERT INTO Receiver VALUES(?, ?, ?, ?, ?, ?)",
-                registeredCitizen.getEmail(), registeredCitizen.getName(), registeredCitizen.getSurname(), registeredCitizen.getDateOfBirth(),
-                LocalDate.now(), null);
     }
 
     public void deleteRegisteredCitizen(String email){
         jdbcTemplate.update("DELETE FROM RegisteredCitizen WHERE email =?", email);
         jdbcTemplate.update("DELETE FROM Receiver WHERE email =?", email);
-
     }
 
     public void updateRegisteredCitizen(RegisteredCitizen registeredCitizen){

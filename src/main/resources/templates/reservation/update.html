@@ -15,7 +15,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="reservationNumber">Número reserva:</label>
             <div class="col-sm-4">
-                <input type="number" min="1" required class="form-control" id="reservationNumber" th:field="*{reservationNumber}" readonly/>
+                <input type="number" min="1" required class="form-control" id="reservationNumber" th:field="*{reservationNumber}" readonly="readonly"/>
             </div>
         </div>
 
@@ -29,14 +29,14 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="creationDate">Fecha creación:</label>
             <div class="col-sm-4">
-                <input type="date" required class="form-control" id="creationDate" th:field="*{creationDate}" readonly/>
+                <input type="date" required class="form-control" id="creationDate" th:field="*{creationDate}" readonly="readonly"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="creationTime">Hora creación:</label>
             <div class="col-sm-4">
-                <input type="time" required class="form-control" id="creationTime" th:field="*{creationTime}" readonly/>
+                <input type="time" required class="form-control" id="creationTime" th:field="*{creationTime}" readonly="readonly"/>
             </div>
         </div>
 
@@ -78,7 +78,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="citizenEmail">Ciudadano (email):</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="citizenEmail" th:field="*{citizenEmail}" readonly/>
+                <input type="text" required class="form-control" id="citizenEmail" th:field="*{citizenEmail}" readonly="readonly"/>
             </div>
         </div>
 

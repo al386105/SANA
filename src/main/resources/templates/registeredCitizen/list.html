@@ -11,6 +11,11 @@
     <thead>
     <tr>
         <th scope="col">Email</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellidos</th>
+        <th scope="col">Fecha de nacimiento</th>
+        <th scope="col">Fecha de alta</th>
+        <th scope="col">Fecha de baja</th>
         <th scope="col">DNI/NIE</th>
         <th scope="col">Número de teléfono</th>
         <th scope="col">Código de ciudadano</th>
@@ -23,6 +28,11 @@
     <tbody>
     <tr th:each="registeredCitizen: ${registeredCitizens}">
         <td th:text="${registeredCitizen.email}"></td>
+        <td th:text="${registeredCitizen.name}"></td>
+        <td th:text="${registeredCitizen.surname}"></td>
+        <td th:text="${registeredCitizen.dateOfBirth}"></td>
+        <td th:text="${registeredCitizen.registrationDate}"></td>
+        <td th:text="${registeredCitizen.leavingDate}"></td>
         <td th:text="${registeredCitizen.idNumber}"></td>
         <td th:text="${registeredCitizen.mobilePhoneNumber}"></td>
         <td th:text="${registeredCitizen.citizenCode}"></td>

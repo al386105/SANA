@@ -1,6 +1,6 @@
 package es.uji.ei102720mgph.SANA.model;
 
-public class RegisteredCitizen extends Receiver {
+public class RegisteredCitizen extends User {
     private String idNumber;
     private String mobilePhoneNumber;
     private String citizenCode;

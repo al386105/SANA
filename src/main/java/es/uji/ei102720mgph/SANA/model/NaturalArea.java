@@ -17,7 +17,7 @@ public class NaturalArea {
     private String physicalCharacteristics;
     private String description;
     private Orientation orientation;
-    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate restrictionTimePeriod;
     private float occupancyRate;
     private String municipality;

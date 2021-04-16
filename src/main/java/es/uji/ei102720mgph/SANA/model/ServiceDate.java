@@ -6,9 +6,9 @@ import java.time.LocalDate;
 
 public class ServiceDate {
     private String id;
-    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate beginningDate;
-    @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate endDate;
     private String service;
     private String naturalArea;

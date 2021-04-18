@@ -42,4 +42,6 @@ public class MunicipalManager extends SanaUser {
                 ", municipality=" + municipality +
                 '}';
     }
+
+    // Esto es una prueba
 }

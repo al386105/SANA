@@ -43,5 +43,4 @@ public class MunicipalManager extends SanaUser {
                 '}';
     }
 
-    // Esto es una prueba
 }

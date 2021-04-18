@@ -14,7 +14,7 @@ public final class EmailRowMapper implements RowMapper<Email> {
         email.setTextBody(rs.getString("textBody"));
         email.setSender(rs.getString("sender"));
         email.setDate(rs.getObject("date", LocalDate.class));
-        email.setReceiver(rs.getString("receiver"));
+        email.setSanaUser(rs.getString("sanaUser"));
         return email;
     }
 }

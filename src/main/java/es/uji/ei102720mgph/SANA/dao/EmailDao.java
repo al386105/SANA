@@ -25,7 +25,7 @@ public class EmailDao {
         jdbcTemplate.update(
                 "INSERT INTO Email VALUES(?, ?, ?, ?, ?, ?)",
                 email.getId(), email.getSubject(), email.getTextBody(), email.getSender(),
-                LocalDate.now(), email.getReceiver());
+                LocalDate.now(), email.getSanaUser());
     }
 
     /* Esborra el email de la base de dades */
@@ -35,9 +35,9 @@ public class EmailDao {
 
     /* Actualitza els atributs del email (excepte el id, que és la clau primària) */
     public void updateEmail(Email email) {
-        jdbcTemplate.update("UPDATE Email SET subject = ?, textBody = ?, sender = ?, date = ?, receiver = ?" +
+        jdbcTemplate.update("UPDATE Email SET subject = ?, textBody = ?, sender = ?, date = ?, sanaUser = ?" +
                         " WHERE id =?",
-                email.getSubject(), email.getTextBody(), email.getSender(), email.getDate(), email.getReceiver(),
+                email.getSubject(), email.getTextBody(), email.getSender(), email.getDate(), email.getSanaUser(),
                 email.getId());
     }
 

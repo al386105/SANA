@@ -15,7 +15,7 @@
         <th scope="col">Contenido</th>
         <th scope="col">Emisor</th>
         <th scope="col">Fecha</th>
-        <th scope="col">Receptor</th>
+        <th scope="col">Usuario</th>
         <th scope="col"></th>
         <th scope="col"></th>
     </tr>
@@ -27,7 +27,7 @@
         <td th:text="${email.textBody}"></td>
         <td th:text="${email.sender}"></td>
         <td th:text="${#temporals.format(email.date,'dd/MM/yyyy')}"></td>
-        <td th:text="${email.receiver}"></td>
+        <td th:text="${email.sanaUser}"></td>
         <td><a th:href="@{/email/update/{id}(id=${email.id})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>

@@ -10,7 +10,7 @@ public class Email {
     private String sender;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
-    private String receiver;
+    private String sanaUser;
 
     public Email(){
         super();
@@ -56,12 +56,12 @@ public class Email {
         this.date = date;
     }
 
-    public String getReceiver() {
-        return receiver;
+    public String getSanaUser() {
+        return sanaUser;
     }
 
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
+    public void setSanaUser(String sanaUser) {
+        this.sanaUser = sanaUser;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class Email {
                 ", textBody='" + textBody + '\'' +
                 ", sender='" + sender + '\'' +
                 ", date=" + date +
-                ", receiver='" + receiver + '\'' +
+                ", sanaUSer='" + sanaUser + '\'' +
                 '}';
     }
 }

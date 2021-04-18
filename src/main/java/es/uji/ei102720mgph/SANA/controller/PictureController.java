@@ -29,6 +29,8 @@ public class PictureController {
 
     //TODO Operació llistar pictures de un naturalArea
 
+    //Es necesario update?
+
 
     // Operació crear
     @RequestMapping(value="/add")

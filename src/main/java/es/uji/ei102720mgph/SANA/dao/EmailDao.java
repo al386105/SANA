@@ -1,13 +1,16 @@
 package es.uji.ei102720mgph.SANA.dao;
 
+import es.uji.ei102720mgph.SANA.model.Address;
 import es.uji.ei102720mgph.SANA.model.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 @Repository
@@ -22,10 +25,21 @@ public class EmailDao {
 
     /* Afegeix el email a la base de dades */
     public void addEmail(Email email) {
-        jdbcTemplate.update(
-                "INSERT INTO Email VALUES(?, ?, ?, ?, ?, ?)",
-                email.getId(), email.getSubject(), email.getTextBody(), email.getSender(),
-                LocalDate.now(), email.getSanaUser());
+        boolean excepcion;
+        Formatter fmt;
+        do {
+            try {
+                fmt = new Formatter();
+                jdbcTemplate.update("INSERT INTO Email VALUES(?, ?, ?, ?, ?, ?)",
+                        "" + fmt.format("%06d", Address.getContador()), email.getSubject(), email.getTextBody(), email.getSender(),
+                        LocalDate.now(), email.getSanaUser());
+                excepcion = false;
+            } catch (DuplicateKeyException e) {
+                excepcion = true;
+            } finally {
+                Address.incrementaContador();
+            }
+        } while (excepcion);
     }
 
     /* Esborra el email de la base de dades */

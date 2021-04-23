@@ -1,14 +1,16 @@
 package es.uji.ei102720mgph.SANA.dao;
 
-import es.uji.ei102720mgph.SANA.model.PostalCodeMunicipality;
+import es.uji.ei102720mgph.SANA.model.Address;
 import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 @Repository
@@ -23,10 +25,22 @@ public class ZoneDao {
 
     /* Afegeix el zone a la base de dades */
     public void addZone(Zone zone) {
-        jdbcTemplate.update(
-                "INSERT INTO Zone VALUES(?, ?, ?, ?, ?, ?)",
-                zone.getId(), zone.getZoneNumber(), zone.getLetter(), zone.getMaximumCapacity(),
-                LocalDate.now(), zone.getNaturalArea());
+        boolean excepcion;
+        Formatter fmt;
+        do {
+            try {
+                fmt = new Formatter();
+                jdbcTemplate.update(
+                        "INSERT INTO Zone VALUES(?, ?, ?, ?, ?, ?)",
+                        "z" + fmt.format("%08d", Zone.getContador()), zone.getZoneNumber(), zone.getLetter(),
+                        zone.getMaximumCapacity(), LocalDate.now(), zone.getNaturalArea());
+                excepcion = false;
+            } catch (DuplicateKeyException e) {
+                excepcion = true;
+            } finally {
+                Zone.incrementaContador();
+            }
+        } while (excepcion);
     }
 
     /* Esborra el zone de la base de dades */

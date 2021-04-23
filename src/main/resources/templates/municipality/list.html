@@ -7,7 +7,10 @@
 </head>
 <body>
 <h1>Lista de municipios</h1>
-<table class="table table-striped">
+<div th:if="${#lists.isEmpty(municipalities)}">
+    ¡No has añadido todavía ningún municipio!
+</div>
+<table th:unless="${#lists.isEmpty(municipalities)}" class="table table-striped">
     <thead>
     <tr>
         <th scope="col">Nombre</th>
@@ -19,7 +22,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="municipality: ${municipalities}">
+    <tr th:each="municipality: ${#lists.sort(municipalities)}">
         <td scope="row" th:text="${municipality.name}"></td>
         <td th:text="${municipality.description}"></td>
         <td th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></td>

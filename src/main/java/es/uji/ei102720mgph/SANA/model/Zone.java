@@ -11,6 +11,7 @@ public class Zone {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate creationDate;
     private String naturalArea;
+    private static int contador = 1;
 
     public Zone(){
         super();
@@ -62,6 +63,18 @@ public class Zone {
 
     public void setNaturalArea(String naturalArea) {
         this.naturalArea = naturalArea;
+    }
+
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        Zone.contador = contador;
+    }
+
+    public static void incrementaContador() {
+        Zone.contador++;
     }
 
     @Override

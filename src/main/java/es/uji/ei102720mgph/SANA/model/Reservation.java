@@ -21,6 +21,7 @@ public class Reservation {
     private String cancellationReason;
     private String citizenEmail;
     private String timeSlotId;
+    private static int contador = 1;
 
     public Reservation(){
         super();
@@ -112,6 +113,18 @@ public class Reservation {
 
     public void setTimeSlotId(String timeSlotId) {
         this.timeSlotId = timeSlotId;
+    }
+
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        Reservation.contador = contador;
+    }
+
+    public static void incrementaContador() {
+        Reservation.contador++;
     }
 
     @Override

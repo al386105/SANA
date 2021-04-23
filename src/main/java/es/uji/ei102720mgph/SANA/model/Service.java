@@ -2,8 +2,8 @@ package es.uji.ei102720mgph.SANA.model;
 
 import es.uji.ei102720mgph.SANA.enums.Temporality;
 
-public class Service {
-    private  String nameOfService;
+public class Service implements Comparable<Service> {
+    private String nameOfService;
     private Temporality temporality;
     private String description;
     private String hiringPlace;
@@ -42,6 +42,10 @@ public class Service {
 
     public void setHiringPlace(String hiringPlace) {
         this.hiringPlace = hiringPlace;
+    }
+
+    public int compareTo(Service altre) {
+        return this.getNameOfService().compareTo(altre.getNameOfService());
     }
 
     @Override

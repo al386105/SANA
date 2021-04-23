@@ -12,6 +12,7 @@ public class ServiceDate {
     private LocalDate endDate;
     private String service;
     private String naturalArea;
+    private static int contador = 1;
 
     public ServiceDate(){
         super();
@@ -55,6 +56,18 @@ public class ServiceDate {
 
     public void setNaturalArea(String naturalArea) {
         this.naturalArea = naturalArea;
+    }
+
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        ServiceDate.contador = contador;
+    }
+
+    public static void incrementaContador() {
+        ServiceDate.contador++;
     }
 
     @Override

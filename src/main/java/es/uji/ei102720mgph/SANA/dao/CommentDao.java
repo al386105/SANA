@@ -2,6 +2,7 @@ package es.uji.ei102720mgph.SANA.dao;
 
 import es.uji.ei102720mgph.SANA.model.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 @Repository
@@ -22,9 +24,21 @@ public class CommentDao {
     }
 
     public void addComment(Comment comment){
-        jdbcTemplate.update("INSERT INTO Comment VALUES(?, ?, ?, ?, ?, ?)",
-                comment.getCommentId(), comment.getCommentBody(), comment.getScore(),
-                LocalDate.now(), comment.getCitizenEmail(), comment.getNaturalArea());
+        boolean excepcion;
+        Formatter fmt;
+        do {
+            try {
+                fmt = new Formatter();
+                jdbcTemplate.update("INSERT INTO Comment VALUES(?, ?, ?, ?, ?, ?)",
+                        "" + fmt.format("%06d", Comment.getContador()), comment.getCommentBody(), comment.getScore(),
+                        LocalDate.now(), comment.getCitizenEmail(), comment.getNaturalArea());
+                excepcion = false;
+            } catch (DuplicateKeyException e) {
+                excepcion = true;
+            } finally {
+                Comment.incrementaContador();
+            }
+        } while (excepcion);
     }
 
     public void deleteComment(Comment comment){

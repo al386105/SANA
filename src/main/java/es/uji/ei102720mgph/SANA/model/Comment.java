@@ -12,6 +12,7 @@ public class Comment {
     private LocalDate date;
     private String citizenEmail;
     private String naturalArea;
+    private static int contador = 1;
 
     public Comment(){
         super();
@@ -63,6 +64,18 @@ public class Comment {
 
     public void setNaturalArea(String naturaArea) {
         this.naturalArea = naturaArea;
+    }
+
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        Comment.contador = contador;
+    }
+
+    public static void incrementaContador() {
+        Comment.contador++;
     }
 
     @Override

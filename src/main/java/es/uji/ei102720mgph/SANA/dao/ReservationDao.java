@@ -1,7 +1,9 @@
 package es.uji.ei102720mgph.SANA.dao;
 
+import es.uji.ei102720mgph.SANA.model.Address;
 import es.uji.ei102720mgph.SANA.model.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,6 +12,7 @@ import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 @Repository
@@ -24,11 +27,23 @@ public class ReservationDao {
 
     /* Afegeix el reservation a la base de dades */
     public void addReservation(Reservation reservation) {
-        jdbcTemplate.update(
-                "INSERT INTO Reservation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                reservation.getReservationNumber(), reservation.getReservationDate(), LocalDate.now(),
-                LocalTime.now(), reservation.getNumberOfPeople(), reservation.getState().name(), reservation.getQRcode(),
-                null, null, reservation.getCitizenEmail(), reservation.getTimeSlotId());
+        boolean excepcion;
+        Formatter fmt;
+        do {
+            try {
+                fmt = new Formatter();
+                jdbcTemplate.update(
+                        "INSERT INTO Reservation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                        Reservation.getContador(), reservation.getReservationDate(), LocalDate.now(),
+                        LocalTime.now(), reservation.getNumberOfPeople(), reservation.getState().name(),
+                        reservation.getQRcode(), null, null, reservation.getCitizenEmail(), reservation.getTimeSlotId());
+                excepcion = false;
+            } catch (DuplicateKeyException e) {
+                excepcion = true;
+            } finally {
+                Reservation.incrementaContador();
+            }
+        } while (excepcion);
     }
 
     /* Esborra el reservation de la base de dades */

@@ -8,6 +8,7 @@ public class Address {
     private String postalCode;
     private String city;
     private String country;
+    private static int contador = 1;
 
     public Address() {
         super();
@@ -67,6 +68,18 @@ public class Address {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        Address.contador = contador;
+    }
+
+    public static void incrementaContador() {
+        Address.contador++;
     }
 
     @Override

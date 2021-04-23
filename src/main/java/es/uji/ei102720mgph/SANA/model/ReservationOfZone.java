@@ -4,6 +4,7 @@ public class ReservationOfZone {
     private String id;
     private int reservationNumber;
     private String zoneId;
+    private static int contador = 1;
 
     public ReservationOfZone(){
         super();
@@ -31,6 +32,18 @@ public class ReservationOfZone {
 
     public void setZoneId(String zoneId) {
         this.zoneId = zoneId;
+    }
+
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        ReservationOfZone.contador = contador;
+    }
+
+    public static void incrementaContador() {
+        ReservationOfZone.contador++;
     }
 
     @Override

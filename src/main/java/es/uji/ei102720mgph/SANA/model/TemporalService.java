@@ -6,8 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class TemporalService {
-
-    private String openningDays;
+    private String openingDays;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime beginningTime;
     @DateTimeFormat(pattern = "HH:mm")
@@ -23,12 +22,12 @@ public class TemporalService {
         super();
     }
 
-    public String getOpenningDays() {
-        return openningDays;
+    public String getOpeningDays() {
+        return openingDays;
     }
 
-    public void setOpenningDays(String openningDays) {
-        this.openningDays = openningDays;
+    public void setOpeningDays(String openingDays) {
+        this.openingDays = openingDays;
     }
 
     public LocalTime getBeginningTime() {
@@ -82,7 +81,7 @@ public class TemporalService {
     @Override
     public String toString(){
         return "TemporalService{" +
-                "openningDays='" + openningDays + '\'' +
+                "openingDays='" + openingDays + '\'' +
                 ", beginningTime='" + beginningTime + '\'' +
                 ", endTime=" + endTime +
                 ", beginningDate='" + beginningDate+ '\'' +

@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-public class NaturalArea {
+public class NaturalArea implements Comparable<NaturalArea> {
     private String name;
     private TypeOfAccess typeOfAccess;
     private String geographicalLocation;
@@ -120,6 +120,10 @@ public class NaturalArea {
 
     public void setMunicipality(String municipality) {
         this.municipality = municipality;
+    }
+
+    public int compareTo(NaturalArea altre) {
+        return this.getName().compareTo(altre.getName());
     }
 
     @Override

@@ -7,14 +7,17 @@
 </head>
 <body>
 <h1>Lista de gestores municipales</h1>
-<table class="table table-striped">
+<div th:if="${#lists.isEmpty(municipalManagers)}">
+    ¡No has añadido todavía ningún gestor municipal!
+</div>
+<table th:unless="${#lists.isEmpty(municipalManagers)}" class="table table-striped">
     <thead>
     <tr>
-        <th scope="col">Email</th>
         <th scope="col">Nombre de usuario</th>
-        <th scope="col">Contraseña</th>
         <th scope="col">Nombre</th>
         <th scope="col">Apellidos</th>
+        <th scope="col">Email</th>
+        <th scope="col">Contraseña</th>
         <th scope="col">Nacimiento</th>
         <th scope="col">Municipio</th>
         <th scope="col">Fecha de alta</th>
@@ -25,12 +28,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="municipalManager: ${municipalManagers}">
-        <td scope="row" th:text="${municipalManager.email}"></td>
-        <td th:text="${municipalManager.username}"></td>
-        <td th:text="${municipalManager.password}"></td>
+    <tr th:each="municipalManager: ${#lists.sort(municipalManagers)}">
+        <td scope="row" th:text="${municipalManager.username}"></td>
         <td th:text="${municipalManager.name}"></td>
         <td th:text="${municipalManager.surname}"></td>
+        <td th:text="${municipalManager.email}"></td>
+        <td th:text="${municipalManager.password}"></td>
         <td th:text="${#temporals.format(municipalManager.dateOfBirth,'dd/MM/yyyy')}"></td>
         <td th:text="${municipalManager.municipality}"></td>
         <td th:text="${#temporals.format(municipalManager.registrationDate,'dd/MM/yyyy')}"></td>

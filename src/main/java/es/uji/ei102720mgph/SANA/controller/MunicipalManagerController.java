@@ -1,7 +1,9 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.MunicipalManagerDao;
+import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.model.MunicipalManager;
+import es.uji.ei102720mgph.SANA.model.Municipality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/municipalManager")
@@ -22,6 +28,9 @@ public class MunicipalManagerController {
         this.municipalManagerDao=mmd;
     }
 
+    @Autowired
+    MunicipalityDao municipalityDao;
+
     @RequestMapping("/list")
     public String listMunicipalManager(Model model) {
         model.addAttribute("municipalManagers", municipalManagerDao.getMunicipalManagers());
@@ -31,6 +40,11 @@ public class MunicipalManagerController {
     @RequestMapping(value="/add")
     public String addMunicipalManager(Model model) {
         model.addAttribute("municipalManager", new MunicipalManager());
+        List<Municipality> municipalityList = municipalityDao.getMunicipalities();
+        List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
+                .map(Municipality::getName)
+                .collect(Collectors.toList());
+        model.addAttribute("municipalityList", namesMunicipalities);
         return "municipalManager/add";
     }
 
@@ -46,6 +60,11 @@ public class MunicipalManagerController {
     @RequestMapping(value="/update/{email}", method = RequestMethod.GET)
     public String editMunicipalManager(Model model, @PathVariable String email) {
         model.addAttribute("municipalManager", municipalManagerDao.getMunicipalManager(email));
+        List<Municipality> municipalityList = municipalityDao.getMunicipalities();
+        List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
+                .map(Municipality::getName)
+                .collect(Collectors.toList());
+        model.addAttribute("municipalityList", namesMunicipalities);
         return "municipalManager/update";
     }
 

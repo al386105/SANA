@@ -1,13 +1,16 @@
 package es.uji.ei102720mgph.SANA.dao;
 
+import es.uji.ei102720mgph.SANA.model.Address;
 import es.uji.ei102720mgph.SANA.model.ServiceDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 @Repository
@@ -21,10 +24,22 @@ public class ServiceDateDao {
 
 
     public void addServiceDate(ServiceDate serviceDate) {
-        jdbcTemplate.update(
-                "INSERT INTO ServiceDate VALUES(?, ?, ?, ?, ?)",
-                serviceDate.getId(), serviceDate.getBeginningDate(), serviceDate.getEndDate(),
-                serviceDate.getService(), serviceDate.getNaturalArea());
+        boolean excepcion;
+        Formatter fmt;
+        do {
+            try {
+                fmt = new Formatter();
+                jdbcTemplate.update(
+                        "INSERT INTO ServiceDate VALUES(?, ?, ?, ?, ?)",
+                        "" + fmt.format("%06d", ServiceDate.getContador()), serviceDate.getBeginningDate(),
+                        serviceDate.getEndDate(), serviceDate.getService(), serviceDate.getNaturalArea());
+                excepcion = false;
+            } catch (DuplicateKeyException e) {
+                excepcion = true;
+            } finally {
+                ServiceDate.incrementaContador();
+            }
+        } while (excepcion);
     }
 
 

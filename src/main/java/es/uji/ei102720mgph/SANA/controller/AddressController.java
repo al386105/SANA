@@ -3,6 +3,8 @@ package es.uji.ei102720mgph.SANA.controller;
 import es.uji.ei102720mgph.SANA.dao.AddressDao;
 import es.uji.ei102720mgph.SANA.model.Address;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,7 +45,7 @@ public class AddressController {
         if (bindingResult.hasErrors())
             return "address/add"; //tornem al formulari per a que el corregisca
         addressDao.addAddress(address); //usem el dao per a inserir el address
-        return "redirect:list"; //redirigim a la lista per a veure el address afegit, post/redirect/get
+        return "redirect:list"; //redirigim a la lista per a veure l'adició, post/redirect/get
     }
 
     // Operació actualitzar

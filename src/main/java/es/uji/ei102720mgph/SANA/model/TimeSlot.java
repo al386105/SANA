@@ -16,6 +16,7 @@ public class TimeSlot {
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime endTime;
     private String naturalArea;
+    private static int contador = 1;
 
     public TimeSlot(){
         super();
@@ -67,6 +68,18 @@ public class TimeSlot {
 
     public void setNaturalArea(String naturalArea) {
         this.naturalArea = naturalArea;
+    }
+
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        TimeSlot.contador = contador;
+    }
+
+    public static void incrementaContador() {
+        TimeSlot.contador++;
     }
 
     @Override

@@ -4,7 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-public class Municipality {
+public class Municipality implements Comparable<Municipality> {
     private String name;
     private String description;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -36,6 +36,10 @@ public class Municipality {
 
     public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public int compareTo(Municipality altre) {
+        return this.getName().compareTo(altre.getName());
     }
 
     @Override

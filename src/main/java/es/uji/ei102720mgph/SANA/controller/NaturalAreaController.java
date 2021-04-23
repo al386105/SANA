@@ -1,8 +1,14 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.CommentDao;
+import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
+import es.uji.ei102720mgph.SANA.enums.Orientation;
+import es.uji.ei102720mgph.SANA.enums.Temporality;
+import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
+import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
+import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +20,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/naturalArea")
 public class NaturalAreaController {
     private NaturalAreaDao naturalAreaDao;
     private ZoneDao zoneDao;
     private CommentDao commentDao;
+    private MunicipalityDao municipalityDao;
 
     @Autowired
     public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){ this.naturalAreaDao = naturalAreaDao; }
@@ -29,6 +39,9 @@ public class NaturalAreaController {
 
     @Autowired
     public void setCommentDao(CommentDao commentDao) { this.commentDao = commentDao; }
+
+    @Autowired
+    public void setMunicipalityDao(MunicipalityDao municipalityDao) { this.municipalityDao = municipalityDao; }
 
     @RequestMapping(value="/get/{naturalArea}")
     public String getNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea){
@@ -47,6 +60,14 @@ public class NaturalAreaController {
     @RequestMapping(value="/add")
     public String addNaturalArea(Model model) {
         model.addAttribute("naturalArea", new NaturalArea());
+        model.addAttribute("typeOfAccessList", TypeOfAccess.values());
+        model.addAttribute("typeOfAreaList", TypeOfArea.values());
+        model.addAttribute("orientationList", Orientation.values());
+        List<Municipality> municipalityList = municipalityDao.getMunicipalities();
+        List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
+                .map(Municipality::getName)
+                .collect(Collectors.toList());
+        model.addAttribute("municipalityList", namesMunicipalities);
         return "naturalArea/add";
     }
 
@@ -63,6 +84,14 @@ public class NaturalAreaController {
     @RequestMapping(value="/update/{naturalArea}", method=RequestMethod.GET)
     public String editNaturalArea(Model model, @PathVariable String naturalArea) {
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
+        model.addAttribute("typeOfAccessList", TypeOfAccess.values());
+        model.addAttribute("typeOfAreaList", TypeOfArea.values());
+        model.addAttribute("orientationList", Orientation.values());
+        List<Municipality> municipalityList = municipalityDao.getMunicipalities();
+        List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
+                .map(Municipality::getName)
+                .collect(Collectors.toList());
+        model.addAttribute("municipalityList", namesMunicipalities);
         return "naturalArea/update";
     }
 

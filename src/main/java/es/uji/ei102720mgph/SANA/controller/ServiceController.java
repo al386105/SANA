@@ -2,6 +2,8 @@ package es.uji.ei102720mgph.SANA.controller;
 
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
+import es.uji.ei102720mgph.SANA.enums.Temporality;
+import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/service")
@@ -26,7 +31,7 @@ public class ServiceController {
     // Operació llistar
     @RequestMapping("/list")
     public String listServices(Model model) {
-        model.addAttribute("service", serviceDao.getServices());
+        model.addAttribute("services", serviceDao.getServices());
         return "service/list";
     }
 
@@ -34,6 +39,7 @@ public class ServiceController {
     @RequestMapping(value="/add")
     public String addService(Model model) {
         model.addAttribute("service", new Service());
+        model.addAttribute("temporalityList", Temporality.values());
         return "service/add";
     }
 
@@ -50,8 +56,8 @@ public class ServiceController {
     // Operació actualitzar
     @RequestMapping(value="/update/{nameOfService}", method = RequestMethod.GET)
     public String editService(Model model, @PathVariable String nameOfService) {
-
         model.addAttribute("service", serviceDao.getService(nameOfService));
+        model.addAttribute("temporalityList", Temporality.values());
         return "service/update";
     }
 

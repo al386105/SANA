@@ -1,6 +1,6 @@
 package es.uji.ei102720mgph.SANA.model;
 
-public class MunicipalManager extends SanaUser {
+public class MunicipalManager extends SanaUser implements Comparable<MunicipalManager> {
     private String username;
     private String password;
     private String municipality;
@@ -32,6 +32,10 @@ public class MunicipalManager extends SanaUser {
     //Si el password es readOnly, no se debería poder hacer un set ¿no?
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int compareTo(MunicipalManager altre) {
+        return this.getUsername().compareTo(altre.getUsername());
     }
 
     @Override

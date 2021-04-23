@@ -22,7 +22,7 @@ public class TemporalServiceDao {
     public void addTemporalService(TemporalService temporalService) {
         jdbcTemplate.update(
                 "INSERT INTO TemporalService VALUES(?, ?, ?, ?, ?, ?, ?)",
-                temporalService.getOpenningDays(), temporalService.getBeginningTime(), temporalService.getEndTime(),
+                temporalService.getOpeningDays(), temporalService.getBeginningTime(), temporalService.getEndTime(),
                 temporalService.getBeginningDate(), temporalService.getEndDate(), temporalService.getService(),
                 temporalService.getNaturalArea());
     }
@@ -35,7 +35,7 @@ public class TemporalServiceDao {
     public void updateTemporalService(TemporalService temporalService) {
         jdbcTemplate.update("UPDATE TemporalService SET openingDays = ?, beginningTime = ?, endTime = ?, beginningDate = ?, " +
                         "endDate = ? WHERE service =? AND naturalArea = ?",
-                temporalService.getOpenningDays(), temporalService.getBeginningTime(), temporalService.getEndTime(),
+                temporalService.getOpeningDays(), temporalService.getBeginningTime(), temporalService.getEndTime(),
                 temporalService.getBeginningDate(), temporalService.getEndDate(), temporalService.getService(), temporalService.getNaturalArea());
     }
 

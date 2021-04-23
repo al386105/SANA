@@ -11,6 +11,7 @@ public class Email {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private String sanaUser;
+    private static int contador = 1;
 
     public Email(){
         super();
@@ -62,6 +63,18 @@ public class Email {
 
     public void setSanaUser(String sanaUser) {
         this.sanaUser = sanaUser;
+    }
+
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        Email.contador = contador;
+    }
+
+    public static void incrementaContador() {
+        Email.contador++;
     }
 
     @Override

@@ -1,13 +1,17 @@
 package es.uji.ei102720mgph.SANA.dao;
 
+import es.uji.ei102720mgph.SANA.model.Address;
 import es.uji.ei102720mgph.SANA.model.TimeSlot;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 @Repository
@@ -20,9 +24,22 @@ public class TimeSlotDao {
     }
 
     public void addTimeSlot(TimeSlot ts) {
-        jdbcTemplate.update(
-                "INSERT INTO TimeSlot VALUES(?, ?, ?, ?, ?, ?)",
-                ts.getId(), ts.getBeginningDate(), ts.getEndDate(), ts.getBeginningTime(), ts.getEndTime(), ts.getNaturalArea());
+        boolean excepcion;
+        Formatter fmt;
+        do {
+            try {
+                fmt = new Formatter();
+                jdbcTemplate.update(
+                        "INSERT INTO TimeSlot VALUES(?, ?, ?, ?, ?, ?)",
+                        "" + fmt.format("%06d", TimeSlot.getContador()), ts.getBeginningDate(), ts.getEndDate(),
+                        ts.getBeginningTime(), ts.getEndTime(), ts.getNaturalArea());
+                excepcion = false;
+            } catch (DuplicateKeyException e) {
+                excepcion = true;
+            } finally {
+                TimeSlot.incrementaContador();
+            }
+        } while (excepcion);
     }
 
     public void deleteTimeSlot(String id) {

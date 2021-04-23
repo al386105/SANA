@@ -7,7 +7,10 @@
 </head>
 <body>
 <h1>Lista de areas naturales</h1>
-<table class="table table-striped">
+<div th:if="${#lists.isEmpty(naturalAreas)}">
+    ¡No has añadido todavía ningún área natural!
+</div>
+<table th:unless="${#lists.isEmpty(naturalAreas)}" class="table table-striped">
     <thead>
     <tr>
         <th scope="col">Nombre</th>
@@ -20,7 +23,7 @@
     </thead>
 
     <tbody>
-    <tr th:each="naturalArea: ${naturalAreas}">
+    <tr th:each="naturalArea: ${#lists.sort(naturalAreas)}">
 
         <td th:text="${naturalArea.name}"></td>
         <td th:text="${naturalArea.typeOfAccess}"></td>

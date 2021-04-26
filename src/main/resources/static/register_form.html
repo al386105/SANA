@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:display="http://www.w3.org/1999/xhtml"
+      xmlns:margin="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8">
@@ -27,81 +28,74 @@
     <div class="container">
         <h1>SANA</h1>
         <hr class="star-light">
+        <img src="assets/img/perfil.png" alt="Register picture" width="200" height="200" >
     </div>
-</header>
-<section id="inicio_sesion" class="inicio_sesion">
-    <div class="container">
-        <div class="container">
-            <div class="abs-center" >
-                <h3 style="text-align:center;">Bienvenido al registro de SANA</h3>
-                <form class="form-center" action="#" th:action="@{/registeredCitizen/add} "
-                      th:object="${registeredCitizen}" method="post" style=" background-color: #e8e6e8!important; ;position: relative; z-index: 1; background: #FFFFFF; max-width: 800px; margin: 0 auto 50px; padding: 70px; text-align: center;">
+    <h3 style="text-align:center;">Bienvenido al registro de SANA</h3>
+    <form class="form-center" action="#" th:action="@{/registeredCitizen/add} "
+          th:object="${registeredCitizen}" method="post" style=" background-color: #e8e6e8!important; ;position: relative; z-index: 1; background: #FFFFFF; max-width: 800px; margin: 0 auto 50px; padding: 70px; text-align: center;">
 
-                    <div class="form-group row">
-                        <label class="control-label col-sm-2" for="email">Email:</label>
-                        <div class="col-sm-4">
-                            <input type="text" required class="form-control" id="email" th:field="*{email}" />
-                        </div>
-                        <label class="control-label col-sm-2" for="name">Nombre:</label>
-                        <div class="col-sm-4">
-                            <input type="text" required class="form-control" id="name" th:field="*{name}" />
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="control-label col-sm-2" for="surname">Apellidos:</label>
-                        <div class="col-sm-4">
-                            <input type="text" required class="form-control" id="surname" th:field="*{surname}" />
-                        </div>
-                        <label class="control-label col-sm-2" for="dateOfBirth">Fecha de nacimiento:</label>
-                        <div class="col-sm-4">
-                            <input type="date" placeholder="yyyy-MM-dd" required class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="control-label col-sm-2" for="idNumber">DNI/NIE:</label>
-                        <div class="col-sm-4">
-                            <input type="text" required class="form-control" id="idNumber" th:field="*{idNumber}" />
-                        </div>
-                        <label class="control-label col-sm-2" for="mobilePhoneNumber">Número de teléfono:</label>
-                        <div class="col-sm-4">
-                            <input type="text" required class="form-control" id="mobilePhoneNumber" th:field="*{mobilePhoneNumber}" />
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="control-label col-sm-2" for="citizenCode">Codigo de ciudadano:</label>
-                        <div class="col-sm-4">
-                            <input type="text" required class="form-control" id="citizenCode" th:field="*{citizenCode}"/>
-                        </div>
-                        <label class="control-label col-sm-2" for="pin">Pin:</label>
-                        <div class="col-sm-4">
-                            <input type="password" required class="form-control" id="pin" th:field="*{pin}"/>
-                        </div>
-                    </div>
-
-
-
-                    <div class="form-group row">
-                        <label class="control-label col-sm-2" for="addressId">Id dirección:</label>
-                        <div class="col-sm-4">
-                            <input type="text" required class="form-control" id="addressId" th:field="*{addressId}"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group row" >
-                        <div class="col-sm-offset-2 col-sm-4">
-                            <a href="SANA.html"><button type="button" class="btn btn-primary">Volver</button></a>
-                            <button type="submit" class="btn btn-success">Registrarse</button>
-                        </div>
-                    </div>
-
-                </form>
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="email">Email:</label>
+            <div class="col-sm-4">
+                <input type="text" required class="form-control" id="email" th:field="*{email}" />
+            </div>
+            <label class="control-label col-sm-2" for="name">Nombre:</label>
+            <div class="col-sm-4">
+                <input type="text" required class="form-control" id="name" th:field="*{name}" />
             </div>
         </div>
-    </div>
-</section>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="surname">Apellidos:</label>
+            <div class="col-sm-4">
+                <input type="text" required class="form-control" id="surname" th:field="*{surname}" />
+            </div>
+            <label class="control-label col-sm-2" for="dateOfBirth">Fecha de nacimiento:</label>
+            <div class="col-sm-4">
+                <input type="date" placeholder="yyyy-MM-dd" required class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="idNumber">DNI/NIE:</label>
+            <div class="col-sm-4">
+                <input type="text" required class="form-control" id="idNumber" th:field="*{idNumber}" />
+            </div>
+            <label class="control-label col-sm-2" for="mobilePhoneNumber">Número de teléfono:</label>
+            <div class="col-sm-4">
+                <input type="text" required class="form-control" id="mobilePhoneNumber" th:field="*{mobilePhoneNumber}" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="citizenCode">Codigo de ciudadano:</label>
+            <div class="col-sm-4">
+                <input type="text" required class="form-control" id="citizenCode" th:field="*{citizenCode}"/>
+            </div>
+            <label class="control-label col-sm-2" for="pin">Pin:</label>
+            <div class="col-sm-4">
+                <input type="password" required class="form-control" id="pin" th:field="*{pin}"/>
+            </div>
+        </div>
+
+
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="addressId">Id dirección:</label>
+            <div class="col-sm-4">
+                <input type="text" required class="form-control" id="addressId" th:field="*{addressId}"/>
+            </div>
+        </div>
+
+        <div class="form-group row" >
+            <div class="col-sm-offset-2 col-sm-4">
+                <a href="SANA.html"><button type="button" class="btn btn-primary">Volver</button></a>
+                <button type="submit" class="btn btn-success">Registrarse</button>
+            </div>
+        </div>
+
+    </form>
+</header>
 
 <footer class="text-center footer">
     <div class="container">

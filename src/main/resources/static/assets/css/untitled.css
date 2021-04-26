@@ -109,3 +109,32 @@ body {
   color: #634133;
 }
 
+
+
+.imgWrapper {
+    font-size: 0;
+    text-align: center;
+}
+.imgWrapper .imgRedonda {
+    display: inline-block;
+    font-size: inherit;
+    border-radius:50%;
+}
+
+.imgRedonda img {
+    width: 200px;
+    height: 200px;
+    border-radius:50%;
+    margin: 20px;
+    -webkit-transition: all 1.0s ease-out;
+    -moz-transition: all 1.0s ease;
+    -ms-transition: all 1.0s ease;
+}
+
+.imgRedonda img:hover {
+    filter: brightness(50%);
+    -webkit-transform: rotate(-360deg);
+    -moz-transform: rotate(-360deg);
+    -ms-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+}

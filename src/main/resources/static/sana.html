@@ -109,18 +109,16 @@
             <hr class="star-dark mb-5">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
-                    <form id="contactForm" name="sentMessage" novalidate="novalidate">
+                    <form id="contactForm" name="sentMessage" novalidate="novalidate" action="#" th:action="@{/email/add}"
+                          th:object="${email}" method="post">
                         <div class="control-group">
-                            <div class="form-group floating-label-form-group controls mb-0 pb-2"><label>Nombre</label><input class="form-control" type="text" id="name" required="" placeholder="Nombre"><small class="form-text text-danger help-block"></small></div>
+                            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Email</label><input class="form-control" type="email" id="sanaUser" style="background-color: #e8e6e8" required="" placeholder="Email "><small class="form-text text-danger help-block"></small></div>
                         </div>
                         <div class="control-group">
-                            <div class="form-group floating-label-form-group controls mb-0 pb-2"><label>Email</label><input class="form-control" type="email" id="mail" required="" placeholder="Email "><small class="form-text text-danger help-block"></small></div>
+                            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Asunto</label><input class="form-control" type="tel" id="subject" style="background-color: #e8e6e8" required="" placeholder="Asunto"><small class="form-text text-danger help-block"></small></div>
                         </div>
                         <div class="control-group">
-                            <div class="form-group floating-label-form-group controls mb-0 pb-2"><label>Número de teléfono</label><input class="form-control" type="tel" id="phone" required="" placeholder="Número Teléfono"><small class="form-text text-danger help-block"></small></div>
-                        </div>
-                        <div class="control-group">
-                            <div class="form-group floating-label-form-group controls mb-5 pb-2"><textarea class="form-control" id="message" required="" placeholder="Mensaje" rows="5"></textarea><small class="form-text text-danger help-block"></small></div>
+                            <div class="form-group floating-label-form-group controls mb-5 pb-2"><textarea class="form-control" id="textBody" style="background-color: #e8e6e8" required="" placeholder="Mensaje" rows="5"></textarea><small class="form-text text-danger help-block"></small></div>
                         </div>
                         <div id="success"></div>
                         <div class="form-group"><button class="btn btn-primary btn-xl" id="sendMessageButton" type="submit">Enviar</button></div>
@@ -153,7 +151,7 @@
         </div>
     </footer>
     <div class="text-center text-white copyright py-4">
-        <div class="container"><small style="background-color:white">Copyright ©&nbsp;SANA 2021</small></div>
+        <div class="container"><small style="color:white">Copyright ©&nbsp;SANA 2021</small></div>
     </div>
 
     <!--

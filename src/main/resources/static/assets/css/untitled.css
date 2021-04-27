@@ -110,3 +110,10 @@ body {
     color: #634133;
 }
 
+.inputcolorfondo {
+    background-color: #e8e6;
+}
+
+.floating-label-form-group-with-value label {
+    color: #697f40;
+}

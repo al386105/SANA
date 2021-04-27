@@ -42,7 +42,13 @@ public class EmailController {
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "email/add"; //tornem al formulari per a que el corregisca
-        emailDao.addEmail(email); //usem el dao per a inserir el email
+        //emailDao.addEmail(email); //usem el dao per a inserir el email
+        System.out.println("ID: " + email.getId());
+        System.out.println("Sender: " + email.getSender());
+        System.out.println("Date: " + email.getDate());
+        System.out.println("SanaUser: " + email.getSanaUser());
+        System.out.println("Subject: " + email.getSubject());
+        System.out.println("Body: " + email.getTextBody());
         return "redirect:list"; //redirigim a la lista per a veure el email afegit, post/redirect/get
     }
 

@@ -5,15 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>SANA</title>
+
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
     <link rel="icon" href="assets/img/LOGO_hoja.png" type="image/png">
+
 </head>
 
 <body id="page-top">
+
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
         <div class="container"><a class="navbar-brand js-scroll-trigger" href="#page-top">SANA</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -26,7 +29,7 @@
         </div>
     </nav>
     <header class="text-center text-white bg-primary masthead">
-        <div class="container"><img class="img-fluid d-block mx-auto mb-5" src="../../static/assets/img/LOGO_mono.png">
+        <div class="container"><img class="img-fluid d-block mx-auto mb-5" src="assets/img/LOGO_mono.png">
             <h2 style="font-size:40px">¡Bienvenido a SANA!</h2>
             <h2>Safe Acces to Natural Areas</h2>
             <hr class="star-light">
@@ -37,19 +40,18 @@
         </div>
     </header>
 
-    <!-- quitamos lo de que las imagenes giren, pero me ha hecho gracia -->
     <div class="imgWrapper">
         <div class="imgRedonda">
-            <img src="../../static/assets/img/foto_index_1_copia.jpg"/>
+            <img src="assets/img/foto_index_1_copia.jpg"/>
         </div>
         <div class="imgRedonda">
-            <img src="../../static/assets/img/foto_index_2_copia.jpg"/>
+            <img src="assets/img/foto_index_2_copia.jpg"/>
         </div>
         <div class="imgRedonda">
-            <img src="../../static/assets/img/foto_index_3_copia.jpg"/>
+            <img src="assets/img/foto_index_3_copia.jpg"/>
         </div>
     </div>
-
+    <!--
     <section class="text-white bg-primary mb-0" id="natural_areas">
         <div class="container">
             <h2 class="text-uppercase text-center text-white">Áreas Naturales</h2>
@@ -78,12 +80,13 @@
             </table>
         </div>
     </section>
+    -->
 
     <section id="inicio_sesion" class="inicio_sesion">
         <div class="container">
             <h2 class="text-uppercase text-center text-secondary">Iniciar Sesión</h2>
             <hr class="star-dark mb-5">
-            <img src="../../static/assets/img/perfil.png" style="display:block; position: relative; margin:auto; width: 170px; height: 170px;">
+            <img src="assets/img/perfil.png" style="display:block; position: relative; margin:auto; width: 170px; height: 170px;">
             <div class="container">
                 <div class="abs-center">
                     <form action="#" class="border p-3 form" style=" background-color: #e8e6e8!important; ;position: relative;
@@ -97,28 +100,29 @@
                             <input type="password" name="password" id="password" class="form-control">
                         </div>
                         <button type="submit" class="btn btn-primary">Entrar</button>
-                        <a href="../../static/register_form.html" type="submit" class="btn btn-primary">Registrarse</a>
+                        <a href="register_form.html" type="submit" class="btn btn-primary">Registrarse</a>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+
     <section id="contact">
         <div class="container">
             <h2 class="text-uppercase text-center text-secondary mb-0">Contáctanos</h2>
             <hr class="star-dark mb-5">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
-                    <form id="contactForm" novalidate="novalidate" th:action="@{/add}"
+                    <form id="contactForm" novalidate="novalidate" th:action="@{/enviarCorreo}"
                           th:object="${email}" method="post">
                         <div class="control-group">
-                            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Email</label><input class="form-control" type="email" id="sanaUser" style="background-color: #e8e6e8" required="" placeholder="Email "><small class="form-text text-danger help-block"></small></div>
+                            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Email</label><input class="form-control" type="email" id="sanaUser" th:field="*{sanaUser}" style="background-color: #e8e6e8" required="" placeholder="Email "><small class="form-text text-danger help-block"></small></div>
                         </div>
                         <div class="control-group">
-                            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Asunto</label><input class="form-control" type="tel" id="subject" style="background-color: #e8e6e8" required="" placeholder="Asunto"><small class="form-text text-danger help-block"></small></div>
+                            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Asunto</label><input class="form-control" type="tel" id="subject" th:field="*{subject}" style="background-color: #e8e6e8" required="" placeholder="Asunto"><small class="form-text text-danger help-block"></small></div>
                         </div>
                         <div class="control-group">
-                            <div class="form-group floating-label-form-group controls mb-5 pb-2"><textarea class="form-control" id="textBody" style="background-color: #e8e6e8" required="" placeholder="Mensaje" rows="5"></textarea><small class="form-text text-danger help-block"></small></div>
+                            <div class="form-group floating-label-form-group controls mb-5 pb-2"><textarea class="form-control" id="textBody" th:field="*{textBody}" style="background-color: #e8e6e8" required="" placeholder="Mensaje" rows="5"></textarea><small class="form-text text-danger help-block"></small></div>
                         </div>
                         <div id="success"></div>
                         <div class="form-group"><button class="btn btn-primary btn-xl" id="sendMessageButton" type="submit">Enviar</button></div>
@@ -153,6 +157,8 @@
     <div class="text-center text-white copyright py-4">
         <div class="container"><small style="color:white">Copyright ©&nbsp;SANA 2021</small></div>
     </div>
+
+
 
     <!--
     <div class="d-lg-none scroll-to-top position-fixed rounded"><a class="text-center text-white d-block js-scroll-trigger rounded" href="#page-top"><i class="fa fa-chevron-up"></i></a></div>
@@ -272,10 +278,11 @@
     </div>
     -->
 
-    <script src="../../static/assets/js/jquery.min.js"></script>
-    <script src="../../static/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    <script src="../../static/assets/js/freelancer.js"></script>
+    <script src="assets/js/freelancer.js"></script>
+
 </body>
 
 </html>

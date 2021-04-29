@@ -125,3 +125,18 @@ hr.barra-normal {
     border-color: #1b2e0f;
     color: #1b2e0f;
 }
+
+.imgWrapper {
+    text-align: center;
+}
+
+.imgWrapper .imgRedonda {
+    display: inline-block;
+}
+
+.imgRedonda img {
+    height: auto;
+    width: 250px;
+    border-radius:125px;
+    margin: 20px;
+}

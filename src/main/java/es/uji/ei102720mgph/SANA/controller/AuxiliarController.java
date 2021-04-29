@@ -39,7 +39,6 @@ public class AuxiliarController {
         return "redirect:inicio"; //redirigim a la lista per a veure el email afegit, post/redirect/get
     }
 
-
     public void enviarMail(String destinatario, String asunto, String cuerpo) {
         String remitente = "sana.espais.naturals";  //Para la dirección nomcuenta@gmail.com
 
@@ -53,7 +52,6 @@ public class AuxiliarController {
 
         Session session = Session.getDefaultInstance(props);
         MimeMessage message = new MimeMessage(session);
-
 
         try {
             message.setFrom(new InternetAddress(remitente));
@@ -69,5 +67,10 @@ public class AuxiliarController {
         catch (MessagingException me) {
             me.printStackTrace();   //Si se produce un error
         }
+    }
+
+    @RequestMapping("section/managers")
+    public String sectionManagers(Model model) {
+        return "section/managers";
     }
 }

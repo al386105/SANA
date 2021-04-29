@@ -24,7 +24,7 @@
     <tbody>
     <tr th:each="service: ${#lists.sort(services)}">
         <td th:text="${service.nameOfService}"></td>
-        <td th:text="${service.temporality}"></td>
+        <td th:text="${service.temporality.descripcion}"></td>
         <td th:text="${service.description}"></td>
         <td th:text="${service.hiringPlace}"></td>
 

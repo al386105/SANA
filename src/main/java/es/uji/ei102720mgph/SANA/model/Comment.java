@@ -4,7 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-public class Comment {
+public class Comment implements Comparable<Comment> {
     private String commentId;
     private String commentBody;
     private Integer score;
@@ -76,6 +76,10 @@ public class Comment {
 
     public static void incrementaContador() {
         Comment.contador++;
+    }
+
+    public int compareTo(Comment altre) {
+        return -this.getDate().compareTo(altre.getDate());
     }
 
     @Override

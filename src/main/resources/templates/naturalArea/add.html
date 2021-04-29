@@ -15,27 +15,47 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="name">Nombre:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="name" th:field="*{name}" />
+                <input type="text" required maxlength="30" class="form-control" id="name" th:field="*{name}" />
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="typeOfAccess">Acceso:</label>
+            <label class="control-label col-sm-2">Acceso:</label>
             <div class="col-sm-4">
-                <select class="form_control" required id="typeOfAccess" type="text" th:field="*{typeOfAccess}">
-                    <option th:each="typeOfAccessvalue : ${typeOfAccessList}"
-                            th:value="${typeOfAccessvalue}"
-                            th:text="${typeOfAccessvalue}"></option>
+                <span style="margin:6px;" th:each="typeOfAccessvalue : ${typeOfAccessList}">
+                   <input type ="radio" required th:field ="*{typeOfAccess}" th:value ="${typeOfAccessvalue}" />
+                   <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}" />
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="geographicalLocation">Coordenadas ubicación:</label>
+            <div class="col-sm-4">
+                <input type="text" required maxlength="40" placeholder="39º51'52.0''N 0º03'54.2''W" class="form-control" id="geographicalLocation" th:field="*{geographicalLocation}" />
+            </div>
+        </div>
+
+            <!--
+            <label class="control-label col-sm-2" for="latitud">Latitud:</label>
+            <div class="col-sm-4">
+                <input type="text" placeholder="39º51'52.0''"required class="form-control" id="latitud" th:field="*{latitud}" />
+                <td><select class="form_control" type="text" th:field="*{latitudOrientacion}">
+                    <option value="N">Norte (N)</option>
+                    <option value="S">Sur (S)</option>
                 </select>
+                </td>
             </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="geographicalLocation">Localización (coordenadas):</label>
+            <label class="control-label col-sm-2" for="longitud">Longitud:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="geographicalLocation" th:field="*{geographicalLocation}" />
+                <input type="text" placeholder="0º03'54.2''" required class="form-control" id="longitud" th:field="*{longitud}" />
+                <td><select class="form_control" type="text" th:field="*{longitudOrientacion}">
+                    <option value="E">Este (E)</option>
+                    <option value="W">Oeste (W)</option>
+                </select>
+                </td>
             </div>
-        </div>
+            -->
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="typeOfArea">Tipo de area:</label>
@@ -43,7 +63,7 @@
                 <select class="form_control" required id="typeOfArea" type="text" th:field="*{typeOfArea}">
                     <option th:each="typeOfAreavalue : ${typeOfAreaList}"
                             th:value="${typeOfAreavalue}"
-                            th:text="${typeOfAreavalue}"></option>
+                            th:text="${typeOfAreavalue.descripcion}"></option>
                 </select>
             </div>
         </div>
@@ -65,25 +85,25 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="physicalCharacteristics">Características físicas:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="physicalCharacteristics" th:field="*{physicalCharacteristics}" />
+                <input type="text" required maxlength="60" class="form-control" placeholder="El suelo es arena, roca..." id="physicalCharacteristics" th:field="*{physicalCharacteristics}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="description">Descripción:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="description" th:field="*{description}" />
+                <textarea rows="3" required maxlength="100" class="form-control" placeholder="Paraje natural de 3180 hectáreas..."
+                          id="description" th:field="*{description}"></textarea>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="orientation">Orientación:</label>
+            <label class="control-label col-sm-2">Orientación:</label>
             <div class="col-sm-4">
-                <select class="form_control" required id="orientation" type="text" th:field="*{orientation}">
-                    <option th:each="orientationvalue : ${orientationList}"
-                            th:value="${orientationvalue}"
-                            th:text="${orientationvalue}"></option>
-                </select>
+                <span style="margin:6px;" th:each="orientationvalue : ${orientationList}">
+                   <input type ="radio" required th:field ="*{orientation}" th:value ="${orientationvalue}" />
+                   <label th:for="${#ids.prev('orientation')}" th:text ="${orientationvalue.descripcion}" />
+                </span>
             </div>
         </div>
 
@@ -105,10 +125,12 @@
             <label class="control-label col-sm-2" for="municipality">Municipio:</label>
             <div class="col-sm-4">
                 <select class="form_control" required id="municipality" type="text" th:field="*{municipality}">
+                    <option value="No seleccionado">Selecciona un municipio</option>
                     <option th:each="municipalityvalue : ${municipalityList}"
                             th:value="${municipalityvalue}"
                             th:text="${municipalityvalue}"></option>
                 </select>
+                <td th:if="${#fields.hasErrors('municipality')}" th:errors="*{municipality}"></td>
             </div>
         </div>
 

@@ -5,12 +5,10 @@ import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
 import es.uji.ei102720mgph.SANA.enums.Orientation;
-import es.uji.ei102720mgph.SANA.enums.Temporality;
 import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
-import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -74,6 +72,9 @@ public class NaturalAreaController {
     @RequestMapping(value="/add", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("naturalArea") NaturalArea naturalArea,
                                    BindingResult bindingResult) {
+        NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
+        naturalAreaValidator.validate(naturalArea, bindingResult);
+
         if (bindingResult.hasErrors())
             return "naturalArea/add"; //tornem al formulari per a que el corregisca
         naturalAreaDao.addNaturalArea(naturalArea); //usem el dao per a inserir el naturalArea

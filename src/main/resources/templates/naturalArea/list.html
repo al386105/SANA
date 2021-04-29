@@ -26,7 +26,7 @@
     <tr th:each="naturalArea: ${#lists.sort(naturalAreas)}">
 
         <td th:text="${naturalArea.name}"></td>
-        <td th:text="${naturalArea.typeOfAccess}"></td>
+        <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
         <td th:text="${naturalArea.geographicalLocation}"></td>
 
         <td><a th:href="@{/naturalArea/get/{naturalArea}(naturalArea=${naturalArea.name})}">

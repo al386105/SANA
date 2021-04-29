@@ -117,3 +117,11 @@ body {
 .floating-label-form-group-with-value label {
     color: #697f40;
 }
+
+hr.barra-normal {
+    height: 3px;
+    width: 22%;
+    background-color: #1b2e0f;
+    border-color: #1b2e0f;
+    color: #1b2e0f;
+}

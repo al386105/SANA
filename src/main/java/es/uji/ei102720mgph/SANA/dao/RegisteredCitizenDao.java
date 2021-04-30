@@ -50,9 +50,8 @@ public class RegisteredCitizenDao {
                 TypeOfUser.registeredCitizen.name(), registeredCitizen.getEmail());
     }
 
-    public  RegisteredCitizen getRegisteredCitizen(String email){
+    public RegisteredCitizen getRegisteredCitizen(String email){
         try{
-            System.out.println(email);
             return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen " +
                             "JOIN SanaUser ON RegisteredCitizen.email = SanaUser.email " +
                             "WHERE SanaUser.email = ? ",

@@ -77,21 +77,4 @@ public class ServiceController {
         serviceDao.deleteService(nameOfService);
         return "redirect:../list";
     }
-
-    // Operació asignar servei a espai natural
-    @RequestMapping(value="/assign")
-    public String assignService(Model model) {
-        model.addAttribute("service", new Service());
-        return "service/assign";
-    }
-
-    /*
-    @RequestMapping(value="/assign", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("service") Service service,
-                                   BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "service/assign"; //tornem al formulari per a que el corregisca
-        serviceDao.addService(service); //usem el dao per a inserir el address
-        return "redirect:list"; //redirigim a la lista per a veure el service afegit, post/redirect/get
-    }*/
 }

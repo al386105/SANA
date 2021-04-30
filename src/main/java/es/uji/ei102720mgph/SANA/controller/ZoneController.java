@@ -30,9 +30,11 @@ public class ZoneController {
     }
 
     // Operació crear
-    @RequestMapping(value="/add")
-    public String addZone(Model model) {
-        model.addAttribute("zone", new Zone());
+    @RequestMapping(value="/add/{naturalArea}")
+    public String addZone(Model model, @PathVariable String naturalArea) {
+        Zone zone = new Zone();
+        zone.setNaturalArea(naturalArea);
+        model.addAttribute("zone", zone);
         return "zone/add";
     }
 
@@ -42,8 +44,9 @@ public class ZoneController {
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "zone/add"; //tornem al formulari per a que el corregisca
-        zoneDao.addZone(zone); //usem el dao per a inserir el zone
-        return "redirect:list"; //redirigim a la lista per a veure el zone afegit, post/redirect/get
+        String naturalAreaName = zone.getNaturalArea();
+        zoneDao.addZone(zone);
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName; //redirigim a la lista per a veure el zone afegit
     }
 
     // Operació actualitzar
@@ -59,8 +62,9 @@ public class ZoneController {
                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "zone/update";
+        String naturalAreaName = zone.getNaturalArea();
         zoneDao.updateZone(zone);
-        return "redirect:list";
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
     // Operacio de llistar totes les zones d'un area natural
@@ -73,8 +77,10 @@ public class ZoneController {
     // Operació esborrar
     @RequestMapping(value="/delete/{id}")
     public String processDelete(@PathVariable String id) {
+        Zone zone = zoneDao.getZone(id);
+        String naturalAreaName = zone.getNaturalArea();
         zoneDao.deleteZone(id);
-        return "redirect:../list";
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }
 

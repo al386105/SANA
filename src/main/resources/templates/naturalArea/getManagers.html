@@ -3,12 +3,13 @@
 <head>
     <title>Area natural</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
 </head>
 <body>
+
 <div class="container">
     <h1><span th:text="${naturalArea.name}"> </span></h1>
+    <br>
     <ul>
         <li><b>Municipio:</b> <span th:text="${naturalArea.municipality}"></span></li>
         <li><b>Acceso:</b> <span th:text="${naturalArea.typeOfAccess.descripcion}"></span></li>
@@ -23,33 +24,49 @@
             <li><b>Restringido hasta:</b> <span th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></span></li>
             <li><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"></span></li>
         </td>
-    </ul>
+    </ul><br>
+    <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
+        <button type="button" class="btn btn-warning">Edita</button> </a>
+    </td>
 
-    <br><br>
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
-    <h3>Lista de Zonas</h3>
-    <div th:if="${#lists.isEmpty(zones)}">
-        <p><b>¡Este área natural no es restringida y por tanto no tiene zonas!</b></p>
+    <div th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
+        <h3>Lista de Zonas</h3>
+        <!--<div th:if="${#lists.isEmpty(zones)">
+            <p><b>¡Este área natural todavía no tiene zonas!</b></p>
+        </div>-->
+        <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Número zona</th>
+                <th scope="col">Letra</th>
+                <th scope="col">Capacidad máx.</th>
+                <th scope="col">Fecha creación</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="zone: ${#lists.sort(zones)}">
+                <td th:text="${zone.zoneNumber}"></td>
+                <td th:text="${zone.letter}"></td>
+                <td th:text="${zone.maximumCapacity}"></td>
+                <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
+                <td><a th:href="@{/zone/update/{id}(id=${zone.id})}">
+                    <button type="button" class="btn btn-warning">Edita</button>
+                </a>
+                </td>
+                <td><a th:href="@{/zone/delete/{id}(id=${zone.id})}">
+                    <button type="button" class="btn btn-danger">Elimina</button>
+                </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <td><a th:href="@{/zone/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-success">Añadir zona</button>
+        </a></td>
+        <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
     </div>
-    <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Número zona</th>
-            <th scope="col">Letra</th>
-            <th scope="col">Capacidad máx.</th>
-            <th scope="col">Fecha creación</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="zone: ${#lists.sort(zones)}">
-            <td th:text="${zone.zoneNumber}"></td>
-            <td th:text="${zone.letter}"></td>
-            <td th:text="${zone.maximumCapacity}"></td>
-            <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
-        </tr>
-        </tbody>
-    </table>
-    <br><br>
 
     <h3>Comentarios</h3>
     <div th:if="${#lists.isEmpty(comments)}">
@@ -73,14 +90,12 @@
         </tr>
         </tbody>
     </table>
-    <a href="/comment/add"><button type="button" class="btn btn-success">Añadir Comentario</button></a>
-    <a href="/naturalArea/list"><button type="button" class="btn btn-primary">Volver</button></a>
 
-    <br><br><br>
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
     <h3>Servicios</h3>
     <div th:if="${#lists.isEmpty(services)}">
-        ¡Este área natural no tiene asignada ningún servicio!
+        <p><b>¡Este área natural no tiene asignada ningún servicio!</b></p>
     </div>
     <table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
         <thead>
@@ -99,12 +114,16 @@
             <td th:text="${service.temporality}"></td>
             <td th:text="${service.descripcion}"></td>
             <td th:text="${service.hiringPlace}"></td>
+            <td><a th:href="@{/service/delete/{id}(id=${service.nameOfService})}">
+                <button type="button" class="btn btn-danger">Eliminar asignación</button>
+            </a>
             </td>
         </tr>
         </tbody>
     </table>
+    <a href="/serviceDate/add"><button type="button" class="btn btn-success">Asignar nuevo servicio</button></a>
 
-    <br><br>
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
     <h3>Imágenes</h3>
     <div th:if="${#lists.isEmpty(pictures)}">
@@ -112,13 +131,19 @@
     </div>
     <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
         <tr th:each="picture: ${pictures}">
-            <td scope="row" img src="assets/img/${picture.picturePath}" alt="${picture.picturePath}"></td>
+            <td scope="row"><img style="width:300px; height:auto; border-radius:20px" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
+            <td style="vertical-align:middle;"><a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}">
+                <button type="button" class="btn btn-danger">Elimina</button>
+            </a>
+            </td>
         </tr>
         </tbody>
     </table>
+    <a href="/picture/add"><button type="button" class="btn btn-success">Añadir imagen</button></a><br><br>
 
-    <br><br>
-
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+    <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver al menú de gestores</button></a>
+    <br>
 </div>
 </body>
 </html>

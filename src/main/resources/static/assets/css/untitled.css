@@ -140,3 +140,9 @@ hr.barra-normal {
     border-radius:125px;
     margin: 20px;
 }
+
+.imgArea img {
+    width: 300px;
+    height: auto;
+    border-radius:100px;
+}

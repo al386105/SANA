@@ -1,14 +1,13 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-import es.uji.ei102720mgph.SANA.dao.CommentDao;
-import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
-import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
-import es.uji.ei102720mgph.SANA.dao.ZoneDao;
+import es.uji.ei102720mgph.SANA.dao.*;
 import es.uji.ei102720mgph.SANA.enums.Orientation;
 import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
+import es.uji.ei102720mgph.SANA.model.Picture;
+import es.uji.ei102720mgph.SANA.model.TimeSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +27,9 @@ public class NaturalAreaController {
     private ZoneDao zoneDao;
     private CommentDao commentDao;
     private MunicipalityDao municipalityDao;
+    private PictureDao pictureDao;
+    private ReservationDao reservationDao;
+    private TimeSlotDao timeSlotDao;
 
     @Autowired
     public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){ this.naturalAreaDao = naturalAreaDao; }
@@ -41,18 +43,57 @@ public class NaturalAreaController {
     @Autowired
     public void setMunicipalityDao(MunicipalityDao municipalityDao) { this.municipalityDao = municipalityDao; }
 
+    @Autowired
+    public void setPictureDao(PictureDao pictureDao) { this.pictureDao = pictureDao; }
+
+    @Autowired
+    public void setReservationDao(ReservationDao reservationDao) { this.reservationDao = reservationDao; }
+
+    @Autowired
+    public void setTimeSlotDao(TimeSlotDao timeSlotDao) { this.timeSlotDao = timeSlotDao; }
+
     @RequestMapping(value="/get/{naturalArea}")
     public String getNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea){
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
+        model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
         return "/naturalArea/get";
+    }
+
+    @RequestMapping(value="/getManagers/{naturalArea}")
+    public String getNaturalAreaManagers(Model model, @PathVariable("naturalArea") String naturalArea){
+        model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
+        model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
+        model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
+        model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
+        return "/naturalArea/getManagers";
+    }
+
+    @RequestMapping(value="/getReservations/{naturalArea}")
+    public String getReservationsNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea){
+        model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
+        model.addAttribute("reservation", reservationDao.getReservationsOfNaturalArea(naturalArea));
+        model.addAttribute("timeSlot", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
+        return "/naturalArea/getReservations";
     }
 
     @RequestMapping(value="/list")
     public String listNaturalAreas(Model model){
         model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
         return "naturalArea/list";
+    }
+
+    @RequestMapping(value="/listManagers")
+    public String listNaturalAreasManagers(Model model){
+        model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
+        return "naturalArea/listManagers";
+    }
+
+    @RequestMapping(value="/occupancy")
+    public String occupancyNaturalAreas(Model model){
+        model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
+        return "naturalArea/occupancy";
     }
 
     @RequestMapping(value="/add")
@@ -78,7 +119,7 @@ public class NaturalAreaController {
         if (bindingResult.hasErrors())
             return "naturalArea/add"; //tornem al formulari per a que el corregisca
         naturalAreaDao.addNaturalArea(naturalArea); //usem el dao per a inserir el naturalArea
-        return "redirect:list"; //redirigim a la lista per a veure la naturalArea afegida, post/redirect/get
+        return "redirect:listManagers"; //redirigim a la lista per a veure la naturalArea afegida, post/redirect/get
     }
 
     // Update
@@ -103,13 +144,13 @@ public class NaturalAreaController {
         if (bindingResult.hasErrors())
             return "naturalArea/update";
         naturalAreaDao.updateNaturalArea(naturalArea);
-        return "redirect:list";
+        return "redirect:/naturalArea/getManagers/" + naturalArea.getName();
     }
 
     // Operació esborrar
     @RequestMapping(value="/delete/{naturalArea}")
     public String processDelete(@PathVariable String naturalArea) {
         naturalAreaDao.deleteNaturalArea(naturalArea);
-        return "redirect:../list";
+        return "redirect:../listManagers";
     }
 }

@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class Reservation {
+public class Reservation implements Comparable<Reservation> {
     private int reservationNumber;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reservationDate;
@@ -126,6 +126,10 @@ public class Reservation {
     public static void incrementaContador() {
         Reservation.contador++;
     }
+
+    public int compareTo(Reservation altre) {
+            return -this.getReservationDate().compareTo(altre.getReservationDate());
+        }
 
     @Override
     public String toString() {

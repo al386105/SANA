@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Gestionar areas naturales</title>
+    <title>Gestionar áreas naturales</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
 </head>
 <body>
-<h1>Lista de areas naturales</h1>
+<h1>Lista de áreas naturales</h1>
 <div th:if="${#lists.isEmpty(naturalAreas)}">
-    ¡No se ha añadido todavía ningún área natural!
+    <p><b>¡No has añadido todavía ningún área natural!</b></p>
 </div>
 <table th:unless="${#lists.isEmpty(naturalAreas)}" class="table table-striped">
     <thead>
@@ -29,23 +29,22 @@
         <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
         <td th:text="${naturalArea.municipality}"></td>
 
-        <td><a th:href="@{/naturalArea/get/{naturalArea}(naturalArea=${naturalArea.name})}">
+        <td><a th:href="@{getManagers/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-primary">Más</button> </a>
         </td>
-
-        <!-- funcionalidad exclusiva para gestores municipales
-        <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
+        <td><a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-success">Gestión reservas</button> </a>
+        </td>
+        <td><a th:href="@{update/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-warning">Edita</button> </a>
         </td>
-        <td><a th:href="@{/naturalArea/delete/{naturalArea}(naturalArea=${naturalArea.name})}">
+        <td><a th:href="@{delete/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-danger">Esborra</button> </a>
         </td>
-        -->
-
     </tr>
     </tbody>
 </table>
 <a href="add"><button type="button" class="btn btn-success">Añadir area natural</button></a>
-<a href="../"><button type="button" class="btn btn-primary">Volver al menú principal</button></a>
+<a href="../section/managers"><button type="button" class="btn btn-primary">Volver al menú de gestores</button></a>
 </body>
 </html>

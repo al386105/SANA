@@ -20,7 +20,7 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#natural_areas">Áreas Naturales</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#inicio_sesion">Iniciar Sesión</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Contacto</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="inicio/contactanos">Contacto</a></li>
                 </ul>
             </div>
         </div>
@@ -111,36 +111,6 @@
         </div>
     </section>
 
-    <section id="contact">
-        <div class="container">
-            <h2 class="text-uppercase text-center text-secondary mb-0">Contáctanos</h2>
-            <br>
-            <hr class="barra-normal">
-            <br>
-            <br>
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <form id="contactForm" novalidate="novalidate" th:action="@{/enviarCorreo}" th:object="${email}" method="post">
-                        <div class="control-group">
-                            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Email</label>
-                                <input class="form-control" type="email" id="sanaUser" th:field="*{sanaUser}" style="background-color: #e8e6e8" required placeholder="Email "><small class="form-text text-danger help-block"></small>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Asunto</label>
-                                <input class="form-control" type="tel" id="subject" th:field="*{subject}" style="background-color: #e8e6e8" required placeholder="Asunto"><small class="form-text text-danger help-block"></small>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <div class="form-group floating-label-form-group controls mb-5 pb-2"><textarea class="form-control" id="textBody" th:field="*{textBody}" style="background-color: #e8e6e8" required placeholder="Mensaje" rows="5"></textarea><small class="form-text text-danger help-block"></small></div>
-                        </div>
-                        <div id="success"></div>
-                        <div class="form-group"><button class="btn btn-primary btn-xl" id="sendMessageButton" type="submit">Enviar</button></div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <footer class="text-center footer">
         <div class="container">
@@ -152,10 +122,10 @@
                 <div class="col-md-4 mb-5 mb-lg-0">
                     <h4 class="text-uppercase">Síguenos</h4><p>
                     <ul class="list-inline">
-                        <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button" href="#"><i class="fa fa-facebook fa-fw"></i></a></li>
-                        <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button" href="#"><i class="fa fa-google fa-fw"></i></a></li>
-                        <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button" href="#"><i class="fa fa-twitter fa-fw"></i></a></li>
-                        <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button" href="#"><i class="fa fa-instagram fa-fw"></i></a></li>
+                        <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button"><i class="fa fa-facebook fa-fw"></i></a></li>
+                        <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button"><i class="fa fa-google fa-fw"></i></a></li>
+                        <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button"><i class="fa fa-twitter fa-fw"></i></a></li>
+                        <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button"><i class="fa fa-instagram fa-fw"></i></a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">

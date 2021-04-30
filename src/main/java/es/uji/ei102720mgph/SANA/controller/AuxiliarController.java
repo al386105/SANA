@@ -19,15 +19,20 @@ public class AuxiliarController {
 
     @RequestMapping("inicio")
     public String redirigirSana(Model model) {
-        model.addAttribute("email", new Email());
         return "inicio/sana";
     }
 
-    @RequestMapping(value="/enviarCorreo", method=RequestMethod.POST)
+    @RequestMapping("inicio/contactanos")
+    public String redirigirContactanos(Model model) {
+        model.addAttribute("email", new Email());
+        return "inicio/contactanos";
+    }
+
+    @RequestMapping(value="inicio/contactanos/enviarCorreo", method=RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("email") Email email,
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors())
-            return "inicio/sana"; //tornem al formulari per a que el corregisca
+            return "inicio/contactanos"; //tornem al formulari per a que el corregisca
 
         String destinatario = email.getSanaUser();
         String asunto = email.getSubject();
@@ -36,7 +41,8 @@ public class AuxiliarController {
         // Envia correo electrónico
         enviarMail(destinatario, asunto, cuerpo);
 
-        return "redirect:inicio"; //redirigim a la lista per a veure el email afegit, post/redirect/get
+
+        return "redirect:../../inicio"; //redirigim a la lista per a veure el email afegit, post/redirect/get
     }
 
     public void enviarMail(String destinatario, String asunto, String cuerpo) {

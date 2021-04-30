@@ -1,6 +1,8 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
+import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +18,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ZoneController {
 
     private ZoneDao zoneDao;
+    private NaturalAreaDao naturalAreaDao;
 
     @Autowired
     public void setZoneDao(ZoneDao zoneDao) {
         this.zoneDao=zoneDao;
+    }
+
+    @Autowired
+    public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao) {
+        this.naturalAreaDao=naturalAreaDao;
     }
 
     // Operació llistar
@@ -45,8 +53,8 @@ public class ZoneController {
         if (bindingResult.hasErrors())
             return "zone/add"; //tornem al formulari per a que el corregisca
         String naturalAreaName = zone.getNaturalArea();
-        zoneDao.addZone(zone);
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName; //redirigim a la lista per a veure el zone afegit
+        zoneDao.addZone(zone); //usem el dao per a inserir el zone
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
     // Operació actualitzar

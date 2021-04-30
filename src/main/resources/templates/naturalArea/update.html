@@ -136,7 +136,11 @@
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver</button></a>
+                <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver al listado</button></a>
+                <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${naturalArea.name})}">
+                    <button type="submit" class="btn btn-primary">Volver al área natural</button>
+                </a>
+                <br>
                 <button type="submit" class="btn btn-success">Actualizar area natural</button>
             </div>
         </div>

@@ -119,7 +119,7 @@ public class NaturalAreaController {
         if (bindingResult.hasErrors())
             return "naturalArea/add"; //tornem al formulari per a que el corregisca
         naturalAreaDao.addNaturalArea(naturalArea); //usem el dao per a inserir el naturalArea
-        return "redirect:listManagers"; //redirigim a la lista per a veure la naturalArea afegida, post/redirect/get
+        return "redirect:/naturalArea/getManagers/" + naturalArea.getName();
     }
 
     // Update

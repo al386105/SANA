@@ -30,6 +30,7 @@ public class NaturalAreaController {
     private PictureDao pictureDao;
     private ReservationDao reservationDao;
     private TimeSlotDao timeSlotDao;
+    private ServiceDateDao serviceDateDao;
 
     @Autowired
     public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){ this.naturalAreaDao = naturalAreaDao; }
@@ -52,6 +53,9 @@ public class NaturalAreaController {
     @Autowired
     public void setTimeSlotDao(TimeSlotDao timeSlotDao) { this.timeSlotDao = timeSlotDao; }
 
+    @Autowired
+    public void setServiceDateDao(ServiceDateDao serviceDateDao) { this.serviceDateDao = serviceDateDao; }
+
     @RequestMapping(value="/get/{naturalArea}")
     public String getNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea){
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
@@ -67,6 +71,7 @@ public class NaturalAreaController {
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
+        model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         return "/naturalArea/getManagers";
     }
 
@@ -88,6 +93,12 @@ public class NaturalAreaController {
     public String listNaturalAreasManagers(Model model){
         model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
         return "naturalArea/listManagers";
+    }
+
+    @RequestMapping(value="/listEnvironmental")
+    public String listNaturalAreasEnvironmental(Model model){
+        model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
+        return "naturalArea/listEnvironmental";
     }
 
     @RequestMapping(value="/occupancy")

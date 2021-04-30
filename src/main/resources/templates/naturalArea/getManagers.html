@@ -20,7 +20,7 @@
         <li><b>Características físicas:</b> <span th:text="${naturalArea.physicalCharacteristics}"></span></li>
         <li><b>Descripción:</b> <span th:text="${naturalArea.description}"></span></li>
         <li><b>Orientación:</b> <span th:text="${naturalArea.orientation.descripcion}"></span></li>
-        <td th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
+        <td th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
             <li><b>Restringido hasta:</b> <span th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></span></li>
             <li><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"></span></li>
         </td>
@@ -28,10 +28,11 @@
     <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
         <button type="button" class="btn btn-warning">Edita</button> </a>
     </td>
-
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
-    <div th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
+
+
+    <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
         <h3>Lista de Zonas</h3>
         <!--<div th:if="${#lists.isEmpty(zones)">
             <p><b>¡Este área natural todavía no tiene zonas!</b></p>
@@ -55,7 +56,9 @@
                     <button type="button" class="btn btn-warning">Edita</button>
                 </a>
                 </td>
-                <td><a th:href="@{/zone/delete/{id}(id=${zone.id})}">
+                <td><a th:href="@{/zone/delete/{id}(id=${zone.id})}"
+                       th:onclick="return confirm('¿Estás seguro/a de borrar la zona '+ [[${zone.zoneNumber}]] +
+                        [[${zone.letter}]] + ' de ' + [[${zone.naturalArea}]] + '?');">
                     <button type="button" class="btn btn-danger">Elimina</button>
                 </a>
                 </td>
@@ -67,6 +70,8 @@
         </a></td>
         <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
     </div>
+
+
 
     <h3>Comentarios</h3>
     <div th:if="${#lists.isEmpty(comments)}">
@@ -90,9 +95,94 @@
         </tr>
         </tbody>
     </table>
-
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
+
+
+    <h3>Servicios fijos</h3>
+    <div th:if="${#lists.isEmpty(services)}">
+        <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Servicio</th>
+            <th scope="col">Fecha de inicio</th>
+            <th scope="col">Fecha de fin</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="serviceDate: ${serviceDate}">
+            <td th:text="${serviceDate.service}"></td>
+            <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
+            <td><a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
+                    <button type="button" class="btn btn-warning">Edita</button>
+                </a>
+            </td>
+            <td><a th:href="@{/serviceDate/delete/{id}(id=${serviceDate.id})}"
+                   th:onclick="return confirm('¿Estás seguro/a de borrar la asignación del servicio fijo ' +
+                   [[${serviceDate.service}]] + ' de ' + [[${naturalArea.name}]] + '?');">
+                    <button type="button" class="btn btn-danger">Elimina</button>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+        <button type="button" class="btn btn-success">Asignar servicio fijo</button>
+    </a></td>
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+
+
+    <h3>Servicios temporales</h3>
+    <div th:if="${#lists.isEmpty(services)}">
+        <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Servicio</th>
+            <th scope="col">Días de apertura</th>
+            <th scope="col">Hora de inicio</th>
+            <th scope="col">Hora de fin</th>
+            <th scope="col">Fecha de inicio</th>
+            <th scope="col">Fecha de fin</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="temporalService: ${temporalService}">
+            <td th:text="${temporalService.service}"></td>
+            <td th:text="${temporalService.openningDays}"></td>
+            <td th:text="${temporalService.beginningTime}"></td>
+            <td th:text="${temporalService.endTime}"></td>
+            <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
+            <td><a th:href="@{/temporalService/update/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
+                <button type="button" class="btn btn-warning">Edita</button>
+            </a>
+            </td>
+            <td><a th:href="@{/temporalService/delete/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}"
+                   th:onclick="return confirm('¿Estás seguro/a de borrar la asignación del servicio temporal ' +
+                   [[${temporalService.service}]] + ' de ' + [[${naturalArea.name}]] + '?');">
+                <button type="button" class="btn btn-danger">Elimina</button>
+            </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <td><a th:href="@{/temporalService/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+        <button type="button" class="btn btn-success">Asignar servicio temporal</button>
+    </a></td>
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+
+
+
+    <!----------------mal--->
     <h3>Servicios</h3>
     <div th:if="${#lists.isEmpty(services)}">
         <p><b>¡Este área natural no tiene asignada ningún servicio!</b></p>
@@ -121,7 +211,9 @@
         </tr>
         </tbody>
     </table>
-    <a href="/serviceDate/add"><button type="button" class="btn btn-success">Asignar nuevo servicio</button></a>
+    <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+        <button type="button" class="btn btn-success">Asignar nuevo servicio</button>
+    </a></td>
 
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
@@ -132,16 +224,30 @@
     <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
         <tr th:each="picture: ${pictures}">
             <td scope="row"><img style="width:300px; height:auto; border-radius:20px" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
-            <td style="vertical-align:middle;"><a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}">
+            <td style="vertical-align:middle;"><a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}"
+                   th:onclick="return confirm('¿Estás seguro/a de borrar esta imagen?');">
                 <button type="button" class="btn btn-danger">Elimina</button>
             </a>
             </td>
         </tr>
         </tbody>
     </table>
-    <a href="/picture/add"><button type="button" class="btn btn-success">Añadir imagen</button></a><br><br>
+
+    <!-- selector de imagenes -->
+    <div class="container">
+        <form class="form-horizontal" action="#" th:action="@{/picture/add/{naturalArea}(naturalArea=${naturalArea.name})}"
+              enctype="multipart/form-data" th:object="${picture}" method="post">
+            <input required type="file" name="file" id="file" /> <br/><br/>
+            <div class="form-group row">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-success">Añadir imagen</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+
     <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver al listado</button></a>
     <br><br>
 </div>

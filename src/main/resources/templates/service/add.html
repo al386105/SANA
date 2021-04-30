@@ -32,7 +32,8 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="description">Descripción:</label>
             <div class="col-sm-4">
-                <input type="text" maxlength="100" required class="form-control" id="description" th:field="*{description}" />
+                <textarea rows="3" required maxlength="100" class="form-control" placeholder="Para este servicio se requiere..."
+                          id="description" th:field="*{description}"></textarea>
             </div>
         </div>
 

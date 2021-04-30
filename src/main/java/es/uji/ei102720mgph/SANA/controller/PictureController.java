@@ -1,24 +1,41 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.PictureDao;
+import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.Picture;
+import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Formatter;
 
 @Controller
 @RequestMapping("/picture")
 public class PictureController {
+    @Value("${upload.file.directory}")
+    private String uploadDirectory;
+
     private PictureDao pictureDao;
+    private NaturalAreaDao naturalAreaDao;
 
     @Autowired
     public void setPictureDao(PictureDao pictureDao){ this.pictureDao = pictureDao; }
+
+    @Autowired
+    public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){ this.naturalAreaDao = naturalAreaDao; }
 
     // Operació llistar
     @RequestMapping("/list")
@@ -27,51 +44,49 @@ public class PictureController {
         return "picture/list";
     }
 
-    //TODO Operació llistar pictures de un naturalArea
-
-
     // Operació crear
-    @RequestMapping(value="/add")
-    public String addPicture(Model model) {
-        model.addAttribute("picture", new Picture());
+    @RequestMapping(value="/add/{naturalArea}")
+    public String addPicture(Model model, @PathVariable String naturalArea) {
+        Picture picture = new Picture();
+        picture.setNaturalArea(naturalArea);
+        model.addAttribute("picture", picture);
         return "picture/add";
     }
 
     // Gestió de la resposta del formulari de creació d'objectes
-    @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("picture") Picture picture,
-                                   BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "picture/add"; //tornem al formulari per a que el corregisca
-        String nombre = picture.getPicturePath();
-        picture.setPicturePath("assets/img/naturalAreas/" + nombre);
-        pictureDao.addPicture(picture); //usem el dao per a inserir la picture
-        return "redirect:list"; //redirigim a la lista per a veure la picture afegit, post/redirect/get
+    @RequestMapping(value="/add/{naturalArea}", method= RequestMethod.POST)
+    public String processAddSubmit(@ModelAttribute("picture") Picture picture, @RequestParam("file") MultipartFile file,
+                                   @PathVariable String naturalArea,
+                                   RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+        if (file.isEmpty()) {
+            // Enviar mensaje de error porque no hay fichero seleccionado
+            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+            return "redirect:/uploadStatus";
+        }
+        try {
+            if (bindingResult.hasErrors())
+                return "picture/add";
+            // Obtener el fichero y guardarlo
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(uploadDirectory + "naturalAreas/" + file.getOriginalFilename());
+            Files.write(path, bytes);
+            System.out.println(file.getOriginalFilename());
+            picture.setPicturePath("/assets/img/naturalAreas/" + file.getOriginalFilename());
+            picture.setNaturalArea(naturalArea);
+            pictureDao.addPicture(picture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/naturalArea/getManagers/" + naturalArea;
     }
-
-    /*
-    // Operació actualitzar
-    @RequestMapping(value="/update/{picturePath}", method = RequestMethod.GET)
-    public String editPicture(Model model, @PathVariable String picturePath) {
-        model.addAttribute("picture", pictureDao.getPicture(picturePath));
-        return "picture/update";
-    }
-
-    // Resposta de modificació d'objectes
-    @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("picture") Picture picture,
-                                      BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "picture/update";
-        pictureDao.updatePicture(picture);
-        return "redirect:list";
-    }
-    */
 
     // Operació esborrar
     @RequestMapping(value="/delete/assets/img/naturalAreas/{pictureName}")
     public String processDelete(@PathVariable String pictureName) {
-        pictureDao.deletePicture("assets/img/naturalAreas/" + pictureName);
-        return "redirect:../../../../list";
+        System.out.println(pictureName);
+        Picture picture = pictureDao.getPicture("/assets/img/naturalAreas/" + pictureName);
+        String naturalAreaName = picture.getNaturalArea();
+        pictureDao.deletePicture("/assets/img/naturalAreas/" + pictureName);
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }

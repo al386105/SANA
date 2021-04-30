@@ -1,7 +1,8 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-
+import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.dao.ServiceDateDao;
+import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.ServiceDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,16 +13,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/serviceDate")
 public class ServiceDateController {
 
     private ServiceDateDao serviceDateDao;
+    private ServiceDao serviceDao;
 
     @Autowired
     public void setServiceDateDao(ServiceDateDao serviceDateDao)  {
         this.serviceDateDao=serviceDateDao;
+    }
+
+    @Autowired
+    public void setServiceDao(ServiceDao serviceDao)  {
+        this.serviceDao=serviceDao;
     }
 
     // Operació llistar
@@ -32,9 +41,16 @@ public class ServiceDateController {
     }
 
     // Operació crear
-    @RequestMapping(value="/add")
-    public String addServiceDate(Model model) {
-        model.addAttribute("serviceDate", new ServiceDate());
+    @RequestMapping(value="/add/{naturalArea}")
+    public String addServiceDate(Model model, @PathVariable String naturalArea) {
+        ServiceDate serviceDate = new ServiceDate();
+        serviceDate.setNaturalArea(naturalArea);
+        model.addAttribute("serviceDate", serviceDate);
+        List<Service> serviceList = serviceDao.getFixedServices();
+        List<String> namesServices = serviceList.stream()
+                .map(Service::getNameOfService)
+                .collect(Collectors.toList());
+        model.addAttribute("serviceList", namesServices);
         return "serviceDate/add";
     }
 
@@ -42,16 +58,25 @@ public class ServiceDateController {
     @RequestMapping(value="/add", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("serviceDate") ServiceDate serviceDate,
                                    BindingResult bindingResult) {
+        ServiceDateValidator serviceDateValidator = new ServiceDateValidator();
+        serviceDateValidator.validate(serviceDate, bindingResult);
+
         if (bindingResult.hasErrors())
             return "serviceDate/add"; //tornem al formulari per a que el corregisca
+        String naturalAreaName = serviceDate.getNaturalArea();
         serviceDateDao.addServiceDate(serviceDate); //usem el dao per a inserir el address
-        return "redirect:list"; //redirigim a la lista per a veure el service afegit, post/redirect/get
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
     // Operació actualitzar
     @RequestMapping(value="/update/{id}", method = RequestMethod.GET)
     public String editService(Model model, @PathVariable String id) {
         model.addAttribute("serviceDate", serviceDateDao.getServiceDate(id));
+        List<Service> serviceList = serviceDao.getFixedServices();
+        List<String> namesServices = serviceList.stream()
+                .map(Service::getNameOfService)
+                .collect(Collectors.toList());
+        model.addAttribute("serviceList", namesServices);
         return "serviceDate/update";
     }
 
@@ -59,16 +84,22 @@ public class ServiceDateController {
     @RequestMapping(value="/update", method = RequestMethod.POST)
     public String processUpdateSubmit(@ModelAttribute("serviceDate") ServiceDate serviceDate,
                                       BindingResult bindingResult) {
+        ServiceDateValidator serviceDateValidator = new ServiceDateValidator();
+        serviceDateValidator.validate(serviceDate, bindingResult);
+
         if (bindingResult.hasErrors())
             return "serviceDate/update";
         serviceDateDao.updateServiceDate(serviceDate);
-        return "redirect:list";
+        String naturalAreaName = serviceDate.getNaturalArea();
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
     // Operació esborrar
     @RequestMapping(value="/delete/{id}")
     public String processDelete(@PathVariable String id) {
+        ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
+        String naturalAreaName = serviceDate.getNaturalArea();
         serviceDateDao.deleteServiceDate(id);
-        return "redirect:../list";
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }

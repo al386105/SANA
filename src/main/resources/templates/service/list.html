@@ -32,14 +32,15 @@
             <button type="button" class="btn btn-warning">Edita</button>
         </a>
         </td>
-        <td><a th:href="@{/service/delete/{nameOfService}(nameOfService=${service.nameOfService})}">
+        <td><a th:href="@{/service/delete/{nameOfService}(nameOfService=${service.nameOfService})}"
+               th:onclick="return confirm('¿Estás seguro/a de borrar el servicio + [[${service.nameOfService}]] + '?');">
             <button type="button" class="btn btn-danger">Elimina</button>
         </a>
         </td>
     </tr>
     </tbody>
 </table>
-<a href="add"><button type="button" class="btn btn-success">Añadir Service</button></a>
-<a href="../"><button type="button" class="btn btn-primary">Volver al menú principal</button></a>
+<a href="add"><button type="button" class="btn btn-success">Añadir servicio</button></a>
+<a href="../"><button type="button" class="btn btn-primary">Volver a mi menú</button></a>
 </body>
 </html>

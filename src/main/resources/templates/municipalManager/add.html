@@ -15,35 +15,35 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="username">Nombre de usuario:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="username" th:field="*{username}" />
+                <input type="text" maxlength="15" required class="form-control" id="username" th:field="*{username}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="password">Contraseña:</label>
             <div class="col-sm-4">
-                <input type="password" required class="form-control" id="password" th:field="*{password}" />
+                <input type="password" maxlength="20" required class="form-control" id="password" th:field="*{password}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="email">Email:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="email" th:field="*{email}" />
+                <input type="text" maxlength="30" required class="form-control" id="email" th:field="*{email}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="name">Nombre:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="name" th:field="*{name}" />
+                <input type="text" maxlength="15" required class="form-control" id="name" th:field="*{name}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="surname">Apellidos:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="surname" th:field="*{surname}" />
+                <input type="text" maxlength="30" required class="form-control" id="surname" th:field="*{surname}" />
             </div>
         </div>
 
@@ -65,31 +65,12 @@
             </div>
         </div>
 
-        <!--
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="registrationDate">Fecha de registro:</label>
-            <div class="col-sm-4">
-                <input type="date" required class="form-control" id="registrationDate" th:field="*{registrationDate}"/>
-            </div>
-        </div>
-
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="leavingDate">Fecha de baja:</label>
-            <div class="col-sm-4">
-                <input type="date" class="form-control" id="leavingDate" th:field="*{leavingDate}" />
-            </div>
-        </div>
-        -->
-
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
                 <a href="/municipalManager/list"><button type="button" class="btn btn-primary">Volver</button></a>
                 <button type="submit" class="btn btn-success">Añadir gestor municipal</button>
             </div>
         </div>
-
-
     </form>
 </div>
 </body>

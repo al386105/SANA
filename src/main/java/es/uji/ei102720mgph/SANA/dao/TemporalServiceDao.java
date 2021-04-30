@@ -1,5 +1,6 @@
 package es.uji.ei102720mgph.SANA.dao;
 
+import es.uji.ei102720mgph.SANA.model.ServiceDate;
 import es.uji.ei102720mgph.SANA.model.TemporalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -50,8 +51,18 @@ public class TemporalServiceDao {
         }
     }
 
-    public List<TemporalService> getTemporalServices() {
+    public List<TemporalService> getTemporalServicesOfNaturalArea(String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM TemporalService WHERE naturalArea = ?",
+                    new TemporalServiceRowMapper(),
+                    naturalArea);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<TemporalService>();
+        }
+    }
 
+    public List<TemporalService> getTemporalServices() {
         try {
             return jdbcTemplate.query(
                     "SELECT * FROM TemporalService",

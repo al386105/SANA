@@ -27,13 +27,12 @@
         <td th:text="${service.temporality.descripcion}"></td>
         <td th:text="${service.description}"></td>
         <td th:text="${service.hiringPlace}"></td>
-
         <td><a th:href="@{/service/update/{nameOfService}(nameOfService=${service.nameOfService})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>
         </td>
         <td><a th:href="@{/service/delete/{nameOfService}(nameOfService=${service.nameOfService})}"
-               th:onclick="return confirm('¿Estás seguro/a de borrar el servicio + [[${service.nameOfService}]] + '?');">
+               th:onclick="return confirm('¿Estás seguro/a de borrar el servicio ' + [[${service.nameOfService}]] + '?');">
             <button type="button" class="btn btn-danger">Elimina</button>
         </a>
         </td>
@@ -41,6 +40,6 @@
     </tbody>
 </table>
 <a href="add"><button type="button" class="btn btn-success">Añadir servicio</button></a>
-<a href="../"><button type="button" class="btn btn-primary">Volver a mi menú</button></a>
+<a href="/section/environmentalManager"><button type="button" class="btn btn-primary">Volver a mi menú</button></a>
 </body>
 </html>

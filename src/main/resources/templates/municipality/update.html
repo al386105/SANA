@@ -16,6 +16,7 @@
             <label class="control-label col-sm-2" for="name">Nombre:</label>
             <div class="col-sm-4">
                 <input type="text" maxlength="30" required class="form-control" id="name" th:field="*{name}" readonly="readonly"/>
+                <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
             </div>
         </div>
 
@@ -23,6 +24,7 @@
             <label class="control-label col-sm-2" for="description">Descripción:</label>
             <div class="col-sm-4">
                 <textarea rows="3" required maxlength="100" class="form-control" id="description" th:field="*{description}"></textarea>
+                <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
             </div>
         </div>
 

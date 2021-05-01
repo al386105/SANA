@@ -47,6 +47,9 @@ public class ServiceController {
     @RequestMapping(value="/add", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("service") Service service,
                                    BindingResult bindingResult) {
+        ServiceValidator serviceValidator = new ServiceValidator();
+        serviceValidator.validate(service, bindingResult);
+
         if (bindingResult.hasErrors())
             return "service/add"; //tornem al formulari per a que el corregisca
         serviceDao.addService(service); //usem el dao per a inserir el address
@@ -65,6 +68,9 @@ public class ServiceController {
     @RequestMapping(value="/update", method = RequestMethod.POST)
     public String processUpdateSubmit(@ModelAttribute("service") Service service,
                                       BindingResult bindingResult) {
+        ServiceValidator serviceValidator = new ServiceValidator();
+        serviceValidator.validate(service, bindingResult);
+
         if (bindingResult.hasErrors())
             return "service/update";
         serviceDao.updateService(service);

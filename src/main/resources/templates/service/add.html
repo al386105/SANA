@@ -3,8 +3,7 @@
 <head>
     <title>Crear servicio</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
 </head>
 <body>
 <div class="container">
@@ -16,6 +15,7 @@
             <label class="control-label col-sm-2" for="nameOfService">Nombre del servicio:</label>
             <div class="col-sm-4">
                 <input type="text" required maxlength="30" class="form-control" id="nameOfService" th:field="*{nameOfService}" />
+                <td th:if="${#fields.hasErrors('nameOfService')}" th:errors="*{nameOfService}"></td>
             </div>
         </div>
 
@@ -34,6 +34,7 @@
             <div class="col-sm-4">
                 <textarea rows="3" required maxlength="100" class="form-control" placeholder="Para este servicio se requiere..."
                           id="description" th:field="*{description}"></textarea>
+                <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
             </div>
         </div>
 
@@ -41,6 +42,7 @@
             <label class="control-label col-sm-2" for="hiringPlace">Sitio de contratación:</label>
             <div class="col-sm-4">
                 <input type="text" maxlength="30" required class="form-control" id="hiringPlace" th:field="*{hiringPlace}"/>
+                <td th:if="${#fields.hasErrors('hiringPlace')}" th:errors="*{hiringPlace}"></td>
             </div>
         </div>
 

@@ -42,7 +42,7 @@
         </td>
         <td><a th:href="@{/municipalManager/delete/{email}(email=${municipalManager.email})}"
                th:onclick="return confirm('¿Estás seguro/a de borrar el gestor municipal '+
-               [[${municipalManager.username}]] + '?');">
+               [[${municipalManager.name}]] + ', ' + [[${municipalManager.surname}]] + '?');">
             <button type="button" class="btn btn-danger">Elimina</button>
         </a>
         </td>

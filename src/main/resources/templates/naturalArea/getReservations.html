@@ -22,8 +22,8 @@
         <thead>
         <tr>
         <tr>
-            <th scope="col">Número reserva</th>
             <th scope="col">Fecha reserva</th>
+            <th scope="col">Número reserva</th>
             <th scope="col">Fecha creación</th>
             <th scope="col">Hora creación</th>
             <th scope="col">Num. personas</th>
@@ -39,8 +39,8 @@
         </thead>
         <tbody>
         <tr th:each="reservation: ${#lists.sort(reservations)}">
-            <td scope="row" th:text="${reservation.reservationNumber}"></td>
-            <td th:text="${#temporals.format(reservation.reservationDate,'dd/MM/yyyy')}"></td>
+            <td scope="row" th:text="${#temporals.format(reservation.reservationDate,'dd/MM/yyyy')}"></td>
+            <td th:text="${reservation.reservationNumber}"></td>
             <td th:text="${#temporals.format(reservation.creationDate,'dd/MM/yyyy')}"></td>
             <td th:text="${#temporals.format(reservation.creationTime,'HH:mm')}"></td>
             <td th:text="${reservation.numberOfPeople}"></td>
@@ -50,11 +50,15 @@
             <td th:text="${reservation.cancellationReason}"></td>
             <td th:text="${reservation.citizenEmail}"></td>
             <td th:text="${reservation.timeSlotId}"></td>
-            <td><a th:href="@{/reservation/update/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+            <td><a th:href="@{/reservation/getManagers/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+                <button type="button" class="btn btn-warning">Más información</button>
+            </a>
+            </td>
+            <td><a th:href="@{/reservation/updateManagers/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
                 <button type="button" class="btn btn-warning">Modifica</button>
             </a>
             </td>
-            <td><a th:href="@{/reservation/delete/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+            <td><a th:href="@{/reservation/cancelManagers/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
                 <button type="button" class="btn btn-danger">Cancela</button>
             </a>
             </td>

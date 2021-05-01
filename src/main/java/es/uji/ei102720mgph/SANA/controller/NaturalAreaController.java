@@ -6,8 +6,6 @@ import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
-import es.uji.ei102720mgph.SANA.model.Picture;
-import es.uji.ei102720mgph.SANA.model.TimeSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,6 +75,7 @@ public class NaturalAreaController {
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
         model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
+        model.addAttribute("timeslots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
         return "/naturalArea/getManagers";
     }
 
@@ -88,14 +87,15 @@ public class NaturalAreaController {
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
         model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
+        model.addAttribute("timeslots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
         return "/naturalArea/getEnvironmental";
     }
 
+    // TODO en proceso
     @RequestMapping(value="/getReservations/{naturalArea}")
     public String getReservationsNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea){
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
-        model.addAttribute("reservation", reservationDao.getReservationsOfNaturalArea(naturalArea));
-        model.addAttribute("timeSlot", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
+        model.addAttribute("reservations", reservationDao.getReservationsOfNaturalArea(naturalArea));
         return "/naturalArea/getReservations";
     }
 

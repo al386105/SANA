@@ -2,7 +2,6 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
-import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,6 +49,9 @@ public class ZoneController {
     @RequestMapping(value="/add", method=RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("zone") Zone zone,
                                    BindingResult bindingResult) {
+        ZoneValidator zoneValidator = new ZoneValidator();
+        zoneValidator.validate(zone, bindingResult);
+
         if (bindingResult.hasErrors())
             return "zone/add"; //tornem al formulari per a que el corregisca
         String naturalAreaName = zone.getNaturalArea();
@@ -68,6 +70,9 @@ public class ZoneController {
     @RequestMapping(value="/update", method = RequestMethod.POST)
     public String processUpdateSubmit(@ModelAttribute("zone") Zone zone,
                                       BindingResult bindingResult) {
+        ZoneValidator zoneValidator = new ZoneValidator();
+        zoneValidator.validate(zone, bindingResult);
+
         if (bindingResult.hasErrors())
             return "zone/update";
         String naturalAreaName = zone.getNaturalArea();

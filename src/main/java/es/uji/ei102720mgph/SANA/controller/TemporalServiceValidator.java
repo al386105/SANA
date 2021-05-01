@@ -14,7 +14,7 @@ public class TemporalServiceValidator implements Validator {
     private ServiceDao serviceDao;
 
     @Autowired
-    public void setService(ServiceDao serviceDao) { this.serviceDao = serviceDao; }
+    public void setServiceDao(ServiceDao serviceDao) { this.serviceDao = serviceDao; }
 
     @Override
     public boolean supports(Class<?> cls) {
@@ -52,7 +52,7 @@ public class TemporalServiceValidator implements Validator {
         // Orden de horas
         if (temporalService.getBeginningTime() != null && temporalService.getEndTime() != null &&
                 temporalService.getBeginningTime().isAfter(temporalService.getEndTime()))
-            errors.rejectValue("endTime", "valor incorrecto", "La hora de inicio debe ser anterior a la hora de fin");
+            errors.rejectValue("endTime", "valor incorrecto", "La hora de fin debe ser posterior a la hora de inicio");
 
         // Fecha de inicio obligatoria
         if (temporalService.getBeginningDate() == null)
@@ -61,7 +61,7 @@ public class TemporalServiceValidator implements Validator {
         // Orden de fechas si hay fecha de fin (opcional)
         if (temporalService.getEndDate() != null && temporalService.getBeginningDate() != null
                 && temporalService.getBeginningDate().isAfter(temporalService.getEndDate()))
-            errors.rejectValue("endDate", "valor incorrecto", "La fecha de inicio debe ser anterior a la fecha de fin");
+            errors.rejectValue("endDate", "valor incorrecto", "La fecha de fin debe ser posterior a la fecha de inicio");
 
     }
 }

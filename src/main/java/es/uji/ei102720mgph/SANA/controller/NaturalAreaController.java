@@ -75,7 +75,7 @@ public class NaturalAreaController {
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
         model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
-        model.addAttribute("timeslots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
+        model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
         return "/naturalArea/getManagers";
     }
 
@@ -87,7 +87,7 @@ public class NaturalAreaController {
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
         model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
-        model.addAttribute("timeslots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
+        model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
         return "/naturalArea/getEnvironmental";
     }
 

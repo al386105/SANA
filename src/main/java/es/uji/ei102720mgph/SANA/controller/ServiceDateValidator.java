@@ -14,7 +14,7 @@ public class ServiceDateValidator implements Validator {
     private ServiceDao serviceDao;
 
     @Autowired
-    public void setService(ServiceDao serviceDao) { this.serviceDao = serviceDao; }
+    public void setServiceDao(ServiceDao serviceDao) { this.serviceDao = serviceDao; }
 
     @Override
     public boolean supports(Class<?> cls) {
@@ -32,7 +32,7 @@ public class ServiceDateValidator implements Validator {
         // Orden de fechas si hay fecha de fin (opcional)
         if (serviceDate.getEndDate() != null && serviceDate.getBeginningDate() != null
                 && serviceDate.getBeginningDate().isAfter(serviceDate.getEndDate()))
-            errors.rejectValue("endDate", "valor incorrecto", "La fecha de inicio debe ser anterior a la fecha de fin");
+            errors.rejectValue("endDate", "valor incorrecto", "La fecha de fin debe ser posterior a la fecha de inicio");
 
         /*
         // Seleccionar servicio

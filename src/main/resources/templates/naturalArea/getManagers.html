@@ -32,6 +32,7 @@
 
 
 
+    <!-- solo se pueden gestionar las zonas y franjas horarias de los espacios restringidos -->
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
         <h3>Lista de Zonas</h3>
         <!-- TODO problema doble if-->
@@ -70,6 +71,49 @@
         </table>
         <td><a th:href="@{/zone/add/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-success">Añadir zona</button>
+        </a></td>
+        <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+
+
+        <h3>Franjas horarias</h3>
+        <!-- TODO problema doble if-->
+        <!--<div th:if="${#lists.isEmpty(timeSlots)">
+            <p><b>¡Este área natural restringida todavía no tiene franjas horarias asignadas!</b></p>
+        </div>-->
+        <table th:unless="${#lists.isEmpty(timeSlots)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Identificador franja horaria</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha de fin</th>
+                <th scope="col">Hora de inicio</th>
+                <th scope="col">Hora de fin</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="timeSlot: ${#lists.sort(timeSlots)}">
+                <td scope="row" th:text="${timeSlot.id}"></td>
+                <td th:text="${#temporals.format(timeSlot.beginningDate,'dd/MM/yyyy')}"></td>
+                <td th:text="${#temporals.format(timeSlot.endDate,'dd/MM/yyyy')}"></td>
+                <td th:text="${timeSlot.beginningTime}"></td>
+                <td th:text="${timeSlot.endTime}"></td>
+                <td><a th:href="@{/timeSlot/update/{id}(id=${timeSlot.id})}">
+                    <button type="button" class="btn btn-warning">Edita</button>
+                </a>
+                </td>
+                <td><a th:href="@{/timeSlot/delete/{id}(id=${timeSlot.id})}"
+                       th:onclick="return confirm('¿Estás seguro/a de borrar la franja horaria de identificador '+
+                       [[${timeSlot.id}]] + '?');">
+                    <button type="button" class="btn btn-danger">Elimina</button>
+                </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <td><a th:href="@{/timeSlot/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-success">Asignar franja horaria</button>
         </a></td>
         <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
     </div>

@@ -1,5 +1,7 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+
+
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.dao.TemporalServiceDao;
 import es.uji.ei102720mgph.SANA.model.Service;
@@ -59,7 +61,7 @@ public class TemporalServiceController {
     public String processAddSubmit(@ModelAttribute("temporalService") TemporalService temporalService,
                                    BindingResult bindingResult) {
         TemporalServiceValidator temporalServiceValidator = new TemporalServiceValidator();
-        temporalServiceValidator.validate(temporalServiceValidator, bindingResult);
+        temporalServiceValidator.validate(temporalService, bindingResult);
 
         if (bindingResult.hasErrors())
             return "temporalService/add"; //tornem al formulari per a que el corregisca
@@ -85,7 +87,7 @@ public class TemporalServiceController {
     public String processUpdateSubmit(@ModelAttribute("temporalService") TemporalService temporalService,
                                       BindingResult bindingResult) {
         TemporalServiceValidator temporalServiceValidator = new TemporalServiceValidator();
-        temporalServiceValidator.validate(temporalServiceValidator, bindingResult);
+        temporalServiceValidator.validate(temporalService, bindingResult);
 
         if (bindingResult.hasErrors())
             return "temporalService/update";

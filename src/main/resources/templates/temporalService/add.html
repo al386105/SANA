@@ -15,12 +15,12 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="naturalArea">Area natural:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
+                <input type="text" required class="form-control" id="naturalArea" th:field="*{naturalArea}" readonly="readonly"/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="service">Servicio:</label>
+            <label class="control-label col-sm-2" for="service">Servicio temporal:</label>
             <div class="col-sm-4">
                 <select class="form_control" required id="service" type="text" th:field="*{service}">
                     <option value="No seleccionado">Selecciona un servicio</option>
@@ -33,30 +33,34 @@
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="openningDays">Días de apertura:</label>
+            <label class="control-label col-sm-2" for="openingDays">Días de apertura:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="openningDays" th:field="*{openningDays}" />
+                <input type="text" required class="form-control" placeholder="X;V;D" id="openingDays" th:field="*{openingDays}" />
+                <td th:if="${#fields.hasErrors('openingDays')}" th:errors="*{openingDays}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="beginningTime">Hora de inicio:</label>
             <div class="col-sm-4">
-                <input type="time" placeholder="HH:mm" required class="form-control" id="beginningTime" th:field="*{beginningTime}" />
+                <input type="time" required placeholder="HH:mm" class="form-control" id="beginningTime" th:field="*{beginningTime}" />
+                <td th:if="${#fields.hasErrors('beginningTime')}" th:errors="*{beginningTime}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="endTime">Hora de fin:</label>
             <div class="col-sm-4">
-                <input type="time" placeholder="HH:mm" required class="form-control" id="endTime" th:field="*{endTime}" />
+                <input type="time" required placeholder="HH:mm" class="form-control" id="endTime" th:field="*{endTime}" />
+                <td th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="beginningDate">Fecha de inicio:</label>
             <div class="col-sm-4">
-                <input type="date" placeholder="yyyy-MM-dd" required class="form-control" id="beginningDate" th:field="*{beginningDate}"/>
+                <input type="date" required placeholder="yyyy-MM-dd" class="form-control" id="beginningDate" th:field="*{beginningDate}"/>
+                <td th:if="${#fields.hasErrors('beginningDate')}" th:errors="*{beginningDate}"></td>
             </div>
         </div>
 
@@ -64,6 +68,7 @@
             <label class="control-label col-sm-2" for="endDate">Fecha de fin:</label>
             <div class="col-sm-4">
                 <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="endDate" th:field="*{endDate}"/>
+                <td th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></td>
             </div>
         </div>
 

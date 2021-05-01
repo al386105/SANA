@@ -31,6 +31,7 @@ public class NaturalAreaController {
     private ReservationDao reservationDao;
     private TimeSlotDao timeSlotDao;
     private ServiceDateDao serviceDateDao;
+    private TemporalServiceDao temporalServiceDao;
 
     @Autowired
     public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){ this.naturalAreaDao = naturalAreaDao; }
@@ -56,6 +57,9 @@ public class NaturalAreaController {
     @Autowired
     public void setServiceDateDao(ServiceDateDao serviceDateDao) { this.serviceDateDao = serviceDateDao; }
 
+    @Autowired
+    public void setTemporalServiceDao(TemporalServiceDao temporalServiceDao) { this.temporalServiceDao = temporalServiceDao; }
+
     @RequestMapping(value="/get/{naturalArea}")
     public String getNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea){
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
@@ -72,7 +76,19 @@ public class NaturalAreaController {
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
         model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
+        model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
         return "/naturalArea/getManagers";
+    }
+
+    @RequestMapping(value="/getEnvironmental/{naturalArea}")
+    public String getNaturalAreaEnvironmental(Model model, @PathVariable("naturalArea") String naturalArea){
+        model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
+        model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
+        model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
+        model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
+        model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
+        model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
+        return "/naturalArea/getEnvironmental";
     }
 
     @RequestMapping(value="/getReservations/{naturalArea}")
@@ -127,6 +143,7 @@ public class NaturalAreaController {
         NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
         naturalAreaValidator.validate(naturalArea, bindingResult);
 
+        System.out.println("nombre " + naturalArea.getName());
         if (bindingResult.hasErrors())
             return "naturalArea/add"; //tornem al formulari per a que el corregisca
         naturalAreaDao.addNaturalArea(naturalArea); //usem el dao per a inserir el naturalArea
@@ -152,6 +169,9 @@ public class NaturalAreaController {
     @RequestMapping(value="/update", method=RequestMethod.POST)
     public String processUpdateSubmit(@ModelAttribute("naturalArea") NaturalArea naturalArea,
                                       BindingResult bindingResult) {
+        NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
+        naturalAreaValidator.validate(naturalArea, bindingResult);
+
         if (bindingResult.hasErrors())
             return "naturalArea/update";
         naturalAreaDao.updateNaturalArea(naturalArea);
@@ -162,6 +182,6 @@ public class NaturalAreaController {
     @RequestMapping(value="/delete/{naturalArea}")
     public String processDelete(@PathVariable String naturalArea) {
         naturalAreaDao.deleteNaturalArea(naturalArea);
-        return "redirect:../listManagers";
+        return "redirect:/naturalArea/listManagers";
     }
 }

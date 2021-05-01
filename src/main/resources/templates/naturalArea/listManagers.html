@@ -30,11 +30,19 @@
         <td th:text="${naturalArea.municipality}"></td>
 
         <td><a th:href="@{getManagers/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-primary">Más</button> </a>
+            <button type="button" class="btn btn-primary">Más opciones</button> </a>
         </td>
-        <td><a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-success">Gestión reservas</button> </a>
-        </td>
+
+        <!-- solo las areas restringidas tienen reservas -->
+        <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
+            <td><a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
+                <button type="button" class="btn btn-success">Gestión reservas</button> </a>
+            </td>
+        </div>
+        <div th:unless="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
+            <td></td>
+        </div>
+
         <td><a th:href="@{update/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-warning">Edita</button> </a>
         </td>

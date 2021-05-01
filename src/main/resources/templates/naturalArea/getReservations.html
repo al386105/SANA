@@ -16,7 +16,7 @@
 
     <h3>Lista de reservas</h3>
     <div th:if="${#lists.isEmpty(reservations)}">
-        ¡Este área natural no tiene ninguna reserva o no es de acceso restringido!
+        ¡Este área natural no ha tenido ninguna reserva todavía!
     </div>
     <table th:unless="${#lists.isEmpty(reservations)}" class="table table-striped">
         <thead>
@@ -55,14 +55,14 @@
             </a>
             </td>
             <td><a th:href="@{/reservation/delete/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
-                <button type="button" class="btn btn-danger">Anula</button>
+                <button type="button" class="btn btn-danger">Cancela</button>
             </a>
             </td>
         </tr>
         </tbody>
     </table>
+    <a href="../naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver</button></a>
 </div>
-<a href="../naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver</button></a>
 </body>
 </html>
 

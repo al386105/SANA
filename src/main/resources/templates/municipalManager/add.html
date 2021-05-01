@@ -15,7 +15,8 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="username">Nombre de usuario:</label>
             <div class="col-sm-4">
-                <input type="text" maxlength="15" required class="form-control" id="username" th:field="*{username}" />
+                <input type="text" required maxlength="15" class="form-control" id="username" th:field="*{username}" />
+                <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></td>
             </div>
         </div>
 
@@ -23,6 +24,7 @@
             <label class="control-label col-sm-2" for="password">Contraseña:</label>
             <div class="col-sm-4">
                 <input type="password" maxlength="20" required class="form-control" id="password" th:field="*{password}" />
+                <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>
             </div>
         </div>
 
@@ -30,6 +32,7 @@
             <label class="control-label col-sm-2" for="email">Email:</label>
             <div class="col-sm-4">
                 <input type="text" maxlength="30" required class="form-control" id="email" th:field="*{email}" />
+                <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>
             </div>
         </div>
 
@@ -37,6 +40,7 @@
             <label class="control-label col-sm-2" for="name">Nombre:</label>
             <div class="col-sm-4">
                 <input type="text" maxlength="15" required class="form-control" id="name" th:field="*{name}" />
+                <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
             </div>
         </div>
 
@@ -44,6 +48,7 @@
             <label class="control-label col-sm-2" for="surname">Apellidos:</label>
             <div class="col-sm-4">
                 <input type="text" maxlength="30" required class="form-control" id="surname" th:field="*{surname}" />
+                <td th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></td>
             </div>
         </div>
 
@@ -51,6 +56,7 @@
             <label class="control-label col-sm-2" for="dateOfBirth">Fecha de nacimiento:</label>
             <div class="col-sm-4">
                 <input type="date" placeholder="yyyy-MM-dd" required class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"/>
+                <td th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></td>
             </div>
         </div>
 

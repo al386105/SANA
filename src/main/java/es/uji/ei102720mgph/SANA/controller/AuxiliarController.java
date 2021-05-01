@@ -79,4 +79,9 @@ public class AuxiliarController {
     public String sectionManagers(Model model) {
         return "section/managers";
     }
+
+    @RequestMapping("section/environmentalManager")
+    public String sectionEnvironmentalmanager(Model model) {
+        return "section/environmentalManager";
+    }
 }

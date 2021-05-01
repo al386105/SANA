@@ -25,15 +25,25 @@ public class ServiceDateValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         ServiceDate serviceDate = (ServiceDate)obj;
 
+        // Fecha de inicio obligatoria
+        if (serviceDate.getBeginningDate() == null)
+            errors.rejectValue("beginningDate", "obligatorio", "Es obligatorio introducir la fecha de inicio");
+
+        // Orden de fechas si hay fecha de fin (opcional)
+        if (serviceDate.getEndDate() != null && serviceDate.getBeginningDate() != null
+                && serviceDate.getBeginningDate().isAfter(serviceDate.getEndDate()))
+            errors.rejectValue("endDate", "valor incorrecto", "La fecha de inicio debe ser anterior a la fecha de fin");
+
+        /*
+        // Seleccionar servicio
         List<Service> serviceList = serviceDao.getServices();
         List<String> namesServices = serviceList.stream()
                 .map(Service::getNameOfService)
                 .collect(Collectors.toList());
-
         if (!namesServices.contains(serviceDate.getService())) {
             errors.rejectValue("serviceDate", "valor incorrecto",
                     "No se ha seleccionado un servicio");
-        }
+        }*/
     }
 }
 

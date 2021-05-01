@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Crear area natural</title>
+    <title>Crear área natural</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
 </head>
 <body>
 <div class="container">
-    <h2>Nueva area natural</h2>
+    <h2>Nueva área natural</h2>
     <form class="form-horizontal" action="#" th:action="@{/naturalArea/add}"
           th:object="${naturalArea}" method="post">
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="name">Nombre:</label>
             <div class="col-sm-4">
-                <input type="text" required maxlength="30" class="form-control" id="name" th:field="*{name}" />
+                <input required type="text" maxlength="30" class="form-control" id="name" th:field="*{name}" />
+                <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
             </div>
         </div>
 
@@ -23,9 +24,10 @@
             <label class="control-label col-sm-2">Acceso:</label>
             <div class="col-sm-4">
                 <span style="margin:6px;" th:each="typeOfAccessvalue : ${typeOfAccessList}">
-                   <input type ="radio" required th:field ="*{typeOfAccess}" th:value ="${typeOfAccessvalue}" />
+                   <input required type ="radio" th:field ="*{typeOfAccess}" th:value ="${typeOfAccessvalue}" />
                    <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}" />
                 </span>
+                <td th:if="${#fields.hasErrors('typeOfAccess')}" th:errors="*{typeOfAccess}"></td>
             </div>
         </div>
 
@@ -33,6 +35,7 @@
             <label class="control-label col-sm-2" for="geographicalLocation">Coordenadas ubicación:</label>
             <div class="col-sm-4">
                 <input type="text" required maxlength="40" placeholder="39º51'52.0''N 0º03'54.2''W" class="form-control" id="geographicalLocation" th:field="*{geographicalLocation}" />
+                <td th:if="${#fields.hasErrors('geographicalLocation')}" th:errors="*{geographicalLocation}"></td>
             </div>
         </div>
 
@@ -60,40 +63,43 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="typeOfArea">Tipo de area:</label>
             <div class="col-sm-4">
-                <select class="form_control" required id="typeOfArea" type="text" th:field="*{typeOfArea}">
+                <select required class="form_control" id="typeOfArea" type="text" th:field="*{typeOfArea}">
                     <option th:each="typeOfAreavalue : ${typeOfAreaList}"
                             th:value="${typeOfAreavalue}"
                             th:text="${typeOfAreavalue.descripcion}"></option>
                 </select>
+                <td th:if="${#fields.hasErrors('typeOfArea')}" th:errors="*{typeOfArea}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="length">Largo:</label>
             <div class="col-sm-4">
-                <input type="number" min="0.1" required step="0.1" class="form-control" id="length" th:field="*{length}" />
+                <input required type="number" min="0.0" required step="0.1" class="form-control" id="length" th:field="*{length}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="width">Ancho:</label>
             <div class="col-sm-4">
-                <input type="number" min="0.1" required step="0.1" class="form-control" id="width" th:field="*{width}" />
+                <input required type="number" min="0.0" required step="0.1" class="form-control" id="width" th:field="*{width}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="physicalCharacteristics">Características físicas:</label>
             <div class="col-sm-4">
-                <input type="text" required maxlength="60" class="form-control" placeholder="El suelo es arena, roca..." id="physicalCharacteristics" th:field="*{physicalCharacteristics}" />
+                <input required type="text" maxlength="60" class="form-control" placeholder="El suelo es arena, roca..." id="physicalCharacteristics" th:field="*{physicalCharacteristics}" />
+                <td th:if="${#fields.hasErrors('physicalCharacteristics')}" th:errors="*{physicalCharacteristics}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="description">Descripción:</label>
             <div class="col-sm-4">
-                <textarea rows="3" required maxlength="100" class="form-control" placeholder="Paraje natural de 3180 hectáreas..."
+                <textarea required rows="3" maxlength="100" class="form-control" placeholder="Paraje natural de 3180 hectáreas..."
                           id="description" th:field="*{description}"></textarea>
+                <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
             </div>
         </div>
 
@@ -101,9 +107,10 @@
             <label class="control-label col-sm-2">Orientación:</label>
             <div class="col-sm-4">
                 <span style="margin:6px;" th:each="orientationvalue : ${orientationList}">
-                   <input type ="radio" required th:field ="*{orientation}" th:value ="${orientationvalue}" />
+                   <input required type ="radio" th:field ="*{orientation}" th:value ="${orientationvalue}" />
                    <label th:for="${#ids.prev('orientation')}" th:text ="${orientationvalue.descripcion}" />
                 </span>
+                <td th:if="${#fields.hasErrors('orientation')}" th:errors="*{orientation}"></td>
             </div>
         </div>
 
@@ -124,7 +131,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="municipality">Municipio:</label>
             <div class="col-sm-4">
-                <select class="form_control" required id="municipality" type="text" th:field="*{municipality}">
+                <select required class="form_control" id="municipality" type="text" th:field="*{municipality}">
                     <option value="No seleccionado">Selecciona un municipio</option>
                     <option th:each="municipalityvalue : ${municipalityList}"
                             th:value="${municipalityvalue}"
@@ -138,7 +145,7 @@
             <div class="col-sm-offset-2 col-sm-4">
                 <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver al listado</button></a>
                 <a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>
-                <br><button type="submit" class="btn btn-success">Añadir area natural</button>
+                <br><br><button type="submit" class="btn btn-success">Añadir área natural</button>
             </div>
         </div>
 

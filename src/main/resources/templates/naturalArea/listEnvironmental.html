@@ -16,8 +16,10 @@
         <th scope="col">Nombre</th>
         <th scope="col">Acceso</th>
         <th scope="col">Municipio</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
+        <th scope="col">Tipo de área</th>
+        <th scope="col">Largo (m)</th>
+        <th scope="col">Ancho (m)</th>
+        <th scope="col">Orientación</th>
         <th scope="col"></th>
     </tr>
     </thead>
@@ -28,9 +30,12 @@
         <td th:text="${naturalArea.name}"></td>
         <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
         <td th:text="${naturalArea.municipality}"></td>
-
-        <td><a th:href="@{get/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-primary">Más</button> </a>
+        <td th:text="${naturalArea.typeOfArea.descripcion}"></td>
+        <td th:text="${naturalArea.length}"></td>
+        <td th:text="${naturalArea.width}"></td>
+        <td th:text="${naturalArea.orientation.descripcion}"></td>
+        <td><a th:href="@{getEnvironmental/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-primary">Más información</button> </a>
         </td>
     </tr>
     </tbody>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Area natural</title>
+    <title>Área natural</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
 </head>
@@ -13,8 +13,8 @@
     <ul>
         <li><b>Municipio:</b> <span th:text="${naturalArea.municipality}"></span></li>
         <li><b>Acceso:</b> <span th:text="${naturalArea.typeOfAccess.descripcion}"></span></li>
-        <li><b>Area:</b> <span th:text="${naturalArea.typeOfArea.descripcion}"></span></li>
-        <li><b>Localizacion:</b> <span th:text="${naturalArea.geographicalLocation}"></span></li>
+        <li><b>Tipo de área:</b> <span th:text="${naturalArea.typeOfArea.descripcion}"></span></li>
+        <li><b>Localización:</b> <span th:text="${naturalArea.geographicalLocation}"></span></li>
         <li><b>Largo:</b> <span th:text="${naturalArea.length}"></span></li>
         <li><b>Ancho:</b> <span th:text="${naturalArea.width}"></span></li>
         <li><b>Características físicas:</b> <span th:text="${naturalArea.physicalCharacteristics}"></span></li>
@@ -35,7 +35,7 @@
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
         <h3>Lista de Zonas</h3>
         <!--<div th:if="${#lists.isEmpty(zones)">
-            <p><b>¡Este área natural todavía no tiene zonas!</b></p>
+            <p><b>¡Este área natural restringida todavía no tiene zonas!</b></p>
         </div>-->
         <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
             <thead>
@@ -44,6 +44,8 @@
                 <th scope="col">Letra</th>
                 <th scope="col">Capacidad máx.</th>
                 <th scope="col">Fecha creación</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -100,10 +102,10 @@
 
 
     <h3>Servicios fijos</h3>
-    <div th:if="${#lists.isEmpty(services)}">
+    <div th:if="${#lists.isEmpty(serviceDates)}">
         <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
     </div>
-    <table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
+    <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
         <thead>
         <tr>
             <th scope="col">Servicio</th>
@@ -114,7 +116,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="serviceDate: ${serviceDate}">
+        <tr th:each="serviceDate: ${serviceDates}">
             <td th:text="${serviceDate.service}"></td>
             <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
             <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
@@ -137,11 +139,12 @@
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
 
+
     <h3>Servicios temporales</h3>
-    <div th:if="${#lists.isEmpty(services)}">
+    <div th:if="${#lists.isEmpty(temporalServices)}">
         <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
     </div>
-    <table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
+    <table th:unless="${#lists.isEmpty(temporalServices)}" class="table table-striped">
         <thead>
         <tr>
             <th scope="col">Servicio</th>
@@ -155,9 +158,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="temporalService: ${temporalService}">
+        <tr th:each="temporalService: ${temporalServices}">
             <td th:text="${temporalService.service}"></td>
-            <td th:text="${temporalService.openningDays}"></td>
+            <td th:text="${temporalService.openingDays}"></td>
             <td th:text="${temporalService.beginningTime}"></td>
             <td th:text="${temporalService.endTime}"></td>
             <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
@@ -181,8 +184,7 @@
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
 
-
-    <!----------------mal--->
+    <!--
     <h3>Servicios</h3>
     <div th:if="${#lists.isEmpty(services)}">
         <p><b>¡Este área natural no tiene asignada ningún servicio!</b></p>
@@ -214,8 +216,10 @@
     <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
         <button type="button" class="btn btn-success">Asignar nuevo servicio</button>
     </a></td>
-
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+    -->
+
+
 
     <h3>Imágenes</h3>
     <div th:if="${#lists.isEmpty(pictures)}">
@@ -245,9 +249,14 @@
             </div>
         </form>
     </div>
-
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
+
+    <td><a th:href="@{../delete/{naturalArea}(naturalArea=${naturalArea.name})}"
+           th:onclick="return confirm('¿Estás seguro/a de borrar el área natural '+ [[${naturalArea.name}]] + '?');">
+        <button type="button" class="btn btn-danger">Elimina área natural</button>
+    </a>
+    </td>
     <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver al listado</button></a>
     <br><br>
 </div>

@@ -15,7 +15,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
             <div class="col-sm-4">
-                <input type="text" readonly="readonly" required class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
+                <input type="text" required readonly="readonly" class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
             </div>
         </div>
 
@@ -23,6 +23,7 @@
             <label class="control-label col-sm-2" for="zoneNumber">Número zona:</label>
             <div class="col-sm-4">
                 <input type="number" min="1" required class="form-control" id="zoneNumber" th:field="*{zoneNumber}" />
+                <td th:if="${#fields.hasErrors('zoneNumber')}" th:errors="*{zoneNumber}"></td>
             </div>
         </div>
 
@@ -30,6 +31,7 @@
             <label class="control-label col-sm-2" for="letter">Letra:</label>
             <div class="col-sm-4">
                 <input type="text" required maxlength="1" class="form-control" id="letter" th:field="*{letter}" />
+                <td th:if="${#fields.hasErrors('letter')}" th:errors="*{letter}"></td>
             </div>
         </div>
 
@@ -37,6 +39,7 @@
             <label class="control-label col-sm-2" for="maximumCapacity">Capacidad máx.:</label>
             <div class="col-sm-4">
                 <input type="number" required class="form-control" id="maximumCapacity" th:field="*{maximumCapacity}"/>
+                <td th:if="${#fields.hasErrors('maximumCapacity')}" th:errors="*{maximumCapacity}"></td>
             </div>
         </div>
 

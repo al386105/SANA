@@ -20,7 +20,7 @@
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="service">Servicio:</label>
+            <label class="control-label col-sm-2" for="service">Servicio fijo:</label>
             <div class="col-sm-4">
                 <select class="form_control" readonly="readonly" required id="service" type="text" th:field="*{service}">
                     <option value="No seleccionado">Selecciona un servicio</option>
@@ -35,20 +35,22 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="beginningDate">Fecha de inicio:</label>
             <div class="col-sm-4">
-                <input type="date" placeholder="yyyy-MM-dd" required class="form-control" id="beginningDate" th:field="*{beginningDate}" />
+                <input type="date" required placeholder="yyyy-MM-dd" class="form-control" id="beginningDate" th:field="*{beginningDate}"/>
+                <td th:if="${#fields.hasErrors('beginningDate')}" th:errors="*{beginningDate}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="endDate">Fecha de fin:</label>
             <div class="col-sm-4">
-                <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="endDate" th:field="*{endDate}" />
+                <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="endDate" th:field="*{endDate}"/>
+                <td th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-success">Modificar asignación servicio</button>
+                <button type="submit" class="btn btn-success">Actualizar servicio fijo</button>
             </div>
         </div>
     </form>

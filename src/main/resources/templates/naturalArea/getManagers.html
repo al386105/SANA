@@ -34,6 +34,7 @@
 
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
         <h3>Lista de Zonas</h3>
+        <!-- TODO problema doble if-->
         <!--<div th:if="${#lists.isEmpty(zones)">
             <p><b>¡Este área natural restringida todavía no tiene zonas!</b></p>
         </div>-->
@@ -184,6 +185,7 @@
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
 
+    <!-- TODO visualizacion dato servicios de arriba -->
     <!--
     <h3>Servicios</h3>
     <div th:if="${#lists.isEmpty(services)}">
@@ -237,6 +239,7 @@
         </tbody>
     </table>
 
+    <!-- TODO gestionar error si la foto es demasiado grande -->
     <!-- selector de imagenes -->
     <div class="container">
         <form class="form-horizontal" action="#" th:action="@{/picture/add/{naturalArea}(naturalArea=${naturalArea.name})}"

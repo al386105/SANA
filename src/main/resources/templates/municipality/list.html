@@ -25,10 +25,6 @@
         <td scope="row" th:text="${municipality.name}"></td>
         <td th:text="${municipality.description}"></td>
         <td th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></td>
-        <td><a th:href="@{/postalCode/list/{muni}(muni=${municipality.name})}">
-            <button type="button" class="btn btn-primary">CP</button>
-        </a>
-        </td>
         <td><a th:href="@{/municipality/get/{name}(name=${municipality.name})}">
             <button type="button" class="btn btn-primary">Más opciones</button>
         </a>

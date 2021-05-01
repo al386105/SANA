@@ -1,5 +1,7 @@
 package es.uji.ei102720mgph.SANA.dao;
 
+import es.uji.ei102720mgph.SANA.model.Comment;
+import es.uji.ei102720mgph.SANA.model.MunicipalManager;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

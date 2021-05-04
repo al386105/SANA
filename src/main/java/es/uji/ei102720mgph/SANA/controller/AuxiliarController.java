@@ -1,6 +1,7 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.model.Email;
+import es.uji.ei102720mgph.SANA.model.SanaUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,44 @@ public class AuxiliarController {
         model.addAttribute("email", new Email());
         return "inicio/contactanos";
     }
+
+    @RequestMapping("inicio/login")
+    public String redirigirLogin(Model model) {
+        model.addAttribute("user", new SanaUser() {});
+        return "inicio/login";
+    }
+
+    @RequestMapping("inicio/register_form")
+    public String redirigirRegistro(Model model) {
+        return "inicio/register_form";
+    }
+    /*
+    @RequestMapping("inicio/login/autentication", method=RequestMethod.POST)
+    UserValidator userValidator = new UserValidator();
+        userValidator.validate(user, bindingResult);
+        if (bindingResult.hasErrors()) {
+        return "login";
+    }
+    // Comprova que el login siga correcte
+    // intentant carregar les dades de l'usuari
+    user = userDao.loadUserByUsername(user.getUsername(), user.getPassword());
+        if (user == null) {
+        bindingResult.rejectValue("password", "badpw", "Contrasenya incorrecta");
+        return "login";
+    }
+    // Autenticats correctament.
+    // Guardem les dades de l'usuari autenticat a la sessió
+        session.setAttribute("user", user);
+    String url = (String) session.getAttribute("nextUrl");
+        session.removeAttribute("nextUrl");
+        if (url != null)
+            return "redirect:"+url;
+    // Torna a la pàgina principal
+        return "redirect:/";
+     }
+     */
+
+
 
     @RequestMapping(value="inicio/contactanos/enviarCorreo", method=RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("email") Email email,

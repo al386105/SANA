@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:display="http://www.w3.org/1999/xhtml" xmlns:margin="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>SANA</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/untitled.css">
-    <link rel="icon" href="assets/img/LOGO_hoja.png" type="image/png">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/untitled.css">
+    <link rel="icon" href="../assets/img/LOGO_hoja.png" type="image/png">
 </head>
 
 <body id="page-top">
@@ -18,7 +18,7 @@
     <div class="container"><a class="navbar-brand js-scroll-trigger" href="#page-top">SANA</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#inicio_sesion">Inicio Sesión</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="../inicio/login">Inicio Sesión</a></li>
             </ul>
         </div>
     </div>
@@ -27,66 +27,67 @@
     <div class="container">
         <h1>SANA</h1>
         <hr class="star-light">
-        <img src="assets/img/perfil.png" alt="Register picture" width="200" height="200" >
+        <img src="/assets/img/perfil.png" style="display:block; position: relative; margin:auto; width: 170px; height: 170px;">
     </div>
+    <br>
     <h3 style="text-align:center;">Bienvenido al registro de SANA</h3>
-    <form class="form-center" action="#" th:action="@{/registeredCitizen/add} "
-          th:object="${registeredCitizen}" method="post" style=" background-color: #e8e6e8!important; ;position: relative; z-index: 1; background: #FFFFFF; max-width: 800px; margin: 0 auto 50px; padding: 70px; text-align: center;">
+    <br>
+    <form class="form-center" >
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="email">Email:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="email" th:field="*{email}" />
+                <input type="text" required class="form-control" id="email" />
             </div>
             <label class="control-label col-sm-2" for="name">Nombre:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="name" th:field="*{name}" />
+                <input type="text" required class="form-control" id="name"  />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="surname">Apellidos:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="surname" th:field="*{surname}" />
+                <input type="text" required class="form-control" id="surname" />
             </div>
             <label class="control-label col-sm-2" for="dateOfBirth">Fecha de nacimiento:</label>
             <div class="col-sm-4">
-                <input type="date" placeholder="yyyy-MM-dd" required class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"/>
+                <input type="date" placeholder="yyyy-MM-dd" required class="form-control" id="dateOfBirth" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="idNumber">DNI/NIE:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="idNumber" th:field="*{idNumber}" />
+                <input type="text" required class="form-control" id="idNumber"  />
             </div>
             <label class="control-label col-sm-2" for="mobilePhoneNumber">Número de teléfono:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="mobilePhoneNumber" th:field="*{mobilePhoneNumber}" />
+                <input type="text" required class="form-control" id="mobilePhoneNumber"  />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="citizenCode">Codigo de ciudadano:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="citizenCode" th:field="*{citizenCode}"/>
+                <input type="text" required class="form-control" id="citizenCode" />
             </div>
             <label class="control-label col-sm-2" for="pin">Pin:</label>
             <div class="col-sm-4">
-                <input type="password" required class="form-control" id="pin" th:field="*{pin}"/>
+                <input type="password" required class="form-control" id="pin" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="addressId">Id dirección:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="addressId" th:field="*{addressId}"/>
+                <input type="text" required class="form-control" id="addressId" />
             </div>
         </div>
 
         <div class="form-group row" >
             <div class="col-sm-offset-2 col-sm-4">
-                <a href="SANA.html"><button type="button" class="btn btn-primary">Volver</button></a>
+                <a href="/inicio/login"><button type="button" class="btn btn-primary">Volver</button></a>
                 <button type="submit" class="btn btn-success">Registrarse</button>
             </div>
         </div>
@@ -117,10 +118,10 @@
         </div>
     </div>
 </footer>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../static/assets/js/jquery.min.js"></script>
+<script src="../../static/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-<script src="assets/js/freelancer.js"></script>
+<script src="../../static/assets/js/freelancer.js"></script>
 </body>
 
 </html>

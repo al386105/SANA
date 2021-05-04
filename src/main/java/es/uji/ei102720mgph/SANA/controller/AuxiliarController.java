@@ -3,13 +3,17 @@ package es.uji.ei102720mgph.SANA.controller;
 import es.uji.ei102720mgph.SANA.dao.RegisteredCitizenDao;
 import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
 import es.uji.ei102720mgph.SANA.dao.TimeSlotDao;
+import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import es.uji.ei102720mgph.SANA.model.Email;
+import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
 import es.uji.ei102720mgph.SANA.model.SanaUser;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,12 +24,42 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.util.Properties;
 
+
+
+
+
+
+class UserValidator implements Validator {
+    @Override
+    public boolean supports(Class<?> cls) {
+        return UserLogin.class.isAssignableFrom(cls);
+    }
+    @Override
+    public void validate(Object obj, Errors errors) {
+
+        UserLogin user = (UserLogin) obj;
+
+        if (user.getEmail().trim().equals(""))
+            errors.rejectValue("email", "obligatorio", "Necesario Introducir Email");
+
+        if (user.getPassword().trim().equals(""))
+            errors.rejectValue("password", "obligatorio", "Necesario Introducir la contraseña");
+    }
+}
+
+
 @Controller
 @RequestMapping("/")
 public class AuxiliarController {
 
 
     private SanaUserDao sanaUserDao;
+    private RegisteredCitizenDao registeredCitizenDao;
+
+    @Autowired
+    public void setRegisteredCitizenDao(RegisteredCitizenDao registeredCitizenDao){
+        this.registeredCitizenDao = registeredCitizenDao;
+    }
 
     @Autowired
     public void setSanaUsertDao(SanaUserDao sanaUserDao){
@@ -56,6 +90,9 @@ public class AuxiliarController {
 
     @RequestMapping(value="inicio/login/autentication", method=RequestMethod.POST)
     public String autenticationProcess(@ModelAttribute("userLogin") UserLogin userLogin, BindingResult bindingResult, HttpSession session){
+        UserValidator userValidator = new UserValidator();
+        userValidator.validate(userLogin, bindingResult);
+
         if (bindingResult.hasErrors())
             return "inicio/login"; //tornem al formulari d'inici de sessió
 
@@ -63,10 +100,41 @@ public class AuxiliarController {
 
         if (sanaUser != null){
             //El usuario esta registrado en el sistema
-            System.out.println("Email del usuario registrado es: "+sanaUser.getEmail() +" y su contraseña: "+ userLogin.getPassword());
+
+            if (sanaUser.getTypeOfUser().equals(TypeOfUser.municipalManager)){
+                System.out.println("Es municipal manager");
+
+            }
+            if (sanaUser.getTypeOfUser().equals(TypeOfUser.controlStaff)){
+                System.out.println("Es  controlStaff");
+            }
+
+            if (sanaUser.getTypeOfUser().equals(TypeOfUser.registeredCitizen)){
+                //Si es usuario comprobamos que la contraseña sea correcta
+                RegisteredCitizen registeredCitizen = registeredCitizenDao.getRegisteredCitizen(sanaUser.getEmail());
+                try {
+
+                    if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
+                        //Contraseña Correcta
+                        session.setAttribute("registeredCitizen", registeredCitizen);
+                        return "inicio/sana";
+
+                    } else {
+                        //Contraseña Incorrecta
+                        bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
+                        return "inicio/login";
+                    }
+                }catch (NumberFormatException n){
+                    //Contraseña Incorrecta
+                    bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
+                    return "inicio/login";
+                }
+            }
+
         }else{
             //El usuario no está registrado en el sistema
-            System.out.println("Email del usuario NO registrado es: "+userLogin.getEmail() +" y su contraseña: "+ userLogin.getPassword());
+            bindingResult.rejectValue("email", "badEmail", "Email no registrado en el sistema");
+            return "inicio/login";
         }
 
         return "inicio/sana"; //Redirigimos a la página de inicio con la sesión iniciada

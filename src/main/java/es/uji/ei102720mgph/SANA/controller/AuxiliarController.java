@@ -1,7 +1,12 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+import es.uji.ei102720mgph.SANA.dao.RegisteredCitizenDao;
+import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
+import es.uji.ei102720mgph.SANA.dao.TimeSlotDao;
 import es.uji.ei102720mgph.SANA.model.Email;
 import es.uji.ei102720mgph.SANA.model.SanaUser;
+import es.uji.ei102720mgph.SANA.model.UserLogin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,11 +17,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 import java.util.Properties;
 
 @Controller
 @RequestMapping("/")
 public class AuxiliarController {
+
+
+    private SanaUserDao sanaUserDao;
+
+    @Autowired
+    public void setSanaUsertDao(SanaUserDao sanaUserDao){
+        this.sanaUserDao = sanaUserDao;
+    }
 
     @RequestMapping("inicio")
     public String redirigirSana(Model model) {
@@ -31,7 +45,7 @@ public class AuxiliarController {
 
     @RequestMapping("inicio/login")
     public String redirigirLogin(Model model) {
-        model.addAttribute("user", new SanaUser() {});
+        model.addAttribute("userLogin", new UserLogin() {});
         return "inicio/login";
     }
 
@@ -39,31 +53,24 @@ public class AuxiliarController {
     public String redirigirRegistro(Model model) {
         return "inicio/register_form";
     }
-    /*
-    @RequestMapping("inicio/login/autentication", method=RequestMethod.POST)
-    UserValidator userValidator = new UserValidator();
-        userValidator.validate(user, bindingResult);
-        if (bindingResult.hasErrors()) {
-        return "login";
+
+    @RequestMapping(value="inicio/login/autentication", method=RequestMethod.POST)
+    public String autenticationProcess(@ModelAttribute("userLogin") UserLogin userLogin, BindingResult bindingResult, HttpSession session){
+        if (bindingResult.hasErrors())
+            return "inicio/login"; //tornem al formulari d'inici de sessió
+
+        SanaUser sanaUser = sanaUserDao.getSanaUser(userLogin.getEmail().trim());
+
+        if (sanaUser != null){
+            //El usuario esta registrado en el sistema
+            System.out.println("Email del usuario registrado es: "+sanaUser.getEmail() +" y su contraseña: "+ userLogin.getPassword());
+        }else{
+            //El usuario no está registrado en el sistema
+            System.out.println("Email del usuario NO registrado es: "+userLogin.getEmail() +" y su contraseña: "+ userLogin.getPassword());
+        }
+
+        return "inicio/sana"; //Redirigimos a la página de inicio con la sesión iniciada
     }
-    // Comprova que el login siga correcte
-    // intentant carregar les dades de l'usuari
-    user = userDao.loadUserByUsername(user.getUsername(), user.getPassword());
-        if (user == null) {
-        bindingResult.rejectValue("password", "badpw", "Contrasenya incorrecta");
-        return "login";
-    }
-    // Autenticats correctament.
-    // Guardem les dades de l'usuari autenticat a la sessió
-        session.setAttribute("user", user);
-    String url = (String) session.getAttribute("nextUrl");
-        session.removeAttribute("nextUrl");
-        if (url != null)
-            return "redirect:"+url;
-    // Torna a la pàgina principal
-        return "redirect:/";
-     }
-     */
 
 
 

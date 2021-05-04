@@ -38,15 +38,15 @@
     <img src="/assets/img/perfil.png" style="display:block; position: relative; margin:auto; width: 170px; height: 170px;">
     <div class="container">
       <div class="abs-center">
-        <form action="#" class="border p-3 form" style=" background-color: #e8e6e8!important; ;position: relative;
+        <form th:action="@{login/autentication}"  th:object="${userLogin}" method="post"  class="border p-3 form" style=" background-color: #e8e6e8!important; ;position: relative;
                     z-index: 1; background: #FFFFFF; max-width: 360px; margin: 0 auto 100px; padding: 40px; text-align: center;">
           <div class="form-group">
             <label for="email">Email or citizen code</label>
-            <input type="email" name="email" id="email" class="form-control">
+            <input type="email" name="email" id="email" class="form-control" th:field="*{email}">
           </div>
           <div class="form-group">
             <label for="password">Contraseña</label>
-            <input type="password" name="password" id="password" class="form-control">
+            <input type="password" name="password" id="password" class="form-control" th:field="*{password}">
           </div>
           <button type="submit" class="btn btn-primary">Entrar</button>
           <a href="../inicio/register_form" class="btn btn-primary">Registrarse</a>

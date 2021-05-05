@@ -86,6 +86,18 @@ public class AuxiliarController {
         return "inicio/login";
     }
 
+    @RequestMapping("inicio/registrado")
+    public String redirigirRegistrado(Model model, HttpSession session) {
+        System.out.println("Areas: " + session.getAttribute("registeredCitizen"));
+        return "inicioRegistrado/areasNaturales";
+    }
+
+    @RequestMapping("inicio/registrado/perfil")
+    public String redirigirRegistradoPerfil(Model model, HttpSession session) {
+        System.out.println("Perfil: " + session.getAttribute("registeredCitizen"));
+        return "inicioRegistrado/perfil";
+    }
+
     @RequestMapping("inicio/register_form")
     public String redirigirRegistro(Model model) {
         return "inicio/register_form";
@@ -135,7 +147,7 @@ public class AuxiliarController {
                     if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
                         //Contraseña Correcta
                         session.setAttribute("registeredCitizen", registeredCitizen);
-                        return "inicio/sana"; //TODO return redirect:/
+                        return "redirect:/inicio/registrado"; //TODO return redirect:/
 
                     } else {
                         //Contraseña Incorrecta

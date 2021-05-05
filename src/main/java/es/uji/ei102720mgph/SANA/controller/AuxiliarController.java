@@ -1,13 +1,8 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-import es.uji.ei102720mgph.SANA.dao.RegisteredCitizenDao;
-import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
-import es.uji.ei102720mgph.SANA.dao.TimeSlotDao;
+import es.uji.ei102720mgph.SANA.dao.*;
 import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
-import es.uji.ei102720mgph.SANA.model.Email;
-import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
-import es.uji.ei102720mgph.SANA.model.SanaUser;
-import es.uji.ei102720mgph.SANA.model.UserLogin;
+import es.uji.ei102720mgph.SANA.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,6 +50,13 @@ public class AuxiliarController {
 
     private SanaUserDao sanaUserDao;
     private RegisteredCitizenDao registeredCitizenDao;
+    private MunicipalManagerDao municipalManagerDao;
+    private ControlStaffDao controlStaffDao;
+
+    @Autowired
+    public void setControlStaffDao(ControlStaffDao controlStaffDao){
+        this.controlStaffDao = controlStaffDao;
+    }
 
     @Autowired
     public void setRegisteredCitizenDao(RegisteredCitizenDao registeredCitizenDao){
@@ -65,6 +67,12 @@ public class AuxiliarController {
     public void setSanaUsertDao(SanaUserDao sanaUserDao){
         this.sanaUserDao = sanaUserDao;
     }
+
+    @Autowired
+    public void setMunicipalManagerDao(MunicipalManagerDao municipalManagerDao){
+        this.municipalManagerDao = municipalManagerDao;
+    }
+
 
     @RequestMapping("inicio")
     public String redirigirSana(Model model) {
@@ -102,15 +110,32 @@ public class AuxiliarController {
             //El usuario esta registrado en el sistema
 
             if (sanaUser.getTypeOfUser().equals(TypeOfUser.municipalManager)){
-                System.out.println("Es municipal manager");
+                MunicipalManager municipalManager = municipalManagerDao.getMunicipalManager(sanaUser.getEmail());
+                if (municipalManager.getPassword().equals(userLogin.getPassword())){
+                    //Contraseña correcta
+                    session.setAttribute("municipalManager", municipalManager);
+                    return "section/managers";
+                }else{
+                    //Contraseña Incorrecta
+                    bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
+                    return "inicio/login";
+                }
 
             }
             if (sanaUser.getTypeOfUser().equals(TypeOfUser.controlStaff)){
-                System.out.println("Es  controlStaff");
+                ControlStaff controlStaff = controlStaffDao.getControlStaf(sanaUser.getEmail());
+                if (controlStaff.getPassword().equals(userLogin.getPassword())){
+                    //Contraseña correcta
+                    session.setAttribute("controlStaff", controlStaff);
+                    return "inicio/sana";
+                }else{
+                    //Contraseña Incorrecta
+                    bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
+                    return "inicio/login";
+                }
             }
 
             if (sanaUser.getTypeOfUser().equals(TypeOfUser.registeredCitizen)){
-                //Si es usuario comprobamos que la contraseña sea correcta
                 RegisteredCitizen registeredCitizen = registeredCitizenDao.getRegisteredCitizen(sanaUser.getEmail());
                 try {
 

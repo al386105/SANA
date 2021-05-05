@@ -20,10 +20,6 @@ import javax.servlet.http.HttpSession;
 import java.util.Properties;
 
 
-
-
-
-
 class UserValidator implements Validator {
     @Override
     public boolean supports(Class<?> cls) {
@@ -46,7 +42,6 @@ class UserValidator implements Validator {
 @Controller
 @RequestMapping("/")
 public class AuxiliarController {
-
 
     private SanaUserDao sanaUserDao;
     private RegisteredCitizenDao registeredCitizenDao;
@@ -73,7 +68,7 @@ public class AuxiliarController {
         this.municipalManagerDao = municipalManagerDao;
     }
 
-
+    // TODO esto debe ser / en vez de inicio
     @RequestMapping("inicio")
     public String redirigirSana(Model model) {
         return "inicio/sana";
@@ -105,7 +100,6 @@ public class AuxiliarController {
             return "inicio/login"; //tornem al formulari d'inici de sessió
 
         SanaUser sanaUser = sanaUserDao.getSanaUser(userLogin.getEmail().trim());
-
         if (sanaUser != null){
             //El usuario esta registrado en el sistema
 
@@ -114,20 +108,20 @@ public class AuxiliarController {
                 if (municipalManager.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
                     session.setAttribute("municipalManager", municipalManager);
-                    return "section/managers";
+                    return "section/managers"; //TODO es un redirect
                 }else{
                     //Contraseña Incorrecta
                     bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
                     return "inicio/login";
                 }
-
             }
+
             if (sanaUser.getTypeOfUser().equals(TypeOfUser.controlStaff)){
                 ControlStaff controlStaff = controlStaffDao.getControlStaf(sanaUser.getEmail());
                 if (controlStaff.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
                     session.setAttribute("controlStaff", controlStaff);
-                    return "inicio/sana";
+                    return "inicio/sana"; //TODO return redirect:/
                 }else{
                     //Contraseña Incorrecta
                     bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
@@ -138,11 +132,10 @@ public class AuxiliarController {
             if (sanaUser.getTypeOfUser().equals(TypeOfUser.registeredCitizen)){
                 RegisteredCitizen registeredCitizen = registeredCitizenDao.getRegisteredCitizen(sanaUser.getEmail());
                 try {
-
                     if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
                         //Contraseña Correcta
                         session.setAttribute("registeredCitizen", registeredCitizen);
-                        return "inicio/sana";
+                        return "inicio/sana"; //TODO return redirect:/
 
                     } else {
                         //Contraseña Incorrecta
@@ -156,16 +149,14 @@ public class AuxiliarController {
                 }
             }
 
-        }else{
+        } else {
             //El usuario no está registrado en el sistema
             bindingResult.rejectValue("email", "badEmail", "Email no registrado en el sistema");
             return "inicio/login";
         }
-
+        //TODO return redirect:/
         return "inicio/sana"; //Redirigimos a la página de inicio con la sesión iniciada
     }
-
-
 
     @RequestMapping(value="inicio/contactanos/enviarCorreo", method=RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("email") Email email,
@@ -180,7 +171,6 @@ public class AuxiliarController {
         // Envia correo electrónico
         enviarMail(destinatario, asunto, cuerpo);
 
-
         return "redirect:../../inicio"; //redirigim a la lista per a veure el email afegit, post/redirect/get
     }
 
@@ -190,10 +180,10 @@ public class AuxiliarController {
         Properties props = System.getProperties();
         props.put("mail.smtp.host", "smtp.gmail.com");  //El servidor SMTP de Google
         props.put("mail.smtp.user", remitente);
-        props.put("mail.smtp.clave", "barrachina");    //La clave de la cuenta
-        props.put("mail.smtp.auth", "true");    //Usar autenticación mediante usuario y clave
+        props.put("mail.smtp.clave", "barrachina");     //La clave de la cuenta TODO no se deberia ver
+        props.put("mail.smtp.auth", "true");            //Usar autenticación mediante usuario y clave
         props.put("mail.smtp.starttls.enable", "true"); //Para conectar de manera segura al servidor SMTP
-        props.put("mail.smtp.port", "587"); //El puerto SMTP seguro de Google
+        props.put("mail.smtp.port", "587");             //El puerto SMTP seguro de Google
 
         Session session = Session.getDefaultInstance(props);
         MimeMessage message = new MimeMessage(session);

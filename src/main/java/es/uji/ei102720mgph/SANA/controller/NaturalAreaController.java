@@ -143,12 +143,17 @@ public class NaturalAreaController {
         NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
         naturalAreaValidator.validate(naturalArea, bindingResult);
 
-        System.out.println("nombre " + naturalArea.getName());
         if (bindingResult.hasErrors())
             return "naturalArea/add"; //tornem al formulari per a que el corregisca
         naturalAreaDao.addNaturalArea(naturalArea); //usem el dao per a inserir el naturalArea
+
+        // si es vol afegir un area restringida, redirigir a la vista per a continuar la seua creació
+        if(naturalArea.getTypeOfAccess() == TypeOfAccess.restricted)
+            return "naturalArea/addRestricted";
         return "redirect:/naturalArea/getManagers/" + naturalArea.getName();
     }
+
+    //TODO hay que hacer la segunda vista de add, addRestricted
 
     // Update
     @RequestMapping(value="/update/{naturalArea}", method=RequestMethod.GET)

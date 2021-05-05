@@ -1,16 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Crear área natural</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
 </head>
 <body>
-    <h1>POR HACER</h1>
+<div class="container">
+    <h1>Añadir los datos del área restringida</h1>
+    <form class="form-horizontal" action="#" th:action="@{/naturalArea/addRestricted}"
+          th:object="${naturalArea}" method="post">
 
-    <!-- llegar a esta vista solo si el area que estamos anyadiendo en la vista anterior es restricted -->
+        <!-- TODO esta clase no funciona -->
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="restrictionTimePeriod">Restringido hasta:</label>
+            <div class="col-sm-4">
+                <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="restrictionTimePeriod" th:field="*{restrictionTimePeriod}" />
+            </div>
+        </div>
 
-    <!-- TODO VISTA POR HACER-->
+        <!-- TODO no se deberia pedir la ocupacion, es calculada -->
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="occupancyRate">Ratio ocupación:</label>
+            <div class="col-sm-4">
+                <input type="number" min="0.0" max="100.0" step="0.1" class="form-control" id="occupancyRate" th:field="*{occupancyRate}" />
+            </div>
+        </div>
 
+        <!-- TODO deberia poder añadir aqui franjas horarias -->
 
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-4">
+                <!-- ver que hacer con botones -->
+                <!--<a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver al listado</button></a>-->
+                <!--<a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>-->
+                <br><br><button type="submit" class="btn btn-success">Añadir y finalizar</button>
+            </div>
+        </div>
+
+    </form>
+</div>
 </body>
 </html>

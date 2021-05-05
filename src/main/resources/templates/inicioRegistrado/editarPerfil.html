@@ -39,26 +39,37 @@
     <br>
     <hr class="barra-normal">
     <br>
-    <h3 class="colorMarron">Nombre:</h3>
-    <h4 class="colorTierra" th:text="*{name}"></h4>
-    <br>
-    <h3 class="colorMarron">Apellidos:</h3>
-    <h4 class="colorTierra" th:text="*{surname}"></h4>
-    <br>
-    <h3 class="colorMarron">Correo:</h3>
-    <h4 class="colorTierra" th:text="*{email}"></h4>
-    <br>
-    <h3 class="colorMarron">Fecha de nacimiento:</h3>
-    <h4 class="colorTierra" th:text="*{dateOfBirth}"></h4>
-    <br>
-    <h3 class="colorMarron">Teléfono:</h3>
-    <h4 class="colorTierra" th:text="*{mobilePhoneNumber}"></h4>
-    <br>
-    <form action="/inicio/registrado/editarPerfil">
-      <button style="float: right" class="btn btn-primary btn-xl">Editar perfil</button>
-    </form>
     <div class="row">
       <div class="col-lg-8 mx-auto" >
+        <form id="contactForm" novalidate="novalidate" th:action="@{editarPerfil}" th:object="${citizen}" method="post">
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Nombre:</label>
+              <input class="form-control" id="name" th:field="*{name}" style="background-color: #e8e6e8"><small class="form-text text-danger help-block"></small>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Apellidos</label>
+              <input class="form-control" id="surname" th:field="*{surname}" style="background-color: #e8e6e8"><small class="form-text text-danger help-block"></small>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Correo</label>
+              <input class="form-control" id="email" th:field="*{email}" style="background-color: #dbdbdb" readonly="readonly"><small class="form-text text-danger help-block"></small>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Nacimiento</label>
+              <input class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" style="background-color: #e8e6e8"><small class="form-text text-danger help-block"></small>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Teléfono</label>
+              <input class="form-control" id="mobilePhoneNumber" th:field="*{mobilePhoneNumber}" style="background-color: #e8e6e8"><small class="form-text text-danger help-block"></small>
+            </div>
+          </div>
+          <div id="success"></div>
+          <div class="form-group"><button class="btn btn-primary btn-xl" id="guardarCambios" type="submit">Guardar cambios</button></div>
+        </form>
       </div>
     </div>
   </div>

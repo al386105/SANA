@@ -98,6 +98,25 @@ public class AuxiliarController {
         return "inicioRegistrado/perfil";
     }
 
+    @RequestMapping("inicio/registrado/editarPerfil")
+    public String redirigirRegistradoEditarPerfil(Model model, HttpSession session) {
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("citizen", citizen);
+        return "inicioRegistrado/editarPerfil";
+    }
+
+    @RequestMapping(value="inicio/registrado/editarPerfil", method = RequestMethod.POST)
+    public String processUpdateSubmit(@ModelAttribute("citizen") RegisteredCitizen registeredCitizen,
+                                      BindingResult bindingResult, Model model, HttpSession session) {
+        if (bindingResult.hasErrors())
+            return "inicio/registrado/editarPerfil";
+        System.out.println(registeredCitizen.getIdNumber());
+        registeredCitizenDao.updateRegisteredCitizen(registeredCitizen);
+        model.addAttribute("citizen", registeredCitizen);
+        session.setAttribute("registeredCitizen", registeredCitizen);
+        return "redirect:perfil";
+    }
+
     @RequestMapping("inicio/register_form")
     public String redirigirRegistro(Model model) {
         return "inicio/register_form";

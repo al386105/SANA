@@ -146,3 +146,11 @@ hr.barra-normal {
     height: auto;
     border-radius:100px;
 }
+
+h3.colorMarron {
+    color: #634133;
+}
+
+h4.colorTierra {
+    color: #b86f52;
+}

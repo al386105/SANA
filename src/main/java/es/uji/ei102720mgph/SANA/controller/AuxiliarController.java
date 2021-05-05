@@ -87,14 +87,14 @@ public class AuxiliarController {
     }
 
     @RequestMapping("inicio/registrado")
-    public String redirigirRegistrado(Model model, HttpSession session) {
-        System.out.println("Areas: " + session.getAttribute("registeredCitizen"));
+    public String redirigirRegistrado(Model model) {
         return "inicioRegistrado/areasNaturales";
     }
 
     @RequestMapping("inicio/registrado/perfil")
     public String redirigirRegistradoPerfil(Model model, HttpSession session) {
-        System.out.println("Perfil: " + session.getAttribute("registeredCitizen"));
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("citizen", citizen);
         return "inicioRegistrado/perfil";
     }
 

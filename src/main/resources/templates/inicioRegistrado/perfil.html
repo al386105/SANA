@@ -29,7 +29,7 @@
 
 
 <section id="perfil">
-  <div class="container">
+  <div class="container" th:object ="${citizen}">
     <br>
     <br>
     <br>
@@ -39,10 +39,24 @@
     <br>
     <hr class="barra-normal">
     <br>
+    <h3 class="colorMarron">Nombre:</h3>
+    <h4 class="colorTierra" th:text="*{name}"></h4>
     <br>
-    <div class="row">
-      <div class="col-lg-8 mx-auto">
+    <h3 class="colorMarron">Apellidos:</h3>
+    <h4 class="colorTierra" th:text="*{surname}"></h4>
+    <br>
+    <h3 class="colorMarron">Correo:</h3>
+    <h4 class="colorTierra" th:text="*{email}"></h4>
+    <br>
+    <h3 class="colorMarron">Fecha de nacimiento:</h3>
+    <h4 class="colorTierra" th:text="*{dateOfBirth}"></h4>
+    <br>
+    <h3 class="colorMarron">Teléfono:</h3>
+    <h4 class="colorTierra" th:text="*{mobilePhoneNumber}"></h4>
+    <br>
 
+    <div class="row">
+      <div class="col-lg-8 mx-auto" >
       </div>
     </div>
   </div>

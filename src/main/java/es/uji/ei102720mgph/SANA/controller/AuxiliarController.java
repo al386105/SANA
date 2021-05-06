@@ -17,6 +17,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Properties;
 
 
@@ -47,6 +48,7 @@ public class AuxiliarController {
     private RegisteredCitizenDao registeredCitizenDao;
     private MunicipalManagerDao municipalManagerDao;
     private ControlStaffDao controlStaffDao;
+    private ReservaDatosDao reservaDatosDao;
 
     @Autowired
     public void setControlStaffDao(ControlStaffDao controlStaffDao){
@@ -66,6 +68,11 @@ public class AuxiliarController {
     @Autowired
     public void setMunicipalManagerDao(MunicipalManagerDao municipalManagerDao){
         this.municipalManagerDao = municipalManagerDao;
+    }
+
+    @Autowired
+    public void setReservaDatosDao(ReservaDatosDao reservaDatosDao){
+        this.reservaDatosDao = reservaDatosDao;
     }
 
     // TODO esto debe ser / en vez de inicio
@@ -89,6 +96,14 @@ public class AuxiliarController {
     @RequestMapping("inicio/registrado")
     public String redirigirRegistrado(Model model) {
         return "inicioRegistrado/areasNaturales";
+    }
+
+    @RequestMapping("inicio/registrado/reservas")
+    public String redirigirRegistradoReservas(Model model, HttpSession session) {
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
+        model.addAttribute("reservas", listaReservas);
+        return "inicioRegistrado/reservas";
     }
 
     @RequestMapping("inicio/registrado/perfil")

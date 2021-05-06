@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>SANA</title>
+    <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic">
+    <link rel="stylesheet" href="../../assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../../assets/css/untitled.css">
+    <link rel="icon" href="../assets/img/LOGO_hoja.png" type="image/png">
+</head>
+
+<body id="page-top">
+<nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
+    <div class="container"><a class="navbar-brand js-scroll-trigger" href="../inicio">SANA</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/inicio/registrado">Áreas Naturales</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#reservas">Mis reservas</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/inicio/registrado/perfil">Perfil</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+<section id="reservas">
+    <div class="container">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2 class="text-uppercase text-center text-secondary mb-0">Mis Reservas</h2>
+        <br>
+        <hr class="barra-normal">
+        <br>
+        <div th:each="reserva: ${reservas}">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title" th:text="${reserva.naturalArea}"></h4>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></h6>
+                    <p class="card-text" th:text="${reserva.numberOfPeople}"></p>
+                    <p class="card-text"> personas</p>
+                    <a href="#" class="card-link">Cancelar reserva</a>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+</section>
+
+<footer class="text-center footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-5 mb-lg-0">
+                <h4 class="text-uppercase mb-4">Dónde estamos</h4>
+                <p>Castellón de la Plana, España<br>UJI - Universitat Jaume I</p>
+            </div>
+            <div class="col-md-4 mb-5 mb-lg-0">
+                <h4 class="text-uppercase">Síguenos</h4><p>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button"><i class="fa fa-facebook fa-fw"></i></a></li>
+                    <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button"><i class="fa fa-google fa-fw"></i></a></li>
+                    <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button"><i class="fa fa-twitter fa-fw"></i></a></li>
+                    <li class="list-inline-item"><a class="btn btn-outline-light text-center btn-social rounded-circle" role="button"><i class="fa fa-instagram fa-fw"></i></a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4 class="text-uppercase mb-4">Sobre nosotros</h4>
+                <p>SANA es un proyecto realizado en la UJI por alumnos de Ingenieria Informática durante las asignaturas EI1023 y EI1027</p>
+            </div>
+        </div>
+    </div>
+</footer>
+<div class="text-center text-white copyright py-4">
+    <div class="container"><small style="color:white">Copyright ©&nbsp;SANA 2021</small></div>
+</div>
+
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="assets/js/freelancer.js"></script>
+
+
+</body>
+
+</html>
+
+<!--
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reservas</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<h1>Lista de reservas</h1>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Número reserva</th>
+        <th scope="col">Fecha reserva</th>
+        <th scope="col">Num. personas</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Código QR</th>
+        <th scope="col">Letra</th>
+        <th scope="col">Número</th>
+        <th scope="col">Area natural</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="reserva: ${reservas}">
+        <td scope="row" th:text="${reserva.reservationNumber}"></td>
+        <td th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></td>
+        <td th:text="${reserva.numberOfPeople}"></td>
+        <td th:text="${reserva.state.descripcion}"></td>
+        <td th:text="${reserva.QRcode}"></td>
+        <td th:text="${reserva.letter}"></td>
+        <td th:text="${reserva.zoneNumber}"></td>
+        <td th:text="${reserva.naturalArea}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+
+-->

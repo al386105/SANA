@@ -13,6 +13,7 @@
 <table th:unless="${#lists.isEmpty(naturalAreas)}" class="table table-striped">
     <thead>
     <tr>
+        <th scope="col">Foto</th>
         <th scope="col">Nombre</th>
         <th scope="col">Acceso</th>
         <th scope="col">Municipio</th>
@@ -24,7 +25,7 @@
 
     <tbody>
     <tr th:each="naturalArea: ${#lists.sort(naturalAreas)}">
-
+        <td th:text="${naturalArea.name}"></td>
         <td th:text="${naturalArea.name}"></td>
         <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
         <td th:text="${naturalArea.municipality}"></td>

@@ -102,6 +102,7 @@ public class NaturalAreaController {
     @RequestMapping(value="/list")
     public String listNaturalAreas(Model model){
         model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
+        //model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea())
         return "naturalArea/list";
     }
 

@@ -1,9 +1,9 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-
+import es.uji.ei102720mgph.SANA.dao.MunicipalManagerDao;
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
+import es.uji.ei102720mgph.SANA.dao.PostalCodeMunicipalityDao;
 import es.uji.ei102720mgph.SANA.model.Municipality;
-import es.uji.ei102720mgph.SANA.model.TimeSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,16 +18,38 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MunicipalityController {
 
     private MunicipalityDao municipalityDao;
+    private MunicipalManagerDao municipalManagerDao;
+    private PostalCodeMunicipalityDao postalCodeMunicipalityDao;
 
     @Autowired
     public void setMunicipalityDao(MunicipalityDao municipalityDao){
         this.municipalityDao = municipalityDao;
     }
 
+    @Autowired
+    public void setMunicipalManagerDao(MunicipalManagerDao municipalManagerDao){
+        this.municipalManagerDao = municipalManagerDao;
+    }
+
+    @Autowired
+    public void setPostalCodeMunicipalityDao(PostalCodeMunicipalityDao postalCodeMunicipalityDao){
+        this.postalCodeMunicipalityDao = postalCodeMunicipalityDao;
+    }
+
     @RequestMapping("/list")
     public String listMunicipalities(Model model) {
         model.addAttribute("municipalities", municipalityDao.getMunicipalities());
         return "municipality/list";
+    }
+
+    @RequestMapping(value="/get/{name}")
+    public String getMunicipality(Model model, @PathVariable("name") String name){
+        model.addAttribute("municipality", municipalityDao.getMunicipality(name));
+        model.addAttribute("municipalManagers", municipalManagerDao.getManagersOfMunicipality(name));
+
+        //TODO pasarle tmb los cp del municipio
+
+        return "/municipality/get";
     }
 
     @RequestMapping(value="/add")
@@ -37,11 +59,14 @@ public class MunicipalityController {
     }
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("municipality") Municipality muni,
+    public String processAddSubmit(@ModelAttribute("municipality") Municipality municipality,
                                    BindingResult bindingResult) {
+        MunicipalityValidator municipalityValidator = new MunicipalityValidator();
+        municipalityValidator.validate(municipality, bindingResult);
+
         if (bindingResult.hasErrors())
             return "municipality/add"; //tornem al formulari per a que el corregisca
-        municipalityDao.addMunicipality(muni);
+        municipalityDao.addMunicipality(municipality);
         return "redirect:list"; //redirigim a la lista, post/redirect/get
     }
 
@@ -52,11 +77,14 @@ public class MunicipalityController {
     }
 
     @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("municipality") Municipality muni,
+    public String processUpdateSubmit(@ModelAttribute("municipality") Municipality municipality,
                                       BindingResult bindingResult) {
+        MunicipalityValidator municipalityValidator = new MunicipalityValidator();
+        municipalityValidator.validate(municipality, bindingResult);
+
         if (bindingResult.hasErrors())
             return "municipality/update";
-        municipalityDao.updateMunicipality(muni);
+        municipalityDao.updateMunicipality(municipality);
         return "redirect:list";
     }
 

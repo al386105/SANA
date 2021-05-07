@@ -15,30 +15,35 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="nameOfService">Nombre del servicio:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="nameOfService" th:field="*{nameOfService}"/>
+                <input type="text" required maxlength="30" class="form-control" id="nameOfService" th:field="*{nameOfService}" />
+                <td th:if="${#fields.hasErrors('nameOfService')}" th:errors="*{nameOfService}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="temporality">Temporalidad:</label>
-            <select class="form_control" required id="temporality" type="text" th:field="*{temporality}">
-                <option th:each="temporalityvalue : ${temporalityList}"
-                        th:value="${temporalityvalue}"
-                        th:text="${temporalityvalue}"></option>
-            </select>
+            <div class="col-sm-4">
+                <select class="form_control" required id="temporality" type="text" th:field="*{temporality}">
+                    <option th:each="temporalityvalue : ${temporalityList}"
+                            th:value="${temporalityvalue}" th:text="${temporalityvalue.descripcion}"></option>
+                </select>
+            </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="description">Descripción:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="description" th:field="*{description}" />
+                <textarea rows="3" required maxlength="100" class="form-control" placeholder="Para este servicio se requiere..."
+                          id="description" th:field="*{description}"></textarea>
+                <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="hiringPlace">Sitio de contratación:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="hiringPlace" th:field="*{hiringPlace}"/>
+                <input type="text" maxlength="30" required class="form-control" id="hiringPlace" th:field="*{hiringPlace}"/>
+                <td th:if="${#fields.hasErrors('hiringPlace')}" th:errors="*{hiringPlace}"></td>
             </div>
         </div>
 

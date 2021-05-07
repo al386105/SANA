@@ -9,69 +9,115 @@
 <body>
 <div class="container">
     <h1><span th:text="${naturalArea.name}"> </span></h1>
-    <p><b>Acceso:</b> <span th:text="${naturalArea.typeOfAccess}"> </span></p>
-    <p><b>Localizacion:</b> <span th:text="${naturalArea.geographicalLocation}"> </span></p>
-    <p><b>Area:</b> <span th:text="${naturalArea.typeOfArea}"> </span></p>
-    <p><b>Largo:</b> <span th:text="${naturalArea.length}"> </span></p>
-    <p><b>Ancho:</b> <span th:text="${naturalArea.width}"> </span></p>
-    <p><b>Características:</b> <span th:text="${naturalArea.physicalCharacteristics}"> </span></p>
-    <p><b>Descripción:</b> <span th:text="${naturalArea.description}"> </span></p>
-    <p><b>Orientación:</b> <span th:text="${naturalArea.orientation}"> </span></p>
-    <p><b>Restringido hasta:</b> <span th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"> </span></p>
-    <p><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"> </span></p>
-    <p><b>Municipio:</b> <span th:text="${naturalArea.municipality}"> </span></p>
+    <ul>
+        <li><b>Municipio:</b> <span th:text="${naturalArea.municipality}"></span></li>
+        <li><b>Acceso:</b> <span th:text="${naturalArea.typeOfAccess.descripcion}"></span></li>
+        <li><b>Area:</b> <span th:text="${naturalArea.typeOfArea.descripcion}"></span></li>
+        <li><b>Localizacion:</b> <span th:text="${naturalArea.geographicalLocation}"></span></li>
+        <li><b>Largo:</b> <span th:text="${naturalArea.length}"></span></li>
+        <li><b>Ancho:</b> <span th:text="${naturalArea.width}"></span></li>
+        <li><b>Características físicas:</b> <span th:text="${naturalArea.physicalCharacteristics}"></span></li>
+        <li><b>Descripción:</b> <span th:text="${naturalArea.description}"></span></li>
+        <li><b>Orientación:</b> <span th:text="${naturalArea.orientation.descripcion}"></span></li>
+        <td th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
+            <li><b>Restringido hasta:</b> <span th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></span></li>
+            <li><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"></span></li>
+        </td>
+    </ul>
+
+    <br><br>
 
     <h3>Lista de Zonas</h3>
-    <table class="table table-striped">
+    <div th:if="${#lists.isEmpty(zones)}">
+        <p><b>¡Este área natural no es restringida y por tanto no tiene zonas!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">Id</th>
             <th scope="col">Número zona</th>
             <th scope="col">Letra</th>
             <th scope="col">Capacidad máx.</th>
             <th scope="col">Fecha creación</th>
-            <th scope="col">Área natural</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="zone: ${zones}">
-            <td scope="row" th:text="${zone.id}"></td>
+        <tr th:each="zone: ${#lists.sort(zones)}">
             <td th:text="${zone.zoneNumber}"></td>
             <td th:text="${zone.letter}"></td>
             <td th:text="${zone.maximumCapacity}"></td>
             <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
-            <td th:text="${zone.naturalArea}"></td>
         </tr>
         </tbody>
     </table>
+    <br><br>
 
     <h3>Comentarios</h3>
-    <table class="table table-striped">
+    <div th:if="${#lists.isEmpty(comments)}">
+        <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(comments)}" class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Comentario</th>
-            <th scope="col">Puntuacion</th>
             <th scope="col">Fecha</th>
+            <th scope="col">Puntuacion</th>
+            <th scope="col">Comentario</th>
             <th scope="col">Usuario</th>
-            <th scope="col">Area natural</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="comment: ${comments}">
-            <td scope="row" th:text="${comment.commentId}"></td>
-            <td th:text="${comment.commentBody}"></td>
-            <td th:text="${comment.score}"></td>
+        <tr th:each="comment: ${#lists.sort(comments)}">
             <td th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></td>
+            <td th:text="${comment.score}"></td>
+            <td th:text="${comment.commentBody}"></td>
             <td th:text="${comment.citizenEmail}"></td>
-            <td th:text="${comment.naturalArea}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/comment/add"><button type="button" class="btn btn-success">Añadir Comentario</button></a>
+    <a href="/naturalArea/list"><button type="button" class="btn btn-primary">Volver</button></a>
+
+    <br><br><br>
+
+    <h3>Servicios</h3>
+    <div th:if="${#lists.isEmpty(services)}">
+        ¡Este área natural no tiene asignada ningún servicio!
+    </div>
+    <table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Nombre del servicio</th>
+            <th scope="col">Temporalidad</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Sitio de contratación</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="service: ${#lists.sort(services)}">
+            <td th:text="${service.nameOfService}"></td>
+            <td th:text="${service.temporality}"></td>
+            <td th:text="${service.descripcion}"></td>
+            <td th:text="${service.hiringPlace}"></td>
+            </td>
         </tr>
         </tbody>
     </table>
 
-    <a href="/comment/add"><button type="button" class="btn btn-success">Añadir Comentario</button></a>
+    <br><br>
 
-    <a href="/naturalArea/list"><button type="button" class="btn btn-primary">Volver</button></a>
+    <h3>Imágenes</h3>
+    <div th:if="${#lists.isEmpty(pictures)}">
+        <p><b>¡Este área natural no tiene ninguna imagen publicada!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
+        <tr th:each="picture: ${pictures}">
+            <td scope="row" img src="assets/img/${picture.picturePath}" alt="${picture.picturePath}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br><br>
 
 </div>
 </body>

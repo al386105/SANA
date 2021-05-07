@@ -1,5 +1,6 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
 import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ZoneController {
 
     private ZoneDao zoneDao;
+    private NaturalAreaDao naturalAreaDao;
 
     @Autowired
     public void setZoneDao(ZoneDao zoneDao) {
         this.zoneDao=zoneDao;
+    }
+
+    @Autowired
+    public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao) {
+        this.naturalAreaDao=naturalAreaDao;
     }
 
     // Operació llistar
@@ -30,9 +37,11 @@ public class ZoneController {
     }
 
     // Operació crear
-    @RequestMapping(value="/add")
-    public String addZone(Model model) {
-        model.addAttribute("zone", new Zone());
+    @RequestMapping(value="/add/{naturalArea}")
+    public String addZone(Model model, @PathVariable String naturalArea) {
+        Zone zone = new Zone();
+        zone.setNaturalArea(naturalArea);
+        model.addAttribute("zone", zone);
         return "zone/add";
     }
 
@@ -40,10 +49,14 @@ public class ZoneController {
     @RequestMapping(value="/add", method=RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("zone") Zone zone,
                                    BindingResult bindingResult) {
+        ZoneValidator zoneValidator = new ZoneValidator();
+        zoneValidator.validate(zone, bindingResult);
+
         if (bindingResult.hasErrors())
             return "zone/add"; //tornem al formulari per a que el corregisca
+        String naturalAreaName = zone.getNaturalArea();
         zoneDao.addZone(zone); //usem el dao per a inserir el zone
-        return "redirect:list"; //redirigim a la lista per a veure el zone afegit, post/redirect/get
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
     // Operació actualitzar
@@ -57,10 +70,14 @@ public class ZoneController {
     @RequestMapping(value="/update", method = RequestMethod.POST)
     public String processUpdateSubmit(@ModelAttribute("zone") Zone zone,
                                       BindingResult bindingResult) {
+        ZoneValidator zoneValidator = new ZoneValidator();
+        zoneValidator.validate(zone, bindingResult);
+
         if (bindingResult.hasErrors())
             return "zone/update";
+        String naturalAreaName = zone.getNaturalArea();
         zoneDao.updateZone(zone);
-        return "redirect:list";
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
     // Operacio de llistar totes les zones d'un area natural
@@ -73,8 +90,10 @@ public class ZoneController {
     // Operació esborrar
     @RequestMapping(value="/delete/{id}")
     public String processDelete(@PathVariable String id) {
+        Zone zone = zoneDao.getZone(id);
+        String naturalAreaName = zone.getNaturalArea();
         zoneDao.deleteZone(id);
-        return "redirect:../list";
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }
 

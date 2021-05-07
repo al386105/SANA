@@ -18,7 +18,6 @@
         <th scope="col">Fecha registro</th>
         <th scope="col"></th>
         <th scope="col"></th>
-        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -26,13 +25,16 @@
         <td scope="row" th:text="${municipality.name}"></td>
         <td th:text="${municipality.description}"></td>
         <td th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></td>
-        <td><a class="btn btn-success" th:href="@{/postalCode/list/{muni}(muni=${municipality.name})}" role="button">CP</a>
+        <td><a th:href="@{/municipality/get/{name}(name=${municipality.name})}">
+            <button type="button" class="btn btn-primary">Más opciones</button>
+        </a>
         </td>
         <td><a th:href="@{/municipality/update/{name}(name=${municipality.name})}">
             <button type="button" class="btn btn-warning">Edita</button>
         </a>
         </td>
-        <td><a th:href="@{/municipality/delete/{name}(name=${municipality.name})}">
+        <td><a th:href="@{/municipality/delete/{name}(name=${municipality.name})}"
+               th:onclick="return confirm('¿Estás seguro/a de borrar el municipio ' + [[${municipality.name}]] + '?');">
             <button type="button" class="btn btn-danger">Elimina</button>
         </a>
         </td>
@@ -40,6 +42,6 @@
     </tbody>
 </table>
 <a href="add"><button type="button" class="btn btn-success">Añadir municipio</button></a>
-<a href="../"><button type="button" class="btn btn-primary">Volver al menú principal</button></a>
+<a href="/section/environmentalManager"><button type="button" class="btn btn-primary">Volver a mi menú</button></a>
 </body>
 </html>

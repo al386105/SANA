@@ -1,6 +1,5 @@
 package es.uji.ei102720mgph.SANA.dao;
 
-import es.uji.ei102720mgph.SANA.model.Address;
 import es.uji.ei102720mgph.SANA.model.ServiceDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -42,11 +41,9 @@ public class ServiceDateDao {
         } while (excepcion);
     }
 
-
     public void deleteServiceDate(String id) {
         jdbcTemplate.update("DELETE FROM ServiceDate WHERE id =?", id);
     }
-
 
     public void updateServiceDate(ServiceDate serviceDate) {
         jdbcTemplate.update("UPDATE ServiceDate SET beginningDate = ?, endDate = ?, service = ?, naturalArea = ?" +
@@ -55,6 +52,16 @@ public class ServiceDateDao {
                 serviceDate.getId());
     }
 
+    public List<ServiceDate> getServiceDatesOfNaturalArea(String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM ServiceDate WHERE naturalArea = ?",
+                    new ServiceDateRowMapper(),
+                    naturalArea);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<ServiceDate>();
+        }
+    }
 
     public ServiceDate getServiceDate(String id) {
         try {

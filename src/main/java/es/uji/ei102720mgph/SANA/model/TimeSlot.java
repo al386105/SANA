@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class TimeSlot {
+public class TimeSlot implements Comparable<TimeSlot> {
     private String id;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate beginningDate;
@@ -80,6 +80,10 @@ public class TimeSlot {
 
     public static void incrementaContador() {
         TimeSlot.contador++;
+    }
+
+    public int compareTo(TimeSlot altre) {
+        return this.getId().compareTo(altre.getId());
     }
 
     @Override

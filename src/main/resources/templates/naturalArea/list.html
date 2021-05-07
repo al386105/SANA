@@ -8,14 +8,14 @@
 <body>
 <h1>Lista de areas naturales</h1>
 <div th:if="${#lists.isEmpty(naturalAreas)}">
-    ¡No has añadido todavía ningún área natural!
+    ¡No se ha añadido todavía ningún área natural!
 </div>
 <table th:unless="${#lists.isEmpty(naturalAreas)}" class="table table-striped">
     <thead>
     <tr>
         <th scope="col">Nombre</th>
         <th scope="col">Acceso</th>
-        <th scope="col">Localización</th>
+        <th scope="col">Municipio</th>
         <th scope="col"></th>
         <th scope="col"></th>
         <th scope="col"></th>
@@ -26,19 +26,22 @@
     <tr th:each="naturalArea: ${#lists.sort(naturalAreas)}">
 
         <td th:text="${naturalArea.name}"></td>
-        <td th:text="${naturalArea.typeOfAccess}"></td>
-        <td th:text="${naturalArea.geographicalLocation}"></td>
+        <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
+        <td th:text="${naturalArea.municipality}"></td>
 
         <td><a th:href="@{/naturalArea/get/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-primary">Más</button> </a>
         </td>
 
+        <!-- funcionalidad exclusiva para gestores municipales
         <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-warning">Edita</button> </a>
         </td>
         <td><a th:href="@{/naturalArea/delete/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-danger">Esborra</button> </a>
         </td>
+        -->
+
     </tr>
     </tbody>
 </table>

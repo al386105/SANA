@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 /** This class must be extended by RegisteredCitizen, ControlStaff and MunicipalManager*/
-public abstract class SanaUser {
+public class SanaUser {
     private String email;
     private String name;
     private String surname;

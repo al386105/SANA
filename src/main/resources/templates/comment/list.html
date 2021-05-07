@@ -22,7 +22,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="comment: ${comments}">
+    <tr th:each="comment: ${#lists.sort(comments)}">
         <td scope="row" th:text="${comment.commentId}"></td>
         <td th:text="${comment.commentBody}"></td>
         <td th:text="${comment.score}"></td>

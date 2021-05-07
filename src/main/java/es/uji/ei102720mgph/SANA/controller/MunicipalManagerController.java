@@ -51,6 +51,9 @@ public class MunicipalManagerController {
     @RequestMapping(value="/add", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("municipalManager") MunicipalManager manager,
                                    BindingResult bindingResult) {
+        MunicipalManagerValidator municipalManagerValidator = new MunicipalManagerValidator();
+        municipalManagerValidator.validate(manager, bindingResult);
+
         if (bindingResult.hasErrors())
             return "municipalManager/add"; //tornem al formulari per a que el corregisca
         municipalManagerDao.addMunicipalManager(manager); //usem el dao per a inserir el reservation
@@ -71,6 +74,9 @@ public class MunicipalManagerController {
     @RequestMapping(value="/update", method = RequestMethod.POST)
     public String processUpdateSubmit(@ModelAttribute("municipalManager") MunicipalManager manager,
                                       BindingResult bindingResult) {
+        MunicipalManagerValidator municipalManagerValidator = new MunicipalManagerValidator();
+        municipalManagerValidator.validate(manager, bindingResult);
+
         if (bindingResult.hasErrors())
             return "municipalManager/update";
         municipalManagerDao.updateMunicipalManager(manager);

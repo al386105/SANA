@@ -62,4 +62,26 @@ public class ServiceDao {
             return new ArrayList<Service>();
         }
     }
+
+    public List<Service> getFixedServices() {
+        try {
+            return jdbcTemplate.query(
+                    "SELECT * FROM Service WHERE temporality='fixed'",
+                    new ServiceRowMapper());
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Service>();
+        }
+    }
+
+    public List<Service> getTemporalServices() {
+        try {
+            return jdbcTemplate.query(
+                    "SELECT * FROM Service WHERE temporality='temporal'",
+                    new ServiceRowMapper());
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Service>();
+        }
+    }
 }

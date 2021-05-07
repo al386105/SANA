@@ -1,6 +1,7 @@
 package es.uji.ei102720mgph.SANA.dao;
 
 import es.uji.ei102720mgph.SANA.model.Address;
+import es.uji.ei102720mgph.SANA.model.Comment;
 import es.uji.ei102720mgph.SANA.model.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -71,6 +72,20 @@ public class ReservationDao {
         }
         catch(EmptyResultDataAccessException e) {
             return null;
+        }
+    }
+
+    public List<Reservation> getReservationsOfNaturalArea(String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Reservation " +
+                    "JOIN ReservationOfZone ON Reservation.reservationNumber = ReservationOfZone.reservationNumber " +
+                    "JOIN Zone ON ReservationOfZone.zoneId = Zone.id " +
+                    "WHERE Zone.naturalArea = ?",
+                    new ReservationRowMapper(),
+                    naturalArea);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Reservation>();
         }
     }
 

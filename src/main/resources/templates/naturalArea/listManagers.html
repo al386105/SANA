@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestionar áreas naturales</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<h1>Lista de áreas naturales</h1>
+<div th:if="${#lists.isEmpty(naturalAreas)}">
+    <p><b>¡No se han añadido todavía áreas naturales!</b></p>
+</div>
+<table th:unless="${#lists.isEmpty(naturalAreas)}" class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Acceso</th>
+        <th scope="col">Municipio</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="naturalArea: ${#lists.sort(naturalAreas)}">
+
+        <td th:text="${naturalArea.name}"></td>
+        <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
+        <td th:text="${naturalArea.municipality}"></td>
+
+        <td><a th:href="@{getManagers/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-primary">Más opciones</button> </a>
+        </td>
+
+        <!-- solo las areas restringidas tienen reservas -->
+        <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
+            <td><a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
+                <button type="button" class="btn btn-success">Gestión reservas</button> </a>
+            </td>
+        </div>
+        <div th:unless="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
+            <td></td>
+        </div>
+
+        <td><a th:href="@{update/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-warning">Edita</button> </a>
+        </td>
+        <td><a th:href="@{delete/{naturalArea}(naturalArea=${naturalArea.name})}"
+               th:onclick="return confirm('¿Estás seguro/a de borrar el área natural '+ [[${naturalArea.name}]] + '?');">
+            <button type="button" class="btn btn-danger">Elimina</button>
+        </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="add"><button type="button" class="btn btn-success">Añadir area natural</button></a>
+<a href="../section/managers"><button type="button" class="btn btn-primary">Volver al menú de gestores</button></a>
+</body>
+</html>

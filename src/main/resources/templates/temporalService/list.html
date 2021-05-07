@@ -23,7 +23,7 @@
     </thead>
     <tbody>
     <tr th:each="temporalService: ${temporalService}">
-        <td th:text="${temporalService.openningDays}"></td>
+        <td th:text="${temporalService.openingDays}"></td>
         <td th:text="${temporalService.beginningTime}"></td>
         <td th:text="${temporalService.endTime}"></td>
         <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>

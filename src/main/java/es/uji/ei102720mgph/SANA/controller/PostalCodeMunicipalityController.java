@@ -1,6 +1,5 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-
 import es.uji.ei102720mgph.SANA.dao.PostalCodeMunicipalityDao;
 import es.uji.ei102720mgph.SANA.model.PostalCodeMunicipality;
 import org.springframework.beans.factory.annotation.Autowired;

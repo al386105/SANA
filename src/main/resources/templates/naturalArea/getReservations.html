@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reservas area natural</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+
+
+    <!-- TODO VISTA POR HACER -->
+
+
+    <h1><span th:text="${naturalArea.name}"> </span></h1>
+    <h3>Lista de reservas</h3>
+    <div th:if="${#lists.isEmpty(reservations)}">
+        ¡Este área natural no ha tenido ninguna reserva todavía!
+    </div>
+    <table th:unless="${#lists.isEmpty(reservations)}" class="table table-striped">
+        <thead>
+        <tr>
+        <tr>
+            <th scope="col">Fecha reserva</th>
+            <th scope="col">Número reserva</th>
+            <th scope="col">Fecha creación</th>
+            <th scope="col">Hora creación</th>
+            <th scope="col">Num. personas</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Código QR</th>
+            <th scope="col">Fecha cancelación</th>
+            <th scope="col">Razón cancelación</th>
+            <th scope="col">Email ciudadano</th>
+            <th scope="col">Franja horaria id</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reservation: ${#lists.sort(reservations)}">
+            <td scope="row" th:text="${#temporals.format(reservation.reservationDate,'dd/MM/yyyy')}"></td>
+            <td th:text="${reservation.reservationNumber}"></td>
+            <td th:text="${#temporals.format(reservation.creationDate,'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(reservation.creationTime,'HH:mm')}"></td>
+            <td th:text="${reservation.numberOfPeople}"></td>
+            <td th:text="${reservation.state.descripcion}"></td>
+            <td th:text="${reservation.QRcode}"></td>
+            <td th:text="${#temporals.format(reservation.cancellationDate,'dd/MM/yyyy')}"></td>
+            <td th:text="${reservation.cancellationReason}"></td>
+            <td th:text="${reservation.citizenEmail}"></td>
+            <td th:text="${reservation.timeSlotId}"></td>
+            <td><a th:href="@{/reservation/getManagers/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+                <button type="button" class="btn btn-warning">Más información</button>
+            </a>
+            </td>
+            <td><a th:href="@{/reservation/updateManagers/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+                <button type="button" class="btn btn-warning">Modifica</button>
+            </a>
+            </td>
+            <td><a th:href="@{/reservation/cancelManagers/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+                <button type="button" class="btn btn-danger">Cancela</button>
+            </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver</button></a>
+</div>
+</body>
+</html>
+

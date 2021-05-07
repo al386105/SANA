@@ -3,7 +3,7 @@ package es.uji.ei102720mgph.SANA.model;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
-public class Zone {
+public class Zone implements Comparable<Zone> {
     private String id;
     private int zoneNumber;
     private char letter;
@@ -75,6 +75,10 @@ public class Zone {
 
     public static void incrementaContador() {
         Zone.contador++;
+    }
+
+    public int compareTo(Zone altre) {
+        return this.getZoneNumber() - altre.getZoneNumber();
     }
 
     @Override

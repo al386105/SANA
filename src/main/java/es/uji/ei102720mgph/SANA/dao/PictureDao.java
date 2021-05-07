@@ -35,15 +35,6 @@ public class PictureDao {
                 picturePath);
     }
 
-    /*
-    public void updatePicture(Picture picture){
-        jdbcTemplate.update("UPDATE Picture " +
-                "SET naturalArea = ? " +
-                "WHERE picturePath = ? ",
-                picture.getNaturalArea(),
-                picture.getPicturePath());
-    }*/
-
     public Picture getPicture(String picturePath) {
         try {
             return jdbcTemplate.queryForObject("SELECT * FROM Picture WHERE picturePath = ?",

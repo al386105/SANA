@@ -1,6 +1,7 @@
 package es.uji.ei102720mgph.SANA.dao;
 
 import es.uji.ei102720mgph.SANA.model.Address;
+import es.uji.ei102720mgph.SANA.model.Reservation;
 import es.uji.ei102720mgph.SANA.model.TimeSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -57,6 +58,18 @@ public class TimeSlotDao {
         }
         catch(EmptyResultDataAccessException e) {
             return null;
+        }
+    }
+
+    public List<TimeSlot> getTimeSlotNaturalArea(String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM TimeSlot " +
+                            "WHERE naturalArea = ?",
+                    new TimeSlotRowMapper(),
+                    naturalArea);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<TimeSlot>();
         }
     }
 

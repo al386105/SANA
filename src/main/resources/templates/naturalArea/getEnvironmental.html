@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Área natural</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div class="container">
+    <h1><span th:text="${naturalArea.name}"> </span></h1>
+    <br>
+    <ul>
+        <li><b>Municipio:</b> <span th:text="${naturalArea.municipality}"></span></li>
+        <li><b>Acceso:</b> <span th:text="${naturalArea.typeOfAccess.descripcion}"></span></li>
+        <li><b>Tipo de área:</b> <span th:text="${naturalArea.typeOfArea.descripcion}"></span></li>
+        <li><b>Localización:</b> <span th:text="${naturalArea.geographicalLocation}"></span></li>
+        <li><b>Largo:</b> <span th:text="${naturalArea.length}"></span></li>
+        <li><b>Ancho:</b> <span th:text="${naturalArea.width}"></span></li>
+        <li><b>Características físicas:</b> <span th:text="${naturalArea.physicalCharacteristics}"></span></li>
+        <li><b>Descripción:</b> <span th:text="${naturalArea.description}"></span></li>
+        <li><b>Orientación:</b> <span th:text="${naturalArea.orientation.descripcion}"></span></li>
+        <td th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
+            <li><b>Restringido hasta:</b> <span th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></span></li>
+            <li><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"></span></li>
+        </td>
+    </ul>
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+
+
+
+    <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
+        <h3>Lista de Zonas</h3>
+        <!--<div th:if="${#lists.isEmpty(zones)">
+            <p><b>¡Este área natural restringida todavía no tiene zonas!</b></p>
+        </div>-->
+        <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Número zona</th>
+                <th scope="col">Letra</th>
+                <th scope="col">Capacidad máx.</th>
+                <th scope="col">Fecha creación</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="zone: ${#lists.sort(zones)}">
+                <td th:text="${zone.zoneNumber}"></td>
+                <td th:text="${zone.letter}"></td>
+                <td th:text="${zone.maximumCapacity}"></td>
+                <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+
+        <h3>Franjas horarias</h3>
+        <!-- TODO problema doble if-->
+        <!--<div th:if="${#lists.isEmpty(timeSlots)">
+            <p><b>¡Este área natural restringida todavía no tiene franjas horarias asignadas!</b></p>
+        </div>-->
+        <table th:unless="${#lists.isEmpty(timeSlots)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Identificador franja horaria</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha de fin</th>
+                <th scope="col">Hora de inicio</th>
+                <th scope="col">Hora de fin</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="timeSlot: ${#lists.sort(timeSlots)}">
+                <td scope="row" th:text="${timeSlot.id}"></td>
+                <td th:text="${#temporals.format(timeSlot.beginningDate,'dd/MM/yyyy')}"></td>
+                <td th:text="${#temporals.format(timeSlot.endDate,'dd/MM/yyyy')}"></td>
+                <td th:text="${timeSlot.beginningTime}"></td>
+                <td th:text="${timeSlot.endTime}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+    </div>
+
+
+
+    <h3>Comentarios</h3>
+    <div th:if="${#lists.isEmpty(comments)}">
+        <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(comments)}" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Puntuacion</th>
+            <th scope="col">Comentario</th>
+            <th scope="col">Usuario</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment: ${#lists.sort(comments)}">
+            <td th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></td>
+            <td th:text="${comment.score}"></td>
+            <td th:text="${comment.commentBody}"></td>
+            <td th:text="${comment.citizenEmail}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+
+
+
+    <h3>Servicios fijos</h3>
+    <div th:if="${#lists.isEmpty(serviceDates)}">
+        <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Servicio</th>
+            <th scope="col">Fecha de inicio</th>
+            <th scope="col">Fecha de fin</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="serviceDate: ${serviceDates}">
+            <td th:text="${serviceDate.service}"></td>
+            <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+
+
+
+    <h3>Servicios temporales</h3>
+    <div th:if="${#lists.isEmpty(temporalServices)}">
+        <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(temporalServices)}" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Servicio</th>
+            <th scope="col">Días de apertura</th>
+            <th scope="col">Hora de inicio</th>
+            <th scope="col">Hora de fin</th>
+            <th scope="col">Fecha de inicio</th>
+            <th scope="col">Fecha de fin</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="temporalService: ${temporalServices}">
+            <td th:text="${temporalService.service}"></td>
+            <td th:text="${temporalService.openingDays}"></td>
+            <td th:text="${temporalService.beginningTime}"></td>
+            <td th:text="${temporalService.endTime}"></td>
+            <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+
+
+    <!--
+    <h3>Servicios</h3>
+    <div th:if="${#lists.isEmpty(services)}">
+        <p><b>¡Este área natural no tiene asignada ningún servicio!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Nombre del servicio</th>
+            <th scope="col">Temporalidad</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Sitio de contratación</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="service: ${#lists.sort(services)}">
+            <td th:text="${service.nameOfService}"></td>
+            <td th:text="${service.temporality}"></td>
+            <td th:text="${service.descripcion}"></td>
+            <td th:text="${service.hiringPlace}"></td>
+            <td><a th:href="@{/service/delete/{id}(id=${service.nameOfService})}">
+                <button type="button" class="btn btn-danger">Eliminar asignación</button>
+            </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+        <button type="button" class="btn btn-success">Asignar nuevo servicio</button>
+    </a></td>
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+    -->
+
+
+
+    <h3>Imágenes</h3>
+    <div th:if="${#lists.isEmpty(pictures)}">
+        <p><b>¡Este área natural no tiene ninguna imagen publicada!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
+        <tr th:each="picture: ${pictures}">
+            <td scope="row"><img style="width:300px; height:auto; border-radius:20px" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
+        </tr>
+        </tbody>
+    </table>
+    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+    <a href="/naturalArea/listEnvironmental"><button type="button" class="btn btn-primary">Volver al listado</button></a>
+    <br><br>
+</div>
+</body>
+</html>
+

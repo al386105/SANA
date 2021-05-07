@@ -31,8 +31,8 @@ public class EmailDao {
             try {
                 fmt = new Formatter();
                 jdbcTemplate.update("INSERT INTO Email VALUES(?, ?, ?, ?, ?, ?)",
-                        "" + fmt.format("%06d", Address.getContador()), email.getSubject(), email.getTextBody(), email.getSender(),
-                        LocalDate.now(), email.getSanaUser());
+                        "" + fmt.format("%06d", Address.getContador()), email.getSubject(), email.getTextBody(),
+                        "sana.espais.naturals@gmail.com", LocalDate.now(), email.getSanaUser());
                 excepcion = false;
             } catch (DuplicateKeyException e) {
                 excepcion = true;

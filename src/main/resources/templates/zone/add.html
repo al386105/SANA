@@ -12,25 +12,27 @@
     <form class="form-horizontal" action="#" th:action="@{/zone/add}"
           th:object="${zone}" method="post">
 
-        <!--
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="id">Id:</label>
+            <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="id" th:field="*{id}" />
+                <input type="text" required readonly="readonly" class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
             </div>
-        </div>-->
+        </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="zoneNumber">Número zona:</label>
             <div class="col-sm-4">
                 <input type="number" min="1" required class="form-control" id="zoneNumber" th:field="*{zoneNumber}" />
+                <td th:if="${#fields.hasErrors('zoneNumber')}" th:errors="*{zoneNumber}"></td>
             </div>
         </div>
 
+        <!-- TODO sale un caracter raro en la caja -->
         <div class="form-group row">
             <label class="control-label col-sm-2" for="letter">Letra:</label>
             <div class="col-sm-4">
                 <input type="text" required maxlength="1" class="form-control" id="letter" th:field="*{letter}" />
+                <td th:if="${#fields.hasErrors('letter')}" th:errors="*{letter}"></td>
             </div>
         </div>
 
@@ -38,33 +40,22 @@
             <label class="control-label col-sm-2" for="maximumCapacity">Capacidad máx.:</label>
             <div class="col-sm-4">
                 <input type="number" required class="form-control" id="maximumCapacity" th:field="*{maximumCapacity}"/>
-            </div>
-        </div>
-
-        <!--
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="creationDate">Fecha creación:</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="creationDate" th:field="*{creationDate}"/>
-            </div>
-        </div>
-        -->
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
+                <td th:if="${#fields.hasErrors('maximumCapacity')}" th:errors="*{maximumCapacity}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <a href="/zone/list"><button type="button" class="btn btn-primary">Volver</button></a>
+                <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver al listado</button></a>
                 <button type="submit" class="btn btn-success">Añadir zona</button>
             </div>
         </div>
-
     </form>
+
+    <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${zone.naturalArea})}">
+        <button type="submit" class="btn btn-primary">Volver al área natural</button>
+    </a>
+
 </div>
 </body>
 </html>

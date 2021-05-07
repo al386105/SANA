@@ -1,61 +1,64 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Crear ServiceDate</title>
+    <title>Asignar servicio fijo</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
 </head>
 <body>
 <div class="container">
-    <h2>Nuevo ServiceDate</h2>
+    <h2>Asignar un servicio fijo a un espacio natural</h2>
     <form class="form-horizontal" action="#" th:action="@{/serviceDate/add}"
           th:object="${serviceDate}" method="post">
 
-        <!--
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="id">Id:</label>
+            <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="id" th:field="*{id}" />
+                <input type="text" readonly="readonly" required class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
             </div>
-        </div>-->
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="service">Servicio fijo:</label>
+            <div class="col-sm-4">
+                <select class="form_control" required id="service" type="text" th:field="*{service}">
+                    <option value="No seleccionado">Selecciona un servicio</option>
+                    <option th:each="servicevalue : ${serviceList}"
+                            th:value="${servicevalue}"
+                            th:text="${servicevalue}"></option>
+                </select>
+                <td th:if="${#fields.hasErrors('service')}" th:errors="*{service}"></td>
+            </div>
+        </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="beginningDate">Fecha de inicio:</label>
             <div class="col-sm-4">
-                <input type="date" placeholder="yyyy-MM-dd" required class="form-control" id="beginningDate" th:field="*{beginningDate}" />
+                <input type="date" required placeholder="yyyy-MM-dd" class="form-control" id="beginningDate" th:field="*{beginningDate}"/>
+                <td th:if="${#fields.hasErrors('beginningDate')}" th:errors="*{beginningDate}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="endDate">Fecha de fin:</label>
             <div class="col-sm-4">
-                <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="endDate" th:field="*{endDate}" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="service">Servicio:</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="service" th:field="*{service}"/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="naturalArea">Area natural:</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
+                <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="endDate" th:field="*{endDate}"/>
+                <td th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></td>
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <a href="/serviceDate/list"><button type="button" class="btn btn-primary">Volver</button></a>
-                <button type="submit" class="btn btn-success">Añadir ServiceDate</button>
+                <button type="submit" class="btn btn-success">Asignar servicio fijo</button>
             </div>
         </div>
-
     </form>
+
+    <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${serviceDate.naturalArea})}">
+        <button type="submit" class="btn btn-primary">Volver al área natural</button>
+    </a>
+
 </div>
 </body>
 </html>

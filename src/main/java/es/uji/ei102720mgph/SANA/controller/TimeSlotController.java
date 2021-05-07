@@ -28,19 +28,25 @@ public class TimeSlotController {
         return "timeSlot/list";
     }
 
-    @RequestMapping(value="/add")
-    public String addTimeSlot(Model model) {
-        model.addAttribute("timeSlot", new TimeSlot());
+    @RequestMapping(value="/add/{naturalArea}")
+    public String addTimeSlot(Model model, @PathVariable String naturalArea) {
+        TimeSlot timeSlot = new TimeSlot();
+        timeSlot.setNaturalArea(naturalArea);
+        model.addAttribute("timeSlot", timeSlot);
         return "timeSlot/add";
     }
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("timeSlot") TimeSlot slot,
+    public String processAddSubmit(@ModelAttribute("timeSlot") TimeSlot timeSlot,
                                    BindingResult bindingResult) {
+        TimeSlotValidator timeSlotValidator = new TimeSlotValidator();
+        timeSlotValidator.validate(timeSlot, bindingResult);
+
         if (bindingResult.hasErrors())
-            return "timeSlot/add"; //tornem al formulari per a que el corregisca
-        timeSlotDao.addTimeSlot(slot);
-        return "redirect:list"; //redirigim a la lista, post/redirect/get
+            return "timeSlot/add";
+        timeSlotDao.addTimeSlot(timeSlot);
+        String naturalAreaName = timeSlot.getNaturalArea();
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
     @RequestMapping(value="/update/{id}", method = RequestMethod.GET)
@@ -50,17 +56,23 @@ public class TimeSlotController {
     }
 
     @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("timeSlot") TimeSlot slot,
+    public String processUpdateSubmit(@ModelAttribute("timeSlot") TimeSlot timeSlot,
                                       BindingResult bindingResult) {
+        TimeSlotValidator timeSlotValidator = new TimeSlotValidator();
+        timeSlotValidator.validate(timeSlot, bindingResult);
+
         if (bindingResult.hasErrors())
             return "timeSlot/update";
-        timeSlotDao.updateTimeSlot(slot);
-        return "redirect:list";
+        timeSlotDao.updateTimeSlot(timeSlot);
+        String naturalAreaName = timeSlot.getNaturalArea();
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
     @RequestMapping(value="/delete/{id}")
     public String processDelete(@PathVariable String id) {
+        TimeSlot timeSlot = timeSlotDao.getTimeSlot(id);
+        String naturalAreaName = timeSlot.getNaturalArea();
         timeSlotDao.deleteTimeSlot(id);
-        return "redirect:../list";
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }

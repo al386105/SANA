@@ -32,74 +32,78 @@
     <br>
     <h3 style="text-align:center;">Bienvenido al registro de SANA</h3>
     <br>
-    <form class="form-center" >
+    <form class="form-center" th:action="@{register_form/registration}"  th:object="${registrationCitizen}" style=" background-color: #e8e6e8!important; ;position: relative;
+                    z-index: 1; background: #FFFFFF; max-width: 70%; margin: 0 auto auto; padding: 40px; text-align: center;">
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="email">Email:</label>
+            <label class="control-label col-sm-2" for="email" >Email:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="email" />
+                <input style="width: 60%;" type="text" required class="form-control" id="email" th:field="*{email}" />
             </div>
-            <label class="control-label col-sm-2" for="name">Nombre:</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="name"  />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="surname">Apellidos:</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="surname" />
-            </div>
-            <label class="control-label col-sm-2" for="dateOfBirth">Fecha de nacimiento:</label>
-            <div class="col-sm-4">
-                <input type="date" placeholder="yyyy-MM-dd" required class="form-control" id="dateOfBirth" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="idNumber">DNI/NIE:</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="idNumber"  />
-            </div>
-            <label class="control-label col-sm-2" for="mobilePhoneNumber">Número de teléfono:</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="mobilePhoneNumber"  />
-            </div>
-        </div>
-
-        <div class="form-group row">
             <label class="control-label col-sm-2" for="street">Calle:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="street"  />
+                <input style="width: 60%;" type="text" required class="form-control" id="street" th:field="*{street}" />
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="nombre">Nombre:</label>
+            <div class="col-sm-4">
+                <input  style="width: 60%;" type="text" required class="form-control" id="nombre" th:field="*{nombre}"  />
+            </div>
+            <label class="control-label col-sm-2" for="floorDoor">Piso y puerta:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" type="text" required class="form-control" id="floorDoor" th:field="*{floorDoor}"/>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="apellidos">Apellidos:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" type="text" required class="form-control" id="apellidos" th:field="*{apellidos}" />
+            </div>
+            <label class="control-label col-sm-2" for="city">Ciudad:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" type="text" required class="form-control" id="city" th:field="*{city}" />
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="dni">DNI/NIE:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" type="text" required class="form-control" id="dni" th:field="*{dni}"  />
             </div>
 
             <label class="control-label col-sm-2" for="number">Número:</label>
             <div class="col-sm-4">
-                <input type="number" min="1" required class="form-control" id="number"  />
+                <input style="width: 60%;" type="number" min="1" required class="form-control" id="number" th:field="*{number}"/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="floorDoor">Piso y puerta:</label>
+            <label class="control-label col-sm-2" for="dateOfBirth">Fecha de nacimiento:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="floorDoor" />
+                <input style="width: 60%;" type="date" placeholder="yyyy-MM-dd" required class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"  />
             </div>
 
             <label class="control-label col-sm-2" for="postalCode">Código postal:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="postalCode" />
+                <input style="width: 60%;" type="text" required class="form-control" id="postalCode" th:field="*{postalCode}" />
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="city">Ciudad:</label>
+            <label class="control-label col-sm-2" for="telefono">Número de teléfono:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="city" />
+                <input style="width: 60%;" type="text" required class="form-control" id="telefono" th:field="*{telefono}"  />
             </div>
 
             <label class="control-label col-sm-2" for="country">País:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="country" />
+                <input style="width: 60%;" type="text" required class="form-control" id="country" th:field="*{country}" />
             </div>
         </div>
 
@@ -108,7 +112,7 @@
         <div class="form-group row" >
             <div class="col-sm-offset-2 col-sm-7">
                 <a href="/inicio/login"><button type="button" class="btn btn-primary" style="float:right; text-align:center;">Volver</button></a>
-                <button type="submit" style="float:right;; text-align:center;" class="btn btn-success">Registrarse</button>
+                <button type="submit" style="float:right; text-align:center;" class="btn btn-success">Registrarse</button>
             </div>
         </div>
 

@@ -44,7 +44,7 @@
                 <div class="card-body">
                     <h4 class="card-title" th:text="${reserva.naturalArea}"></h4>
                     <h6 class="card-subtitle mb-2 text-muted" th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></h6>
-                    <p class="card-text" th:text="${reserva.numberOfPeople}"></p>
+                    <p class="card-text" th:text="${reserva.numberOfPeople} "></p>
                     <p class="card-text"> personas</p>
                     <a href="#" class="card-link">Cancelar reserva</a>
                 </div>

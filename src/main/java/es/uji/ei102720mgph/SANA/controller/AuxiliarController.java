@@ -3,6 +3,7 @@ package es.uji.ei102720mgph.SANA.controller;
 import es.uji.ei102720mgph.SANA.dao.*;
 import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import es.uji.ei102720mgph.SANA.model.*;
+import es.uji.ei102720mgph.SANA.model.Address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,8 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Properties;
 
@@ -49,10 +52,16 @@ public class AuxiliarController {
     private MunicipalManagerDao municipalManagerDao;
     private ControlStaffDao controlStaffDao;
     private ReservaDatosDao reservaDatosDao;
+    private AddressDao addressDao;
 
     @Autowired
     public void setControlStaffDao(ControlStaffDao controlStaffDao){
         this.controlStaffDao = controlStaffDao;
+    }
+
+    @Autowired
+    public void setAddressDao(AddressDao addressDao){
+        this.addressDao = addressDao;
     }
 
     @Autowired
@@ -144,8 +153,42 @@ public class AuxiliarController {
         if (bindingResult.hasErrors())
             return "inicio/login"; //tornem al formulari d'inici de sessió
 
-        System.out.println(registrationCitizen.toString());
-        return "inicio/login";
+        SanaUser sanaUser = sanaUserDao.getSanaUser(registrationCitizen.getEmail());
+        if (sanaUser == null){
+            //Usuario no registrado antes
+
+            //Añadimos la dirección a las tablas
+            Address address = new Address();
+            address.setStreet(registrationCitizen.getStreet());
+            address.setNumber( registrationCitizen.getNumber());
+            address.setFloorDoor(registrationCitizen.getFloorDoor());
+            address.setPostalCode(registrationCitizen.getPostalCode());
+            address.setCity(registrationCitizen.getCity());
+            address.setCountry(registrationCitizen.getCountry());
+            addressDao.addAddress(address);
+
+            //Añadimos el ciudadano a RegisteredCitizen
+            Formatter fmt = new Formatter();
+            RegisteredCitizen registeredCitizen =  new RegisteredCitizen();
+            registeredCitizen.setAddressId(addressDao.getAddress("ad" + fmt.format("%07d", Address.getContador()-1)).getId());
+            registeredCitizen.setName(registrationCitizen.getNombre());
+            registeredCitizen.setPin(Integer.parseInt(registrationCitizen.getPassword()));
+            registeredCitizen.setSurname(registrationCitizen.getApellidos());
+            registeredCitizen.setEmail(registrationCitizen.getEmail());
+            registeredCitizen.setMobilePhoneNumber(registrationCitizen.getTelefono());
+            registeredCitizen.setDateOfBirth(registrationCitizen.getDateOfBirth());
+            registeredCitizen.setTypeOfUser(TypeOfUser.registeredCitizen);
+            registeredCitizen.setIdNumber(registrationCitizen.getDni());
+            registeredCitizen.setCitizenCode(registrationCitizen.getCitizenCode());
+            registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
+
+            return "redirect:/inicio/login";
+
+
+        }else {
+            //Usuario ya registrado en el sistema
+            return "redirect:/inicio/login";
+        }
     }
 
     @RequestMapping(value="inicio/login/autentication", method=RequestMethod.POST)

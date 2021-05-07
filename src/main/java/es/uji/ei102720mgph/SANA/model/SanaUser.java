@@ -17,6 +17,10 @@ public class SanaUser {
     private LocalDate leavingDate;
     private TypeOfUser typeOfUser;
 
+
+    public SanaUser() {
+    }
+
     public String getEmail() {
         return email;
     }

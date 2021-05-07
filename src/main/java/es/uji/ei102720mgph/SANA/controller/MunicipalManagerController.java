@@ -37,14 +37,19 @@ public class MunicipalManagerController {
         return "municipalManager/list";
     }
 
-    @RequestMapping(value="/add")
-    public String addMunicipalManager(Model model) {
-        model.addAttribute("municipalManager", new MunicipalManager());
+    // metodo para anyadir al modelo los datos del selector
+    @ModelAttribute("municipalityList")
+    public List<String> municipalityList() {
         List<Municipality> municipalityList = municipalityDao.getMunicipalities();
         List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
                 .map(Municipality::getName)
                 .collect(Collectors.toList());
-        model.addAttribute("municipalityList", namesMunicipalities);
+        return namesMunicipalities;
+    }
+
+    @RequestMapping(value="/add")
+    public String addMunicipalManager(Model model) {
+        model.addAttribute("municipalManager", new MunicipalManager());
         return "municipalManager/add";
     }
 
@@ -63,11 +68,6 @@ public class MunicipalManagerController {
     @RequestMapping(value="/update/{email}", method = RequestMethod.GET)
     public String editMunicipalManager(Model model, @PathVariable String email) {
         model.addAttribute("municipalManager", municipalManagerDao.getMunicipalManager(email));
-        List<Municipality> municipalityList = municipalityDao.getMunicipalities();
-        List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
-                .map(Municipality::getName)
-                .collect(Collectors.toList());
-        model.addAttribute("municipalityList", namesMunicipalities);
         return "municipalManager/update";
     }
 

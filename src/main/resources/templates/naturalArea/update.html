@@ -24,7 +24,7 @@
             <div class="col-sm-4">
                 <span style="margin:6px;" th:each="typeOfAccessvalue : ${typeOfAccessList}">
                    <input type ="radio" required th:field ="*{typeOfAccess}" th:value ="${typeOfAccessvalue}" />
-                   <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}" />
+                   <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}"></label>
                 </span>
             </div>
         </div>
@@ -71,14 +71,14 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="length">Largo:</label>
             <div class="col-sm-4">
-                <input type="number" min="0.1" required step="0.1" class="form-control" id="length" th:field="*{length}" />
+                <input type="number" min="0.0" required step="0.1" class="form-control" id="length" th:field="*{length}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="width">Ancho:</label>
             <div class="col-sm-4">
-                <input type="number" min="0.1" required step="0.1" class="form-control" id="width" th:field="*{width}" />
+                <input type="number" min="0.0" required step="0.1" class="form-control" id="width" th:field="*{width}" />
             </div>
         </div>
 
@@ -101,22 +101,8 @@
             <div class="col-sm-4">
                 <span style="margin:6px;" th:each="orientationvalue : ${orientationList}">
                    <input type ="radio" required th:field ="*{orientation}" th:value ="${orientationvalue}" />
-                   <label th:for="${#ids.prev('orientation')}" th:text ="${orientationvalue.descripcion}" />
+                   <label th:for="${#ids.prev('orientation')}" th:text ="${orientationvalue.descripcion}"></label>
                 </span>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="restrictionTimePeriod">Restringido (si es restringido) hasta:</label>
-            <div class="col-sm-4">
-                <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="restrictionTimePeriod" th:field="*{restrictionTimePeriod}" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="occupancyRate">Ratio ocupación:</label>
-            <div class="col-sm-4">
-                <input type="number" min="0.0" max="100.0" step="0.1" class="form-control" id="occupancyRate" th:field="*{occupancyRate}" />
             </div>
         </div>
 
@@ -135,15 +121,14 @@
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-success">Actualizar área natural</button>
+                <br><br>
                 <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver al listado</button></a>
                 <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${naturalArea.name})}">
                     <button type="submit" class="btn btn-primary">Volver al área natural</button>
                 </a>
-                <br>
-                <button type="submit" class="btn btn-success">Actualizar area natural</button>
             </div>
         </div>
-
     </form>
 </div>
 </body>

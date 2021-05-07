@@ -24,7 +24,7 @@
             <div class="col-sm-4">
                 <span style="margin:6px;" th:each="typeOfAccessvalue : ${typeOfAccessList}">
                    <input required type ="radio" th:field ="*{typeOfAccess}" th:value ="${typeOfAccessvalue}" />
-                   <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}" />
+                   <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}"></label>
                 </span>
                 <td th:if="${#fields.hasErrors('typeOfAccess')}" th:errors="*{typeOfAccess}"></td>
             </div>
@@ -63,7 +63,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="typeOfArea">Tipo de area:</label>
             <div class="col-sm-4">
-                <select required class="form_control" id="typeOfArea" type="text" th:field="*{typeOfArea}">
+                <select class="form_control" id="typeOfArea" type="text" th:field="*{typeOfArea}">
                     <option th:each="typeOfAreavalue : ${typeOfAreaList}"
                             th:value="${typeOfAreavalue}"
                             th:text="${typeOfAreavalue.descripcion}"></option>
@@ -108,7 +108,7 @@
             <div class="col-sm-4">
                 <span style="margin:6px;" th:each="orientationvalue : ${orientationList}">
                    <input required type ="radio" th:field ="*{orientation}" th:value ="${orientationvalue}" />
-                   <label th:for="${#ids.prev('orientation')}" th:text ="${orientationvalue.descripcion}" />
+                   <label th:for="${#ids.prev('orientation')}" th:text ="${orientationvalue.descripcion}"></label>
                 </span>
                 <td th:if="${#fields.hasErrors('orientation')}" th:errors="*{orientation}"></td>
             </div>

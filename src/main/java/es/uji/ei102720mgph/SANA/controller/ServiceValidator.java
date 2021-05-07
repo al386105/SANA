@@ -19,6 +19,8 @@ public class ServiceValidator implements Validator {
         if (service.getNameOfService().trim().equals(""))
             errors.rejectValue("nameOfService", "obligatorio", "Es obligatorio introducir el nombre del servicio");
 
+        // TODO validar temporalidad
+
         // Descripción obligatoria
         if (service.getDescription().trim().equals(""))
             errors.rejectValue("description", "obligatorio", "Es obligatorio introducir una descripción");

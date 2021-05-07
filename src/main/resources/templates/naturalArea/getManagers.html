@@ -31,14 +31,12 @@
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
 
-
     <!-- solo se pueden gestionar las zonas y franjas horarias de los espacios restringidos -->
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
         <h3>Lista de Zonas</h3>
-        <!-- TODO problema doble if-->
-        <!--<div th:if="${#lists.isEmpty(zones)">
+        <div th:if="${#lists.isEmpty(zones)}">
             <p><b>¡Este área natural restringida todavía no tiene zonas!</b></p>
-        </div>-->
+        </div>
         <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
             <thead>
             <tr>
@@ -76,10 +74,9 @@
 
 
         <h3>Franjas horarias</h3>
-        <!-- TODO problema doble if-->
-        <!--<div th:if="${#lists.isEmpty(timeSlots)">
+        <div th:if="${#lists.isEmpty(timeSlots)}">
             <p><b>¡Este área natural restringida todavía no tiene franjas horarias asignadas!</b></p>
-        </div>-->
+        </div>
         <table th:unless="${#lists.isEmpty(timeSlots)}" class="table table-striped">
             <thead>
             <tr>
@@ -119,11 +116,11 @@
     </div>
 
 
-
     <h3>Comentarios</h3>
     <div th:if="${#lists.isEmpty(comments)}">
         <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
     </div>
+    <div style="width:100%; height:300px; overflow: scroll;"> <!-- TODO anyadir esto al css, esta por todos lados-->
     <table th:unless="${#lists.isEmpty(comments)}" class="table table-striped">
         <thead>
         <tr>
@@ -142,10 +139,11 @@
         </tr>
         </tbody>
     </table>
+    </div>
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
 
-
+    <!-- TODO visualizacion de qué servicios son falta por hacer -->
     <h3>Servicios fijos</h3>
     <div th:if="${#lists.isEmpty(serviceDates)}">
         <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
@@ -227,43 +225,6 @@
         <button type="button" class="btn btn-success">Asignar servicio temporal</button>
     </a></td>
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
-
-
-    <!-- TODO visualizacion dato servicios de arriba -->
-    <!--
-    <h3>Servicios</h3>
-    <div th:if="${#lists.isEmpty(services)}">
-        <p><b>¡Este área natural no tiene asignada ningún servicio!</b></p>
-    </div>
-    <table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Nombre del servicio</th>
-            <th scope="col">Temporalidad</th>
-            <th scope="col">Descripción</th>
-            <th scope="col">Sitio de contratación</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="service: ${#lists.sort(services)}">
-            <td th:text="${service.nameOfService}"></td>
-            <td th:text="${service.temporality}"></td>
-            <td th:text="${service.descripcion}"></td>
-            <td th:text="${service.hiringPlace}"></td>
-            <td><a th:href="@{/service/delete/{id}(id=${service.nameOfService})}">
-                <button type="button" class="btn btn-danger">Eliminar asignación</button>
-            </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-        <button type="button" class="btn btn-success">Asignar nuevo servicio</button>
-    </a></td>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
-    -->
 
 
 

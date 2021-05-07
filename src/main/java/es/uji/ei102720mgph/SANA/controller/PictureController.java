@@ -2,12 +2,9 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.PictureDao;
-import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.Picture;
-import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,8 +16,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.Formatter;
 
 @Controller
 @RequestMapping("/picture")

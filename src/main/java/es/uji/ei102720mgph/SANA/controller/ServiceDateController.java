@@ -2,6 +2,7 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.dao.ServiceDateDao;
+import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.ServiceDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +41,22 @@ public class ServiceDateController {
         return "serviceDate/list";
     }
 
+    // metodo para anyadir al modelo los datos del selector
+    @ModelAttribute("serviceList")
+    public List<String> serviceList() {
+        List<Service> serviceList = serviceDao.getFixedServices();
+        List<String> namesServices = serviceList.stream()
+                .map(Service::getNameOfService)
+                .collect(Collectors.toList());
+        return namesServices;
+    }
+
     // Operació crear
     @RequestMapping(value="/add/{naturalArea}")
     public String addServiceDate(Model model, @PathVariable String naturalArea) {
         ServiceDate serviceDate = new ServiceDate();
         serviceDate.setNaturalArea(naturalArea);
         model.addAttribute("serviceDate", serviceDate);
-        List<Service> serviceList = serviceDao.getFixedServices();
-        List<String> namesServices = serviceList.stream()
-                .map(Service::getNameOfService)
-                .collect(Collectors.toList());
-        model.addAttribute("serviceList", namesServices);
         return "serviceDate/add";
     }
 
@@ -72,11 +78,6 @@ public class ServiceDateController {
     @RequestMapping(value="/update/{id}", method = RequestMethod.GET)
     public String editService(Model model, @PathVariable String id) {
         model.addAttribute("serviceDate", serviceDateDao.getServiceDate(id));
-        List<Service> serviceList = serviceDao.getFixedServices();
-        List<String> namesServices = serviceList.stream()
-                .map(Service::getNameOfService)
-                .collect(Collectors.toList());
-        model.addAttribute("serviceList", namesServices);
         return "serviceDate/update";
     }
 

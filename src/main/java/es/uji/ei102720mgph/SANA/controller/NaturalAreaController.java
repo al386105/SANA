@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,6 +103,7 @@ public class NaturalAreaController {
     @RequestMapping(value="/list")
     public String listNaturalAreas(Model model){
         model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
+        //model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea())
         return "naturalArea/list";
     }
 
@@ -123,17 +125,31 @@ public class NaturalAreaController {
         return "naturalArea/occupancy";
     }
 
-    @RequestMapping(value="/add")
-    public String addNaturalArea(Model model) {
-        model.addAttribute("naturalArea", new NaturalArea());
-        model.addAttribute("typeOfAccessList", TypeOfAccess.values());
-        model.addAttribute("typeOfAreaList", TypeOfArea.values());
-        model.addAttribute("orientationList", Orientation.values());
+    // metodos para anyadir al modelo los datos de selectores o radio buttons
+    @ModelAttribute("typeOfAccessList")
+    public TypeOfAccess[] typeOfAccessList() {
+        return TypeOfAccess.values();
+    }
+    @ModelAttribute("typeOfAreaList")
+    public TypeOfArea[] typeOfAreaList() {
+        return TypeOfArea.values();
+    }
+    @ModelAttribute("orientationList")
+    public Orientation[] orientationList() {
+        return Orientation.values();
+    }
+    @ModelAttribute("municipalityList")
+    public List<String> municipalityList() {
         List<Municipality> municipalityList = municipalityDao.getMunicipalities();
         List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
                 .map(Municipality::getName)
                 .collect(Collectors.toList());
-        model.addAttribute("municipalityList", namesMunicipalities);
+        return namesMunicipalities;
+    }
+
+    @RequestMapping(value="/add")
+    public String addNaturalArea(Model model) {
+        model.addAttribute("naturalArea", new NaturalArea());
         return "naturalArea/add";
     }
 
@@ -153,20 +169,10 @@ public class NaturalAreaController {
         return "redirect:/naturalArea/getManagers/" + naturalArea.getName();
     }
 
-    //TODO hay que hacer la segunda vista de add, addRestricted
-
     // Update
     @RequestMapping(value="/update/{naturalArea}", method=RequestMethod.GET)
     public String editNaturalArea(Model model, @PathVariable String naturalArea) {
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
-        model.addAttribute("typeOfAccessList", TypeOfAccess.values());
-        model.addAttribute("typeOfAreaList", TypeOfArea.values());
-        model.addAttribute("orientationList", Orientation.values());
-        List<Municipality> municipalityList = municipalityDao.getMunicipalities();
-        List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
-                .map(Municipality::getName)
-                .collect(Collectors.toList());
-        model.addAttribute("municipalityList", namesMunicipalities);
         return "naturalArea/update";
     }
 
@@ -179,6 +185,24 @@ public class NaturalAreaController {
 
         if (bindingResult.hasErrors())
             return "naturalArea/update";
+        naturalAreaDao.updateNaturalArea(naturalArea);
+        // si es vol actualitzar un area restringida, redirigir a la vista per a continuar la seua creació
+        if(naturalArea.getTypeOfAccess() == TypeOfAccess.restricted)
+            return "naturalArea/updateRestricted";
+        // por si he pasado de un area restringida a una no restringida
+        naturalArea.setRestrictionTimePeriod(null);
+        return "redirect:/naturalArea/getManagers/" + naturalArea.getName();
+    }
+
+    // Resposta de modificació d'objectes
+    @RequestMapping(value="/updateRestricted", method=RequestMethod.POST)
+    public String processUpdateRestrictedSubmit(@ModelAttribute("naturalArea") NaturalArea naturalArea,
+                                                BindingResult bindingResult) {
+        NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
+        naturalAreaValidator.validate(naturalArea, bindingResult);
+
+        if (bindingResult.hasErrors())
+            return "naturalArea/updateRestricted";
         naturalAreaDao.updateNaturalArea(naturalArea);
         return "redirect:/naturalArea/getManagers/" + naturalArea.getName();
     }

@@ -68,27 +68,47 @@
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="citizenCode">Codigo de ciudadano:</label>
+            <label class="control-label col-sm-2" for="street">Calle:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="citizenCode" />
+                <input type="text" required class="form-control" id="street"  />
             </div>
-            <label class="control-label col-sm-2" for="pin">Pin:</label>
+
+            <label class="control-label col-sm-2" for="number">Número:</label>
             <div class="col-sm-4">
-                <input type="password" required class="form-control" id="pin" />
+                <input type="number" min="1" required class="form-control" id="number"  />
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="addressId">Id dirección:</label>
+            <label class="control-label col-sm-2" for="floorDoor">Piso y puerta:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="addressId" />
+                <input type="text" required class="form-control" id="floorDoor" />
+            </div>
+
+            <label class="control-label col-sm-2" for="postalCode">Código postal:</label>
+            <div class="col-sm-4">
+                <input type="text" required class="form-control" id="postalCode" />
             </div>
         </div>
 
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="city">Ciudad:</label>
+            <div class="col-sm-4">
+                <input type="text" required class="form-control" id="city" />
+            </div>
+
+            <label class="control-label col-sm-2" for="country">País:</label>
+            <div class="col-sm-4">
+                <input type="text" required class="form-control" id="country" />
+            </div>
+        </div>
+
+        <br>
+
         <div class="form-group row" >
-            <div class="col-sm-offset-2 col-sm-4">
-                <a href="/inicio/login"><button type="button" class="btn btn-primary">Volver</button></a>
-                <button type="submit" class="btn btn-success">Registrarse</button>
+            <div class="col-sm-offset-2 col-sm-7">
+                <a href="/inicio/login"><button type="button" class="btn btn-primary" style="float:right; text-align:center;">Volver</button></a>
+                <button type="submit" style="float:right;; text-align:center;" class="btn btn-success">Registrarse</button>
             </div>
         </div>
 

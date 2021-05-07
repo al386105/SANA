@@ -13,7 +13,7 @@
           th:object="${temporalService}" method="post">
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="naturalArea">Area natural:</label>
+            <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
             <div class="col-sm-4">
                 <input type="text" required class="form-control" id="naturalArea" th:field="*{naturalArea}" readonly="readonly"/>
             </div>
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <!-- TODO no pedirlo en este formato!-->
+        <!-- TODO hay que hacerlo como checkbox, existe clase DaysOFWeek -->
         <div class="form-group row">
             <label class="control-label col-sm-2" for="openingDays">Días de apertura:</label>
             <div class="col-sm-4">

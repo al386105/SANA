@@ -35,19 +35,24 @@ public class NaturalAreaValidator implements Validator {
         if (naturalArea.getName().trim().equals(""))
             errors.rejectValue("name", "obligatorio", "Es obligatorio completar el nombre");
 
-        // Selecccionar tipo de acceso
-        List<String> namesTypesOfAccess = Stream.of(TypeOfAccess.values())
-                .map(Enum::name)
-                .collect(Collectors.toList());
-        if (!namesTypesOfAccess.contains(naturalArea.getTypeOfAccess().name())) {
-            errors.rejectValue("typeOfAccess", "obligatorio", "No se ha seleccionado un tipo de acceso");
+        // Radio button tipo de acceso comprobar que se haya seleccionado
+        if (naturalArea.getTypeOfAccess() == null)
+            errors.rejectValue("typeOfAccess", "obligatorio", "Es obligatorio seleccionar el tipo de acceso");
+        else {
+            // Radio button para tipo de acceso, igual no es necesario //TODO
+            List<String> namesTypesOfAccess = Stream.of(TypeOfAccess.values())
+                    .map(Enum::name)
+                    .collect(Collectors.toList());
+            if (!namesTypesOfAccess.contains(naturalArea.getTypeOfAccess().name())) {
+                errors.rejectValue("typeOfAccess", "incorrecto", "El tipo de acceso es incorrecto");
+            }
         }
 
         // Coordenadoas obligatorias
         if (naturalArea.getGeographicalLocation().trim().equals(""))
             errors.rejectValue("geographicalLocation", "obligatorio", "Es obligatorio completar las coordenadas geográficas");
 
-        // Selecccionar tipo de area
+        // Selecccionar tipo de area, igual no es necesario //TODO
         List<String> namesTypesOfArea = Stream.of(TypeOfArea.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
@@ -63,12 +68,17 @@ public class NaturalAreaValidator implements Validator {
         if (naturalArea.getDescription().trim().equals(""))
             errors.rejectValue("description", "obligatorio", "Es obligatorio completar la descripción");
 
-        // Selecccionar orientacion
-        List<String> namesOrientation = Stream.of(Orientation.values())
-                .map(Enum::name)
-                .collect(Collectors.toList());
-        if (!namesOrientation.contains(naturalArea.getOrientation().name())) {
-            errors.rejectValue("orientation", "obligatorio", "No se ha seleccionado la orientación");
+        // Radio button orientacion comprobar que se haya seleccionado
+        if (naturalArea.getOrientation() == null)
+            errors.rejectValue("orientation", "obligatorio", "Es obligatorio seleccionar la orientación");
+        else {
+            // Radio button orientacion ver si hay que hacerlo //TODO
+            List<String> namesOrientation = Stream.of(Orientation.values())
+                    .map(Enum::name)
+                    .collect(Collectors.toList());
+            if (!namesOrientation.contains(naturalArea.getOrientation().name())) {
+                errors.rejectValue("orientation", "incorrecto", "La orientación no es correcta");
+            }
         }
 
         // Selecccionar municipio

@@ -1,8 +1,8 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.enums.Temporality;
+import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +35,16 @@ public class ServiceController {
         return "service/list";
     }
 
+    // metodo para anyadir al modelo los datos del radio button
+    @ModelAttribute("temporalityList")
+    public Temporality[] temporalityList() {
+        return Temporality.values();
+    }
+
     // Operació crear
     @RequestMapping(value="/add")
     public String addService(Model model) {
         model.addAttribute("service", new Service());
-        model.addAttribute("temporalityList", Temporality.values());
         return "service/add";
     }
 
@@ -60,7 +65,6 @@ public class ServiceController {
     @RequestMapping(value="/update/{nameOfService}", method = RequestMethod.GET)
     public String editService(Model model, @PathVariable String nameOfService) {
         model.addAttribute("service", serviceDao.getService(nameOfService));
-        model.addAttribute("temporalityList", Temporality.values());
         return "service/update";
     }
 

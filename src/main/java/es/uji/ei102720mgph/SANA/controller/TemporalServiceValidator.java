@@ -1,6 +1,8 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
+import es.uji.ei102720mgph.SANA.enums.DaysOfWeek;
+import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.TemporalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.validation.Validator;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TemporalServiceValidator implements Validator {
     private ServiceDao serviceDao;
@@ -37,9 +40,23 @@ public class TemporalServiceValidator implements Validator {
                     "No se ha seleccionado un servicio");
         }*/
 
+        // TODO esto va a cambiar cuando sean distintos campos, habra que comporbar que se ha seleccionado alguno
         // Dias de apertura obligatorio
-        if (temporalService.getOpeningDays().trim().equals(""))
-            errors.rejectValue("openingDays", "obligatorio", "Es obligatorio introducir los días de apertura");
+        /*if (temporalService.getOpeningDays().trim().equals(""))
+            errors.rejectValue("openingDays", "obligatorio", "Es obligatorio introducir los días de apertura");*/
+
+        // Radio button días de apertura comprobar que se haya seleccionado
+        /*if (temporalService.getOpeningDays() == null)
+            errors.rejectValue("openingDays", "obligatorio", "Es obligatorio seleccionar un día de apertura");
+        else {
+            // Radio button días de apertura, igual no es necesario //TODO
+            List<String> namesDaysOfWeek = Stream.of(DaysOfWeek.values())
+                    .map(Enum::name)
+                    .collect(Collectors.toList());
+            if (!namesDaysOfWeek.contains(temporalService.getOpeningDays())) {
+                errors.rejectValue("openingDays", "incorrecto", "El día de apertura es incorrecto");
+            }
+        }*/
 
         // Hora de inicio obligatoria
         if (temporalService.getBeginningTime() == null)

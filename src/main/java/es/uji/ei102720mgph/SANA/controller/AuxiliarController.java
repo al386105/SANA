@@ -125,7 +125,7 @@ public class AuxiliarController {
                                       BindingResult bindingResult, Model model, HttpSession session) {
         if (bindingResult.hasErrors())
             return "inicio/registrado/editarPerfil";
-        System.out.println(registeredCitizen.getIdNumber());
+
         registeredCitizenDao.updateRegisteredCitizen(registeredCitizen);
         model.addAttribute("citizen", registeredCitizen);
         session.setAttribute("registeredCitizen", registeredCitizen);
@@ -134,7 +134,18 @@ public class AuxiliarController {
 
     @RequestMapping("inicio/register_form")
     public String redirigirRegistro(Model model) {
+        model.addAttribute("registrationCitizen", new RegistrationCitizen());
         return "inicio/register_form";
+    }
+
+    @RequestMapping("inicio/register_form/registration")
+    public String registrationProcess(@ModelAttribute("registrationCitizen") RegistrationCitizen registrationCitizen,BindingResult bindingResult, HttpSession session ){
+
+        if (bindingResult.hasErrors())
+            return "inicio/login"; //tornem al formulari d'inici de sessió
+
+        System.out.println(registrationCitizen.toString());
+        return "inicio/login";
     }
 
     @RequestMapping(value="inicio/login/autentication", method=RequestMethod.POST)

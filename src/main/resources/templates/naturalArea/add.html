@@ -63,7 +63,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="typeOfArea">Tipo de area:</label>
             <div class="col-sm-4">
-                <select required class="form_control" id="typeOfArea" type="text" th:field="*{typeOfArea}">
+                <select class="form_control" id="typeOfArea" type="text" th:field="*{typeOfArea}">
                     <option th:each="typeOfAreavalue : ${typeOfAreaList}"
                             th:value="${typeOfAreavalue}"
                             th:text="${typeOfAreavalue.descripcion}"></option>

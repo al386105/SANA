@@ -3,6 +3,7 @@ package es.uji.ei102720mgph.SANA.controller;
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.enums.Orientation;
 import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
+import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
@@ -12,6 +13,8 @@ import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+// TODO no va el validador de selectores ni con @Component ni @Controlller
 
 public class NaturalAreaValidator implements Validator {
     private MunicipalityDao municipalityDao;
@@ -32,7 +35,7 @@ public class NaturalAreaValidator implements Validator {
         if (naturalArea.getName().trim().equals(""))
             errors.rejectValue("name", "obligatorio", "Es obligatorio completar el nombre");
 
-        // Selecccionar acceso
+        // Selecccionar tipo de acceso
         List<String> namesTypesOfAccess = Stream.of(TypeOfAccess.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
@@ -44,9 +47,13 @@ public class NaturalAreaValidator implements Validator {
         if (naturalArea.getGeographicalLocation().trim().equals(""))
             errors.rejectValue("geographicalLocation", "obligatorio", "Es obligatorio completar las coordenadas geográficas");
 
-        // Largo obligatorio??????
-
-        // Ancho obligatorio?????
+        // Selecccionar tipo de area
+        List<String> namesTypesOfArea = Stream.of(TypeOfArea.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+        if (!namesTypesOfArea.contains(naturalArea.getTypeOfArea().name())) {
+            errors.rejectValue("typeOfArea", "obligatorio", "No se ha seleccionado un tipo de área");
+        }
 
         // Caracteristicas fisicas obligatorias
         if (naturalArea.getPhysicalCharacteristics().trim().equals(""))
@@ -65,7 +72,7 @@ public class NaturalAreaValidator implements Validator {
         }
 
         // Selecccionar municipio
-        /*
+        /* TODO NO VA
         if(municipalityDao ==  null) System.out.println("ES NULL");
         List<Municipality> municipalityList = municipalityDao.getMunicipalities();
         List<String> namesMunicipalities = municipalityList.stream()

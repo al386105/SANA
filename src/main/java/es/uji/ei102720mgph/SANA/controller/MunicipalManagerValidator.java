@@ -39,5 +39,6 @@ public class MunicipalManagerValidator implements Validator {
         //  Fecha de nacimiento obligatoria
         if (municipalManager.getDateOfBirth() == null)
             errors.rejectValue("dateOfBirth", "obligatorio", "Es obligatorio introducir la fecha de nacimiento");
+
     }
 }

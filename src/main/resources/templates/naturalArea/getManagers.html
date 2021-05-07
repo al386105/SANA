@@ -31,14 +31,12 @@
     <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
 
 
-
     <!-- solo se pueden gestionar las zonas y franjas horarias de los espacios restringidos -->
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
         <h3>Lista de Zonas</h3>
-        <!-- TODO problema doble if-->
-        <!--<div th:if="${#lists.isEmpty(zones)">
+        <div th:if="${#lists.isEmpty(zones)}">
             <p><b>¡Este área natural restringida todavía no tiene zonas!</b></p>
-        </div>-->
+        </div>
         <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
             <thead>
             <tr>
@@ -76,10 +74,9 @@
 
 
         <h3>Franjas horarias</h3>
-        <!-- TODO problema doble if-->
-        <!--<div th:if="${#lists.isEmpty(timeSlots)">
+        <div th:if="${#lists.isEmpty(timeSlots)}">
             <p><b>¡Este área natural restringida todavía no tiene franjas horarias asignadas!</b></p>
-        </div>-->
+        </div>
         <table th:unless="${#lists.isEmpty(timeSlots)}" class="table table-striped">
             <thead>
             <tr>

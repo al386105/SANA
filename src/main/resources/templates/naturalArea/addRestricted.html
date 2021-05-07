@@ -35,6 +35,7 @@
             <label class="control-label col-sm-2" for="restrictionTimePeriod">Restringido hasta:</label>
             <div class="col-sm-4">
                 <input type="date" required placeholder="yyyy-MM-dd" class="form-control" id="restrictionTimePeriod" th:field="*{restrictionTimePeriod}" />
+                <td th:if="${#fields.hasErrors('restrictionTimePeriod')}" th:errors="*{restrictionTimePeriod}"></td>
             </div>
         </div>
 

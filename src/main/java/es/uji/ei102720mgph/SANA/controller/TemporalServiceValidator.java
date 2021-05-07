@@ -25,7 +25,7 @@ public class TemporalServiceValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         TemporalService temporalService = (TemporalService) obj;
 
-        /*
+        /* TODO no va
         //Seleccionar servicio
         List<Service> serviceList = serviceDao.getServices();
         List<String> namesServices = serviceList.stream()
@@ -62,6 +62,5 @@ public class TemporalServiceValidator implements Validator {
         if (temporalService.getEndDate() != null && temporalService.getBeginningDate() != null
                 && temporalService.getBeginningDate().isAfter(temporalService.getEndDate()))
             errors.rejectValue("endDate", "valor incorrecto", "La fecha de fin debe ser posterior a la fecha de inicio");
-
     }
 }

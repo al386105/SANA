@@ -7,10 +7,8 @@
 </head>
 <body>
 <h1>Lista de areas naturales</h1>
-<div th:if="${#lists.isEmpty(naturalAreas)}">
-    ¡No se ha añadido todavía ningún área natural!
-</div>
-<table th:unless="${#lists.isEmpty(naturalAreas)}" class="table table-striped">
+th:each="pais: ${classificacions.keySet()}"
+<table class="table table-striped">
     <thead>
     <tr>
         <th scope="col">Foto</th>

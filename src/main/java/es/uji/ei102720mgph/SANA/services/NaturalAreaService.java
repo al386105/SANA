@@ -9,5 +9,4 @@ public interface NaturalAreaService {
     Map<NaturalArea, List<String>> getNaturalAreasWithImages();
     Map<NaturalArea, String> getNaturalAreasWithImage();
 
-
 }

@@ -6,6 +6,7 @@ import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
+import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/naturalArea")
 public class NaturalAreaController {
     private NaturalAreaDao naturalAreaDao;
+    private NaturalAreaService naturalAreaService;
     private ZoneDao zoneDao;
     private CommentDao commentDao;
     private MunicipalityDao municipalityDao;
@@ -30,6 +32,11 @@ public class NaturalAreaController {
     private TimeSlotDao timeSlotDao;
     private ServiceDateDao serviceDateDao;
     private TemporalServiceDao temporalServiceDao;
+
+    @Autowired
+    public void setNaturalAreaService(NaturalAreaService naturalAreaService){
+        this.naturalAreaService = naturalAreaService;
+    }
 
     @Autowired
     public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){ this.naturalAreaDao = naturalAreaDao; }
@@ -101,8 +108,7 @@ public class NaturalAreaController {
 
     @RequestMapping(value="/list")
     public String listNaturalAreas(Model model){
-        model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
-        //model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea())
+        model.addAttribute("naturalAreas", naturalAreaService.getNaturalAreasWithImage());
         return "naturalArea/list";
     }
 

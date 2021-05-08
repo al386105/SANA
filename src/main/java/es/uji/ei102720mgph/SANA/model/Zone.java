@@ -6,7 +6,8 @@ import java.time.LocalDate;
 public class Zone implements Comparable<Zone> {
     private String id;
     private int zoneNumber;
-    private char letter;
+    // era un char en el diseño logico
+    private String letter;
     private int maximumCapacity;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate creationDate;
@@ -33,11 +34,11 @@ public class Zone implements Comparable<Zone> {
         this.zoneNumber = zoneNumber;
     }
 
-    public char getLetter() {
+    public String getLetter() {
         return letter;
     }
 
-    public void setLetter(char letter) {
+    public void setLetter(String letter) {
         this.letter = letter;
     }
 

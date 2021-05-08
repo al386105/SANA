@@ -19,12 +19,30 @@ public class RegistrationCitizen {
     private String postalCode;
     private String city;
     private String country;
+    private String password;
+    private String citizenCode;
+
 
 
     public RegistrationCitizen(){
         super();
     }
 
+    public String getCitizenCode() {
+        return citizenCode;
+    }
+
+    public void setCitizenCode(String citizenCode) {
+        this.citizenCode = citizenCode;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     public String getEmail() {
         return email;
     }

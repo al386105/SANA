@@ -3,6 +3,7 @@ package es.uji.ei102720mgph.SANA.controller;
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.enums.Orientation;
 import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
+import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
@@ -12,6 +13,8 @@ import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+// TODO no va el validador de selectores ni con @Component ni @Controlller
 
 public class NaturalAreaValidator implements Validator {
     private MunicipalityDao municipalityDao;
@@ -32,21 +35,30 @@ public class NaturalAreaValidator implements Validator {
         if (naturalArea.getName().trim().equals(""))
             errors.rejectValue("name", "obligatorio", "Es obligatorio completar el nombre");
 
-        // Selecccionar acceso
-        List<String> namesTypesOfAccess = Stream.of(TypeOfAccess.values())
-                .map(Enum::name)
-                .collect(Collectors.toList());
-        if (!namesTypesOfAccess.contains(naturalArea.getTypeOfAccess().name())) {
-            errors.rejectValue("typeOfAccess", "obligatorio", "No se ha seleccionado un tipo de acceso");
+        // Radio button tipo de acceso comprobar que se haya seleccionado
+        if (naturalArea.getTypeOfAccess() == null)
+            errors.rejectValue("typeOfAccess", "obligatorio", "Es obligatorio seleccionar el tipo de acceso");
+        else {
+            // Radio button para tipo de acceso, igual no es necesario //TODO
+            List<String> namesTypesOfAccess = Stream.of(TypeOfAccess.values())
+                    .map(Enum::name)
+                    .collect(Collectors.toList());
+            if (!namesTypesOfAccess.contains(naturalArea.getTypeOfAccess().name())) {
+                errors.rejectValue("typeOfAccess", "incorrecto", "El tipo de acceso es incorrecto");
+            }
         }
 
         // Coordenadoas obligatorias
         if (naturalArea.getGeographicalLocation().trim().equals(""))
             errors.rejectValue("geographicalLocation", "obligatorio", "Es obligatorio completar las coordenadas geográficas");
 
-        // Largo obligatorio??????
-
-        // Ancho obligatorio?????
+        // Selecccionar tipo de area, igual no es necesario //TODO
+        List<String> namesTypesOfArea = Stream.of(TypeOfArea.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+        if (!namesTypesOfArea.contains(naturalArea.getTypeOfArea().name())) {
+            errors.rejectValue("typeOfArea", "obligatorio", "No se ha seleccionado un tipo de área");
+        }
 
         // Caracteristicas fisicas obligatorias
         if (naturalArea.getPhysicalCharacteristics().trim().equals(""))
@@ -56,16 +68,21 @@ public class NaturalAreaValidator implements Validator {
         if (naturalArea.getDescription().trim().equals(""))
             errors.rejectValue("description", "obligatorio", "Es obligatorio completar la descripción");
 
-        // Selecccionar orientacion
-        List<String> namesOrientation = Stream.of(Orientation.values())
-                .map(Enum::name)
-                .collect(Collectors.toList());
-        if (!namesOrientation.contains(naturalArea.getOrientation().name())) {
-            errors.rejectValue("orientation", "obligatorio", "No se ha seleccionado la orientación");
+        // Radio button orientacion comprobar que se haya seleccionado
+        if (naturalArea.getOrientation() == null)
+            errors.rejectValue("orientation", "obligatorio", "Es obligatorio seleccionar la orientación");
+        else {
+            // Radio button orientacion ver si hay que hacerlo //TODO
+            List<String> namesOrientation = Stream.of(Orientation.values())
+                    .map(Enum::name)
+                    .collect(Collectors.toList());
+            if (!namesOrientation.contains(naturalArea.getOrientation().name())) {
+                errors.rejectValue("orientation", "incorrecto", "La orientación no es correcta");
+            }
         }
 
         // Selecccionar municipio
-        /*
+        /* TODO NO VA
         if(municipalityDao ==  null) System.out.println("ES NULL");
         List<Municipality> municipalityList = municipalityDao.getMunicipalities();
         List<String> namesMunicipalities = municipalityList.stream()

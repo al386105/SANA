@@ -34,7 +34,7 @@ public class ServiceDateValidator implements Validator {
                 && serviceDate.getBeginningDate().isAfter(serviceDate.getEndDate()))
             errors.rejectValue("endDate", "valor incorrecto", "La fecha de fin debe ser posterior a la fecha de inicio");
 
-        /*
+        /* TODO no va
         // Seleccionar servicio
         List<Service> serviceList = serviceDao.getServices();
         List<String> namesServices = serviceList.stream()

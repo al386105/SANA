@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic">
     <link rel="stylesheet" href="../../assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="../../assets/css/untitled.css">
-    <link rel="icon" href="../assets/img/LOGO_hoja.png" type="image/png">
+    <link rel="icon" href="../../assets/img/LOGO_hoja.png" type="image/png">
 </head>
 
 <body id="page-top">
@@ -40,16 +40,26 @@
         <hr class="barra-normal">
         <br>
         <div th:each="reserva: ${reservas}">
-            <div class="card">
+            <div class="card-horizontal">
+                <div class="img-square-wrapper">
+                    <img class="" src="../../assets/img/qrCodes/qr0000018.png" alt="Card image cap">
+                </div>
                 <div class="card-body">
-                    <h4 class="card-title" th:text="${reserva.naturalArea}"></h4>
-                    <h6 class="card-subtitle mb-2 text-muted" th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></h6>
-                    <p class="card-text" th:text="${reserva.numberOfPeople} "></p>
-                    <p class="card-text"> personas</p>
-                    <a href="#" class="card-link">Cancelar reserva</a>
+                    <h4 class="card-title" th:text="*{reserva.naturalArea}"></h4>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <span th:text="*{#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></span>
+                    </h6>
+                    <p style="font-weight: bold" class="card-text"> <span style="font-weight: bold" th:text="*{reserva.numberOfPeople}"></span> personas</p>
+                    <p class="card-text">Zona:
+                        <span th:text="*{reserva.zoneNumber}"></span>
+                        <span th:text="*{reserva.letter}"></span>
+                    </p>
+                    <a style="float: right" href="#" class="btn btn-primary">Cancelar reserva</a>
                 </div>
             </div>
             <br>
+            <img th:src="@{../../} + ${reserva.QRcode}">
+            <img th:src="@{reserva.QRcode}">
         </div>
     </div>
 </section>

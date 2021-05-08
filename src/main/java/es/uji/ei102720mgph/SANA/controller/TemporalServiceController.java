@@ -4,6 +4,9 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.dao.TemporalServiceDao;
+import es.uji.ei102720mgph.SANA.enums.DaysOfWeek;
+import es.uji.ei102720mgph.SANA.enums.Orientation;
+import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.TemporalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,17 +45,26 @@ public class TemporalServiceController {
         return "temporalService/list";
     }
 
+    // metodos para anyadir al modelo los datos del selector o radio buttons
+    @ModelAttribute("serviceList")
+    public List<String> serviceList() {
+        List<Service> serviceList = serviceDao.getFixedServices();
+        List<String> namesServices = serviceList.stream()
+                .map(Service::getNameOfService)
+                .collect(Collectors.toList());
+        return namesServices;
+    }
+    //TODO
+    @ModelAttribute("openingDaysList")
+    public DaysOfWeek[] openingDaysList() {
+        return DaysOfWeek.values();
+    }
+
     // Operació crear
     @RequestMapping(value="/add/{naturalArea}")
     public String addTemporalService(Model model, @PathVariable String naturalArea) {
         TemporalService temporalService = new TemporalService();
         temporalService.setNaturalArea(naturalArea);
-        model.addAttribute("temporalService", temporalService);
-        List<Service> serviceList = serviceDao.getTemporalServices();
-        List<String> namesServices = serviceList.stream()
-                .map(Service::getNameOfService)
-                .collect(Collectors.toList());
-        model.addAttribute("serviceList", namesServices);
         return "temporalService/add";
     }
 
@@ -74,11 +86,6 @@ public class TemporalServiceController {
     @RequestMapping(value="/update/{service}/{naturalArea}", method = RequestMethod.GET)
     public String editTemporalService(Model model, @PathVariable String service, @PathVariable String naturalArea) {
         model.addAttribute("temporalService", temporalServiceDao.getTemporalService(service, naturalArea));
-        List<Service> serviceList = serviceDao.getTemporalServices();
-        List<String> namesServices = serviceList.stream()
-                .map(Service::getNameOfService)
-                .collect(Collectors.toList());
-        model.addAttribute("serviceList", namesServices);
         return "temporalService/update";
     }
 

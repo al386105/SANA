@@ -15,6 +15,8 @@ public class ZoneValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         Zone zone = (Zone)obj;
 
-        //TODO
+        // Letra obligatoria
+        if (zone.getLetter().trim().equals(""))
+            errors.rejectValue("letter", "obligatorio", "Es obligatorio completar la letra");
     }
 }

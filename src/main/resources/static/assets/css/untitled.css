@@ -154,3 +154,9 @@ h3.colorMarron {
 h4.colorTierra {
     color: #b86f52;
 }
+
+.card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+    background: white;
+}

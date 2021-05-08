@@ -7,7 +7,6 @@
 </head>
 <body>
 <h1>Lista de areas naturales</h1>
-th:each="pais: ${classificacions.keySet()}"
 <table class="table table-striped">
     <thead>
     <tr>
@@ -22,9 +21,11 @@ th:each="pais: ${classificacions.keySet()}"
     </thead>
 
     <tbody>
-    <tr th:each="naturalArea: ${#lists.sort(naturalAreas)}">
-        <td th:text="${naturalArea.name}"></td>
-        <td th:text="${naturalArea.name}"></td>
+    <tr th:each="naturalArea: ${naturalAreas.keySet()}">
+        <td>
+            <img th:src="${naturalAreas.get(naturalArea)}" th:alt="${naturalArea.description}" height="300"/>
+        </td>
+        <td> <b th:text="${naturalArea.name}"> </b></td>
         <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
         <td th:text="${naturalArea.municipality}"></td>
 

@@ -112,7 +112,9 @@
     </div>
     <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
         <tr th:each="picture: ${pictures}">
-            <td scope="row" img src="assets/img/${picture.picturePath}" alt="${picture.picturePath}"></td>
+            <td>
+                <img th:src="${picture.picturePath}" th:alt="${naturalArea.description}" height="300"/>
+            </td>
         </tr>
         </tbody>
     </table>

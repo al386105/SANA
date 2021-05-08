@@ -7,6 +7,7 @@ import es.uji.ei102720mgph.SANA.model.Picture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Service
@@ -45,4 +46,5 @@ public class NaturalAreaSvc implements NaturalAreaService  {
         }
         return naturalAreasWithImage;
     }
+
 }

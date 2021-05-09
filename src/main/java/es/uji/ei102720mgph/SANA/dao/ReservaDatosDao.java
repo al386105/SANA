@@ -1,7 +1,9 @@
 package es.uji.ei102720mgph.SANA.dao;
 
 
+import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.ReservaDatos;
+import es.uji.ei102720mgph.SANA.model.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -49,5 +51,9 @@ public class ReservaDatosDao {
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<ReservaDatos>();
         }
+    }
+
+    public void cancelaReservaPorCiudadano(String id){
+        jdbcTemplate.update("UPDATE Reservation SET state = ? WHERE reservationNumber =?", ReservationState.cancelledCitizen.name(), Integer.parseInt(id));
     }
 }

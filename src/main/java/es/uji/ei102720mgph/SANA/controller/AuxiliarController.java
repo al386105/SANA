@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -121,6 +122,11 @@ public class AuxiliarController {
         return "inicioRegistrado/reservas";
     }
 
+    @RequestMapping("inicio/registrado/cancelarReserva/{id}")
+    public String cancelarReserva(@PathVariable String id, Model model, HttpSession session) {
+        reservaDatosDao.cancelaReservaPorCiudadano(id);
+        return "redirect:/inicio/registrado/reservas";
+    }
     @RequestMapping("inicio/registrado/reservasTodas")
     public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");

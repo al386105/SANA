@@ -58,7 +58,7 @@
                             <span th:text="${reserva.zoneNumber}"></span>
                             <span th:text="${reserva.letter}"></span>
                         </p>
-                        <a style="float: right" href="#" class="btn btn-primary">Cancelar reserva</a>
+                        <a style="float: right" th:href="@{cancelarReserva/} + ${reserva.reservationNumber}" class="btn btn-primary">Cancelar reserva</a>
                     </div>
                 </div>
                 <br>

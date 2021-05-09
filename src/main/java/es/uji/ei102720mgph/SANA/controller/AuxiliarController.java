@@ -115,6 +115,14 @@ public class AuxiliarController {
         return "inicioRegistrado/reservas";
     }
 
+    @RequestMapping("inicio/registrado/reservasTodas")
+    public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        List<ReservaDatos> listaReservas = reservaDatosDao.getReservasTodasEmail(citizen.getEmail());
+        model.addAttribute("reservas", listaReservas);
+        return "inicioRegistrado/reservasTodas";
+    }
+
     @RequestMapping("inicio/registrado/perfil")
     public String redirigirRegistradoPerfil(Model model, HttpSession session) {
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");

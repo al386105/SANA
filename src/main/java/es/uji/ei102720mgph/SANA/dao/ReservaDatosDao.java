@@ -35,4 +35,19 @@ public class ReservaDatosDao {
             return new ArrayList<ReservaDatos>();
         }
     }
+
+    public List<ReservaDatos> getReservasTodasEmail(String email) {
+        try {
+            return jdbcTemplate.query("SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea " +
+                            "FROM reservation AS res " +
+                            "JOIN reservationofzone AS ro ON res.reservationnumber = ro.reservationnumber " +
+                            "JOIN zone AS zone ON ro.zoneid = zone.id " +
+                            "WHERE res.citizenemail = ?",
+                    new ReservaDatosRowMapper(),
+                    email);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<ReservaDatos>();
+        }
+    }
 }

@@ -3,10 +3,9 @@ package es.uji.ei102720mgph.SANA.services;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
 
 import java.util.List;
-import java.util.Map;
+import java.util.SortedMap;
 
 public interface NaturalAreaService {
-    Map<NaturalArea, List<String>> getNaturalAreasWithImages();
-    Map<NaturalArea, String> getNaturalAreasWithImage();
-
+    SortedMap<NaturalArea, String> getNaturalAreasWithImage();
+    List<String> getImageOfNaturalAreas(List<NaturalArea> naturalAreas);
 }

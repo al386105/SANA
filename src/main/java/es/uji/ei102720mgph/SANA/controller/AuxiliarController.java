@@ -84,6 +84,12 @@ public class AuxiliarController {
         this.reservaDatosDao = reservaDatosDao;
     }
 
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:inicio";
+    }
+
     // TODO esto debe ser / en vez de inicio
     @RequestMapping("inicio")
     public String redirigirSana(Model model) {
@@ -206,6 +212,7 @@ public class AuxiliarController {
 
         if (bindingResult.hasErrors())
             return "inicio/login"; //tornem al formulari d'inici de sessió
+            //return "redirect:/inicio/login";
 
         SanaUser sanaUser = sanaUserDao.getSanaUser(userLogin.getEmail().trim());
         if (sanaUser != null){

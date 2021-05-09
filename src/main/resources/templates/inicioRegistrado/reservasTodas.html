@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic">
   <link rel="stylesheet" href="../../assets/fonts/font-awesome.min.css">
   <link rel="stylesheet" href="../../assets/css/untitled.css">
-  <link rel="icon" href="../assets/img/LOGO_hoja.png" type="image/png">
+  <link rel="icon" href="../../assets/img/LOGO_hoja.png" type="image/png">
 </head>
 
 <body id="page-top">
@@ -20,7 +20,7 @@
       <ul class="navbar-nav ml-auto">
         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/inicio/registrado">Áreas Naturales</a></li>
         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/inicio/registrado/reservas">Mis reservas</a></li>
-        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#perfil">Perfil</a></li>
+        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/inicio/registrado/perfil">Perfil</a></li>
       </ul>
     </div>
   </div>
@@ -28,40 +28,45 @@
 
 
 
-<section id="perfil">
-  <div class="container" th:object ="${citizen}">
+<section id="reservas">
+  <div class="container">
     <br>
     <br>
     <br>
     <br>
     <br>
-    <h2 class="text-uppercase text-center text-secondary mb-0">Mi Perfil</h2>
+    <h2 class="text-uppercase text-center text-secondary mb-0">Mis Reservas</h2>
     <br>
     <hr class="barra-normal">
     <br>
-    <h3 class="colorMarron">Nombre:</h3>
-    <h4 class="colorTierra" th:text="*{name}"></h4>
-    <br>
-    <h3 class="colorMarron">Apellidos:</h3>
-    <h4 class="colorTierra" th:text="*{surname}"></h4>
-    <br>
-    <h3 class="colorMarron">Correo:</h3>
-    <h4 class="colorTierra" th:text="*{email}"></h4>
-    <br>
-    <h3 class="colorMarron">Fecha de nacimiento:</h3>
-    <h4 class="colorTierra" th:text="${#temporals.format(citizen.dateOfBirth,'dd/MM/yyyy')}"></h4>
-    <br>
-    <h3 class="colorMarron">Teléfono:</h3>
-    <h4 class="colorTierra" th:text="*{mobilePhoneNumber}"></h4>
-    <br>
-    <div class="row">
-      <div class="col-lg-8 mx-auto" >
-        <button style="float: right; margin-left: 15px" type="button" class="btn btn-primary btn-xl" data-toggle="modal" data-target="#miModal">Salir</button>
-        <a style="float: right" href="/inicio/registrado/editarPerfil" class="btn btn-primary btn-xl" role="button">Editar perfil</a>
+    <div th:if="${#lists.isEmpty(reservas)}">
+      <h4 style="text-align: center"> Todavía no has realizado ninguna reserva</h4>
+    </div>
+    <div th:unless="${#lists.isEmpty(reservas)}">
+      <div th:each="reserva: ${#lists.sort(reservas)}">
+        <div class="card-horizontal">
+          <div class="img-square-wrapper">
+            <img class="" th:src="@{/} + ${reserva.QRcode}" alt="Card image cap">
+          </div>
+          <div class="card-body">
+            <h4 class="card-title" th:text="${reserva.naturalArea}"></h4>
+            <h6 class="card-subtitle mb-2 text-muted">
+              <span th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></span>
+            </h6>
+            <p style="font-weight: bold" class="card-text"> <span style="font-weight: bold" th:text="${reserva.numberOfPeople}"></span> personas</p>
+            <p class="card-text">Zona:
+              <span th:text="${reserva.zoneNumber}"></span>
+              <span th:text="${reserva.letter}"></span>
+            </p>
+            <h6 style="float: right; color: #b86f52" class="card-subtitle mb-2 text-muted">
+              <span th:text="${reserva.state.descripcion}"></span>
+            </h6>
+          </div>
+        </div>
+        <br>
       </div>
     </div>
   </div>
-
 </section>
 
 <footer class="text-center footer">
@@ -91,25 +96,6 @@
   <div class="container"><small style="color:white">Copyright ©&nbsp;SANA 2021</small></div>
 </div>
 
-<div class="modal" id="miModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>

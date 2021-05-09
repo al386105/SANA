@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -84,6 +85,12 @@ public class AuxiliarController {
         this.reservaDatosDao = reservaDatosDao;
     }
 
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:inicio";
+    }
+
     // TODO esto debe ser / en vez de inicio
     @RequestMapping("inicio")
     public String redirigirSana(Model model) {
@@ -113,6 +120,19 @@ public class AuxiliarController {
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
         model.addAttribute("reservas", listaReservas);
         return "inicioRegistrado/reservas";
+    }
+
+    @RequestMapping("inicio/registrado/cancelarReserva/{id}")
+    public String cancelarReserva(@PathVariable String id, Model model, HttpSession session) {
+        reservaDatosDao.cancelaReservaPorCiudadano(id);
+        return "redirect:/inicio/registrado/reservas";
+    }
+    @RequestMapping("inicio/registrado/reservasTodas")
+    public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        List<ReservaDatos> listaReservas = reservaDatosDao.getReservasTodasEmail(citizen.getEmail());
+        model.addAttribute("reservas", listaReservas);
+        return "inicioRegistrado/reservasTodas";
     }
 
     @RequestMapping("inicio/registrado/perfil")
@@ -198,6 +218,7 @@ public class AuxiliarController {
 
         if (bindingResult.hasErrors())
             return "inicio/login"; //tornem al formulari d'inici de sessió
+            //return "redirect:/inicio/login";
 
         SanaUser sanaUser = sanaUserDao.getSanaUser(userLogin.getEmail().trim());
         if (sanaUser != null){

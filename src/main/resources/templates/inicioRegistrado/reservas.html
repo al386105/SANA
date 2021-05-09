@@ -39,28 +39,33 @@
         <br>
         <hr class="barra-normal">
         <br>
-        <div th:each="reserva: ${reservas}">
-            <div class="card-horizontal">
-                <div class="img-square-wrapper">
-                    <img class="" src="../../assets/img/qrCodes/qr0000018.png" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title" th:text="*{reserva.naturalArea}"></h4>
-                    <h6 class="card-subtitle mb-2 text-muted">
-                        <span th:text="*{#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></span>
-                    </h6>
-                    <p style="font-weight: bold" class="card-text"> <span style="font-weight: bold" th:text="*{reserva.numberOfPeople}"></span> personas</p>
-                    <p class="card-text">Zona:
-                        <span th:text="*{reserva.zoneNumber}"></span>
-                        <span th:text="*{reserva.letter}"></span>
-                    </p>
-                    <a style="float: right" href="#" class="btn btn-primary">Cancelar reserva</a>
-                </div>
-            </div>
-            <br>
-            <img th:src="@{../../} + ${reserva.QRcode}">
-            <img th:src="@{reserva.QRcode}">
+        <div th:if="${#lists.isEmpty(reservas)}">
+            <h4 style="text-align: center"> Todavía no has realizado ninguna reserva</h4>
         </div>
+        <div th:unless="${#lists.isEmpty(reservas)}">
+            <div th:each="reserva: ${#lists.sort(reservas)}">
+                <div class="card-horizontal">
+                    <div class="img-square-wrapper">
+                        <img class="" th:src="@{/} + ${reserva.QRcode}" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title" th:text="${reserva.naturalArea}"></h4>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            <span th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></span>
+                        </h6>
+                        <p style="font-weight: bold" class="card-text"> <span style="font-weight: bold" th:text="${reserva.numberOfPeople}"></span> personas</p>
+                        <p class="card-text">Zona:
+                            <span th:text="${reserva.zoneNumber}"></span>
+                            <span th:text="${reserva.letter}"></span>
+                        </p>
+                        <a style="float: right" th:href="@{cancelarReserva/} + ${reserva.reservationNumber}" class="btn btn-primary">Cancelar reserva</a>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+        <br>
+        <a style="align-content: center" href="/inicio/registrado/reservasTodas" class="btn btn-primary">Mostrar historial de reservas</a>
     </div>
 </section>
 
@@ -101,44 +106,3 @@
 </body>
 
 </html>
-
-<!--
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Reservas</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
-</head>
-<body>
-<h1>Lista de reservas</h1>
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Número reserva</th>
-        <th scope="col">Fecha reserva</th>
-        <th scope="col">Num. personas</th>
-        <th scope="col">Estado</th>
-        <th scope="col">Código QR</th>
-        <th scope="col">Letra</th>
-        <th scope="col">Número</th>
-        <th scope="col">Area natural</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="reserva: ${reservas}">
-        <td scope="row" th:text="${reserva.reservationNumber}"></td>
-        <td th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></td>
-        <td th:text="${reserva.numberOfPeople}"></td>
-        <td th:text="${reserva.state.descripcion}"></td>
-        <td th:text="${reserva.QRcode}"></td>
-        <td th:text="${reserva.letter}"></td>
-        <td th:text="${reserva.zoneNumber}"></td>
-        <td th:text="${reserva.naturalArea}"></td>
-    </tr>
-    </tbody>
-</table>
-</body>
-</html>
-
--->

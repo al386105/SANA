@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-public class ReservaDatos {
+public class ReservaDatos implements Comparable<ReservaDatos>{
     private int reservationNumber;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reservationDate;
@@ -92,5 +92,10 @@ public class ReservaDatos {
                 ", letter=" + letter +
                 ", naturalArea='" + naturalArea + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(ReservaDatos otra) {
+        return -this.getReservationDate().compareTo(otra.getReservationDate());
     }
 }

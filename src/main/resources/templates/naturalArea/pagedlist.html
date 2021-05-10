@@ -5,7 +5,7 @@
 
 <body>
 
-<div th:replace="fragments/header" ></div>
+<div th:replace="fragments/header"></div>
 
 <h1>Areas naturales</h1>
 
@@ -16,7 +16,7 @@
         <tr th:each="naturalArea, iterator : ${naturalAreas}">
             <td>
                 <!--  NATURAL AREAS PICTURE  -->
-                <img th:src="${pathPicturesPaged.get(selectedPage).get(iterator.index)}" alt="Foto del area natural" height="200"/>
+                <img th:src="${pathPicturesPaged.get(selectedPage).get(iterator.index)}" alt="Foto del area natural" class="fotoListado"/>
             </td>
 
             <td>

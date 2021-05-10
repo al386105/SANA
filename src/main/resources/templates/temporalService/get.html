@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Servicio temporal</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="container">
+    <h1><span th:text="${service.nameOfService}"></span> en <span th:text="${temporalService.naturalArea}"></span></h1>
+    <ul>
+        <li><b>Nombre del servicio:</b> <span th:text="${service.nameOfService}"></span></li>
+        <li><b>Temporalidad:</b> <span th:text="${service.temporality.descripcion}"></span></li>
+        <li><b>Descripción:</b> <span th:text="${service.description}"></span></li>
+        <li><b>Sitio de contratación:</b> <span th:text="${service.hiringPlace}"></span></li>
+    </ul>
+
+    <h1>Información del servicio temporal</h1>
+    <ul>
+        <li><b>Días de apertura:</b> <span th:text="${temporalService.openingDays}"></span></li>
+        <li><b>Hora de inicio:</b> <span th:text="${temporalService.beginningTime}"></span></li>
+        <li><b>Hora de fin:</b> <span th:text="${temporalService.endTime}"></span></li>
+        <li><b>Fecha de inicio:</b> <span th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></span></li>
+        <li><b>Fecha de fin:</b> <span th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></span></li>
+    </ul>
+
+    <!-- TODO el boton lo usan todos los usuarios... -->
+    <!--
+    <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
+        <button type="submit" class="btn btn-primary">Volver al área natural</button>
+    </a>
+    -->
+</div>
+</body>
+</html>

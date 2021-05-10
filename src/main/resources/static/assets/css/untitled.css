@@ -174,3 +174,9 @@ h4.colorTierra {
 {
     opacity:0.6 !important;
 }
+
+.fotoListado{
+    width:300px;
+    height:auto;
+    border-radius:20px
+}

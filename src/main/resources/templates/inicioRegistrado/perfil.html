@@ -60,6 +60,26 @@
         <a style="float: right" href="/inicio/registrado/editarPerfil" class="btn btn-primary btn-xl" role="button">Editar perfil</a>
       </div>
     </div>
+
+
+    <!-- VENTANA EMERGENTE -->
+    <div class="modal" id="miModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Cerrar sesión</h5>
+            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p>¿Está seguro de que desea cerrar su sesión actual?</p>
+          </div>
+          <div class="modal-footer">
+            <a href="/logout" class="btn btn-primary">Cerrar sesión</a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </section>
@@ -91,26 +111,9 @@
   <div class="container"><small style="color:white">Copyright ©&nbsp;SANA 2021</small></div>
 </div>
 
-<div class="modal" id="miModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>

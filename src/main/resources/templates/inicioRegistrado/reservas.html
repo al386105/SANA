@@ -58,14 +58,33 @@
                             <span th:text="${reserva.zoneNumber}"></span>
                             <span th:text="${reserva.letter}"></span>
                         </p>
-                        <a style="float: right" th:href="@{cancelarReserva/} + ${reserva.reservationNumber}" class="btn btn-primary">Cancelar reserva</a>
+                        <button style="float: right" type="button" class="btn btn-primary" data-toggle="modal" data-target="#miModal">Cancelar reserva</button>
                     </div>
                 </div>
                 <br>
+                <!-- VENTANA EMERGENTE -->
+                <div class="modal" id="miModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Cancelar reserva</h5>
+                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Está seguro de que desea cancelar su reserva?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a th:href="@{cancelarReserva/} + ${reserva.reservationNumber}" class="btn btn-primary">Cancelar</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <br>
         <a style="align-content: center" href="/inicio/registrado/reservasTodas" class="btn btn-primary">Mostrar historial de reservas</a>
+
     </div>
 </section>
 
@@ -97,6 +116,8 @@
 </div>
 
 
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>

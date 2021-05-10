@@ -64,6 +64,7 @@ body {
     color: #212529;
     text-align: left;
     background-color: #e8e6e8;
+    padding-top: 120px;
 }
 
 .btn-outline-light:hover {

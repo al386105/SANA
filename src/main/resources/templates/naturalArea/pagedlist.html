@@ -1,38 +1,40 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Gestionar areas naturales</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
-</head>
-<body>
-<h1>Lista de areas naturales</h1>
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Foto</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Acceso</th>
-        <th scope="col">Municipio</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-    </tr>
-    </thead>
 
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<body>
+
+<div th:replace="fragments/header" ></div>
+
+<h1>Areas naturales</h1>
+
+<table class="table table-striped">
     <tbody>
     <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">
 
         <tr th:each="naturalArea, iterator : ${naturalAreas}">
             <td>
-                <img th:src="${pathPicturesPaged.get(selectedPage).get(iterator.index)}" alt="Foto del area natural" height="300"/>
+                <!--  NATURAL AREAS PICTURE  -->
+                <img th:src="${pathPicturesPaged.get(selectedPage).get(iterator.index)}" alt="Foto del area natural" height="200"/>
             </td>
-            <td> <b th:text="${naturalArea.name}"> </b></td>
-            <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
-            <td th:text="${naturalArea.municipality}"></td>
 
-            <td><a th:href="@{/naturalArea/get/{naturalArea}(naturalArea=${naturalArea.name})}">
-                <button type="button" class="btn btn-primary">Más</button> </a>
+            <td>
+                <!--  NATURAL AREAS INFORMATION  -->
+                <h5 th:text="${naturalArea.name}"> </h5>
+                <br>
+                <p th:text="${naturalArea.municipality}"></p>
+                <br><br>
+                <p th:text="${naturalArea.typeOfAccess.descripcion}"></p>
+            </td>
+
+            <td>
+                <!--  BUTTONS  -->
+                <a th:href="@{/naturalArea/get/{naturalArea}(naturalArea=${naturalArea.name})}">
+                <button type="button" class="btn btn-primary">Más Información</button> </a>
+                <br> <br>
+                <a th:href="@{/reservation/add/}">
+                    <button type="button" class="btn btn-primary"> Realizar reserva</button> </a>
             </td>
 
             <!-- funcionalidad exclusiva para gestores municipales
@@ -49,6 +51,7 @@
     </tbody>
 </table>
 
+<!--  PAGINATION BUTTONS  -->
 <nav aria-label="seleccion de pagina de naturalAreas">
     <ul class="pagination justify-content-center">
         <li th:class="page-item" th:if="${#lists.size(naturalAreasPaged) > 0}"
@@ -62,7 +65,11 @@
     </ul>
 </nav>
 
-<a href="add"><button type="button" class="btn btn-success">Añadir area natural</button></a>
 <a href="../"><button type="button" class="btn btn-primary">Volver al menú principal</button></a>
+
+<br> <br>
+
+<div th:replace="fragments/footer" ></div>
+
 </body>
 </html>

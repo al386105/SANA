@@ -132,6 +132,7 @@ public class NaturalAreaController {
             fin+=pageLength;
         }
         naturalAreasPaged.add(new ArrayList<NaturalArea>(naturalAreas.subList(ini, naturalAreas.size())));
+        pathPicturesPaged.add(new ArrayList<String>(pathPictures.subList(ini, naturalAreas.size())));
         model.addAttribute("naturalAreasPaged", naturalAreasPaged);
         model.addAttribute("pathPicturesPaged", pathPicturesPaged);
 

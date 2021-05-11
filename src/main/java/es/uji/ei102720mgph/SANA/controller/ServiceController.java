@@ -35,12 +35,6 @@ public class ServiceController {
         return "service/list";
     }
 
-    // metodo para anyadir al modelo los datos del radio button
-    @ModelAttribute("temporalityList")
-    public Temporality[] temporalityList() {
-        return Temporality.values();
-    }
-
     // Operació crear
     @RequestMapping(value="/add")
     public String addService(Model model) {

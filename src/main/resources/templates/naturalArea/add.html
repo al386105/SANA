@@ -17,47 +17,31 @@
             </div>
         </div>
 
-        <tr>
-            <td><label>Tipus</label></td>
-            <td><span>  ①
-                   <input type="radio" th:field ="*{tipus}"
-                          value="Individual" id="tipus1" />
-                   <label for="tipus1">Individual</label>
-               </span>
-                <span>  ②
-                   <input type="radio" th:field ="*{tipus}"
-                          value="Grupal" id="tipus2" />
-                   <label for="tipus2">Grupal</label>
-               </span>
-            </td>
-        </tr>
-
         <div class="form-group row">
             <label class="control-label col-sm-2">Acceso:</label>
             <div class="col-sm-4">
                 <span style="margin:6px;">
-                   <input required type ="radio" th:field ="*{typeOfAccess}" value ="${typeOfAccessvalue}" />
-                   <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}"></label>
+                   <input required type ="radio" th:field ="*{typeOfAccess}" th:value ="${T(es.uji.ei102720mgph.SANA.enums.TypeOfAccess).restricted}" checked/>
+                   <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${T(es.uji.ei102720mgph.SANA.enums.TypeOfAccess).restricted.descripcion}"></label>
                 </span>
-
-
-                <span style="margin:6px;" th:each="typeOfAccessvalue : ${typeOfAccessList}">
-                   <input required type ="radio" th:field ="*{typeOfAccess}" th:value ="${typeOfAccessvalue}" />
-                   <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}"></label>
+                <span style="margin:6px;">
+                   <input required type ="radio" class="noEsRestringido" th:field ="*{typeOfAccess}" th:value ="${T(es.uji.ei102720mgph.SANA.enums.TypeOfAccess).nonRestricted}" />
+                   <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${T(es.uji.ei102720mgph.SANA.enums.TypeOfAccess).nonRestricted.descripcion}"></label>
                 </span>
-
+                <span style="margin:6px;">
+                    <input required type ="radio" class="noEsRestringido" th:field ="*{typeOfAccess}" th:value ="${T(es.uji.ei102720mgph.SANA.enums.TypeOfAccess).closed}" />
+                   <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${T(es.uji.ei102720mgph.SANA.enums.TypeOfAccess).closed.descripcion}"></label>
+                </span>
                 <td th:if="${#fields.hasErrors('typeOfAccess')}" th:errors="*{typeOfAccess}"></td>
             </div>
         </div>
 
         <!-- Mostrar solo si se selecciona restringido -->
-        <div class="restringidoHasta">
-            <div class="form-group row">
-                <label class="control-label col-sm-2" for="restrictionTimePeriod">Restringido hasta:</label>
-                <div class="col-sm-4">
-                    <input type="date" required placeholder="yyyy-MM-dd" class="form-control" id="restrictionTimePeriod" th:field="*{restrictionTimePeriod}" />
-                    <td th:if="${#fields.hasErrors('restrictionTimePeriod')}" th:errors="*{restrictionTimePeriod}"></td>
-                </div>
+        <div class="form-group row" id="campoOpcional">
+            <label class="control-label col-sm-2" for="restrictionTimePeriod">Restringido hasta:</label>
+            <div class="col-sm-4">
+                <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="restrictionTimePeriod" th:field="*{restrictionTimePeriod}" />
+                <td th:if="${#fields.hasErrors('restrictionTimePeriod')}" th:errors="*{restrictionTimePeriod}"></td>
             </div>
         </div>
 
@@ -94,10 +78,9 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="typeOfArea">Tipo de area:</label>
             <div class="col-sm-4">
-                <select class="form_control" id="typeOfArea" type="text" th:field="*{typeOfArea}">
-                    <option th:each="typeOfAreavalue : ${typeOfAreaList}"
-                            th:value="${typeOfAreavalue}"
-                            th:text="${typeOfAreavalue.descripcion}"></option>
+                <select class="form_control" required id="typeOfArea" type="text" th:field="*{typeOfArea}">
+                    <option th:each="typeOfAreavalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfArea).values()}"
+                            th:value="${typeOfAreavalue}" th:text="${typeOfAreavalue.descripcion}"></option>
                 </select>
                 <td th:if="${#fields.hasErrors('typeOfArea')}" th:errors="*{typeOfArea}"></td>
             </div>
@@ -137,7 +120,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2">Orientación:</label>
             <div class="col-sm-4">
-                <span style="margin:6px;" th:each="orientationvalue : ${orientationList}">
+                <span style="margin:6px;" th:each="orientationvalue : ${T(es.uji.ei102720mgph.SANA.enums.Orientation).values()}">
                    <input required type ="radio" th:field ="*{orientation}" th:value ="${orientationvalue}" />
                    <label th:for="${#ids.prev('orientation')}" th:text ="${orientationvalue.descripcion}"></label>
                 </span>

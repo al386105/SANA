@@ -15,8 +15,6 @@
         <th scope="col">Acceso</th>
         <th scope="col">Municipio</th>
         <th scope="col"></th>
-        <th scope="col"></th>
-        <th scope="col"></th>
     </tr>
     </thead>
 
@@ -32,16 +30,6 @@
         <td><a th:href="@{/naturalArea/get/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-primary">Más</button> </a>
         </td>
-
-        <!-- funcionalidad exclusiva para gestores municipales
-        <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-warning">Edita</button> </a>
-        </td>
-        <td><a th:href="@{/naturalArea/delete/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-danger">Esborra</button> </a>
-        </td>
-        -->
-
     </tr>
     </tbody>
 </table>

@@ -19,7 +19,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2">Acceso:</label>
             <div class="col-sm-4">
-                <span style="margin:6px;" th:each="typeOfAccessvalue : ${typeOfAccessList}">
+                <span style="margin:6px;" th:each="typeOfAccessvalue : ${T(es.uji.ei102720mgph.SANA.enums.TypeOfAccess).values()}">
                    <input type ="radio" required th:field ="*{typeOfAccess}" th:value ="${typeOfAccessvalue}" />
                    <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}"></label>
                 </span>
@@ -58,9 +58,8 @@
             <label class="control-label col-sm-2" for="typeOfArea">Tipo de area:</label>
             <div class="col-sm-4">
                 <select class="form_control" required id="typeOfArea" type="text" th:field="*{typeOfArea}">
-                    <option th:each="typeOfAreavalue : ${typeOfAreaList}"
-                            th:value="${typeOfAreavalue}"
-                            th:text="${typeOfAreavalue.descripcion}"></option>
+                    <option th:each="typeOfAreavalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfArea).values()}"
+                            th:value="${typeOfAreavalue}" th:text="${typeOfAreavalue.descripcion}"></option>
                 </select>
             </div>
         </div>
@@ -96,7 +95,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2">Orientación:</label>
             <div class="col-sm-4">
-                <span style="margin:6px;" th:each="orientationvalue : ${orientationList}">
+                <span style="margin:6px;" th:each="orientationvalue : ${T(es.uji.ei102720mgph.SANA.enums.Orientation).values()}">
                    <input type ="radio" required th:field ="*{orientation}" th:value ="${orientationvalue}" />
                    <label th:for="${#ids.prev('orientation')}" th:text ="${orientationvalue.descripcion}"></label>
                 </span>

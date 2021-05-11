@@ -24,7 +24,7 @@
             <label class="control-label col-sm-2" for="temporality">Temporalidad:</label>
             <div class="col-sm-4">
                 <select class="form_control" required id="temporality" type="text" th:field="*{temporality}">
-                    <option th:each="temporalityvalue : ${temporalityList}"
+                    <option th:each="temporalityvalue: ${T(es.uji.ei102720mgph.SANA.enums.Temporality).values()}"
                             th:value="${temporalityvalue}" th:text="${temporalityvalue.descripcion}"></option>
                 </select>
             </div>

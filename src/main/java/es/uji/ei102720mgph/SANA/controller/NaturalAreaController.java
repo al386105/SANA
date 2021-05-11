@@ -169,19 +169,7 @@ public class NaturalAreaController {
         return "naturalArea/occupancy";
     }
 
-    // metodos para anyadir al modelo los datos de selectores o radio buttons
-    @ModelAttribute("typeOfAccessList")
-    public TypeOfAccess[] typeOfAccessList() {
-        return TypeOfAccess.values();
-    }
-    @ModelAttribute("typeOfAreaList")
-    public TypeOfArea[] typeOfAreaList() {
-        return TypeOfArea.values();
-    }
-    @ModelAttribute("orientationList")
-    public Orientation[] orientationList() {
-        return Orientation.values();
-    }
+    // metodo para anyadir al modelo los datos del selector de municipio
     @ModelAttribute("municipalityList")
     public List<String> municipalityList() {
         List<Municipality> municipalityList = municipalityDao.getMunicipalities();

@@ -19,7 +19,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="service">Servicio temporal:</label>
             <div class="col-sm-4">
-                <select class="form_control" required id="service" type="text" th:field="*{service}">
+                <select class="form_control" readonly="readonly" required id="service" type="text" th:field="*{service}">
                     <option value="No seleccionado">Selecciona un servicio</option>
                     <option th:each="servicevalue : ${serviceList}"
                             th:value="${servicevalue}"
@@ -79,6 +79,7 @@
     <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
         <button type="submit" class="btn btn-primary">Volver al área natural</button>
     </a>
+    <br><br>
 </div>
 
 <div th:replace="fragments/footer"></div>

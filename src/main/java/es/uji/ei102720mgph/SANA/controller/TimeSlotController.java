@@ -18,8 +18,8 @@ public class TimeSlotController {
     private TimeSlotDao timeSlotDao;
 
     @Autowired
-    public void setTimeSlotDao(TimeSlotDao tsd){
-        this.timeSlotDao = tsd;
+    public void setTimeSlotDao(TimeSlotDao timeSlotDao){
+        this.timeSlotDao = timeSlotDao;
     }
 
     @RequestMapping("/list")

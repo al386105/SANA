@@ -14,9 +14,12 @@
     <td><a th:href="@{/municipality/update/{name}(name=${municipality.name})}">
         <button type="button" class="btn btn-warning">Edita</button> </a>
     </td>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
-
-    <!-- TODO da error en rowmapper -->
+    <td><a th:href="@{/municipality/delete/{municipality}(municipality=${municipality.name})}"
+           th:onclick="return confirm('¿Estás seguro/a de borrar el municipio '+ [[${municipality.name}]] + '?');">
+        <button type="button" class="btn btn-danger">Elimina municipio</button>
+    </a>
+    </td>
+    <hr class="lineaVerde">
 
     <h3>Gestores municipales</h3>
     <div th:if="${#lists.isEmpty(municipalManagers)}">
@@ -25,7 +28,7 @@
     <table th:unless="${#lists.isEmpty(municipalManagers)}" class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">Nombre de usuario</th>
+            <th scope="col">Usuario</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellidos</th>
             <th scope="col">Email</th>
@@ -33,6 +36,8 @@
             <th scope="col">Fecha de nacimiento</th>
             <th scope="col">Fecha de alta</th>
             <th scope="col">Fecha de baja</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -45,41 +50,69 @@
             <td th:text="${#temporals.format(municipalManager.dateOfBirth,'dd/MM/yyyy')}"></td>
             <td th:text="${#temporals.format(municipalManager.registrationDate,'dd/MM/yyyy')}"></td>
             <td th:text="${#temporals.format(municipalManager.leavingDate,'dd/MM/yyyy')}"></td>
+            <td><a th:href="@{/municipalManager/update/{email}(email=${municipalManager.email})}">
+                <button type="button" class="btn btn-warning">Edita</button>
+            </a>
+            </td>
+            <td><a th:href="@{/municipalManager/delete/{email}(email=${municipalManager.email})}"
+                   th:onclick="return confirm('¿Estás seguro/a de borrar al gesto municipal ' +
+                   [[${municipalManager.name}]] + ', ' + [[${municipalManager.surname}]] + '?');">
+                <button type="button" class="btn btn-danger">Elimina</button>
+            </a>
+            </td>
         </tr>
         </tbody>
     </table>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+    <hr class="lineaVerde">
 
-
-    <!-- TODO AQUI PODEMOS PONER BOTON PARA ASIGNAR UN MUNICIPAL MANAGER NUEVO PERO SI SE REUTILIZA LA QUE YA HAY
-     LOS BOTONES CAMBIAN... MEJOR HACER VISTA NUEVA-->
-
-
-
+    <!-- SECCION DE CODIGOS POSTALES DEL MUNICIPIO -->
     <h3>Códigos postales</h3>
     <div th:if="${#lists.isEmpty(postalCodes)}">
         <p><b>¡Este municipio no tiene ningún código postal asignado!</b></p>
     </div>
+    <div class="scroll">
     <table th:unless="${#lists.isEmpty(postalCodes)}" class="table table-striped">
-
-
-        <!-- TODO Tabla con los códigos postales del municipio y borrar-->
-
-
+        <thead>
+        <tr>
+            <th scope="col">Código Postal</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="postalCodeMunicipality: ${#lists.sort(postalCodes)}">
+            <td scope="row" th:text="${postalCodeMunicipality.postalCode}"></td>
+            <td><a th:href="@{/postalCode/delete/{municipality}/{postalCode}(municipality=${postalCodeMunicipality.municipality}, postalCode=${postalCodeMunicipality.postalCode})}"
+                   th:onclick="return confirm('¿Estás seguro/a de borrar el código postal ' +
+                   [[${postalCodeMunicipality.postalCode}]] + '?');">
+                <button type="button" class="btn btn-danger">Elimina</button>
+            </a>
+            </td>
+        </tr>
+        </tbody>
     </table>
+    </div>
+    <br>
+    <!-- añadir un nuevo codigo postal -->
+    <h5>Añadir código postal</h5>
+    <div class="container">
+        <form class="form-horizontal" action="#" th:action="@{/postalCode/add}" th:object="${postalCode}" method="post">
 
+            <input type="hidden" required th:field="*{municipality}"/>
+            <div class="form-group row">
+                <label class="control-label col-sm-2" for="cp">Código postal:</label>
+                <div class="col-sm-4">
+                    <input type="text" required class="form-control" id="cp" th:field="*{postalCode}"/>
+                </div>
+            </div>
 
-    <!-- TODO Formulario en la misma página (como imagen en naturalArea) para introducir un CP y anyadirlo, sin llevar a otra vista!!!! -->
-
-
-
-    <td><a th:href="@{../delete/{municipality}(municipality=${municipality.name})}"
-           th:onclick="return confirm('¿Estás seguro/a de borrar el municipio '+ [[${municipality.name}]] + '?');">
-        <button type="button" class="btn btn-danger">Elimina municipio</button>
-    </a>
-    </td>
-    <a href="/municipality/list"><button type="button" class="btn btn-primary">Volver al listado</button></a>
-    <br><br>
+            <div class="form-group row">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-success">Añadir código postal</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <br>
 </div>
 
 <div th:replace="fragments/footer"></div>

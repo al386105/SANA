@@ -61,6 +61,7 @@
             <label class="control-label col-sm-2" for="municipality">Municipio:</label>
             <div class="col-sm-4">
                 <select class="form_control" required id="municipality" type="text" th:field="*{municipality}">
+                    <!--TODO validador <option value="No seleccionado">Selecciona un municipio</option> -->
                     <option th:each="municipalityvalue : ${municipalityList}"
                             th:value="${municipalityvalue}"
                             th:text="${municipalityvalue}"></option>
@@ -70,11 +71,12 @@
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <a href="/municipalManager/list"><button type="button" class="btn btn-primary">Volver</button></a>
                 <button type="submit" class="btn btn-success">Añadir gestor municipal</button>
             </div>
         </div>
     </form>
+    <a href="/municipalManager/list"><button type="submit" class="btn btn-primary">Volver</button></a>
+    <br><br>
 </div>
 
 <div th:replace="fragments/footer"></div>

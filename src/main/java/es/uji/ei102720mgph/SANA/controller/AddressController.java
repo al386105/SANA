@@ -24,13 +24,6 @@ public class AddressController {
         this.addressDao=addressDao;
     }
 
-    // Operació llistar
-    @RequestMapping("/list")
-    public String listAddresses(Model model) {
-        model.addAttribute("addresses", addressDao.getAddresses());
-        return "address/list";
-    }
-
     // Operació crear
     @RequestMapping(value="/add")
     public String addAddress(Model model) {

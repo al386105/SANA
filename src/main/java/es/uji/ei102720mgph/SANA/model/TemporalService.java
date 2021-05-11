@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class TemporalService {
+public class TemporalService implements Comparable<TemporalService>  {
     private String openingDays;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime beginningTime;
@@ -76,6 +76,10 @@ public class TemporalService {
 
     public void setNaturalArea(String naturalArea) {
         this.naturalArea = naturalArea;
+    }
+
+    public int compareTo(TemporalService altre) {
+        return this.getService().compareTo(altre.getService());
     }
 
     @Override

@@ -7,7 +7,6 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
 </head>
 <body>
 <div class="container">
@@ -104,7 +103,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="serviceDate: ${serviceDates}">
+        <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
             <td th:text="${serviceDate.service}"></td>
             <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
             <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
@@ -135,7 +134,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="temporalService: ${temporalServices}">
+        <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
             <td th:text="${temporalService.service}"></td>
             <td th:text="${temporalService.openingDays}"></td>
             <td th:text="${temporalService.beginningTime}"></td>

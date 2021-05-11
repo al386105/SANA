@@ -4,7 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-public class ServiceDate {
+public class ServiceDate implements Comparable<ServiceDate> {
     private String id;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate beginningDate;
@@ -68,6 +68,10 @@ public class ServiceDate {
 
     public static void incrementaContador() {
         ServiceDate.contador++;
+    }
+
+    public int compareTo(ServiceDate altre) {
+        return this.getService().compareTo(altre.getService());
     }
 
     @Override

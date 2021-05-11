@@ -61,10 +61,8 @@ public class MunicipalManagerDao {
 
     public List<MunicipalManager> getManagersOfMunicipality(String municipality) {
         try {
-            System.out.println(municipality);
-            System.out.println(municipality);
-            //TODO da error :(
-            return jdbcTemplate.query("SELECT * FROM MunicipalManager WHERE municipality = ?",
+            return jdbcTemplate.query("SELECT * FROM MunicipalManager " +
+                            "JOIN SanaUser ON MunicipalManager.email = SanaUser.email WHERE municipality = ?",
                     new MunicipalManagerRowMapper(),
                     municipality);
         }

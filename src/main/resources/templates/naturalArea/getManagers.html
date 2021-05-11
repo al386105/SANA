@@ -122,7 +122,7 @@
     <div th:if="${#lists.isEmpty(comments)}">
         <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
     </div>
-    <!--<div style="width:100%; height:300px; overflow: scroll;">-->
+    <!--<div class="scroll">-->
     <table th:unless="${#lists.isEmpty(comments)}" class="table table-striped">
         <thead>
         <tr>
@@ -141,7 +141,6 @@
         </tr>
         </tbody>
     </table>
-    </div>
     <hr class="lineaVerde">
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
@@ -161,7 +160,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="serviceDate: ${serviceDates}">
+        <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
             <td th:text="${serviceDate.service}"></td>
             <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
             <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
@@ -207,7 +206,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="temporalService: ${temporalServices}">
+        <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
             <td th:text="${temporalService.service}"></td>
             <td th:text="${temporalService.openingDays}"></td>
             <td th:text="${temporalService.beginningTime}"></td>
@@ -244,7 +243,7 @@
     </div>
     <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
         <tr th:each="picture: ${pictures}">
-            <td scope="row"><img style="width:300px; height:auto; border-radius:20px" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
+            <td scope="row"><img class="fotoListado" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
             <td style="vertical-align:middle;"><a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}"
                    th:onclick="return confirm('¿Estás seguro/a de borrar esta imagen?');">
                 <button type="button" class="btn btn-danger">Elimina</button>

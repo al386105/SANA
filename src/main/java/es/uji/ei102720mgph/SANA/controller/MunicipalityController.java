@@ -4,6 +4,7 @@ import es.uji.ei102720mgph.SANA.dao.MunicipalManagerDao;
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.dao.PostalCodeMunicipalityDao;
 import es.uji.ei102720mgph.SANA.model.Municipality;
+import es.uji.ei102720mgph.SANA.model.PostalCodeMunicipality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,9 +47,10 @@ public class MunicipalityController {
     public String getMunicipality(Model model, @PathVariable("name") String name){
         model.addAttribute("municipality", municipalityDao.getMunicipality(name));
         model.addAttribute("municipalManagers", municipalManagerDao.getManagersOfMunicipality(name));
-
-        //TODO pasarle tmb los cp del municipio
-
+        model.addAttribute("postalCodes", postalCodeMunicipalityDao.getPostalCodeOfMuni(name));
+        PostalCodeMunicipality postalCode = new PostalCodeMunicipality();
+        postalCode.setMunicipality(name);
+        model.addAttribute("postalCode", postalCode);
         return "/municipality/get";
     }
 

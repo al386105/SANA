@@ -192,3 +192,9 @@ h4.colorTierra {
     margin:2.5em;
 }
 
+.scroll {
+    width:100%;
+    height:300px;
+    overflow-y: scroll;
+    overflow-x:hidden;
+}

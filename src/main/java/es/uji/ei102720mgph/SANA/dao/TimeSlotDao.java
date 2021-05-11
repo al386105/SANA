@@ -1,7 +1,5 @@
 package es.uji.ei102720mgph.SANA.dao;
 
-import es.uji.ei102720mgph.SANA.model.Address;
-import es.uji.ei102720mgph.SANA.model.Reservation;
 import es.uji.ei102720mgph.SANA.model.TimeSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -10,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;

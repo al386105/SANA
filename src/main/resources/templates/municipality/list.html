@@ -25,7 +25,7 @@
             <td th:text="${municipality.description}"></td>
             <td th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></td>
             <td><a th:href="@{/municipality/get/{name}(name=${municipality.name})}">
-                <button type="button" class="btn btn-primary">Más opciones</button>
+                <button type="button" class="btn btn-primary">Más</button>
             </a>
             </td>
             <td><a th:href="@{/municipality/update/{name}(name=${municipality.name})}">

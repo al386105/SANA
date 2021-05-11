@@ -3,8 +3,6 @@ package es.uji.ei102720mgph.SANA.controller;
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.dao.TemporalServiceDao;
 import es.uji.ei102720mgph.SANA.enums.DaysOfWeek;
-import es.uji.ei102720mgph.SANA.enums.Orientation;
-import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.TemporalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ public class TemporalServiceController {
     // metodos para anyadir al modelo los datos del selector o radio buttons
     @ModelAttribute("serviceList")
     public List<String> serviceList() {
-        List<Service> serviceList = serviceDao.getFixedServices();
+        List<Service> serviceList = serviceDao.getTemporalServices();
         List<String> namesServices = serviceList.stream()
                 .map(Service::getNameOfService)
                 .collect(Collectors.toList());

@@ -1,6 +1,6 @@
 package es.uji.ei102720mgph.SANA.model;
 
-public class PostalCodeMunicipality {
+public class PostalCodeMunicipality implements Comparable<PostalCodeMunicipality> {
     private String municipality;
     private String postalCode;
 
@@ -22,6 +22,10 @@ public class PostalCodeMunicipality {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public int compareTo(PostalCodeMunicipality altre) {
+        return this.getPostalCode().compareTo(altre.getPostalCode());
     }
 
     @Override

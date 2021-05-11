@@ -22,36 +22,24 @@ public class PostalCodeMunicipalityController {
         this.pcD = postalCodeDao;
     }
 
-    @RequestMapping("/list")
-    public String listPostalCodes(Model model) {
-        model.addAttribute("postalCodes", pcD.getPostalCodes());
-        return "postalCode/list";
-    }
-
-    @RequestMapping("/list/{municipality}")
-    public String listPostalCodesOfMuni(Model model, @PathVariable String municipality) {
-        model.addAttribute("postalCodes", pcD.getPostalCodeOfMuni(municipality));
-        return "postalCode/list";
-    }
-
     @RequestMapping(value="/add")
-    public String addPostalCode(Model model) {
+    public String addPostalCode(Model model, @PathVariable String municipality) {
         model.addAttribute("postalCode", new PostalCodeMunicipality());
         return "postalCode/add";
     }
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("postalCode") PostalCodeMunicipality pc,
-                                   BindingResult bindingResult) {
+    public String processAddSubmit(@ModelAttribute("postalCode") PostalCodeMunicipality pc, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "postalCode/add"; //tornem al formulari per a que el corregisca
+        String municipality = pc.getMunicipality();
         pcD.addPostalCode(pc);
-        return "redirect:list"; //redirigim a la lista, post/redirect/get
+        return "redirect:/municipality/get/" + municipality;
     }
 
     @RequestMapping(value="/delete/{municipality}/{postalCode}")
     public String processDelete(@PathVariable String municipality,@PathVariable String postalCode) {
         pcD.deletePostalCode(municipality, postalCode);
-        return "redirect:../../list";
+        return "redirect:/municipality/get/" + municipality;
     }
 }

@@ -65,7 +65,6 @@ public class PictureController {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(uploadDirectory + "naturalAreas/" + file.getOriginalFilename());
             Files.write(path, bytes);
-            System.out.println(file.getOriginalFilename());
             picture.setPicturePath("/assets/img/naturalAreas/" + file.getOriginalFilename());
             picture.setNaturalArea(naturalArea);
             pictureDao.addPicture(picture);

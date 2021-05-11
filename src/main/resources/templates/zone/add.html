@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Crear zona</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
+<div th:replace="fragments/headerManager"></div>
+
 <div class="container">
     <h2>Nueva zona</h2>
     <form class="form-horizontal" action="#" th:action="@{/zone/add}"
@@ -54,7 +51,8 @@
     <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${zone.naturalArea})}">
         <button type="submit" class="btn btn-primary">Volver al área natural</button>
     </a>
-
 </div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

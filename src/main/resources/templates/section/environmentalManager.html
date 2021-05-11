@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<body>
-<div th:replace="fragments/header"></div>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Menu</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
 
+<body>
 <div>
     <h1>Acciones del responsable de medio ambiente</h1>
     <a href="/naturalArea/listEnvironmental"><button type="button" class="btn btn-success">Consultar áreas naturales</button></a>
@@ -15,6 +18,5 @@
     <br><br>
 </div>
 
-<div th:replace="fragments/footer"></div>
 </body>
 </html>

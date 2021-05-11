@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Crear franja horaria</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
+<div th:replace="fragments/headerManager"></div>
+
 <div class="container">
     <h2>Asignar nueva franja horaria</h2>
     <form class="form-horizontal" action="#" th:action="@{/timeSlot/add}"
           th:object="${timeSlot}" method="post">
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="naturalArea">Area natural:</label>
+            <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
             <div class="col-sm-4">
                 <input type="text" required class="form-control" id="naturalArea" th:field="*{naturalArea}" readonly="readonly"/>
             </div>
@@ -61,7 +58,8 @@
     <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${timeSlot.naturalArea})}">
         <button type="submit" class="btn btn-primary">Volver al área natural</button>
     </a>
-
 </div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

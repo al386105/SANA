@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Servicio fijo</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
+<div th:replace="fragments/headerManager"></div>
+
 <div class="container">
     <h1><span th:text="${service.nameOfService}"></span> en <span th:text="${serviceDate.naturalArea}"></span></h1>
     <ul>
@@ -22,11 +20,11 @@
     </ul>
 
     <!-- TODO el boton lo usan todos los usuarios... -->
-    <!--
     <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${serviceDate.naturalArea})}">
         <button type="submit" class="btn btn-primary">Volver al área natural</button>
     </a>
-    -->
 </div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

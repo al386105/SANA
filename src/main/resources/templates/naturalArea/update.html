@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Modificar area natural</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
+<div th:replace="fragments/header"></div>
+
 <div class="container">
     <h2>Modificar area natural</h2>
     <form class="form-horizontal" action="#" th:action="@{/naturalArea/update}"
@@ -131,5 +128,7 @@
         </div>
     </form>
 </div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

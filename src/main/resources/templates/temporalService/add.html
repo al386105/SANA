@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Asignar servicio temporal</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
+<div th:replace="fragments/headerManager"></div>
+
 <div class="container">
     <h2>Asignar un servicio temporal a un espacio natural</h2>
     <form class="form-horizontal" action="#" th:action="@{/temporalService/add}"
@@ -83,7 +80,8 @@
     <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
         <button type="submit" class="btn btn-primary">Volver al área natural</button>
     </a>
-
 </div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

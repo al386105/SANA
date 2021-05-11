@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Área natural</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
+<div th:replace="fragments/headerManager"></div>
 
 <div class="container">
     <h1><span th:text="${naturalArea.name}"> </span></h1>
@@ -278,8 +275,8 @@
     </td>
     <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver al listado</button></a>
     <br><br>
-
 </div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>
-

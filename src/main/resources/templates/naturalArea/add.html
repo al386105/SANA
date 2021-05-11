@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Crear área natural</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
+<div th:replace="fragments/headerManager"></div>
+
 <div class="container">
-    <h2>Nueva área natural</h2>
+    <h2>Nuevo área natural</h2>
     <form class="form-horizontal" action="#" th:action="@{/naturalArea/add}"
           th:object="${naturalArea}" method="post">
 
@@ -19,14 +17,47 @@
             </div>
         </div>
 
+        <tr>
+            <td><label>Tipus</label></td>
+            <td><span>  ①
+                   <input type="radio" th:field ="*{tipus}"
+                          value="Individual" id="tipus1" />
+                   <label for="tipus1">Individual</label>
+               </span>
+                <span>  ②
+                   <input type="radio" th:field ="*{tipus}"
+                          value="Grupal" id="tipus2" />
+                   <label for="tipus2">Grupal</label>
+               </span>
+            </td>
+        </tr>
+
         <div class="form-group row">
             <label class="control-label col-sm-2">Acceso:</label>
             <div class="col-sm-4">
+                <span style="margin:6px;">
+                   <input required type ="radio" th:field ="*{typeOfAccess}" value ="${typeOfAccessvalue}" />
+                   <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}"></label>
+                </span>
+
+
                 <span style="margin:6px;" th:each="typeOfAccessvalue : ${typeOfAccessList}">
                    <input required type ="radio" th:field ="*{typeOfAccess}" th:value ="${typeOfAccessvalue}" />
                    <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}"></label>
                 </span>
+
                 <td th:if="${#fields.hasErrors('typeOfAccess')}" th:errors="*{typeOfAccess}"></td>
+            </div>
+        </div>
+
+        <!-- Mostrar solo si se selecciona restringido -->
+        <div class="restringidoHasta">
+            <div class="form-group row">
+                <label class="control-label col-sm-2" for="restrictionTimePeriod">Restringido hasta:</label>
+                <div class="col-sm-4">
+                    <input type="date" required placeholder="yyyy-MM-dd" class="form-control" id="restrictionTimePeriod" th:field="*{restrictionTimePeriod}" />
+                    <td th:if="${#fields.hasErrors('restrictionTimePeriod')}" th:errors="*{restrictionTimePeriod}"></td>
+                </div>
             </div>
         </div>
 
@@ -135,8 +166,9 @@
                 <a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>
             </div>
         </div>
-
     </form>
 </div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

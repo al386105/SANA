@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-<div th:replace="fragments/header"></div>
+<div th:replace="fragments/headerManager"></div>
 
 <h1>Lista de áreas naturales</h1>
 <div th:if="${#lists.isEmpty(naturalAreas)}">
@@ -43,8 +43,10 @@
     </tr>
     </tbody>
 </table>
+<br>
 <a href="add"><button type="button" class="btn btn-success">Añadir area natural</button></a>
 <a href="../section/managers"><button type="button" class="btn btn-primary">Volver al menú de gestores</button></a>
+<br><br>
 
 <div th:replace="fragments/footer"></div>
 </body>

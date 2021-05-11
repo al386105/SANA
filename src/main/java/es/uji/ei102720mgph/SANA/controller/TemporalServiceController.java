@@ -111,4 +111,13 @@ public class TemporalServiceController {
         temporalServiceDao.deleteTemporalService(service, naturalArea);
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
+
+    // información de un servicio temporal
+    @RequestMapping(value="/get/{serviceName}/{naturalArea}")
+    public String getTemporalServiceNaturalArea(Model model, @PathVariable("serviceName") String serviceName,
+                                                @PathVariable("naturalArea") String naturalArea){
+        model.addAttribute("temporalService", temporalServiceDao.getTemporalService(serviceName, naturalArea));
+        model.addAttribute("service", serviceDao.getService(serviceName));
+        return "/temporalService/get";
+    }
 }

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Servicio fijo</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="container">
+    <h1><span th:text="${service.nameOfService}"></span> en <span th:text="${serviceDate.naturalArea}"></span></h1>
+    <ul>
+        <li><b>Nombre del servicio:</b> <span th:text="${service.nameOfService}"></span></li>
+        <li><b>Temporalidad:</b> <span th:text="${service.temporality.descripcion}"></span></li>
+        <li><b>Descripción:</b> <span th:text="${service.description}"></span></li>
+        <li><b>Sitio de contratación:</b> <span th:text="${service.hiringPlace}"></span></li>
+    </ul>
+
+    <h1>Información del servicio fijo</h1>
+    <ul>
+        <li><b>Fecha de inicio:</b> <span th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></span></li>
+        <li><b>Fecha de fin:</b> <span th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></span></li>
+    </ul>
+
+    <!-- TODO el boton lo usan todos los usuarios... -->
+    <!--
+    <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${serviceDate.naturalArea})}">
+        <button type="submit" class="btn btn-primary">Volver al área natural</button>
+    </a>
+    -->
+</div>
+</body>
+</html>

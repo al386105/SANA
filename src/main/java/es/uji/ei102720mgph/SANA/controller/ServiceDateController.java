@@ -103,4 +103,13 @@ public class ServiceDateController {
         serviceDateDao.deleteServiceDate(id);
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
+
+    // información de un servicio dijo
+    @RequestMapping(value="/get/{id}")
+    public String getServiceDateNaturalArea(Model model, @PathVariable String id){
+        ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
+        model.addAttribute("serviceDate", serviceDateDao.getServiceDate(id));
+        model.addAttribute("service", serviceDao.getService(serviceDate.getService()));
+        return "/serviceDate/get";
+    }
 }

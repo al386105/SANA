@@ -3,6 +3,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
+<<<<<<< HEAD
+=======
+<body>
+
+<div th:replace="fragments/header"></div>
+
+<h1>Areas naturales</h1>
+
+>>>>>>> 35f06d4dfd96ec154e8f1577b72402d49f47523b
 <table class="table table-striped">
     <tbody>
     <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">
@@ -10,7 +19,7 @@
         <tr th:each="naturalArea, iterator : ${naturalAreas}">
             <td>
                 <!--  NATURAL AREAS PICTURE  -->
-                <img th:src="${pathPicturesPaged.get(selectedPage).get(iterator.index)}" alt="Foto del area natural" height="200"/>
+                <img th:src="${pathPicturesPaged.get(selectedPage).get(iterator.index)}" alt="Foto del area natural" class="fotoListado"/>
             </td>
 
             <td>

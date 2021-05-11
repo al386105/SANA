@@ -3,12 +3,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<body>
-
-<div th:replace="fragments/header" ></div>
-
-<h1>Areas naturales</h1>
-
 <table class="table table-striped">
     <tbody>
     <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">
@@ -24,8 +18,8 @@
                 <h5 th:text="${naturalArea.name}"> </h5>
                 <br>
                 <p th:text="${naturalArea.municipality}"></p>
-                <br><br>
-                <p th:text="${naturalArea.typeOfAccess.descripcion}"></p>
+<!--                <br><br>-->
+<!--                <p th:text="${naturalArea.typeOfAccess.descripcion}"></p>-->
             </td>
 
             <td>
@@ -37,14 +31,6 @@
                     <button type="button" class="btn btn-primary"> Realizar reserva</button> </a>
             </td>
 
-            <!-- funcionalidad exclusiva para gestores municipales
-            <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
-                <button type="button" class="btn btn-warning">Edita</button> </a>
-            </td>
-            <td><a th:href="@{/naturalArea/delete/{naturalArea}(naturalArea=${naturalArea.name})}">
-                <button type="button" class="btn btn-danger">Esborra</button> </a>
-            </td>
-            -->
 
         </tr>
     </div>
@@ -69,7 +55,3 @@
 
 <br> <br>
 
-<div th:replace="fragments/footer" ></div>
-
-</body>
-</html>

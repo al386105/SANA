@@ -142,6 +142,10 @@ hr.barra-normal {
     margin: 20px;
 }
 
+.naturalAreasListDiv {
+    padding: 100px;
+}
+
 .imgArea img {
     width: 300px;
     height: auto;

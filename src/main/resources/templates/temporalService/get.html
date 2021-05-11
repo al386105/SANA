@@ -13,7 +13,7 @@
         <li><b>Sitio de contratación:</b> <span th:text="${service.hiringPlace}"></span></li>
     </ul>
 
-    <h1>Información del servicio temporal</h1>
+    <h2>Información del servicio temporal</h2>
     <ul>
         <li><b>Días de apertura:</b> <span th:text="${temporalService.openingDays}"></span></li>
         <li><b>Hora de inicio:</b> <span th:text="${temporalService.beginningTime}"></span></li>
@@ -26,6 +26,8 @@
     <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
         <button type="submit" class="btn btn-primary">Volver al área natural</button>
     </a>
+    <br><br>
+
 </div>
 
 <div th:replace="fragments/footer"></div>

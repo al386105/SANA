@@ -2,16 +2,11 @@
 
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
-<<<<<<< HEAD
-=======
 <body>
-
 <div th:replace="fragments/header"></div>
 
+<section class="text-white bg-primary mb-0" id="natural_areas">
 <h1>Areas naturales</h1>
-
->>>>>>> 35f06d4dfd96ec154e8f1577b72402d49f47523b
 <table class="table table-striped">
     <tbody>
     <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">
@@ -35,12 +30,12 @@
                 <!--  BUTTONS  -->
                 <a th:href="@{/naturalArea/get/{naturalArea}(naturalArea=${naturalArea.name})}">
                 <button type="button" class="btn btn-primary">Más Información</button> </a>
-                <br> <br>
-                <a th:href="@{/reservation/add/}">
-                    <button type="button" class="btn btn-primary"> Realizar reserva</button> </a>
+                <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
+                    <br>
+                    <a th:href="@{/reservation/add/}">
+                        <button type="button" class="btn btn-primary"> Realizar reserva</button> </a>
+                </div>
             </td>
-
-
         </tr>
     </div>
     </tbody>
@@ -59,6 +54,8 @@
         </li>
     </ul>
 </nav>
+
+</section>
 
 <a href="../"><button type="button" class="btn btn-primary">Volver al menú principal</button></a>
 

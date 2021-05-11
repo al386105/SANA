@@ -1,21 +1,19 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Modificar municipio</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
+<div th:replace="fragments/headerEnvironmental"></div>
+
 <div class="container">
-    <h2>Modificar municipio</h2>
+    <h2>Modificar municipio</h2><br>
     <form class="form-horizontal" action="#" th:action="@{/municipality/update}"
           th:object="${municipality}" method="post">
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="name">Nombre:</label>
             <div class="col-sm-4">
-                <input type="text" maxlength="30" required class="form-control" id="name" th:field="*{name}" readonly="readonly"/>
+                <input type="text" maxlength="30" required class="form-control" id="name" th:field="*{name}" readonly="readonly"
+                       placeholder="Nombre del municipio"/>
                 <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
             </div>
         </div>
@@ -44,5 +42,7 @@
 
     </form>
 </div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

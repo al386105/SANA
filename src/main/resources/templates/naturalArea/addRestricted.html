@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Crear área natural</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
+<div th:replace="fragments/headerManager"></div>
+
 <div class="container">
     <h1>Añadir los datos del área restringida</h1>
     <h4>Introduce la fecha de restricción</h4>
@@ -59,5 +57,7 @@
 
     </form>
 </div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

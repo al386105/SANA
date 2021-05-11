@@ -121,6 +121,9 @@ public class NaturalAreaController {
         // Paso 1: Crear la lista paginada de naturalAreas
         List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
         Collections.sort(naturalAreas);
+        // las áreas naturales cerradas no pueden ser vistas por los ciudadanos
+        naturalAreas.removeIf(naturalArea -> naturalArea.getTypeOfAccess().getDescripcion().equals("Cerrado"));
+
         List<String> pathPictures = naturalAreaService.getImageOfNaturalAreas(naturalAreas);
         ArrayList<ArrayList<NaturalArea>> naturalAreasPaged = new ArrayList<>();
         ArrayList<ArrayList<String>> pathPicturesPaged = new ArrayList<>();
@@ -152,8 +155,32 @@ public class NaturalAreaController {
     }
 
     @RequestMapping(value="/listManagers")
-    public String listNaturalAreasManagers(Model model){
-        model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
+    public String listNaturalAreasManagers(Model model, @RequestParam("page") Optional<Integer> page){
+        // Paso 1: Crear la lista paginada de naturalAreas
+        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
+        Collections.sort(naturalAreas);
+        ArrayList<ArrayList<NaturalArea>> naturalAreasPaged = new ArrayList<>();
+        int ini=0;
+        int fin=pageLength-1;
+        while (fin<naturalAreas.size()) {
+            naturalAreasPaged.add(new ArrayList<>(naturalAreas.subList(ini, fin)));
+            ini+=pageLength;
+            fin+=pageLength;
+        }
+        naturalAreasPaged.add(new ArrayList<NaturalArea>(naturalAreas.subList(ini, naturalAreas.size())));
+        model.addAttribute("naturalAreasPaged", naturalAreasPaged);
+
+        // Paso 2: Crear la lista de numeros de pagina
+        int totalPages = naturalAreasPaged.size();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        // Paso 3: selectedPage: usar parametro opcional page, o en su defecto, 1
+        int currentPage = page.orElse(0);
+        model.addAttribute("selectedPage", currentPage);
         return "naturalArea/listManagers";
     }
 

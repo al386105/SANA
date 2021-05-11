@@ -1,41 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Gestionar áreas naturales</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-<h1>Lista de áreas naturales</h1>
-<div th:if="${#lists.isEmpty(naturalAreas)}">
-    <p><b>¡No has añadido todavía ningún área natural!</b></p>
+<div th:replace="fragments/headerEnvironmental"></div>
+
+<div class="container">
+    <h1>Lista de áreas naturales</h1>
+    <div th:if="${#lists.isEmpty(naturalAreas)}">
+        <p><b>¡No has añadido todavía ningún área natural!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(naturalAreas)}" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Acceso</th>
+            <th scope="col">Municipio</th>
+            <th scope="col">Tipo de área</th>
+            <th scope="col">Orientación</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="naturalArea: ${#lists.sort(naturalAreas)}">
+
+            <td th:text="${naturalArea.name}"></td>
+            <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
+            <td th:text="${naturalArea.municipality}"></td>
+            <td th:text="${naturalArea.typeOfArea.descripcion}"></td>
+            <td th:text="${naturalArea.orientation.descripcion}"></td>
+            <td><a th:href="@{getEnvironmental/{naturalArea}(naturalArea=${naturalArea.name})}">
+                <button type="button" class="btn btn-primary">Más información</button> </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="../section/environmentalManager"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+    <br><br>
 </div>
-<table th:unless="${#lists.isEmpty(naturalAreas)}" class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Acceso</th>
-        <th scope="col">Municipio</th>
-        <th scope="col">Tipo de área</th>
-        <th scope="col">Orientación</th>
-        <th scope="col"></th>
-    </tr>
-    </thead>
 
-    <tbody>
-    <tr th:each="naturalArea: ${#lists.sort(naturalAreas)}">
-
-        <td th:text="${naturalArea.name}"></td>
-        <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
-        <td th:text="${naturalArea.municipality}"></td>
-        <td th:text="${naturalArea.typeOfArea.descripcion}"></td>
-        <td th:text="${naturalArea.orientation.descripcion}"></td>
-        <td><a th:href="@{getEnvironmental/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-primary">Más información</button> </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<a href="../section/environmentalManager"><button type="button" class="btn btn-primary">Volver a mi menú</button></a>
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

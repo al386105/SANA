@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Crear gestor municipal</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
+<div th:replace="fragments/headerEnvironmental"></div>
+
 <div class="container">
-    <h2>Nuevo gestor municipal</h2>
+    <h2>Nuevo gestor municipal</h2><br>
     <form class="form-horizontal" action="#" th:action="@{/municipalManager/add}"
           th:object="${municipalManager}" method="post">
 
@@ -79,5 +76,7 @@
         </div>
     </form>
 </div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

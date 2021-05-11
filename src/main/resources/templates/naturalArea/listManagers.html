@@ -4,48 +4,63 @@
 <body>
 <div th:replace="fragments/headerManager"></div>
 
-<h1>Lista de áreas naturales</h1>
-<div th:if="${#lists.isEmpty(naturalAreas)}">
-    <p><b>¡No se han añadido todavía áreas naturales!</b></p>
+<div class="container">
+    <h1>Lista de áreas naturales</h1>
+    <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">
+        <div th:if="${#lists.isEmpty(naturalAreas)}">
+            <p><b>¡No se han añadido todavía áreas naturales!</b></p>
+        </div>
+        <table th:unless="${#lists.isEmpty(naturalAreas)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Acceso</th>
+                <th scope="col">Municipio</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="naturalArea, iterator : ${naturalAreas}">
+                <td th:text="${naturalArea.name}"></td>
+                <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
+                <td th:text="${naturalArea.municipality}"></td>
+                <td><a th:href="@{getManagers/{naturalArea}(naturalArea=${naturalArea.name})}">
+                    <button type="button" class="btn btn-primary">Más opciones</button> </a>
+                </td>
+                <td><a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
+                    <button type="button" class="btn btn-success">Gestión reservas</button> </a>
+                </td>
+                <td><a th:href="@{update/{naturalArea}(naturalArea=${naturalArea.name})}">
+                    <button type="button" class="btn btn-warning">Edita</button> </a>
+                </td>
+                <td><a th:href="@{delete/{naturalArea}(naturalArea=${naturalArea.name})}"
+                       th:onclick="return confirm('¿Estás seguro/a de borrar el área natural '+ [[${naturalArea.name}]] + '?');">
+                    <button type="button" class="btn btn-danger">Elimina</button>
+                </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--  PAGINATION BUTTONS  -->
+    <nav aria-label="seleccion de pagina de naturalAreas">
+        <ul class="pagination justify-content-center">
+            <li th:class="page-item" th:if="${#lists.size(naturalAreasPaged) > 0}"
+                th:each="pageNumber : ${pageNumbers}"
+                th:classappend="${pageNumber==selectedPage+1} ? active">
+                <a th:href="@{/naturalArea/listManagers?page={sele}(sele=${pageNumber-1})}"
+                   th:text=${pageNumber}
+                   th:class="page-link">
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>
 </div>
-<table th:unless="${#lists.isEmpty(naturalAreas)}" class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Acceso</th>
-        <th scope="col">Municipio</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr th:each="naturalArea: ${#lists.sort(naturalAreas)}">
-
-        <td th:text="${naturalArea.name}"></td>
-        <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
-        <td th:text="${naturalArea.municipality}"></td>
-        <td><a th:href="@{getManagers/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-primary">Más opciones</button> </a>
-        </td>
-        <td><a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-success">Gestión reservas</button> </a>
-        </td>
-        <td><a th:href="@{update/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-warning">Edita</button> </a>
-        </td>
-        <td><a th:href="@{delete/{naturalArea}(naturalArea=${naturalArea.name})}"
-               th:onclick="return confirm('¿Estás seguro/a de borrar el área natural '+ [[${naturalArea.name}]] + '?');">
-            <button type="button" class="btn btn-danger">Elimina</button>
-        </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<br>
-<a href="add"><button type="button" class="btn btn-success">Añadir area natural</button></a>
-<a href="../section/managers"><button type="button" class="btn btn-primary">Volver al menú de gestores</button></a>
 <br><br>
 
 <div th:replace="fragments/footer"></div>

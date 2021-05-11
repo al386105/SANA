@@ -5,7 +5,7 @@
 <div th:replace="fragments/headerManager"></div>
 
 <div class="container">
-    <h2>Asignar nueva franja horaria</h2>
+    <h2>Asignar nueva franja horaria</h2><br>
     <form class="form-horizontal" action="#" th:action="@{/timeSlot/add}"
           th:object="${timeSlot}" method="post">
 
@@ -58,6 +58,7 @@
     <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${timeSlot.naturalArea})}">
         <button type="submit" class="btn btn-primary">Volver al área natural</button>
     </a>
+    <br><br>
 </div>
 
 <div th:replace="fragments/footer"></div>

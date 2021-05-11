@@ -1,7 +1,5 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-
-
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.dao.TemporalServiceDao;
 import es.uji.ei102720mgph.SANA.enums.DaysOfWeek;
@@ -65,6 +63,7 @@ public class TemporalServiceController {
     public String addTemporalService(Model model, @PathVariable String naturalArea) {
         TemporalService temporalService = new TemporalService();
         temporalService.setNaturalArea(naturalArea);
+        model.addAttribute("temporalService", temporalService);
         return "temporalService/add";
     }
 

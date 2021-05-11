@@ -1,14 +1,8 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Área natural</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-</head>
-<body>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<div>
+<div th:replace="fragments/headerEnvironmental"></div>
 
 <div class="container">
     <h1><span th:text="${naturalArea.name}"> </span></h1>
@@ -28,7 +22,7 @@
             <li><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"></span></li>
         </td>
     </ul>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+    <hr class="lineaVerde">
 
 
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
@@ -55,7 +49,7 @@
             </tr>
             </tbody>
         </table>
-        <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+        <hr class="lineaVerde">
 
         <!-- SECCION DE FRANJAS HORARIAS DEL AREA NATURAL -->
         <h3>Franjas horarias</h3>
@@ -82,7 +76,7 @@
             </tr>
             </tbody>
         </table>
-        <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+        <hr class="lineaVerde">
     </div>
 
 
@@ -91,7 +85,7 @@
     <div th:if="${#lists.isEmpty(comments)}">
         <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
     </div>
-    <div style="width:100%; height:300px; overflow: scroll;">
+    <!--<div style="width:100%; height:300px; overflow: scroll;">-->
     <table th:unless="${#lists.isEmpty(comments)}" class="table table-striped">
         <thead>
         <tr>
@@ -111,7 +105,7 @@
         </tbody>
     </table>
     </div>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+    <hr class="lineaVerde">
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
     <h3>Servicios fijos</h3>
@@ -139,7 +133,7 @@
         </tr>
         </tbody>
     </table>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+    <hr class="lineaVerde">
 
     <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
     <h3>Servicios temporales</h3>
@@ -173,7 +167,7 @@
         </tr>
         </tbody>
     </table>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+    <hr class="lineaVerde">
 
     <!-- carrusel de imágenes -->
     <h3>Imágenes</h3>
@@ -203,12 +197,11 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-
-    <br>
-    <a href="/naturalArea/listEnvironmental"><button type="button" class="btn btn-primary">Volver al listado</button></a>
     <br><br>
 
 </div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>
 

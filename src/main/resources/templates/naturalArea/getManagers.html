@@ -22,11 +22,15 @@
             <li><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"></span></li>
         </td>
     </ul><br>
+    <!-- Botones -->
     <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
         <button type="button" class="btn btn-warning">Edita</button> </a>
     </td>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
-
+    <td><a th:href="@{../delete/{naturalArea}(naturalArea=${naturalArea.name})}"
+           th:onclick="return confirm('¿Estás seguro/a de borrar el área natural '+ [[${naturalArea.name}]] + '?');">
+        <button type="button" class="btn btn-danger">Elimina</button></a>
+    </td>
+    <hr class="lineaVerde">
 
     <!-- solo se pueden gestionar las zonas y franjas horarias de los espacios restringidos -->
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
@@ -68,7 +72,7 @@
         <td><a th:href="@{/zone/add/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-success">Añadir zona</button>
         </a></td>
-        <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+        <hr class="lineaVerde">
 
         <!-- SECCION DE FRANJAS HORARIAS DEL AREA NATURAL -->
         <h3>Franjas horarias</h3>
@@ -110,16 +114,15 @@
         <td><a th:href="@{/timeSlot/add/{naturalArea}(naturalArea=${naturalArea.name})}">
             <button type="button" class="btn btn-success">Asignar franja horaria</button>
         </a></td>
-        <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+        <hr class="lineaVerde">
     </div>
-
 
     <!-- SECCION DE COMENTARIOS DEL AREA NATURAL -->
     <h3>Comentarios</h3>
     <div th:if="${#lists.isEmpty(comments)}">
         <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
     </div>
-    <div style="width:100%; height:300px; overflow: scroll;"> <!-- TODO anyadir esto al css, esta por todos lados-->
+    <!--<div style="width:100%; height:300px; overflow: scroll;">-->
     <table th:unless="${#lists.isEmpty(comments)}" class="table table-striped">
         <thead>
         <tr>
@@ -139,8 +142,7 @@
         </tbody>
     </table>
     </div>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
-
+    <hr class="lineaVerde">
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
     <h3>Servicios fijos</h3>
@@ -183,8 +185,7 @@
     <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
         <button type="button" class="btn btn-success">Asignar servicio fijo</button>
     </a></td>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
-
+    <hr class="lineaVerde">
 
     <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
     <h3>Servicios temporales</h3>
@@ -233,7 +234,7 @@
     <td><a th:href="@{/temporalService/add/{naturalArea}(naturalArea=${naturalArea.name})}">
         <button type="button" class="btn btn-success">Asignar servicio temporal</button>
     </a></td>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
+    <hr class="lineaVerde">
 
 
     <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
@@ -265,16 +266,6 @@
             </div>
         </form>
     </div>
-    <hr style="width: 85%; border-top: 1px solid #697F40; border-bottom: 1px solid #697F40; margin:2.5em">
-
-    <!-- Botones -->
-    <td><a th:href="@{../delete/{naturalArea}(naturalArea=${naturalArea.name})}"
-           th:onclick="return confirm('¿Estás seguro/a de borrar el área natural '+ [[${naturalArea.name}]] + '?');">
-        <button type="button" class="btn btn-danger">Elimina área natural</button>
-    </a>
-    </td>
-    <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver al listado</button></a>
-    <br><br>
 </div>
 
 <div th:replace="fragments/footer"></div>

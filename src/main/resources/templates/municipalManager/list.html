@@ -1,55 +1,58 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Gestionar gestores municipales</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-<h1>Lista de gestores municipales</h1>
-<div th:if="${#lists.isEmpty(municipalManagers)}">
-    ¡No has añadido todavía ningún gestor municipal!
-</div>
-<table th:unless="${#lists.isEmpty(municipalManagers)}" class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Nombre de usuario</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Apellidos</th>
-        <th scope="col">Email</th>
-        <th scope="col">Municipio</th>
-        <th scope="col">Fecha de nacimiento</th>
-        <th scope="col">Fecha de alta</th>
-        <th scope="col">Fecha de baja</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="municipalManager: ${#lists.sort(municipalManagers)}">
-        <td scope="row" th:text="${municipalManager.username}"></td>
-        <td th:text="${municipalManager.name}"></td>
-        <td th:text="${municipalManager.surname}"></td>
-        <td th:text="${municipalManager.email}"></td>
-        <td th:text="${municipalManager.municipality}"></td>
-        <td th:text="${#temporals.format(municipalManager.dateOfBirth,'dd/MM/yyyy')}"></td>
-        <td th:text="${#temporals.format(municipalManager.registrationDate,'dd/MM/yyyy')}"></td>
-        <td th:text="${#temporals.format(municipalManager.leavingDate,'dd/MM/yyyy')}"></td>
+<div th:replace="fragments/headerEnvironmental"></div>
 
-        <td><a th:href="@{/municipalManager/update/{email}(email=${municipalManager.email})}">
-            <button type="button" class="btn btn-warning">Edita</button>
-        </a>
-        </td>
-        <td><a th:href="@{/municipalManager/delete/{email}(email=${municipalManager.email})}"
-               th:onclick="return confirm('¿Estás seguro/a de borrar el gestor municipal '+
-               [[${municipalManager.name}]] + ', ' + [[${municipalManager.surname}]] + '?');">
-            <button type="button" class="btn btn-danger">Elimina</button>
-        </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<a href="add"><button type="button" class="btn btn-success">Añadir gestor municipal</button></a>
-<a href="/section/environmentalManager"><button type="button" class="btn btn-primary">Volver a mi menú</button></a>
+<div class="container">
+    <h1>Lista de gestores municipales</h1>
+    <div th:if="${#lists.isEmpty(municipalManagers)}">
+        ¡No has añadido todavía ningún gestor municipal!
+    </div>
+    <table th:unless="${#lists.isEmpty(municipalManagers)}" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Nombre de usuario</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellidos</th>
+            <th scope="col">Email</th>
+            <th scope="col">Municipio</th>
+            <th scope="col">Fecha de nacimiento</th>
+            <th scope="col">Fecha de alta</th>
+            <th scope="col">Fecha de baja</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="municipalManager: ${#lists.sort(municipalManagers)}">
+            <td scope="row" th:text="${municipalManager.username}"></td>
+            <td th:text="${municipalManager.name}"></td>
+            <td th:text="${municipalManager.surname}"></td>
+            <td th:text="${municipalManager.email}"></td>
+            <td th:text="${municipalManager.municipality}"></td>
+            <td th:text="${#temporals.format(municipalManager.dateOfBirth,'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(municipalManager.registrationDate,'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(municipalManager.leavingDate,'dd/MM/yyyy')}"></td>
+
+            <td><a th:href="@{/municipalManager/update/{email}(email=${municipalManager.email})}">
+                <button type="button" class="btn btn-warning">Edita</button>
+            </a>
+            </td>
+            <td><a th:href="@{/municipalManager/delete/{email}(email=${municipalManager.email})}"
+                   th:onclick="return confirm('¿Estás seguro/a de borrar el gestor municipal '+
+                   [[${municipalManager.name}]] + ', ' + [[${municipalManager.surname}]] + '?');">
+                <button type="button" class="btn btn-danger">Elimina</button>
+            </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="add"><button type="button" class="btn btn-success">Añadir gestor municipal</button></a>
+    <a href="/section/environmentalManager"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+    <br><br>
+</div>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

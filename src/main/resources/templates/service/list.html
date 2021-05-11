@@ -1,45 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Gestionar servicios</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-<h1>Lista de servicios</h1>
-<div th:if="${#lists.isEmpty(services)}">
-    ¡No has creado todavía ningún servicio!
+<div th:replace="fragments/headerEnvironmental"></div>
+
+<div class="container">
+    <h1>Lista de servicios</h1>
+    <div th:if="${#lists.isEmpty(services)}">
+        ¡No has creado todavía ningún servicio!
+    </div>
+    <table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Nombre del servicio</th>
+            <th scope="col">Temporalidad</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Sitio de contratación</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="service: ${#lists.sort(services)}">
+            <td th:text="${service.nameOfService}"></td>
+            <td th:text="${service.temporality.descripcion}"></td>
+            <td th:text="${service.description}"></td>
+            <td th:text="${service.hiringPlace}"></td>
+            <td><a th:href="@{/service/update/{nameOfService}(nameOfService=${service.nameOfService})}">
+                <button type="button" class="btn btn-warning">Edita</button>
+            </a>
+            </td>
+            <td><a th:href="@{/service/delete/{nameOfService}(nameOfService=${service.nameOfService})}"
+                   th:onclick="return confirm('¿Estás seguro/a de borrar el servicio ' + [[${service.nameOfService}]] + '?');">
+                <button type="button" class="btn btn-danger">Elimina</button>
+            </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="add"><button type="button" class="btn btn-success">Añadir servicio</button></a>
+    <a href="/section/environmentalManager"><button type="button" class="btn btn-primary">Volver a mi menú</button></a>
+    <br><br>
 </div>
-<table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Nombre del servicio</th>
-        <th scope="col">Temporalidad</th>
-        <th scope="col">Descripción</th>
-        <th scope="col">Sitio de contratación</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="service: ${#lists.sort(services)}">
-        <td th:text="${service.nameOfService}"></td>
-        <td th:text="${service.temporality.descripcion}"></td>
-        <td th:text="${service.description}"></td>
-        <td th:text="${service.hiringPlace}"></td>
-        <td><a th:href="@{/service/update/{nameOfService}(nameOfService=${service.nameOfService})}">
-            <button type="button" class="btn btn-warning">Edita</button>
-        </a>
-        </td>
-        <td><a th:href="@{/service/delete/{nameOfService}(nameOfService=${service.nameOfService})}"
-               th:onclick="return confirm('¿Estás seguro/a de borrar el servicio ' + [[${service.nameOfService}]] + '?');">
-            <button type="button" class="btn btn-danger">Elimina</button>
-        </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<a href="add"><button type="button" class="btn btn-success">Añadir servicio</button></a>
-<a href="/section/environmentalManager"><button type="button" class="btn btn-primary">Volver a mi menú</button></a>
+
+<div th:replace="fragments/footer"></div>
 </body>
 </html>

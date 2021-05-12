@@ -4,7 +4,6 @@ import es.uji.ei102720mgph.SANA.model.MunicipalManager;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-
 public class MunicipalManagerValidator implements Validator {
 
     @Override
@@ -39,6 +38,5 @@ public class MunicipalManagerValidator implements Validator {
         //  Fecha de nacimiento obligatoria
         if (municipalManager.getDateOfBirth() == null)
             errors.rejectValue("dateOfBirth", "obligatorio", "Es obligatorio introducir la fecha de nacimiento");
-
     }
 }

@@ -1,9 +1,7 @@
 package es.uji.ei102720mgph.SANA.dao;
 
-
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.ReservaDatos;
-import es.uji.ei102720mgph.SANA.model.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,6 +34,21 @@ public class ReservaDatosDao {
         }
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<ReservaDatos>();
+        }
+    }
+
+    public ReservaDatos getReservation(int reservationNumber) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea " +
+                            "FROM reservation AS res " +
+                            "JOIN reservationofzone AS ro ON res.reservationnumber = ro.reservationnumber " +
+                            "JOIN zone AS zone ON ro.zoneid = zone.id " +
+                            "WHERE res.reservationNumber = ?",
+                    new ReservaDatosRowMapper(), reservationNumber);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return null;
         }
     }
 

@@ -24,7 +24,6 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.Properties;
 
-
 class UserValidator implements Validator {
     @Override
     public boolean supports(Class<?> cls) {
@@ -36,10 +35,10 @@ class UserValidator implements Validator {
         UserLogin user = (UserLogin) obj;
 
         if (user.getEmail().trim().equals(""))
-            errors.rejectValue("email", "obligatorio", "Necesario Introducir Email");
+            errors.rejectValue("email", "obligatorio", "Necesario introducir el email");
 
         if (user.getPassword().trim().equals(""))
-            errors.rejectValue("password", "obligatorio", "Necesario Introducir la contraseña");
+            errors.rejectValue("password", "obligatorio", "Necesario introducir la contraseña");
     }
 }
 
@@ -54,10 +53,17 @@ public class AuxiliarController {
     private ControlStaffDao controlStaffDao;
     private ReservaDatosDao reservaDatosDao;
     private AddressDao addressDao;
+    private ReservationDao reservationDao;
+    private EmailDao emailDao;
 
     @Autowired
     public void setControlStaffDao(ControlStaffDao controlStaffDao){
         this.controlStaffDao = controlStaffDao;
+    }
+
+    @Autowired
+    public void setEmailDao(EmailDao emailDao){
+        this.emailDao = emailDao;
     }
 
     @Autowired
@@ -73,6 +79,11 @@ public class AuxiliarController {
     @Autowired
     public void setSanaUsertDao(SanaUserDao sanaUserDao){
         this.sanaUserDao = sanaUserDao;
+    }
+
+    @Autowired
+    public void setReservationDao(ReservationDao reservationDao){
+        this.reservationDao = reservationDao;
     }
 
     @Autowired
@@ -123,10 +134,33 @@ public class AuxiliarController {
     }
 
     @RequestMapping("inicio/registrado/cancelarReserva/{id}")
-    public String cancelarReserva(@PathVariable String id, Model model, HttpSession session) {
+    public String cancelarReserva(@PathVariable String id) {
         reservaDatosDao.cancelaReservaPorCiudadano(id);
+        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
+        ReservaDatos reservaDatos = reservaDatosDao.getReservation(Integer.parseInt(id));
+
+        // Enviar mail con la cancelacion
+        String destinatario = reservation.getCitizenEmail();
+        String asunto = "Reserva cancelada";
+        String cuerpo = "¡Has cancelado tu reserva número " + id + " correctamente! " +
+                "Te recordamos que la reserva era para " + reservaDatos.getNumberOfPeople() + " personas el día " +
+                reservaDatos.getReservationDate() + " en " + reservaDatos.getNaturalArea() + ".\n" +
+                "¡Anímate a hacer otra reserva con SANA!\n\n" +
+                "SANA. Safe Access to Natural Areas.\nGeneralitat Valenciana";
+        enviarMail(destinatario, asunto, cuerpo);
+
+        // Anyadir a la tabla de email
+        Email email = new Email();
+        email.setSanaUser(destinatario);
+        email.setSubject(asunto);
+        email.setTextBody(cuerpo);
+        email.setSender("sana.espais.naturals@gmail.com");
+        email.setDate(LocalDate.now());
+        emailDao.addEmail(email);
+
         return "redirect:/inicio/registrado/reservas";
     }
+
     @RequestMapping("inicio/registrado/reservasTodas")
     public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
@@ -169,9 +203,11 @@ public class AuxiliarController {
 
     @RequestMapping("inicio/register_form/registration")
     public String registrationProcess(@ModelAttribute("registrationCitizen") RegistrationCitizen registrationCitizen,BindingResult bindingResult, HttpSession session ){
+        RegistrationValidator registrationValidator = new RegistrationValidator();
+        registrationValidator.validate(registrationCitizen, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "inicio/login"; //tornem al formulari d'inici de sessió
+            return "/inicio/login";
 
         SanaUser sanaUser = sanaUserDao.getSanaUser(registrationCitizen.getEmail());
         if (sanaUser == null){
@@ -202,11 +238,29 @@ public class AuxiliarController {
             registeredCitizen.setCitizenCode(registrationCitizen.getCitizenCode());
             registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
 
-            return "redirect:/inicio/login";
+            // TODO no se envía!!!!!!
+            // Enviar mail al nuevo ciudadano
+            String destinatario = registeredCitizen.getEmail();
+            String asunto = "Registro completado";
+            String cuerpo = "¡Has sido registrado con éxito en SANA! \n" +
+                    "Te recordamos que tu código de ciudadano es " + registeredCitizen.getCitizenCode() +
+                    " y que puedes cambiar tu contraseña en cualquier momento accediendo a tu perfil desde la aplicación web SANA!\n\n" +
+                    "SANA. Safe Access to Natural Areas.\nGeneralitat Valenciana";
+            enviarMail(destinatario, asunto, cuerpo);
 
+            // Anyadir a la tabla de email
+            Email email = new Email();
+            email.setSanaUser(destinatario);
+            email.setSubject(asunto);
+            email.setTextBody(cuerpo);
+            email.setSender("sana.espais.naturals@gmail.com");
+            email.setDate(LocalDate.now());
+            emailDao.addEmail(email);
+
+            return "/inicio/login";//TODO redirect y mostrar mensaje!!
 
         }else {
-            //Usuario ya registrado en el sistema
+            //Usuario ya registrado en el sistema //TODO mostrar mensaje!!!!
             return "redirect:/inicio/login";
         }
     }
@@ -229,7 +283,7 @@ public class AuxiliarController {
                 if (municipalManager.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
                     session.setAttribute("municipalManager", municipalManager);
-                    return "section/managers"; //TODO es un redirect
+                    return "redirect:/section/managers";
                 }else{
                     //Contraseña Incorrecta
                     bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
@@ -242,7 +296,7 @@ public class AuxiliarController {
                 if (controlStaff.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
                     session.setAttribute("controlStaff", controlStaff);
-                    return "inicio/sana"; //TODO return redirect:/
+                    return "redirect:/inicio/sana";
                 }else{
                     //Contraseña Incorrecta
                     bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
@@ -256,7 +310,7 @@ public class AuxiliarController {
                     if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
                         //Contraseña Correcta
                         session.setAttribute("registeredCitizen", registeredCitizen);
-                        return "redirect:/inicio/registrado"; //TODO return redirect:/
+                        return "redirect:/inicio/registrado";
 
                     } else {
                         //Contraseña Incorrecta
@@ -275,7 +329,6 @@ public class AuxiliarController {
             bindingResult.rejectValue("email", "badEmail", "Email no registrado en el sistema");
             return "inicio/login";
         }
-        //TODO return redirect:/
         return "inicio/sana"; //Redirigimos a la página de inicio con la sesión iniciada
     }
 
@@ -295,7 +348,7 @@ public class AuxiliarController {
         return "redirect:../../inicio"; //redirigim a la lista per a veure el email afegit, post/redirect/get
     }
 
-    public void enviarMail(String destinatario, String asunto, String cuerpo) {
+    public static void enviarMail(String destinatario, String asunto, String cuerpo) {
         String remitente = "sana.espais.naturals";  //Para la dirección nomcuenta@gmail.com
 
         Properties props = System.getProperties();

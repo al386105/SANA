@@ -1,8 +1,10 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.RegisteredCitizenDao;
+import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
 import es.uji.ei102720mgph.SANA.model.Address;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
+import es.uji.ei102720mgph.SANA.model.SanaUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +19,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RegisteredCitizenController {
 
     private RegisteredCitizenDao registeredCitizenDao;
+    private SanaUserDao sanaUserDao;
 
     @Autowired
     public void setRegisteredCitizenDao(RegisteredCitizenDao registeredCitizenDao){
         this.registeredCitizenDao = registeredCitizenDao;
+    }
+
+    @Autowired
+    public void setSanaUserDao(SanaUserDao sanaUserDao){
+        this.sanaUserDao = sanaUserDao;
     }
 
     @RequestMapping("/list")
@@ -67,6 +75,7 @@ public class RegisteredCitizenController {
     @RequestMapping(value="/delete/{email}")
     public String processDelete(@PathVariable String email) {
         registeredCitizenDao.deleteRegisteredCitizen(email);
+        sanaUserDao.deleteSanaUser(email);
         return "redirect:../list";
     }
 }

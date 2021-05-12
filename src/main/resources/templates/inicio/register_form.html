@@ -1,34 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>SANA</title>
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic">
-    <link rel="stylesheet" href="../assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="../assets/css/untitled.css">
-    <link rel="icon" href="../assets/img/LOGO_hoja.png" type="image/png">
-</head>
+<body>
+<div th:replace="fragments/header"></div>
 
-<body id="page-top">
-<nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
-    <div class="container"><a class="navbar-brand js-scroll-trigger" href="#page-top">SANA</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="../inicio/login">Inicio Sesión</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<header class="text-center text-white bg-primary masthead">
-    <div class="container">
-        <h1>SANA</h1>
-        <hr class="star-light">
-        <img src="/assets/img/perfil.png" style="display:block; position: relative; margin:auto; width: 170px; height: 170px;">
-    </div>
+<section class="inicio_sesion">
+<div class="container">
+    <h2 class="text-uppercase text-center text-secondary">Registrarse</h2>
+    <br>
+    <hr class="barra-normal">
+    <br>
+    <br>
+    <img src="/assets/img/perfil.png" style="display:block; position: relative; margin:auto; width: 170px; height: 170px;">
     <br>
     <h3 style="text-align:center;">Bienvenido al registro de SANA</h3>
     <br>
@@ -38,45 +21,22 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="email" >Email:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="email" th:field="*{email}" />
+                <input style="width: 60%;" required maxlength="30" type="text"  class="form-control" id="email" th:field="*{email}" />
+                <!--<div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>-->
             </div>
             <label class="control-label col-sm-2" for="street">Calle:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="street" th:field="*{street}" />
+                <input style="width: 60%;" maxlength="40" type="text" required class="form-control" id="street" th:field="*{street}" />
+                <!--<div class="error" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></div>-->
             </div>
-
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="nombre">Nombre:</label>
             <div class="col-sm-4">
-                <input  style="width: 60%;" type="text" required class="form-control" id="nombre" th:field="*{nombre}"  />
+                <input  style="width: 60%;" maxlength="15" type="text" required class="form-control" id="nombre" th:field="*{nombre}"  />
+                <!--<div class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>-->
             </div>
-            <label class="control-label col-sm-2" for="floorDoor">Piso y puerta:</label>
-            <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="floorDoor" th:field="*{floorDoor}"/>
-            </div>
-
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="apellidos">Apellidos:</label>
-            <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="apellidos" th:field="*{apellidos}" />
-            </div>
-            <label class="control-label col-sm-2" for="city">Ciudad:</label>
-            <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="city" th:field="*{city}" />
-            </div>
-
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="dni">DNI/NIE:</label>
-            <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="dni" th:field="*{dni}"  />
-            </div>
-
             <label class="control-label col-sm-2" for="number">Número:</label>
             <div class="col-sm-4">
                 <input style="width: 60%;" type="number" min="1" required class="form-control" id="number" th:field="*{number}"/>
@@ -84,39 +44,67 @@
         </div>
 
         <div class="form-group row">
+            <label class="control-label col-sm-2" for="apellidos">Apellidos:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" maxlength="30" type="text" required class="form-control" id="apellidos" th:field="*{apellidos}" />
+                <!--<div class="error" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></div>-->
+            </div>
+            <label class="control-label col-sm-2" for="floorDoor">Piso y puerta:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" maxlength="10" type="text" required class="form-control" id="floorDoor" th:field="*{floorDoor}"/>
+                <!--<div class="error" th:if="${#fields.hasErrors('floorDoor')}" th:errors="*{floorDoor}"></div>-->
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="dni">DNI/NIE:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" maxlength="9" type="text" required class="form-control" id="dni" th:field="*{dni}"/>
+                <!--<div class="error" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>-->
+            </div>
+            <label class="control-label col-sm-2" for="city">Ciudad:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" maxlength="30" type="text" required class="form-control" id="city" th:field="*{city}"/>
+                <!--<div class="error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>-->
+            </div>
+        </div>
+
+        <div class="form-group row">
             <label class="control-label col-sm-2" for="dateOfBirth">Fecha de nacimiento:</label>
             <div class="col-sm-4">
                 <input style="width: 60%;" type="date" placeholder="yyyy-MM-dd" required class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"  />
+                <!--<div class="error" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>-->
             </div>
-
             <label class="control-label col-sm-2" for="postalCode">Código postal:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="postalCode" th:field="*{postalCode}" />
+                <input style="width: 60%;" minlength="5" maxlength="5" type="text" required class="form-control" id="postalCode" th:field="*{postalCode}" />
+                <!--<div class="error" th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></div>-->
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="telefono">Número de teléfono:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="telefono" th:field="*{telefono}"  />
+                <input style="width: 60%;" minlength="9" maxlength="9" type="text" required class="form-control" id="telefono" th:field="*{telefono}"  />
+                <!--<div class="error" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>-->
             </div>
-
             <label class="control-label col-sm-2" for="country">País:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="country" th:field="*{country}" />
+                <input style="width: 60%;" maxlength="30" type="text" required class="form-control" id="country" th:field="*{country}" />
+                <!--<div class="error" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>-->
             </div>
-
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="citizenCode">Nombre Usuario:</label>
+            <label class="control-label col-sm-2" for="citizenCode">Nombre de usuario:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="citizenCode" th:field="*{citizenCode}"  />
+                <input style="width: 60%;" maxlength="6" type="text" required class="form-control" id="citizenCode" th:field="*{citizenCode}"/>
+                <!--<div class="error" th:if="${#fields.hasErrors('citizenCode')}" th:errors="*{citizenCode}"></div>-->
             </div>
-
             <label class="control-label col-sm-2" for="password">Contraseña:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="password" required class="form-control" id="password" th:field="*{password}" />
+                <input style="width: 60%;" type="password" minlength="4" maxlength="4" placeholder="4 números" required class="form-control" id="password" th:field="*{password}" />
+                <!--<div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>-->
             </div>
         </div>
 
@@ -124,13 +112,34 @@
 
         <div class="form-group row" >
             <div class="col-sm-offset-2 col-sm-7">
-                <a href="/inicio/login"><button type="button" class="btn btn-primary" style="float:right; text-align:center;">Volver</button></a>
-                <button type="submit" style="float:right; text-align:center;" class="btn btn-success">Registrarse</button>
+                <a href="/inicio/login"><button type="button" class="btn btn-primary" style="float:right;">Volver</button></a>
+                <button type="submit" style="float:right;" class="btn btn-primary" data-toggle="modal" data-target="#miModal">Registrarse</button>
             </div>
         </div>
 
+        <!-- VENTANA EMERGENTE -->
+        <!--
+        <div class="modal" id="miModal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Registro en SANA</h5>
+                        <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Desea confirmar el registro en SANA?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a th:href="@{cancelarReserva/} + ${reserva.reservationNumber}" class="btn btn-primary">Confirmar</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
     </form>
-</header>
+</div>
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

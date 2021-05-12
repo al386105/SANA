@@ -4,12 +4,15 @@
 <body>
 <div th:replace="fragments/headerEnvironmental"></div>
 
-<div class="container">
-    <h1>Acciones del responsable de medio ambiente</h1><br>
-    <a href="/naturalArea/listEnvironmental"><button type="button" class="btn btn-success">Áreas naturales</button></a>
-    <a href="/municipalManager/list"><button type="button" class="btn btn-success">Gestores municipales</button></a>
-    <a href="/municipality/list"><button type="button" class="btn btn-success">Gestión municipios</button></a>
-    <a href="/service/list"><button type="button" class="btn btn-success">Gestión servicios</button></a>
+<div class="container text-center">
+    <h2 style="font-size:40px">¡Bienvenido a SANA!</h2>
+    <img class="img-fluid d-block mx-auto mb-5" style="height:250px" src="../assets/img/LOGO_mono.png">
+    <div class="form-group">
+        <a href="/naturalArea/listEnvironmental"><button type="button" class="btn btn-primary btn-xl">Áreas naturales</button></a>
+        <a href="/municipalManager/list"><button type="button" class="btn btn-primary btn-xl">Gestores municipales</button></a>
+        <a href="/municipality/list"><button type="button" class="btn btn-primary btn-xl">Gestión municipios</button></a>
+        <a href="/service/list"><button type="button" class="btn btn-primary btn-xl">Gestión servicios</button></a>
+    </div>
     <br><br>
 </div>
 

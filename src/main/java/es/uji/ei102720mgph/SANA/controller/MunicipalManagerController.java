@@ -1,7 +1,10 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+import es.uji.ei102720mgph.SANA.dao.EmailDao;
 import es.uji.ei102720mgph.SANA.dao.MunicipalManagerDao;
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
+import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
+import es.uji.ei102720mgph.SANA.model.Email;
 import es.uji.ei102720mgph.SANA.model.MunicipalManager;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,14 +25,26 @@ import java.util.stream.Collectors;
 public class MunicipalManagerController {
 
     private MunicipalManagerDao municipalManagerDao;
+    private EmailDao emailDao;
+    private SanaUserDao sanaUserDao;
 
     @Autowired
-    public void setMunicipalManagerDao(MunicipalManagerDao mmd) {
-        this.municipalManagerDao=mmd;
+    public void setMunicipalManagerDao(MunicipalManagerDao municipalManagerDao) {
+        this.municipalManagerDao=municipalManagerDao;
+    }
+
+    @Autowired
+    public void setSanaUserDao(SanaUserDao sanaUserDao) {
+        this.sanaUserDao=sanaUserDao;
     }
 
     @Autowired
     MunicipalityDao municipalityDao;
+
+    @Autowired
+    public void setEmailDao(EmailDao emailDao){
+        this.emailDao = emailDao;
+    }
 
     @RequestMapping("/list")
     public String listMunicipalManager(Model model) {
@@ -70,6 +86,15 @@ public class MunicipalManagerController {
                 "SANA. Safe Access to Natural Areas.\nGeneralitat Valenciana";
         AuxiliarController.enviarMail(destinatario, asunto, cuerpo);
 
+        // Anyadir a la tabla de email
+        Email email = new Email();
+        email.setSanaUser(destinatario);
+        email.setSubject(asunto);
+        email.setTextBody(cuerpo);
+        email.setSender("sana.espais.naturals@gmail.com");
+        email.setDate(LocalDate.now());
+        emailDao.addEmail(email);
+
         return "redirect:list"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
     }
 
@@ -94,6 +119,7 @@ public class MunicipalManagerController {
     @RequestMapping(value="/delete/{email}")
     public String processDelete(@PathVariable String email) {
         municipalManagerDao.deleteMunicipalManager(email);
+        sanaUserDao.deleteSanaUser(email);
         return "redirect:../list";
     }
 }

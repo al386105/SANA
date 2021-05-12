@@ -19,6 +19,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Properties;
@@ -52,10 +53,17 @@ public class AuxiliarController {
     private ControlStaffDao controlStaffDao;
     private ReservaDatosDao reservaDatosDao;
     private AddressDao addressDao;
+    private ReservationDao reservationDao;
+    private EmailDao emailDao;
 
     @Autowired
     public void setControlStaffDao(ControlStaffDao controlStaffDao){
         this.controlStaffDao = controlStaffDao;
+    }
+
+    @Autowired
+    public void setEmailDao(EmailDao emailDao){
+        this.emailDao = emailDao;
     }
 
     @Autowired
@@ -71,6 +79,11 @@ public class AuxiliarController {
     @Autowired
     public void setSanaUsertDao(SanaUserDao sanaUserDao){
         this.sanaUserDao = sanaUserDao;
+    }
+
+    @Autowired
+    public void setReservationDao(ReservationDao reservationDao){
+        this.reservationDao = reservationDao;
     }
 
     @Autowired
@@ -121,10 +134,33 @@ public class AuxiliarController {
     }
 
     @RequestMapping("inicio/registrado/cancelarReserva/{id}")
-    public String cancelarReserva(@PathVariable String id, Model model, HttpSession session) {
+    public String cancelarReserva(@PathVariable String id) {
         reservaDatosDao.cancelaReservaPorCiudadano(id);
+        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
+        ReservaDatos reservaDatos = reservaDatosDao.getReservation(Integer.parseInt(id));
+
+        // Enviar mail con la cancelacion
+        String destinatario = reservation.getCitizenEmail();
+        String asunto = "Reserva cancelada";
+        String cuerpo = "¡Has cancelado tu reserva número " + id + " correctamente! " +
+                "Te recordamos que la reserva era para " + reservaDatos.getNumberOfPeople() + " personas el día " +
+                reservaDatos.getReservationDate() + " en " + reservaDatos.getNaturalArea() + ".\n" +
+                "¡Anímate a hacer otra reserva con SANA!\n\n" +
+                "SANA. Safe Access to Natural Areas.\nGeneralitat Valenciana";
+        enviarMail(destinatario, asunto, cuerpo);
+
+        // Anyadir a la tabla de email
+        Email email = new Email();
+        email.setSanaUser(destinatario);
+        email.setSubject(asunto);
+        email.setTextBody(cuerpo);
+        email.setSender("sana.espais.naturals@gmail.com");
+        email.setDate(LocalDate.now());
+        emailDao.addEmail(email);
+
         return "redirect:/inicio/registrado/reservas";
     }
+
     @RequestMapping("inicio/registrado/reservasTodas")
     public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
@@ -171,7 +207,7 @@ public class AuxiliarController {
         registrationValidator.validate(registrationCitizen, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "/inicio/register_form";
+            return "/inicio/login";
 
         SanaUser sanaUser = sanaUserDao.getSanaUser(registrationCitizen.getEmail());
         if (sanaUser == null){
@@ -202,7 +238,7 @@ public class AuxiliarController {
             registeredCitizen.setCitizenCode(registrationCitizen.getCitizenCode());
             registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
 
-            //TODO no se envía!!!!!!
+            // TODO no se envía!!!!!!
             // Enviar mail al nuevo ciudadano
             String destinatario = registeredCitizen.getEmail();
             String asunto = "Registro completado";
@@ -210,12 +246,21 @@ public class AuxiliarController {
                     "Te recordamos que tu código de ciudadano es " + registeredCitizen.getCitizenCode() +
                     " y que puedes cambiar tu contraseña en cualquier momento accediendo a tu perfil desde la aplicación web SANA!\n\n" +
                     "SANA. Safe Access to Natural Areas.\nGeneralitat Valenciana";
-            AuxiliarController.enviarMail(destinatario, asunto, cuerpo);
+            enviarMail(destinatario, asunto, cuerpo);
 
-            return "redirect:/inicio/login";
+            // Anyadir a la tabla de email
+            Email email = new Email();
+            email.setSanaUser(destinatario);
+            email.setSubject(asunto);
+            email.setTextBody(cuerpo);
+            email.setSender("sana.espais.naturals@gmail.com");
+            email.setDate(LocalDate.now());
+            emailDao.addEmail(email);
+
+            return "/inicio/login";//TODO redirect y mostrar mensaje!!
 
         }else {
-            //Usuario ya registrado en el sistema
+            //Usuario ya registrado en el sistema //TODO mostrar mensaje!!!!
             return "redirect:/inicio/login";
         }
     }
@@ -284,7 +329,7 @@ public class AuxiliarController {
             bindingResult.rejectValue("email", "badEmail", "Email no registrado en el sistema");
             return "inicio/login";
         }
-        return "redirect:/inicio/sana"; //Redirigimos a la página de inicio con la sesión iniciada
+        return "inicio/sana"; //Redirigimos a la página de inicio con la sesión iniciada
     }
 
     @RequestMapping(value="inicio/contactanos/enviarCorreo", method=RequestMethod.POST)
@@ -303,7 +348,6 @@ public class AuxiliarController {
         return "redirect:../../inicio"; //redirigim a la lista per a veure el email afegit, post/redirect/get
     }
 
-    // TODO lo he hecho static pq lo necesito, no se si está bien
     public static void enviarMail(String destinatario, String asunto, String cuerpo) {
         String remitente = "sana.espais.naturals";  //Para la dirección nomcuenta@gmail.com
 

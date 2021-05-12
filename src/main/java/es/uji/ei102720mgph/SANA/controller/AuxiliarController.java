@@ -19,11 +19,9 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Properties;
-
 
 class UserValidator implements Validator {
     @Override
@@ -36,10 +34,10 @@ class UserValidator implements Validator {
         UserLogin user = (UserLogin) obj;
 
         if (user.getEmail().trim().equals(""))
-            errors.rejectValue("email", "obligatorio", "Necesario Introducir Email");
+            errors.rejectValue("email", "obligatorio", "Necesario introducir el email");
 
         if (user.getPassword().trim().equals(""))
-            errors.rejectValue("password", "obligatorio", "Necesario Introducir la contraseña");
+            errors.rejectValue("password", "obligatorio", "Necesario introducir la contraseña");
     }
 }
 
@@ -169,9 +167,11 @@ public class AuxiliarController {
 
     @RequestMapping("inicio/register_form/registration")
     public String registrationProcess(@ModelAttribute("registrationCitizen") RegistrationCitizen registrationCitizen,BindingResult bindingResult, HttpSession session ){
+        RegistrationValidator registrationValidator = new RegistrationValidator();
+        registrationValidator.validate(registrationCitizen, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "inicio/login"; //tornem al formulari d'inici de sessió
+            return "/inicio/register_form";
 
         SanaUser sanaUser = sanaUserDao.getSanaUser(registrationCitizen.getEmail());
         if (sanaUser == null){
@@ -202,8 +202,17 @@ public class AuxiliarController {
             registeredCitizen.setCitizenCode(registrationCitizen.getCitizenCode());
             registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
 
-            return "redirect:/inicio/login";
+            //TODO no se envía!!!!!!
+            // Enviar mail al nuevo ciudadano
+            String destinatario = registeredCitizen.getEmail();
+            String asunto = "Registro completado";
+            String cuerpo = "¡Has sido registrado con éxito en SANA! \n" +
+                    "Te recordamos que tu código de ciudadano es " + registeredCitizen.getCitizenCode() +
+                    " y que puedes cambiar tu contraseña en cualquier momento accediendo a tu perfil desde la aplicación web SANA!\n\n" +
+                    "SANA. Safe Access to Natural Areas.\nGeneralitat Valenciana";
+            AuxiliarController.enviarMail(destinatario, asunto, cuerpo);
 
+            return "redirect:/inicio/login";
 
         }else {
             //Usuario ya registrado en el sistema
@@ -229,7 +238,7 @@ public class AuxiliarController {
                 if (municipalManager.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
                     session.setAttribute("municipalManager", municipalManager);
-                    return "section/managers"; //TODO es un redirect
+                    return "redirect:/section/managers";
                 }else{
                     //Contraseña Incorrecta
                     bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
@@ -242,7 +251,7 @@ public class AuxiliarController {
                 if (controlStaff.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
                     session.setAttribute("controlStaff", controlStaff);
-                    return "inicio/sana"; //TODO return redirect:/
+                    return "redirect:/inicio/sana";
                 }else{
                     //Contraseña Incorrecta
                     bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
@@ -256,7 +265,7 @@ public class AuxiliarController {
                     if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
                         //Contraseña Correcta
                         session.setAttribute("registeredCitizen", registeredCitizen);
-                        return "redirect:/inicio/registrado"; //TODO return redirect:/
+                        return "redirect:/inicio/registrado";
 
                     } else {
                         //Contraseña Incorrecta
@@ -275,8 +284,7 @@ public class AuxiliarController {
             bindingResult.rejectValue("email", "badEmail", "Email no registrado en el sistema");
             return "inicio/login";
         }
-        //TODO return redirect:/
-        return "inicio/sana"; //Redirigimos a la página de inicio con la sesión iniciada
+        return "redirect:/inicio/sana"; //Redirigimos a la página de inicio con la sesión iniciada
     }
 
     @RequestMapping(value="inicio/contactanos/enviarCorreo", method=RequestMethod.POST)
@@ -295,7 +303,8 @@ public class AuxiliarController {
         return "redirect:../../inicio"; //redirigim a la lista per a veure el email afegit, post/redirect/get
     }
 
-    public void enviarMail(String destinatario, String asunto, String cuerpo) {
+    // TODO lo he hecho static pq lo necesito, no se si está bien
+    public static void enviarMail(String destinatario, String asunto, String cuerpo) {
         String remitente = "sana.espais.naturals";  //Para la dirección nomcuenta@gmail.com
 
         Properties props = System.getProperties();

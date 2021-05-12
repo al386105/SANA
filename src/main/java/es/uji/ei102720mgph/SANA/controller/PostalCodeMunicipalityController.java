@@ -30,9 +30,13 @@ public class PostalCodeMunicipalityController {
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("postalCode") PostalCodeMunicipality pc, BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "postalCode/add"; //tornem al formulari per a que el corregisca
+        PostalCodeMunicipalityValidator postalCodeMunicipalityValidator = new PostalCodeMunicipalityValidator();
+        postalCodeMunicipalityValidator.validate(pc, bindingResult);
+
         String municipality = pc.getMunicipality();
+        //TODO e aqui el fallo
+        if (bindingResult.hasErrors())
+            return "/municipality/get/" + municipality;
         pcD.addPostalCode(pc);
         return "redirect:/municipality/get/" + municipality;
     }

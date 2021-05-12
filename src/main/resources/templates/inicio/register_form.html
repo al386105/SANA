@@ -38,11 +38,13 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="email" >Email:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="email" th:field="*{email}" />
+                <input style="width: 60%;" required maxlength="30" type="text"  class="form-control" id="email" th:field="*{email}" />
+                <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
             </div>
             <label class="control-label col-sm-2" for="street">Calle:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="street" th:field="*{street}" />
+                <input style="width: 60%;" maxlength="40" type="text" required class="form-control" id="street" th:field="*{street}" />
+                <div class="error" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></div>
             </div>
 
         </div>
@@ -50,33 +52,9 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="nombre">Nombre:</label>
             <div class="col-sm-4">
-                <input  style="width: 60%;" type="text" required class="form-control" id="nombre" th:field="*{nombre}"  />
+                <input  style="width: 60%;" maxlength="15" type="text" required class="form-control" id="nombre" th:field="*{nombre}"  />
+                <div class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
             </div>
-            <label class="control-label col-sm-2" for="floorDoor">Piso y puerta:</label>
-            <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="floorDoor" th:field="*{floorDoor}"/>
-            </div>
-
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="apellidos">Apellidos:</label>
-            <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="apellidos" th:field="*{apellidos}" />
-            </div>
-            <label class="control-label col-sm-2" for="city">Ciudad:</label>
-            <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="city" th:field="*{city}" />
-            </div>
-
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="dni">DNI/NIE:</label>
-            <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="dni" th:field="*{dni}"  />
-            </div>
-
             <label class="control-label col-sm-2" for="number">Número:</label>
             <div class="col-sm-4">
                 <input style="width: 60%;" type="number" min="1" required class="form-control" id="number" th:field="*{number}"/>
@@ -84,39 +62,67 @@
         </div>
 
         <div class="form-group row">
+            <label class="control-label col-sm-2" for="apellidos">Apellidos:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" maxlength="30" type="text" required class="form-control" id="apellidos" th:field="*{apellidos}" />
+                <div class="error" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></div>
+            </div>
+            <label class="control-label col-sm-2" for="floorDoor">Piso y puerta:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" maxlength="10" type="text" required class="form-control" id="floorDoor" th:field="*{floorDoor}"/>
+                <div class="error" th:if="${#fields.hasErrors('floorDoor')}" th:errors="*{floorDoor}"></div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="dni">DNI/NIE:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" maxlength="9" type="text" required class="form-control" id="dni" th:field="*{dni}"/>
+                <div class="error" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>
+            </div>
+            <label class="control-label col-sm-2" for="city">Ciudad:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" maxlength="30" type="text" required class="form-control" id="city" th:field="*{city}"/>
+                <div class="error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+            </div>
+        </div>
+
+        <div class="form-group row">
             <label class="control-label col-sm-2" for="dateOfBirth">Fecha de nacimiento:</label>
             <div class="col-sm-4">
                 <input style="width: 60%;" type="date" placeholder="yyyy-MM-dd" required class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}"  />
+                <div class="error" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
             </div>
-
             <label class="control-label col-sm-2" for="postalCode">Código postal:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="postalCode" th:field="*{postalCode}" />
+                <input style="width: 60%;" minlength="5" maxlength="5" type="text" required class="form-control" id="postalCode" th:field="*{postalCode}" />
+                <div class="error" th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></div>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="telefono">Número de teléfono:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="telefono" th:field="*{telefono}"  />
+                <input style="width: 60%;" maxlength="9" type="text" required class="form-control" id="telefono" th:field="*{telefono}"  />
+                <div class="error" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
             </div>
-
             <label class="control-label col-sm-2" for="country">País:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="country" th:field="*{country}" />
+                <input style="width: 60%;" maxlength="30" type="text" required class="form-control" id="country" th:field="*{country}" />
+                <div class="error" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
             </div>
-
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="citizenCode">Nombre Usuario:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="text" required class="form-control" id="citizenCode" th:field="*{citizenCode}"  />
+                <input style="width: 60%;" maxlength="6" type="text" required class="form-control" id="citizenCode" th:field="*{citizenCode}"/>
+                <div class="error" th:if="${#fields.hasErrors('citizenCode')}" th:errors="*{citizenCode}"></div>
             </div>
-
             <label class="control-label col-sm-2" for="password">Contraseña:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" type="password" required class="form-control" id="password" th:field="*{password}" />
+                <input style="width: 60%;" type="password" minlength="4" maxlength="4" placeholder="4 números" required class="form-control" id="password" th:field="*{password}" />
+                <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
             </div>
         </div>
 

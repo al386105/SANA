@@ -101,7 +101,8 @@
             <div class="form-group row">
                 <label class="control-label col-sm-2" for="cp">Código postal:</label>
                 <div class="col-sm-4">
-                    <input type="text" required class="form-control" id="cp" th:field="*{postalCode}"/>
+                    <input type="text" minlength="5" maxlength="5" class="form-control" id="cp" th:field="*{postalCode}"/>
+                    <td th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></td>
                 </div>
             </div>
 

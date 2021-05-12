@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,6 +61,15 @@ public class MunicipalManagerController {
         if (bindingResult.hasErrors())
             return "municipalManager/add"; //tornem al formulari per a que el corregisca
         municipalManagerDao.addMunicipalManager(manager); //usem el dao per a inserir el reservation
+
+        // Enviar mail al nuevo municipal manager
+        String destinatario = manager.getEmail();
+        String asunto = "Dado de alta";
+        String cuerpo = "¡Has sido dado de alta en SANA como gestor municipal en " + manager.getMunicipality() + "! \n" +
+                "Tu usuario es " + manager.getUsername() + " y tu contraseña es " + manager.getPassword() + ". \n\n" +
+                "SANA. Safe Access to Natural Areas.\nGeneralitat Valenciana";
+        AuxiliarController.enviarMail(destinatario, asunto, cuerpo);
+
         return "redirect:list"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
     }
 

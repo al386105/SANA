@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class ReservaDatosRowMapper implements RowMapper<ReservaDatos> {
     public ReservaDatos mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -20,6 +21,8 @@ public class ReservaDatosRowMapper implements RowMapper<ReservaDatos> {
         reserva.setZoneNumber(rs.getInt("zoneNumber"));
         reserva.setLetter(rs.getString("letter").charAt(0));
         reserva.setNaturalArea(rs.getString("naturalArea"));
+        reserva.setBeginningTime(rs.getObject("beginningTime", LocalTime.class));
+        reserva.setEndTime(rs.getObject("endTime", LocalTime.class));
         return reserva;
     }
 }

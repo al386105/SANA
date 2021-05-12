@@ -23,10 +23,11 @@ public class ReservaDatosDao {
 
     public List<ReservaDatos> getReservasEmail(String email) {
         try {
-            return jdbcTemplate.query("SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea " +
+            return jdbcTemplate.query("SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea, slot.beginningtime, slot.endtime " +
                             "FROM reservation AS res " +
                             "JOIN reservationofzone AS ro ON res.reservationnumber = ro.reservationnumber " +
                             "JOIN zone AS zone ON ro.zoneid = zone.id " +
+                            "JOIN timeslot AS slot ON res.timeslotid = slot.id " +
                             "WHERE res.citizenemail = ? AND (res.state = 'created' OR res.state = 'inUse')",
                     new ReservaDatosRowMapper(),
                     email);
@@ -53,10 +54,11 @@ public class ReservaDatosDao {
 
     public List<ReservaDatos> getReservasTodasEmail(String email) {
         try {
-            return jdbcTemplate.query("SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea " +
+            return jdbcTemplate.query("SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea, slot.beginningtime, slot.endtime " +
                             "FROM reservation AS res " +
                             "JOIN reservationofzone AS ro ON res.reservationnumber = ro.reservationnumber " +
                             "JOIN zone AS zone ON ro.zoneid = zone.id " +
+                            "JOIN timeslot AS slot ON res.timeslotid = slot.id " +
                             "WHERE res.citizenemail = ?",
                     new ReservaDatosRowMapper(),
                     email);

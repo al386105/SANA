@@ -4,6 +4,7 @@ import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class ReservaDatos implements Comparable<ReservaDatos>{
     private int reservationNumber;
@@ -15,6 +16,8 @@ public class ReservaDatos implements Comparable<ReservaDatos>{
     private int zoneNumber;
     private char letter;
     private String naturalArea;
+    private LocalTime beginningTime;
+    private LocalTime endTime;
 
     public int getReservationNumber() {
         return reservationNumber;
@@ -80,6 +83,22 @@ public class ReservaDatos implements Comparable<ReservaDatos>{
         this.naturalArea = naturalArea;
     }
 
+    public LocalTime getBeginningTime() {
+        return beginningTime;
+    }
+
+    public void setBeginningTime(LocalTime beginningTime) {
+        this.beginningTime = beginningTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
     @Override
     public String toString() {
         return "ReservaDatos{" +
@@ -91,6 +110,8 @@ public class ReservaDatos implements Comparable<ReservaDatos>{
                 ", zoneNumber=" + zoneNumber +
                 ", letter=" + letter +
                 ", naturalArea='" + naturalArea + '\'' +
+                ", beginningTime=" + beginningTime +
+                ", endTime=" + endTime +
                 '}';
     }
 

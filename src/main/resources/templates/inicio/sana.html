@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body id="page-top">
-    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
+    <!--<nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
         <div class="container"><a class="navbar-brand js-scroll-trigger" href="#page-top">SANA</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
@@ -13,7 +13,11 @@
             </div>
         </div>
     </nav>
-    <header class="text-center text-white bg-primary masthead">
+    -->
+
+    <div th:replace="fragments/header"></div>
+
+    <header class="text-center text-white bg-primary">
         <div class="container"><img class="img-fluid d-block mx-auto mb-5" src="../assets/img/LOGO_mono.png">
             <h2 style="font-size:40px">¡Bienvenido a SANA!</h2>
             <h2>Safe Acces to Natural Areas</h2>

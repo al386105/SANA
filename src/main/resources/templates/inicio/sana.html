@@ -37,78 +37,7 @@
             <div class="container" th:replace="/naturalArea/pagedlist"></div>
         </div>
 
-<!--        ESTO ES LO QUE MIGUEL HA COMENTADO-->
-<!--        <div class="imgWrapper">-->
-<!--            <div class="imgRedonda">-->
-<!--                <img src="../assets/img/foto_index_1.jpg" th:src="@{../assets/img/foto_index_1.jpg}" alt="El Pou Clar, Ontinyent, Valencia"/>-->
-<!--            </div>-->
-<!--            <div class="imgRedonda">-->
-<!--                <img src="../assets/img/foto_index_2.jpg" th:src="@{../assets/img/foto_index_2.jpg}" alt="Guadalest, Alicante"/>-->
-<!--            </div>-->
-<!--            <div class="imgRedonda">-->
-<!--                <img src="../assets/img/foto_index_3.jpg" th:src="@{../assets/img/foto_index_3.jpg}" alt="Fuente de los baños, Montanejos, Castellón"/>-->
-<!--            </div>-->
-<!--        </div>-->
-
-    <!--
-        <div class="container">
-            <h2 class="text-uppercase text-center text-white">Áreas Naturales</h2>
-            <hr class="star-light mb-5">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Municipio</th>
-                    <th scope="col">Acceso</th>
-                    <th scope="col">Localización</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="naturalArea: ${#lists.sort(naturalAreas)}">
-                    <td th:text="${naturalArea.name}"></td>
-                    <td th:text="${naturalArea.municipality}"></td>
-                    <td th:text="${naturalArea.typeOfAccess}"></td>
-                    <td th:text="${naturalArea.geographicalLocation}"></td>
-                    <td><a th:href="@{/naturalArea/get/{naturalArea}(naturalArea=${naturalArea.name})}">
-                        <button type="button" class="btn btn-primary">Más</button> </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    -->
     </section>
-    <!--
-    <section id="inicio_sesion" class="inicio_sesion">
-        <div class="container">
-            <h2 class="text-uppercase text-center text-secondary">Iniciar Sesión</h2>
-            <br>
-            <hr class="barra-normal">
-            <br>
-            <br>
-            <img src="assets/img/perfil.png" style="display:block; position: relative; margin:auto; width: 170px; height: 170px;">
-            <div class="container">
-                <div class="abs-center">
-                    <form action="#" class="border p-3 form" style=" background-color: #e8e6e8!important; ;position: relative;
-                    z-index: 1; background: #FFFFFF; max-width: 360px; margin: 0 auto 100px; padding: 40px; text-align: center;">
-                        <div class="form-group">
-                            <label for="email">Email or citizen code</label>
-                            <input type="email" name="email" id="email" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Contraseña</label>
-                            <input type="password" name="password" id="password" class="form-control">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Entrar</button>
-                        <a href="inicio/register_form" class="btn btn-primary">Registrarse</a>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-    -->
-
 <div th:replace="fragments/footer"></div>
 </body>
 </html>

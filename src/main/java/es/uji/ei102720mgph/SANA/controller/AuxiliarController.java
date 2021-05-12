@@ -88,7 +88,7 @@ public class AuxiliarController {
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:inicio";
+        return "redirect:/naturalArea/pagedlist";
     }
 
     // TODO esto debe ser / en vez de inicio

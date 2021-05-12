@@ -198,3 +198,16 @@ h4.colorTierra {
     overflow-y: scroll;
     overflow-x:hidden;
 }
+
+.page-link {
+    color: #b86f52;
+    background-color: #e8e6e8;
+    border-color: #b86f52;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #e8e6e8;
+    background-color: #b86f52;
+    border-color: #b86f52;
+}

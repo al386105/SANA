@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!--
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -25,16 +26,13 @@
         </div>
     </div>
 </nav>
+-->
 
-
+<body id="page-top">
+<div th:replace="fragments/headerRegistered"></div>
 
 <section id="reservas">
     <div class="container">
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
         <h2 class="text-uppercase text-center text-secondary mb-0">Mis Reservas</h2>
         <br>
         <hr class="barra-normal">
@@ -64,7 +62,7 @@
                 <br>
                 <!-- VENTANA EMERGENTE -->
                 <div class="modal" id="miModal">
-                    <div class="modal-dialog" role="document">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Cancelar reserva</h5>

@@ -30,11 +30,27 @@
                 <button type="button" class="btn btn-warning">Edita</button>
             </a>
             </td>
-            <td><a th:href="@{/service/delete/{nameOfService}(nameOfService=${service.nameOfService})}"
-                   th:onclick="return confirm('¿Estás seguro/a de borrar el servicio ' + [[${service.nameOfService}]] + '?');">
-                <button type="button" class="btn btn-danger">Elimina</button>
-            </a>
-            </td>
+            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Elimina</button></td>
+
+            <!-- VENTANA EMERGENTE -->
+            <div class="modal" id="miModal">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Eliminar servicio</h5>
+                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Seguro que quieres eliminar el servicio <span th:text="${service.nameOfService}"></span>?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a th:href="@{/service/delete/{nameOfService}(nameOfService=${service.nameOfService})}">
+                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </tr>
         </tbody>
     </table>

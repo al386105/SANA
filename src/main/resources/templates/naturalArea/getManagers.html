@@ -26,10 +26,26 @@
     <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
         <button type="button" class="btn btn-warning">Edita</button> </a>
     </td>
-    <td><a th:href="@{../delete/{naturalArea}(naturalArea=${naturalArea.name})}"
-           th:onclick="return confirm('¿Estás seguro/a de borrar el área natural '+ [[${naturalArea.name}]] + '?');">
-        <button type="button" class="btn btn-danger">Elimina</button></a>
-    </td>
+    <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Elimina</button></td>
+    <!-- VENTANA EMERGENTE -->
+    <div class="modal" id="miModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar área natural</h5>
+                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Seguro que quieres eliminar el área natural <span th:text="${naturalArea.name}"></span>?</p>
+                </div>
+                <div class="modal-footer">
+                    <a th:href="@{../delete/{naturalArea}(naturalArea=${naturalArea.name})}">
+                        <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <hr class="lineaVerde">
 
     <!-- solo se pueden gestionar las zonas y franjas horarias de los espacios restringidos -->
@@ -60,12 +76,27 @@
                     <button type="button" class="btn btn-warning">Edita</button>
                 </a>
                 </td>
-                <td><a th:href="@{/zone/delete/{id}(id=${zone.id})}"
-                       th:onclick="return confirm('¿Estás seguro/a de borrar la zona '+ [[${zone.zoneNumber}]] +
-                        [[${zone.letter}]] + ' de ' + [[${zone.naturalArea}]] + '?');">
-                    <button type="button" class="btn btn-danger">Elimina</button>
-                </a>
-                </td>
+                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal6">Elimina</button></td>
+                <!-- VENTANA EMERGENTE -->
+                <div class="modal" id="miModal6">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Eliminar zona</h5>
+                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Seguro que quieres borrar la zona <span th:text="${zone.zoneNumber}"></span> <span th:text="${zone.letter}"></span>
+                                     de <span th:text="${zone.naturalArea}"></span>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a th:href="@{/zone/delete/{id}(id=${zone.id})}">
+                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </tr>
             </tbody>
         </table>
@@ -102,12 +133,26 @@
                     <button type="button" class="btn btn-warning">Edita</button>
                 </a>
                 </td>
-                <td><a th:href="@{/timeSlot/delete/{id}(id=${timeSlot.id})}"
-                       th:onclick="return confirm('¿Estás seguro/a de borrar la franja horaria de identificador '+
-                       [[${timeSlot.id}]] + '?');">
-                    <button type="button" class="btn btn-danger">Elimina</button>
-                </a>
-                </td>
+                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal5">Elimina</button></td>
+                <!-- VENTANA EMERGENTE -->
+                <div class="modal" id="miModal5">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Eliminar franja horaria</h5>
+                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Seguro que quieres borrar la franja horaria de identificador <span th:text="${timeSlot.id}"></span>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a th:href="@{/timeSlot/delete/{id}(id=${timeSlot.id})}">
+                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </tr>
             </tbody>
         </table>
@@ -172,12 +217,28 @@
                     <button type="button" class="btn btn-warning">Edita</button>
                 </a>
             </td>
-            <td><a th:href="@{/serviceDate/delete/{id}(id=${serviceDate.id})}"
-                   th:onclick="return confirm('¿Estás seguro/a de borrar la asignación del servicio fijo ' +
-                   [[${serviceDate.service}]] + ' de ' + [[${naturalArea.name}]] + '?');">
-                    <button type="button" class="btn btn-danger">Elimina</button>
-                </a>
-            </td>
+
+            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal2">Elimina</button></td>
+            <!-- VENTANA EMERGENTE -->
+            <div class="modal" id="miModal2">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Eliminar servicio fijo</h5>
+                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Seguro que quieres eliminar la asignación del servicio fijo <span th:text="${serviceDate.service}"></span>
+                                 de <span th:text="${naturalArea.name}"></span>?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a th:href="@{/serviceDate/delete/{id}(id=${serviceDate.id})}">
+                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </tr>
         </tbody>
     </table>
@@ -221,12 +282,27 @@
                 <button type="button" class="btn btn-warning">Edita</button>
             </a>
             </td>
-            <td><a th:href="@{/temporalService/delete/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}"
-                   th:onclick="return confirm('¿Estás seguro/a de borrar la asignación del servicio temporal ' +
-                   [[${temporalService.service}]] + ' de ' + [[${naturalArea.name}]] + '?');">
-                <button type="button" class="btn btn-danger">Elimina</button>
-            </a>
-            </td>
+            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal3">Elimina</button></td>
+            <!-- VENTANA EMERGENTE -->
+            <div class="modal" id="miModal3">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Eliminar servicio temporal</h5>
+                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Seguro que quieres eliminar la asignación del servicio temporal <span th:text="${temporalService.service}"></span>
+                                de <span th:text="${naturalArea.name}"></span>?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a th:href="@{/temporalService/delete/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
+                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </tr>
         </tbody>
     </table>
@@ -244,11 +320,26 @@
     <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
         <tr th:each="picture: ${pictures}">
             <td scope="row"><img class="fotoListado" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
-            <td style="vertical-align:middle;"><a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}"
-                   th:onclick="return confirm('¿Estás seguro/a de borrar esta imagen?');">
-                <button type="button" class="btn btn-danger">Elimina</button>
-            </a>
-            </td>
+            <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal4">Elimina</button></td>
+            <!-- VENTANA EMERGENTE -->
+            <div class="modal" id="miModal4">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Eliminar imagen</h5>
+                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Seguro que quieres borrar esta imagen?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}">
+                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </tr>
         </tbody>
     </table>

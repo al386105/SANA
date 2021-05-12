@@ -35,15 +35,35 @@
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-success">Actualizar municipio</button>
+                <button type="button" data-toggle="modal" data-target="#miModal" class="btn btn-success">Actualizar municipio</button>
             </div>
         </div>
-        <a href="/municipality/list"><button type="submit" class="btn btn-primary">Volver al listado</button></a>
-        <a th:href="@{/municipality/get/{municipality}(municipality=${municipality.name})}">
-            <button type="submit" class="btn btn-primary">Volver al municipio</button>
-        </a>
-        <br><br>
+
+        <!-- VENTANA EMERGENTE -->
+        <div class="modal" id="miModal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Actualizar municipio</h5>
+                        <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Seguro que quieres actualizar el municipio <span th:text="${municipality.name}"></span>?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </form>
+    <a href="/municipality/list"><button type="submit" class="btn btn-primary">Volver al listado</button></a>
+    <a th:href="@{/municipality/get/{municipality}(municipality=${municipality.name})}">
+        <button type="submit" class="btn btn-primary">Volver al municipio</button>
+    </a>
+    <br><br>
 </div>
 
 <div th:replace="fragments/footer"></div>

@@ -39,12 +39,52 @@
                 <button type="button" class="btn btn-warning">Edita</button>
             </a>
             </td>
-            <td><a th:href="@{/municipalManager/delete/{email}(email=${municipalManager.email})}"
-                   th:onclick="return confirm('¿Estás seguro/a de borrar el gestor municipal '+
-                   [[${municipalManager.name}]] + ', ' + [[${municipalManager.surname}]] + '?');">
-                <button type="button" class="btn btn-danger">Elimina</button>
-            </a>
-            </td>
+
+            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal2">Baja</button></td>
+            <!-- VENTANA EMERGENTE -->
+            <div class="modal" id="miModal2">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Dar de baja un gestor municipal</h5>
+                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Seguro que quieres dar de baja al gestor municipal <span th:text="${municipalManager.name}"></span>
+                                <span th:text="${municipalManager.surname}"></span>?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a th:href="@{/municipalManager/darDeBaja/{email}(email=${municipalManager.email})}">
+                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Elimina</button></td>
+            <!-- VENTANA EMERGENTE -->
+            <!-- TODO problema ya que no se puede borrar si hay emails -->
+            <div class="modal" id="miModal">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Eliminar gestor municipal</h5>
+                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Seguro que quieres eliminar el gestor municipal <span th:text="${municipalManager.name}"></span>
+                                <span th:text="${municipalManager.surname}"></span>?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a th:href="@{/municipalManager/delete/{email}(email=${municipalManager.email})}">
+                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </tr>
         </tbody>
     </table>

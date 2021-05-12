@@ -116,6 +116,14 @@ public class MunicipalManagerController {
         return "redirect:list";
     }
 
+    @RequestMapping(value="/darDeBaja/{email}", method = RequestMethod.GET)
+    public String darDeBajaMunicipalManager(Model model, @PathVariable String email) {
+        MunicipalManager municipalManager = municipalManagerDao.getMunicipalManager(email);
+        municipalManager.setLeavingDate(LocalDate.now());
+        municipalManagerDao.updateMunicipalManager(municipalManager);
+        return "redirect:list";
+    }
+
     @RequestMapping(value="/delete/{email}")
     public String processDelete(@PathVariable String email) {
         municipalManagerDao.deleteMunicipalManager(email);

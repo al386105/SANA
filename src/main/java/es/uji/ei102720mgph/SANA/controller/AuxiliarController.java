@@ -99,7 +99,7 @@ public class AuxiliarController {
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:inicio";
+        return "inicio";
     }
 
     // TODO esto debe ser / en vez de inicio
@@ -345,7 +345,7 @@ public class AuxiliarController {
         // Envia correo electrónico
         enviarMail(destinatario, asunto, cuerpo);
 
-        return "redirect:../../inicio"; //redirigim a la lista per a veure el email afegit, post/redirect/get
+        return "redirect:/inicio"; //redirigim a la lista per a veure el email afegit, post/redirect/get
     }
 
     public static void enviarMail(String destinatario, String asunto, String cuerpo) {

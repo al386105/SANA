@@ -156,8 +156,8 @@ public class NaturalAreaController {
         model.addAttribute("selectedPage", currentPage);
 
         if (session.getAttribute("registeredCitizen") == null) return "inicio/sana";
-        //return "inicioRegistrado/areasNaturales";
-        return "redirect:/inicioRegistrado/areasNaturales";
+        return "inicioRegistrado/areasNaturales";
+        //return "redirect:/inicioRegistrado/areasNaturales";
     }
 
     @RequestMapping(value="/listEnvironmental")

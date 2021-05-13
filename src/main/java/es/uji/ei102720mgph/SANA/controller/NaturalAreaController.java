@@ -157,7 +157,6 @@ public class NaturalAreaController {
 
         if (session.getAttribute("registeredCitizen") == null) return "inicio/sana";
         return "inicioRegistrado/areasNaturales";
-        //return "redirect:/inicioRegistrado/areasNaturales";
     }
 
     @RequestMapping(value="/listEnvironmental")

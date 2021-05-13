@@ -46,19 +46,11 @@
   </div>
 </header>
 
+<!-- NATURAL AREAS LISTED SECTION    -->
 <section class="text-white bg-primary mb-0" id="natural_areas">
-  <div class="imgWrapper">
-    <div class="imgRedonda">
-      <img src="../assets/img/foto_index_1.jpg" th:src="@{../assets/img/foto_index_1.jpg}" alt="El Pou Clar, Ontinyent, Valencia"/>
-    </div>
-    <div class="imgRedonda">
-      <img src="../assets/img/foto_index_2.jpg" th:src="@{../assets/img/foto_index_2.jpg}" alt="Guadalest, Alicante"/>
-    </div>
-    <div class="imgRedonda">
-      <img src="../assets/img/foto_index_3.jpg" th:src="@{../assets/img/foto_index_3.jpg}" alt="Fuente de los baños, Montanejos, Castellón"/>
-    </div>
+  <div class="container">
+    <div class="container" th:replace="/naturalArea/pagedlist"></div>
   </div>
-</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

@@ -6,6 +6,7 @@ import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
+import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -115,8 +117,9 @@ public class NaturalAreaController {
         return "naturalArea/list";
     }
 
+
     @RequestMapping(value="/pagedlist")
-    public String listNaturalAreasPaged(Model model,
+    public String listNaturalAreasPaged(Model model, HttpSession session,
                                         @RequestParam("page") Optional<Integer> page){
         // Paso 1: Crear la lista paginada de naturalAreas
         List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
@@ -151,37 +154,10 @@ public class NaturalAreaController {
         // Paso 3: selectedPage: usar parametro opcional page, o en su defecto, 1
         int currentPage = page.orElse(0);
         model.addAttribute("selectedPage", currentPage);
-        return "inicio/sana";
-    }
 
-    @RequestMapping(value="/listManagers")
-    public String listNaturalAreasManagers(Model model, @RequestParam("page") Optional<Integer> page){
-        // Paso 1: Crear la lista paginada de naturalAreas
-        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
-        Collections.sort(naturalAreas);
-        ArrayList<ArrayList<NaturalArea>> naturalAreasPaged = new ArrayList<>();
-        int ini=0;
-        int fin=pageLength-1;
-        while (fin<naturalAreas.size()) {
-            naturalAreasPaged.add(new ArrayList<>(naturalAreas.subList(ini, fin)));
-            ini+=pageLength;
-            fin+=pageLength;
-        }
-        naturalAreasPaged.add(new ArrayList<NaturalArea>(naturalAreas.subList(ini, naturalAreas.size())));
-        model.addAttribute("naturalAreasPaged", naturalAreasPaged);
-
-        // Paso 2: Crear la lista de numeros de pagina
-        int totalPages = naturalAreasPaged.size();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-        // Paso 3: selectedPage: usar parametro opcional page, o en su defecto, 1
-        int currentPage = page.orElse(0);
-        model.addAttribute("selectedPage", currentPage);
-        return "naturalArea/listManagers";
+        if (session.getAttribute("registeredCitizen") == null) return "inicio/sana";
+        //return "inicioRegistrado/areasNaturales";
+        return "redirect:/inicioRegistrado/areasNaturales";
     }
 
     @RequestMapping(value="/listEnvironmental")

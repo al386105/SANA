@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
@@ -36,6 +37,11 @@ public class ReservationDao {
                         Reservation.getContador(), reservation.getReservationDate(), LocalDate.now(),
                         LocalTime.now(), reservation.getNumberOfPeople(), reservation.getState().name(),
                         reservation.getQRcode(), null, null, reservation.getCitizenEmail(), reservation.getTimeSlotId());
+
+//                jdbcTemplate.update(
+//                        "INSERT INTO ReservationOfZone VALUES(?, ?, ?)",
+//                        Reservation.getContador(), reservation.getReservationNumber(), zoneId);
+
                 excepcion = false;
             } catch (DuplicateKeyException e) {
                 excepcion = true;

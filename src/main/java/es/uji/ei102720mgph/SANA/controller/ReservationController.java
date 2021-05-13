@@ -3,6 +3,8 @@ package es.uji.ei102720mgph.SANA.controller;
 import es.uji.ei102720mgph.SANA.dao.ReservationDao;
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.Reservation;
+import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
+import es.uji.ei102720mgph.SANA.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 
 @Controller
@@ -19,11 +22,18 @@ import java.time.LocalDate;
 public class ReservationController {
 
     private ReservationDao reservationDao;
+    private ReservationService reservationService;
 
     @Autowired
     public void setReservationDao(ReservationDao reservationDao) {
         this.reservationDao=reservationDao;
     }
+
+    @Autowired
+    public void setReservationService(ReservationService reservationService){
+        this.reservationService = reservationService;
+    }
+
 
     // Operació llistar
     @RequestMapping("/list")
@@ -34,7 +44,8 @@ public class ReservationController {
 
     // Operació crear
     @RequestMapping(value="/add")
-    public String addReservation(Model model) {
+    public String addReservation(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) return "redirect:/inicio/login";
         model.addAttribute("reservation", new Reservation());
         return "reservation/add";
     }
@@ -43,11 +54,15 @@ public class ReservationController {
     @RequestMapping(value="/add", method=RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("reservation") Reservation reservation,
                                    BindingResult bindingResult) {
+        ReservationValidator reservationValidator = new ReservationValidator();
+        reservationValidator.validate(reservation, bindingResult);
+
         if (bindingResult.hasErrors())
             return "reservation/add"; //tornem al formulari per a que el corregisca
-        String nombreImagenQR = reservation.getQRcode();
-        reservation.setQRcode("assets/img/qrCodes/" + nombreImagenQR);
-        reservationDao.addReservation(reservation); //usem el dao per a inserir el reservation
+
+
+        reservationService.addReservation(reservation);
+
         return "redirect:list"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
     }
 

@@ -17,8 +17,8 @@ public class ReservationValidator implements Validator {
         Reservation reservation = (Reservation) obj;
 
         // TODO: Falta comprobar que la reserva no supera el limite de personas
+        // TODO: Ese valor se puede obtener de zone (atributo: maximumCapacity)
         if (reservation.getNumberOfPeople() <= 0 )
             errors.rejectValue("numberOfPeople", "obligatorio", "Es obligatorio introducir un número de personas");
-
     }
 }

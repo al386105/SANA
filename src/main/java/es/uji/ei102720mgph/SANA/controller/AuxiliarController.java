@@ -259,7 +259,7 @@ public class AuxiliarController {
                     if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
                         //Contraseña Correcta
                         session.setAttribute("registeredCitizen", registeredCitizen);
-                        return "redirect:/inicio/registrado"; //TODO return redirect:/
+                        return "redirect:/naturalArea/pagedlist"; //TODO return redirect:/
 
                     } else {
                         //Contraseña Incorrecta

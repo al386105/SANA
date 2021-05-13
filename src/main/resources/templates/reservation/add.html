@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Crear reserva</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
+<div th:replace="fragments/headerManager"></div>
+
+
 <div class="container">
     <h2>Nueva reserva</h2>
     <form class="form-horizontal" action="#" th:action="@{/reservation/add}"
@@ -90,5 +88,8 @@
 
     </form>
 </div>
+
+<div th:replace="fragments/footer"></div>
+
 </body>
 </html>

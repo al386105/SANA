@@ -2,6 +2,7 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.CommentDao;
 import es.uji.ei102720mgph.SANA.model.Comment;
+import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("comment")
@@ -28,14 +32,20 @@ public class CommentController {
     }
 
     // Operació crear
-    @RequestMapping(value="/add")
-    public String addComment(Model model) {
-        model.addAttribute("comment", new Comment());
+    @RequestMapping(value="/add/{naturalArea}")
+    public String addComment(Model model, HttpSession session, @PathVariable String naturalArea) {
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        if (citizen == null) return "redirect:/inicio/login";
+        Comment comment = new Comment();
+        comment.setNaturalArea(naturalArea);
+        comment.setDate(LocalDate.now());
+        comment.setCitizenEmail(citizen.getEmail());
+        model.addAttribute("comment", comment);
         return "comment/add";
     }
 
     // Gestió de la resposta del formulari de creació d'objectes
-    @RequestMapping(value="/add", method= RequestMethod.POST)
+    @RequestMapping(value="/add/{naturalArea}", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("comment") Comment comment,
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors())

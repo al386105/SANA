@@ -13,7 +13,6 @@
         <thead>
         <tr>
             <th scope="col">Nombre</th>
-            <th scope="col">Descripción</th>
             <th scope="col">Fecha registro</th>
             <th scope="col"></th>
             <th scope="col"></th>
@@ -22,18 +21,17 @@
         <tbody>
         <tr th:each="municipality: ${#lists.sort(municipalities)}">
             <td scope="row" th:text="${municipality.name}"></td>
-            <td th:text="${municipality.description}"></td>
             <td th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></td>
             <td><a th:href="@{/municipality/get/{name}(name=${municipality.name})}">
-                <button type="button" class="btn btn-primary">Más</button>
+                <button type="button" class="btn btn-primary">Más información</button>
             </a>
             </td>
             <td><a th:href="@{/municipality/update/{name}(name=${municipality.name})}">
                 <button type="button" class="btn btn-warning">Edita</button>
             </a>
             </td>
+            <!--
             <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Elimina</button></td>
-            <!-- VENTANA EMERGENTE -->
             <div class="modal" id="miModal">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -51,7 +49,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </tr>
         </tbody>
     </table>

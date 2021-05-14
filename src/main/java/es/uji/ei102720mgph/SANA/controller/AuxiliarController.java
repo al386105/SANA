@@ -206,8 +206,6 @@ public class AuxiliarController {
             registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
 
             return "redirect:/inicio/login";
-
-
         }else {
             //Usuario ya registrado en el sistema
             bindingResult.rejectValue("email", "bademail", "Usuario ya Registrado");
@@ -222,18 +220,34 @@ public class AuxiliarController {
 
         if (bindingResult.hasErrors())
             return "inicio/login"; //tornem al formulari d'inici de sessió
-            //return "redirect:/inicio/login";
+
+
+        //!!!!!!!!!
+        // TODO acceso responsable fatal
+        if(userLogin.getEmail().equals("responsable@gmail.com") && userLogin.getPassword().equals("responsable"))
+            return "redirect:/section/environmentalManager";
+        //!!!!!!!!!
+
 
         SanaUser sanaUser = sanaUserDao.getSanaUser(userLogin.getEmail().trim());
         if (sanaUser != null){
             //El usuario esta registrado en el sistema
 
+            // TODO NO VA
             if (sanaUser.getTypeOfUser().equals(TypeOfUser.municipalManager)){
                 MunicipalManager municipalManager = municipalManagerDao.getMunicipalManager(sanaUser.getEmail());
+
+                // Si está dado de baja, no puede entrar
+                if(municipalManager.getLeavingDate() == null) {
+                    //El usuario no está registrado en el sistema
+                    bindingResult.rejectValue("email", "dadoDeBaja", "Has sido dado de baja como gestor");
+                    return "inicio/login";
+                }
+
                 if (municipalManager.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
                     session.setAttribute("municipalManager", municipalManager);
-                    return "section/managers"; //TODO es un redirect
+                    return "redirect:/section/managers";
                 }else{
                     //Contraseña Incorrecta
                     bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
@@ -241,12 +255,12 @@ public class AuxiliarController {
                 }
             }
 
-            if (sanaUser.getTypeOfUser().equals(TypeOfUser.controlStaff)){
+            else if (sanaUser.getTypeOfUser().equals(TypeOfUser.controlStaff)){
                 ControlStaff controlStaff = controlStaffDao.getControlStaf(sanaUser.getEmail());
                 if (controlStaff.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
                     session.setAttribute("controlStaff", controlStaff);
-                    return "inicio/sana"; //TODO return redirect:/
+                    return "redirect:/naturalArea/pagedlist";
                 }else{
                     //Contraseña Incorrecta
                     bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
@@ -254,14 +268,13 @@ public class AuxiliarController {
                 }
             }
 
-            if (sanaUser.getTypeOfUser().equals(TypeOfUser.registeredCitizen)){
+            else if (sanaUser.getTypeOfUser().equals(TypeOfUser.registeredCitizen)){
                 RegisteredCitizen registeredCitizen = registeredCitizenDao.getRegisteredCitizen(sanaUser.getEmail());
                 try {
                     if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
                         //Contraseña Correcta
                         session.setAttribute("registeredCitizen", registeredCitizen);
-                        return "redirect:/naturalArea/pagedlist"; //TODO return redirect:/
-
+                        return "redirect:/naturalArea/pagedlist";
                     } else {
                         //Contraseña Incorrecta
                         bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
@@ -279,7 +292,6 @@ public class AuxiliarController {
             bindingResult.rejectValue("email", "badEmail", "Email no registrado en el sistema");
             return "inicio/login";
         }
-        //TODO return redirect:/
         return "redirect:/naturalArea/pagedlist"; //Redirigimos a la página de inicio con la sesión iniciada
     }
 

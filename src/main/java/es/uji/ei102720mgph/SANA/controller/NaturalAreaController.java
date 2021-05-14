@@ -126,16 +126,10 @@ public class NaturalAreaController {
 
 
     @RequestMapping(value="/pagedlist")
-    public String listNaturalAreasPaged(Model model, HttpSession session,@RequestParam(value="patron",required=false) String patron,
+    public String listNaturalAreasPaged(Model model, HttpSession session,
                                         @RequestParam("page") Optional<Integer> page){
         // Paso 1: Crear la lista paginada de naturalAreas
-        List<NaturalArea> naturalAreas;
-
-        if (patron != null)
-            naturalAreas = naturalAreaDao.getNaturalAreaSearch(patron);
-        else
-           naturalAreas = naturalAreaDao.getNaturalAreas();
-
+        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
         Collections.sort(naturalAreas);
         // las áreas naturales cerradas no pueden ser vistas por los ciudadanos
         naturalAreas.removeIf(naturalArea -> naturalArea.getTypeOfAccess().getDescripcion().equals("Cerrado"));
@@ -298,7 +292,6 @@ public class NaturalAreaController {
         return "redirect:/naturalArea/listManagers";
     }
 
-    /*
     @RequestMapping(value="/occupancy")
     public String getOccupancy(Model model){
         LocalDate date = LocalDate.of(2020, 10, 26);
@@ -306,6 +299,4 @@ public class NaturalAreaController {
         model.addAttribute("occupancy", occupancy);
         return "/occupancy";
     }
-
-     */
 }

@@ -14,8 +14,8 @@
     <td><a th:href="@{/municipality/update/{name}(name=${municipality.name})}">
         <button type="button" class="btn btn-warning">Edita</button> </a>
     </td>
+    <!--
     <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Elimina</button></td>
-    <!-- VENTANA EMERGENTE -->
     <div class="modal" id="miModal">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     </td>
     <hr class="lineaVerde">
 
@@ -44,49 +44,58 @@
     <table th:unless="${#lists.isEmpty(municipalManagers)}" class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">Usuario</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellidos</th>
-            <th scope="col">Email</th>
             <th scope="col">Municipio</th>
-            <th scope="col">Fecha de nacimiento</th>
-            <th scope="col">Fecha de alta</th>
             <th scope="col">Fecha de baja</th>
+            <th scope="col"></th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="municipalManager: ${#lists.sort(municipalManagers)}">
-            <td scope="row" th:text="${municipalManager.username}"></td>
-            <td th:text="${municipalManager.name}"></td>
+            <td scope="row" th:text="${municipalManager.name}"></td>
             <td th:text="${municipalManager.surname}"></td>
-            <td th:text="${municipalManager.email}"></td>
             <td th:text="${municipalManager.municipality}"></td>
-            <td th:text="${#temporals.format(municipalManager.dateOfBirth,'dd/MM/yyyy')}"></td>
-            <td th:text="${#temporals.format(municipalManager.registrationDate,'dd/MM/yyyy')}"></td>
-            <td th:text="${#temporals.format(municipalManager.leavingDate,'dd/MM/yyyy')}"></td>
+            <div th:if="${municipalManager.leavingDate != null}">
+                <td th:text="${municipalManager.leavingDate}"></td>
+            </div>
+            <div th:if="${municipalManager.leavingDate == null}">
+                <td> - </td>
+            </div>
+
+            <!-- Botones -->
+            <td><a th:href="@{/municipalManager/get/{email}(email=${municipalManager.email})}">
+                <button type="button" class="btn btn-primary">Más información</button> </a>
+            </td>
             <td><a th:href="@{/municipalManager/update/{email}(email=${municipalManager.email})}">
                 <button type="button" class="btn btn-warning">Edita</button>
             </a>
             </td>
-            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal2">Elimina</button></td>
-            <!-- VENTANA EMERGENTE -->
-            <div class="modal" id="miModal2">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Eliminar el gestor municipal</h5>
-                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <p>¿Seguro que quieres eliminar el gestor municipal <span th:text="${municipalManager.name}"></span>
-                                <span th:text="${municipalManager.surname}"></span>?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <a th:href="@{/municipalManager/delete/{email}(email=${municipalManager.email})}">
-                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+            <!-- opcion para dar de baja, si no lo está ya -->
+            <div th:if="${municipalManager.leavingDate != null}">
+                <td></td>
+            </div>
+            <div th:if="${municipalManager.leavingDate == null}">
+                <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Dar de baja</button></td>
+                <!-- VENTANA EMERGENTE -->
+                <div class="modal" id="miModal">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Dar de baja un gestor municipal</h5>
+                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Seguro que quieres dar de baja al gestor municipal <span th:text="${municipalManager.name}"></span>
+                                    <span th:text="${municipalManager.surname}"></span>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a th:href="@{/municipalManager/darDeBaja/{email}(email=${municipalManager.email})}">
+                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                            </div>
                         </div>
                     </div>
                 </div>

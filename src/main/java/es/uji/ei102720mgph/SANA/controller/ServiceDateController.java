@@ -2,6 +2,7 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.dao.ServiceDateDao;
+import es.uji.ei102720mgph.SANA.model.MunicipalManager;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.ServiceDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,5 +112,14 @@ public class ServiceDateController {
         model.addAttribute("serviceDate", serviceDateDao.getServiceDate(id));
         model.addAttribute("service", serviceDao.getService(serviceDate.getService()));
         return "/serviceDate/get";
+    }
+
+    @RequestMapping(value="/darDeBaja/{id}", method = RequestMethod.GET)
+    public String darDeBajaServiceDate(@PathVariable String id) {
+        ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
+        serviceDate.setEndDate(LocalDate.now());
+        String naturalAreaName = serviceDate.getNaturalArea();
+        serviceDateDao.updateServiceDate(serviceDate);
+        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }

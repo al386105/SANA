@@ -25,7 +25,6 @@
         <li><b>Orientación:</b> <span th:text="${naturalArea.orientation.descripcion}"></span></li>
         <td th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
             <li><b>Restringido hasta:</b> <span th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></span></li>
-            <li><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"></span></li>
         </td>
     </ul>
 

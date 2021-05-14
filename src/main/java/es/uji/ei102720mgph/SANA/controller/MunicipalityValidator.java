@@ -1,15 +1,23 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.model.Municipality;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+@Controller
 public class MunicipalityValidator implements Validator {
+    private MunicipalityDao municipalityDao;
 
     @Override
     public boolean supports(Class<?> cls) {
         return Municipality.class.equals(cls);
     }
+
+    @Autowired
+    public void setMunicipalityDao(MunicipalityDao municipalityDao) { this.municipalityDao = municipalityDao; }
 
     @Override
     public void validate(Object obj, Errors errors) {
@@ -22,5 +30,11 @@ public class MunicipalityValidator implements Validator {
         // Descripción obligatoria
         if (municipality.getDescription().trim().equals(""))
             errors.rejectValue("description", "obligatorio", "Es obligatorio introducir una descripción");
+
+        //TODO no va
+        // Si ya existe el nombre del municipio...
+        /*
+        if(municipalityDao.getMunicipality(municipality.getName()) != null)
+            errors.rejectValue("name", "repetido", "El nombre del municipio ya existe");*/
     }
 }

@@ -21,6 +21,10 @@
 
     <!-- TODO el boton lo usan todos los usuarios... -->
     <br>
+    <td><a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
+        <button type="button" class="btn btn-warning">Edita</button>
+    </a>
+    </td>
     <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${serviceDate.naturalArea})}">
         <button type="submit" class="btn btn-primary">Volver al área natural</button>
     </a>

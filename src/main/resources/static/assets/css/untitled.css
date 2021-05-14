@@ -217,3 +217,12 @@ h4.colorTierra {
     background-color: #b86f52;
     border-color: #b86f52;
 }
+
+.fotoBoton {
+    height:25px;
+    padding-right:10px;
+}
+
+.form-control-corto {
+    width:50%;
+}

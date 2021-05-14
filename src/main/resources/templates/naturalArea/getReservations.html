@@ -10,6 +10,7 @@
 
     <h1><span th:text="${naturalArea.name}"> </span></h1>
     <h3>Lista de reservas</h3>
+    <h3>POR HACER!!!</h3>
     <div th:if="${#lists.isEmpty(reservations)}">
         <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'nonRestricted')}">
             <p><b>¡Este área natural no es restringida y no tiene reservas!</b></p>

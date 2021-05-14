@@ -35,7 +35,7 @@ public class MunicipalManager extends SanaUser implements Comparable<MunicipalMa
     }
 
     public int compareTo(MunicipalManager altre) {
-        return this.getUsername().compareTo(altre.getUsername());
+        return this.getName().compareTo(altre.getName());
     }
 
     @Override

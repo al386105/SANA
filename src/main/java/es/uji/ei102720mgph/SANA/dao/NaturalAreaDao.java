@@ -72,4 +72,14 @@ public class NaturalAreaDao {
         }
     }
 
+    public  List<NaturalArea> getNaturalAreaSearch(String patron) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM NaturalArea WHERE name LIKE '%"+patron+"%'",
+                    new NaturalAreaRowMapper());
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<NaturalArea>();
+        }
+    }
+
 }

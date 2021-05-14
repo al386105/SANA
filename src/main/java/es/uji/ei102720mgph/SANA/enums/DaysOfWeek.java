@@ -7,7 +7,7 @@ public enum DaysOfWeek {
     J("Jueves"),
     V("Viernes"),
     S("Sábado"),
-    D("Doming");
+    D("Domingo");
 
     private String descripcion;
 

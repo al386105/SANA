@@ -7,6 +7,17 @@
 
 <section class="text-white bg-primary mb-0" id="natural_areas">
 <h1>Areas naturales</h1>
+
+    <div class="box" style="padding-bottom: 20px; padding-top: 20px">
+        <form >
+            <span class="icon"><i class="fa fa-search"></i></span>
+            <input th:name="patron" style="border-radius: 25px;" type="search" id="search" placeholder="Search..." />
+            <button style="border-radius: 25px;" type="submit" class="btn btn-primary"> Buscar</button>
+        </form>
+
+    </div>
+
+
 <table class="table table-striped">
     <tbody>
     <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">

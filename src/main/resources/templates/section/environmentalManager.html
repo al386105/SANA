@@ -6,14 +6,39 @@
 
 <div class="container text-center">
     <h2 style="font-size:40px">¡Bienvenido a SANA!</h2>
-    <img class="img-fluid d-block mx-auto mb-5" style="height:250px" src="../assets/img/LOGO_mono.png">
+    <img class="img-fluid d-block mx-auto mb-5" style="height:250px" src="/assets/img/LOGO_mono.png">
     <div class="form-group">
         <a href="/naturalArea/listEnvironmental"><button type="button" class="btn btn-primary btn-xl">Áreas naturales</button></a>
         <a href="/municipalManager/list"><button type="button" class="btn btn-primary btn-xl">Gestores municipales</button></a>
         <a href="/municipality/list"><button type="button" class="btn btn-primary btn-xl">Gestión municipios</button></a>
         <a href="/service/list"><button type="button" class="btn btn-primary btn-xl">Gestión servicios</button></a>
     </div>
+    <div class="row">
+        <div class="col-lg-8 mx-auto" >
+            <button type="button" class="btn btn-primary btn-xl" data-toggle="modal" data-target="#miModal">
+                <img class="fotoBoton" src="/assets/img/logout.png">Cerrar sesión</button>
+        </div>
+    </div>
     <br><br>
+
+    <!-- VENTANA EMERGENTE -->
+    <div class="modal" id="miModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cerrar sesión</h5>
+                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro de que desea cerrar su sesión actual?</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="/logout" class="btn btn-primary">Cerrar sesión</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div th:replace="fragments/footer"></div>

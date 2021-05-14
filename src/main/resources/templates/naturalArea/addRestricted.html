@@ -7,7 +7,7 @@
 <div class="container">
     <h1>Añadir los datos del área restringida</h1>
     <h4>Introduce la fecha de restricción</h4>
-    <form class="form-horizontal" action="#" th:action="@{/naturalArea/updateRestricted}"
+    <form class="form-horizontal" action="#" th:action="@{/naturalArea/addRestricted}"
           th:object="${naturalArea}" method="post">
 
         <div class="form-group row">
@@ -19,7 +19,14 @@
         </div>
 
         <input required type="hidden" th:field ="*{typeOfAccess}"/>
-        <input required type="hidden" th:field="*{geographicalLocation}" />
+        <input required type="hidden" th:field="*{latitudGrados}" />
+        <input required type="hidden" th:field="*{latitudMin}" />
+        <input required type="hidden" th:field="*{latitudSeg}" />
+        <input required type="hidden" th:field="*{latitudLetra}" />
+        <input required type="hidden" th:field="*{longitudGrados}" />
+        <input required type="hidden" th:field="*{longitudMin}" />
+        <input required type="hidden" th:field="*{longitudSeg}" />
+        <input required type="hidden" th:field="*{longitudLetra}" />
         <input required type="hidden" th:field ="*{typeOfArea}" />
         <input required type="hidden" th:field="*{length}" />
         <input required type="hidden" th:field="*{width}" />
@@ -36,22 +43,9 @@
             </div>
         </div>
 
-        <!-- TODO no se deberia pedir la ocupacion, es calculada -->
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="occupancyRate">Ratio ocupación (no pedirla...):</label>
-            <div class="col-sm-4">
-                <input type="number" min="0.0" max="100.0" step="0.1" class="form-control" id="occupancyRate" th:field="*{occupancyRate}" />
-            </div>
-        </div>
-
-        <!-- TODO deberia poder añadir aqui franjas horarias -->
-
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
                 <button type="submit" class="btn btn-success">Añadir y finalizar</button>
-                <!-- TODO ver que hacer con botones -->
-                <!--<a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver al listado</button></a>-->
-                <!--<a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>-->
             </div>
         </div>
 

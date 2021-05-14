@@ -113,15 +113,15 @@ public class MunicipalManagerController {
         if (bindingResult.hasErrors())
             return "municipalManager/update";
         municipalManagerDao.updateMunicipalManager(manager);
-        return "redirect:list";
+        return "redirect:/municipalManager/list";
     }
 
     @RequestMapping(value="/darDeBaja/{email}", method = RequestMethod.GET)
-    public String darDeBajaMunicipalManager(Model model, @PathVariable String email) {
+    public String darDeBajaMunicipalManager(@PathVariable String email) {
         MunicipalManager municipalManager = municipalManagerDao.getMunicipalManager(email);
         municipalManager.setLeavingDate(LocalDate.now());
         municipalManagerDao.updateMunicipalManager(municipalManager);
-        return "redirect:list";
+        return "redirect:/municipalManager/list";
     }
 
     @RequestMapping(value="/delete/{email}")
@@ -129,5 +129,11 @@ public class MunicipalManagerController {
         municipalManagerDao.deleteMunicipalManager(email);
         sanaUserDao.deleteSanaUser(email);
         return "redirect:../list";
+    }
+
+    @RequestMapping(value="/get/{email}")
+    public String getMunicipalManager(Model model, @PathVariable String email){
+        model.addAttribute("municipalManager", municipalManagerDao.getMunicipalManager(email));
+        return "/municipalManager/get";
     }
 }

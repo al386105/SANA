@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,16 +46,12 @@ public class TemporalServiceController {
     // metodos para anyadir al modelo los datos del selector o radio buttons
     @ModelAttribute("serviceList")
     public List<String> serviceList() {
+        // TODO deberían devolverse sólo los servicios no asignados al área
         List<Service> serviceList = serviceDao.getTemporalServices();
         List<String> namesServices = serviceList.stream()
                 .map(Service::getNameOfService)
                 .collect(Collectors.toList());
         return namesServices;
-    }
-    //TODO
-    @ModelAttribute("openingDaysList")
-    public DaysOfWeek[] openingDaysList() {
-        return DaysOfWeek.values();
     }
 
     // Operació crear
@@ -82,7 +80,14 @@ public class TemporalServiceController {
     // Operació actualitzar
     @RequestMapping(value="/update/{service}/{naturalArea}", method = RequestMethod.GET)
     public String editTemporalService(Model model, @PathVariable String service, @PathVariable String naturalArea) {
-        model.addAttribute("temporalService", temporalServiceDao.getTemporalService(service, naturalArea));
+        TemporalService temporalService = temporalServiceDao.getTemporalService(service, naturalArea);
+        model.addAttribute("temporalService", temporalService);
+
+        List<DaysOfWeek> diasMarcados = new ArrayList<DaysOfWeek>();
+        for (String dia : temporalService.getOpeningDays().split(","))
+            diasMarcados.add(DaysOfWeek.valueOf(dia));
+        model.addAttribute("diasMarcados", diasMarcados);
+
         return "temporalService/update";
     }
 
@@ -113,8 +118,13 @@ public class TemporalServiceController {
     @RequestMapping(value="/get/{serviceName}/{naturalArea}")
     public String getTemporalServiceNaturalArea(Model model, @PathVariable("serviceName") String serviceName,
                                                 @PathVariable("naturalArea") String naturalArea){
-        model.addAttribute("temporalService", temporalServiceDao.getTemporalService(serviceName, naturalArea));
+        TemporalService temporalService = temporalServiceDao.getTemporalService(serviceName, naturalArea);
+        model.addAttribute("temporalService", temporalService);
         model.addAttribute("service", serviceDao.getService(serviceName));
+        List<String> listaDias = new ArrayList<>();
+        for(String dia : Arrays.asList(temporalService.getOpeningDays().split(",")))
+            listaDias.add(DaysOfWeek.valueOf(dia).getDescripcion());
+        model.addAttribute("dias", listaDias);
         return "/temporalService/get";
     }
 }

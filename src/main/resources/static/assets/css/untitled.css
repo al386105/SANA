@@ -205,6 +205,12 @@ h4.colorTierra {
     border-color: #b86f52;
 }
 
+.page-link:hover {
+    color: #634133;
+    background-color: #e8e6e8;
+    border-color: #b86f52;
+}
+
 .page-item.active .page-link {
     z-index: 3;
     color: #e8e6e8;

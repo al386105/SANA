@@ -118,16 +118,20 @@ public class AuxiliarController {
     public String redirigirRegistradoReservas(Model model, HttpSession session) {
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
+        for (int i = 0; i < listaReservas.size(); i++) {
+            model.addAttribute("motivo"+listaReservas.get(i).getReservationNumber(), "");
+        }
         model.addAttribute("reservas", listaReservas);
-        model.addAttribute("motivo", "");
         return "inicioRegistrado/reservas";
     }
 
     @RequestMapping("inicio/registrado/cancelarReserva/{id}")
-    public String cancelarReserva(@PathVariable String id, @ModelAttribute("motivo") String motivo, Model model, HttpSession session) {
+    public String cancelarReserva(@PathVariable String id, Model model, HttpSession session) {
         //reservaDatosDao.cancelaReservaPorCiudadano(id);
+        String motivo = (String) model.getAttribute("motivo18");
         System.out.println("'" + motivo + "'");
-        model.addAttribute("motivo", "");
+        motivo = (String) model.getAttribute("motivo19");
+        System.out.println("'" + motivo + "'");
         return "redirect:/inicio/registrado/reservas";
     }
     @RequestMapping("inicio/registrado/reservasTodas")

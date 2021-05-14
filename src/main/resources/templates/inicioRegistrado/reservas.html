@@ -61,12 +61,12 @@
                             <span th:text="${reserva.zoneNumber}"></span>
                             <span th:text="${reserva.letter}"></span>
                         </p>
-                        <button style="float: right" type="button" class="btn btn-primary" data-toggle="modal" data-target="#miModal">Cancelar reserva</button>
+                        <button style="float: right" type="button" class="btn btn-primary" data-toggle="modal" th:data-target="${'#miModal' + reserva.reservationNumber}">Cancelar reserva</button>
                     </div>
                 </div>
                 <br>
                 <!-- VENTANA EMERGENTE -->
-                <div class="modal" id="miModal">
+                <div class="modal" th:id="${'miModal' + reserva.reservationNumber}">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -76,7 +76,7 @@
                             <div class="modal-body">
                                 <p>Indique, si lo desea, el motivo de su cancelación:</p>
                             </div>
-                            <input class="form-control" id="motivo" th:field="${motivo}" style="background-color: #e8e6e8; width: 70%; align-self: center;" placeholder="Motivo">
+                            <!--<input class="form-control" id="motivo" th:field="${motivo18}" style="background-color: #e8e6e8; width: 70%; align-self: center;" placeholder="Motivo">-->
                             <div class="modal-footer">
                                 <a th:href="@{cancelarReserva/} + ${reserva.reservationNumber}" class="btn btn-primary">Cancelar reserva</a>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>

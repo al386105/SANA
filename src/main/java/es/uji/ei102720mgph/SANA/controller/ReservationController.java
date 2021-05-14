@@ -1,7 +1,9 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ReservationDao;
+import es.uji.ei102720mgph.SANA.dao.TimeSlotDao;
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
+import es.uji.ei102720mgph.SANA.model.NuevaReserva;
 import es.uji.ei102720mgph.SANA.model.Reservation;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import es.uji.ei102720mgph.SANA.services.ReservationService;
@@ -23,6 +25,7 @@ public class ReservationController {
 
     private ReservationDao reservationDao;
     private ReservationService reservationService;
+    private TimeSlotDao timeSlotDao;
 
     @Autowired
     public void setReservationDao(ReservationDao reservationDao) {
@@ -34,6 +37,11 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
+    @Autowired
+    public void setTimeSlotDao(TimeSlotDao timeSlotDao){
+        this.timeSlotDao = timeSlotDao;
+    }
+
 
     // Operació llistar
     @RequestMapping("/list")
@@ -43,27 +51,30 @@ public class ReservationController {
     }
 
     // Operació crear
-    @RequestMapping(value="/add")
-    public String addReservation(Model model, HttpSession session) {
+    @RequestMapping(value="/add/{naturalArea}")
+    public String addReservation(Model model, @PathVariable String naturalArea, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) return "redirect:/inicio/login";
-        model.addAttribute("reservation", new Reservation());
+        model.addAttribute("reservation", new NuevaReserva());
+        model.addAttribute("naturalArea", naturalArea);
+        model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
         return "reservation/add";
     }
 
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add", method=RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("reservation") Reservation reservation,
+    public String processAddSubmit(@ModelAttribute("reservation") NuevaReserva reservation,
                                    BindingResult bindingResult) {
-        ReservationValidator reservationValidator = new ReservationValidator();
-        reservationValidator.validate(reservation, bindingResult);
+        //ReservationValidator reservationValidator = new ReservationValidator();
+        //reservationValidator.validate(reservation, bindingResult);
 
         if (bindingResult.hasErrors())
             return "reservation/add"; //tornem al formulari per a que el corregisca
 
 
-        reservationService.addReservation(reservation);
+        //reservationService.addReservation(reservation);
+        System.out.println(reservation);
 
-        return "redirect:list"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
+        return "redirect:/inicio/registrado/reservas"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
     }
 
     // Operació actualitzar

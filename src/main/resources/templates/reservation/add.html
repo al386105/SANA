@@ -21,9 +21,14 @@
         -->
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="reservationDate">Fecha reserva:</label>
+            <label class="control-label col-sm-2">Fecha reserva:</label>
             <div class="col-sm-4">
-                <input type="date" placeholder="yyyy-MM-dd" required class="form-control" id="reservationDate" th:field="*{reservationDate}" />
+                <!--<input type="date" placeholder="yyyy-MM-dd" required class="form-control" id="reservationDate" th:field="*{reservationDate}" />-->
+                <select class="form_control form-control-lg" type="text" th:field="*{reservationDate}">
+                    <option th:each="fecha : ${fechas}"
+                            th:value="${fecha}"
+                            th:text="${#temporals.format(fecha,'dd/MM/yyyy')}"></option>
+                </select>
             </div>
         </div>
 

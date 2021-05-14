@@ -5,6 +5,7 @@ import es.uji.ei102720mgph.SANA.dao.TimeSlotDao;
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.NuevaReserva;
 import es.uji.ei102720mgph.SANA.model.Reservation;
+import es.uji.ei102720mgph.SANA.model.TimeSlot;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import es.uji.ei102720mgph.SANA.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequestMapping("/reservation")
@@ -57,6 +59,11 @@ public class ReservationController {
         model.addAttribute("reservation", new NuevaReserva());
         model.addAttribute("naturalArea", naturalArea);
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
+        LocalDate[] fechas = new LocalDate[3];
+        fechas[0] = LocalDate.now();
+        fechas[1] = LocalDate.now().plusDays(1);
+        fechas[2] = LocalDate.now().plusDays(2);
+        model.addAttribute("fechas", fechas);
         return "reservation/add";
     }
 

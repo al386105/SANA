@@ -210,6 +210,7 @@ public class AuxiliarController {
 
         }else {
             //Usuario ya registrado en el sistema
+            bindingResult.rejectValue("email", "bademail", "Usuario ya Registrado");
             return "redirect:/inicio/login";
         }
     }

@@ -119,7 +119,7 @@ public class AuxiliarController {
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
         model.addAttribute("reservas", listaReservas);
-        model.addAttribute("motivo", "a");
+        model.addAttribute("motivo", "");
         return "inicioRegistrado/reservas";
     }
 
@@ -279,7 +279,7 @@ public class AuxiliarController {
             return "inicio/login";
         }
         //TODO return redirect:/
-        return "inicio/sana"; //Redirigimos a la página de inicio con la sesión iniciada
+        return "redirect:/naturalArea/pagedlist"; //Redirigimos a la página de inicio con la sesión iniciada
     }
 
     @RequestMapping(value="inicio/contactanos/enviarCorreo", method=RequestMethod.POST)
@@ -288,14 +288,24 @@ public class AuxiliarController {
         if (bindingResult.hasErrors())
             return "inicio/contactanos"; //tornem al formulari per a que el corregisca
 
-        String destinatario = email.getSanaUser();
-        String asunto = email.getSubject();
-        String cuerpo = email.getTextBody();
+        String destinatario1 = email.getSanaUser();
+        String asunto1 = "Su petición ha sido recibida con éxito";
+        String cuerpo1 = "Gracias por compartir con nosotros esta información.\n\n" +
+                "Uno de nuestros responsables internos ha sido notificado de la situación, " +
+                "nos ponemos manos a la obra para resolverlo lo más pronto posible" +
+                " recibirás noticias sobre el incidente en breve.\n\n" +
+                "Un cordial saludo del equipo de SANA.";
+        String destinatario2 = "sana.espais.naturals@gmail.com";
+        String asunto2 = "Nueva incidencia recibida";
+        String cuerpo2 = "Un usuario con correo: '" + email.getSanaUser() + "' ha enviado una incidencia.\n" +
+                "Asunto: " + email.getSubject() + "\n" +
+                "Cuerpo: " + email.getTextBody();
 
         // Envia correo electrónico
-        enviarMail(destinatario, asunto, cuerpo);
+        enviarMail(destinatario1, asunto1, cuerpo1);
+        enviarMail(destinatario2, asunto2, cuerpo2);
 
-        return "redirect:/inicio"; //redirigim a la lista per a veure el email afegit, post/redirect/get
+        return "redirect:/naturalArea/pagedlist"; //redirigim a la lista per a veure el email afegit, post/redirect/get
     }
 
     public static void enviarMail(String destinatario, String asunto, String cuerpo) {

@@ -165,6 +165,43 @@ public class NaturalAreaController {
         return "naturalArea/listEnvironmental";
     }
 
+
+
+    @RequestMapping(value="/listManagers")
+    public String listNaturalAreasManagers(Model model, @RequestParam("page") Optional<Integer> page){
+        // Paso 1: Crear la lista paginada de naturalAreas
+        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
+        Collections.sort(naturalAreas);
+        ArrayList<ArrayList<NaturalArea>> naturalAreasPaged = new ArrayList<>();
+        int ini=0;
+        int fin=pageLength-1;
+        while (fin<naturalAreas.size()) {
+            naturalAreasPaged.add(new ArrayList<>(naturalAreas.subList(ini, fin)));
+            ini+=pageLength;
+            fin+=pageLength;
+        }
+        naturalAreasPaged.add(new ArrayList<NaturalArea>(naturalAreas.subList(ini, naturalAreas.size())));
+        model.addAttribute("naturalAreasPaged", naturalAreasPaged);
+
+        // Paso 2: Crear la lista de numeros de pagina
+        int totalPages = naturalAreasPaged.size();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        // Paso 3: selectedPage: usar parametro opcional page, o en su defecto, 1
+        int currentPage = page.orElse(0);
+        model.addAttribute("selectedPage", currentPage);
+        return "naturalArea/listManagers";
+        // TODO if (session.getAttribute("registeredCitizen") == null) return "inicio/sana";
+        //return "inicioRegistrado/areasNaturales";
+        //return "redirect:/inicioRegistrado/areasNaturales";
+    }
+
+
+
     @RequestMapping(value="/occupancy")
     public String occupancyNaturalAreas(Model model){
         model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());

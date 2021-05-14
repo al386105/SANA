@@ -38,10 +38,6 @@ public class ReservationDao {
                         LocalTime.now(), reservation.getNumberOfPeople(), reservation.getState().name(),
                         reservation.getQRcode(), null, null, reservation.getCitizenEmail(), reservation.getTimeSlotId());
 
-//                jdbcTemplate.update(
-//                        "INSERT INTO ReservationOfZone VALUES(?, ?, ?)",
-//                        Reservation.getContador(), reservation.getReservationNumber(), zoneId);
-
                 excepcion = false;
             } catch (DuplicateKeyException e) {
                 excepcion = true;
@@ -87,6 +83,20 @@ public class ReservationDao {
                     "WHERE Zone.naturalArea = ?",
                     new ReservationRowMapper(),
                     naturalArea);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Reservation>();
+        }
+    }
+
+    public List<Reservation> getReservationsOfNaturalAreaOfDay(String naturalArea, LocalDate date) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Reservation " +
+                            "JOIN ReservationOfZone ON Reservation.reservationNumber = ReservationOfZone.reservationNumber " +
+                            "JOIN Zone ON ReservationOfZone.zoneId = Zone.id " +
+                            "WHERE Zone.naturalArea = ? AND Zone.reservationDate = ?",
+                    new ReservationRowMapper(),
+                    naturalArea, date);
         }
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<Reservation>();

@@ -8,6 +8,7 @@ import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
+import es.uji.ei102720mgph.SANA.services.OccupationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -22,6 +24,7 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("/naturalArea")
 public class NaturalAreaController {
+    private OccupationService occupationService;
     private NaturalAreaDao naturalAreaDao;
     private NaturalAreaService naturalAreaService;
     private ZoneDao zoneDao;
@@ -35,6 +38,10 @@ public class NaturalAreaController {
 
     private final int pageLength = 5;
 
+    @Autowired
+    public void setOccupationService(OccupationService occupationService){
+        this.occupationService = occupationService;
+    }
 
     @Autowired
     public void setNaturalAreaService(NaturalAreaService naturalAreaService){
@@ -283,5 +290,13 @@ public class NaturalAreaController {
     public String processDelete(@PathVariable String naturalArea) {
         naturalAreaDao.deleteNaturalArea(naturalArea);
         return "redirect:/naturalArea/listManagers";
+    }
+
+    @RequestMapping(value="/occupancy")
+    public String getOccupancy(Model model){
+        LocalDate date = LocalDate.of(2020, 10, 26);
+        float occupancy = occupationService.getRateDayOccupancyOfNaturalArea("La Albufera", date);
+        model.addAttribute("occupancy", occupancy);
+        return "/occupancy";
     }
 }

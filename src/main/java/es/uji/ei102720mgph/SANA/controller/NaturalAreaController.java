@@ -202,11 +202,12 @@ public class NaturalAreaController {
         return "naturalArea/listManagers";
     }
 
+    /*
     @RequestMapping(value="/occupancy")
     public String occupancyNaturalAreas(Model model){
         model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
         return "naturalArea/occupancy";
-    }
+    }*/
 
     // metodo para anyadir al modelo los datos del selector de municipio
     @ModelAttribute("municipalityList")
@@ -365,11 +366,12 @@ public class NaturalAreaController {
         return "redirect:/naturalArea/listManagers";
     }
 
+    /*
     @RequestMapping(value="/occupancy")
     public String getOccupancy(Model model){
         LocalDate date = LocalDate.of(2020, 10, 26);
         float occupancy = occupationService.getRateDayOccupancyOfNaturalArea("La Albufera", date);
         model.addAttribute("occupancy", occupancy);
         return "/occupancy";
-    }
+    }*/
 }

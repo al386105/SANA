@@ -126,10 +126,14 @@ public class NaturalAreaController {
     }
 
     @RequestMapping(value="/pagedlist")
-    public String listNaturalAreasPaged(Model model, HttpSession session,
+    public String listNaturalAreasPaged(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron,
                                         @RequestParam("page") Optional<Integer> page){
         // Paso 1: Crear la lista paginada de naturalAreas
-        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
+        List<NaturalArea> naturalAreas;
+        if (patron != null)
+            naturalAreas = naturalAreaDao.getNaturalAreaSearch(patron);
+        else
+            naturalAreas = naturalAreaDao.getNaturalAreas();
         Collections.sort(naturalAreas);
         // las áreas naturales cerradas no pueden ser vistas por los ciudadanos
         naturalAreas.removeIf(naturalArea -> naturalArea.getTypeOfAccess().getDescripcion().equals("Cerrado"));
@@ -167,21 +171,25 @@ public class NaturalAreaController {
     }
 
     @RequestMapping(value="/listEnvironmental")
-    public String listNaturalAreasEnvironmental(Model model, @RequestParam("page") Optional<Integer> page){
-        paginacionSinFotos(model, page);
+    public String listNaturalAreasEnvironmental(Model model, @RequestParam(value="patron",required=false) String patron, @RequestParam("page") Optional<Integer> page){
+        paginacionSinFotos(model, patron, page);
         model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
         return "naturalArea/listEnvironmental";
     }
 
     @RequestMapping(value="/listManagers")
-    public String listNaturalAreasManagers(Model model, @RequestParam("page") Optional<Integer> page){
-        paginacionSinFotos(model, page);
+    public String listNaturalAreasManagers(Model model, @RequestParam(value="patron",required=false) String patron, @RequestParam("page") Optional<Integer> page){
+        paginacionSinFotos(model, patron, page);
         return "naturalArea/listManagers";
     }
 
-    private void paginacionSinFotos(Model model, @RequestParam("page") Optional<Integer> page) {
+    private void paginacionSinFotos(Model model, String patron, @RequestParam("page") Optional<Integer> page) {
         // Paso 1: Crear la lista paginada de naturalAreas
-        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
+        List<NaturalArea> naturalAreas;
+        if (patron != null)
+            naturalAreas = naturalAreaDao.getNaturalAreaSearch(patron);
+        else
+            naturalAreas = naturalAreaDao.getNaturalAreas();
         Collections.sort(naturalAreas);
         ArrayList<ArrayList<NaturalArea>> naturalAreasPaged = new ArrayList<>();
         int ini=0;

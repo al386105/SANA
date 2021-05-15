@@ -19,15 +19,14 @@
         <li><b>Orientación:</b> <span th:text="${naturalArea.orientation.descripcion}"></span></li>
         <td th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
             <li><b>Restringido hasta:</b> <span th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></span></li>
-            <li><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"></span></li>
         </td>
     </ul><br>
     <!-- Botones -->
     <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
         <button type="button" class="btn btn-warning">Edita</button> </a>
     </td>
+    <!--
     <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Elimina</button></td>
-    <!-- VENTANA EMERGENTE -->
     <div class="modal" id="miModal">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -45,7 +44,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <hr class="lineaVerde">
 
     <!-- solo se pueden gestionar las zonas y franjas horarias de los espacios restringidos -->
@@ -76,8 +75,9 @@
                     <button type="button" class="btn btn-warning">Edita</button>
                 </a>
                 </td>
-                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal6">Elimina</button></td>
-                <!-- VENTANA EMERGENTE -->
+                <!--
+                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal6">
+                    Elimina</button></td>
                 <div class="modal" id="miModal6">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -96,7 +96,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </tr>
             </tbody>
         </table>
@@ -133,8 +133,9 @@
                     <button type="button" class="btn btn-warning">Edita</button>
                 </a>
                 </td>
-                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal5">Elimina</button></td>
-                <!-- VENTANA EMERGENTE -->
+                <!--
+                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal5">
+                    Elimina</button></td>
                 <div class="modal" id="miModal5">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -152,7 +153,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </tr>
             </tbody>
         </table>
@@ -217,24 +218,28 @@
                     <button type="button" class="btn btn-warning">Edita</button>
                 </a>
             </td>
-
-            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal2">Elimina</button></td>
-            <!-- VENTANA EMERGENTE -->
-            <div class="modal" id="miModal2">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Eliminar servicio fijo</h5>
-                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <p>¿Seguro que quieres eliminar la asignación del servicio fijo <span th:text="${serviceDate.service}"></span>
-                                 de <span th:text="${naturalArea.name}"></span>?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <a th:href="@{/serviceDate/delete/{id}(id=${serviceDate.id})}">
-                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+            <div th:if="${serviceDate.endDate != null}">
+                <td></td>
+            </div>
+            <div th:if="${serviceDate.endDate == null}">
+                <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal2">Dar de baja</button></td>
+                <!-- VENTANA EMERGENTE -->
+                <div class="modal" id="miModal2">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Dar de baja servicio fijo</h5>
+                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Seguro que quieres dar de baja el servicio fijo <span th:text="${serviceDate.service}"></span>
+                                     de <span th:text="${naturalArea.name}"></span>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a th:href="@{/serviceDate/darDeBaja/{id}(id=${serviceDate.id})}">
+                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -256,7 +261,6 @@
         <thead>
         <tr>
             <th scope="col">Servicio</th>
-            <th scope="col">Días de apertura</th>
             <th scope="col">Hora de inicio</th>
             <th scope="col">Hora de fin</th>
             <th scope="col">Fecha de inicio</th>
@@ -269,7 +273,6 @@
         <tbody>
         <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
             <td th:text="${temporalService.service}"></td>
-            <td th:text="${temporalService.openingDays}"></td>
             <td th:text="${temporalService.beginningTime}"></td>
             <td th:text="${temporalService.endTime}"></td>
             <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
@@ -320,7 +323,8 @@
     <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
         <tr th:each="picture: ${pictures}">
             <td scope="row"><img class="fotoListado" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
-            <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal4">Elimina</button></td>
+            <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal4">
+                Elimina</button></td>
             <!-- VENTANA EMERGENTE -->
             <div class="modal" id="miModal4">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -351,9 +355,10 @@
             <input required type="file" name="file" id="file" /> <br/><br/>
             <div class="form-group row">
                 <div class="col-sm-offset-2 col-sm-4">
-                    <button type="submit" class="btn btn-success">Añadir imagen</button>
+                    <button type="submit" class="btn btn-success"><img src="/assets/img/photo.png" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
                 </div>
             </div>
+            <br><br>
         </form>
     </div>
 </div>

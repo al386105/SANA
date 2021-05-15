@@ -1,6 +1,7 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
+import es.uji.ei102720mgph.SANA.dao.TemporalServiceDao;
 import es.uji.ei102720mgph.SANA.enums.DaysOfWeek;
 import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.model.Service;
@@ -13,11 +14,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+//TODO
 public class TemporalServiceValidator implements Validator {
     private ServiceDao serviceDao;
+    private TemporalServiceDao temporalServiceDao;
 
     @Autowired
     public void setServiceDao(ServiceDao serviceDao) { this.serviceDao = serviceDao; }
+
+    @Autowired
+    public void setTemporalServiceDao(TemporalServiceDao temporalServiceDao) { this.temporalServiceDao = temporalServiceDao; }
 
     @Override
     public boolean supports(Class<?> cls) {
@@ -40,23 +46,9 @@ public class TemporalServiceValidator implements Validator {
                     "No se ha seleccionado un servicio");
         }*/
 
-        // TODO esto va a cambiar cuando sean distintos campos, habra que comporbar que se ha seleccionado alguno
-        // Dias de apertura obligatorio
-        /*if (temporalService.getOpeningDays().trim().equals(""))
-            errors.rejectValue("openingDays", "obligatorio", "Es obligatorio introducir los días de apertura");*/
-
-        // Radio button días de apertura comprobar que se haya seleccionado
-        /*if (temporalService.getOpeningDays() == null)
-            errors.rejectValue("openingDays", "obligatorio", "Es obligatorio seleccionar un día de apertura");
-        else {
-            // Radio button días de apertura, igual no es necesario //TODO
-            List<String> namesDaysOfWeek = Stream.of(DaysOfWeek.values())
-                    .map(Enum::name)
-                    .collect(Collectors.toList());
-            if (!namesDaysOfWeek.contains(temporalService.getOpeningDays())) {
-                errors.rejectValue("openingDays", "incorrecto", "El día de apertura es incorrecto");
-            }
-        }*/
+        // Al menos seleccionar un dia de la semana
+        if (temporalService.getOpeningDays() == null)
+            errors.rejectValue("openingDays", "obligatorio", "Es obligatorio seleccionar al menos un día de la semana");
 
         // Hora de inicio obligatoria
         if (temporalService.getBeginningTime() == null)
@@ -79,5 +71,9 @@ public class TemporalServiceValidator implements Validator {
         if (temporalService.getEndDate() != null && temporalService.getBeginningDate() != null
                 && temporalService.getBeginningDate().isAfter(temporalService.getEndDate()))
             errors.rejectValue("endDate", "valor incorrecto", "La fecha de fin debe ser posterior a la fecha de inicio");
+
+        // Si ya existe el service + naturalArea...
+        /*if(temporalServiceDao.getTemporalService(temporalService.getService(), temporalService.getNaturalArea()) != null)
+            errors.rejectValue("service", "repetido", "El servicio ya está asignado a este área natural");*/
     }
 }

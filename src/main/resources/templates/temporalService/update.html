@@ -29,10 +29,14 @@
             </div>
         </div>
 
+        <!-- TODO ver cómo poner diasMarcados, no lo consigo -->
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="openingDays">Días de apertura:</label>
+            <label class="control-label col-sm-2">Días de apertura:</label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" placeholder="X;V;D" id="openingDays" th:field="*{openingDays}" />
+                <td th:each="dayValue: ${T(es.uji.ei102720mgph.SANA.enums.DaysOfWeek).values()}">
+                    <input type="checkbox" th:name="${dayValue}" th:value="${dayValue}" th:field="*{openingDays}">
+                    <label th:for="${#ids.prev('openingDays')}" th:text="${dayValue.descripcion}"></label><br>
+                </td>
                 <td th:if="${#fields.hasErrors('openingDays')}" th:errors="*{openingDays}"></td>
             </div>
         </div>
@@ -85,7 +89,7 @@
                     </div>
                     <div class="modal-body">
                         <p>¿Seguro que actualizar la asignación del servicio temporal <span th:text="${temporalService.service}"></span>
-                            a <span th:text="${naturalArea.name}"></span>?</p>
+                            a <span th:text="${temporalService.naturalArea}"></span>?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Confirmar</button>

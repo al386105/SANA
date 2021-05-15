@@ -1,16 +1,13 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.*;
-import es.uji.ei102720mgph.SANA.enums.Orientation;
 import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
-import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.OccupancyFormData;
-import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
+import es.uji.ei102720mgph.SANA.model.NaturalAreaForm;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import es.uji.ei102720mgph.SANA.services.OccupationService;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -126,12 +123,15 @@ public class NaturalAreaController {
         return "naturalArea/list";
     }
 
-
     @RequestMapping(value="/pagedlist")
-    public String listNaturalAreasPaged(Model model, HttpSession session,
+    public String listNaturalAreasPaged(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron,
                                         @RequestParam("page") Optional<Integer> page){
         // Paso 1: Crear la lista paginada de naturalAreas
-        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
+        List<NaturalArea> naturalAreas;
+        if (patron != null)
+            naturalAreas = naturalAreaDao.getNaturalAreaSearch(patron);
+        else
+            naturalAreas = naturalAreaDao.getNaturalAreas();
         Collections.sort(naturalAreas);
         // las áreas naturales cerradas no pueden ser vistas por los ciudadanos
         naturalAreas.removeIf(naturalArea -> naturalArea.getTypeOfAccess().getDescripcion().equals("Cerrado"));
@@ -140,7 +140,7 @@ public class NaturalAreaController {
         ArrayList<ArrayList<NaturalArea>> naturalAreasPaged = new ArrayList<>();
         ArrayList<ArrayList<String>> pathPicturesPaged = new ArrayList<>();
         int ini=0;
-        int fin=pageLength-1;
+        int fin=pageLength;
         while (fin<naturalAreas.size()) {
             pathPicturesPaged.add(new ArrayList<>(pathPictures.subList(ini, fin)));
             naturalAreasPaged.add(new ArrayList<>(naturalAreas.subList(ini, fin)));
@@ -169,21 +169,29 @@ public class NaturalAreaController {
     }
 
     @RequestMapping(value="/listEnvironmental")
-    public String listNaturalAreasEnvironmental(Model model){
+    public String listNaturalAreasEnvironmental(Model model, @RequestParam(value="patron",required=false) String patron, @RequestParam("page") Optional<Integer> page){
+        paginacionSinFotos(model, patron, page);
         model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
         return "naturalArea/listEnvironmental";
     }
 
-
-
     @RequestMapping(value="/listManagers")
-    public String listNaturalAreasManagers(Model model, @RequestParam("page") Optional<Integer> page){
+    public String listNaturalAreasManagers(Model model, @RequestParam(value="patron",required=false) String patron, @RequestParam("page") Optional<Integer> page){
+        paginacionSinFotos(model, patron, page);
+        return "naturalArea/listManagers";
+    }
+
+    private void paginacionSinFotos(Model model, String patron, @RequestParam("page") Optional<Integer> page) {
         // Paso 1: Crear la lista paginada de naturalAreas
-        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
+        List<NaturalArea> naturalAreas;
+        if (patron != null)
+            naturalAreas = naturalAreaDao.getNaturalAreaSearch(patron);
+        else
+            naturalAreas = naturalAreaDao.getNaturalAreas();
         Collections.sort(naturalAreas);
         ArrayList<ArrayList<NaturalArea>> naturalAreasPaged = new ArrayList<>();
         int ini=0;
-        int fin=pageLength-1;
+        int fin=pageLength;
         while (fin<naturalAreas.size()) {
             naturalAreasPaged.add(new ArrayList<>(naturalAreas.subList(ini, fin)));
             ini+=pageLength;
@@ -203,19 +211,8 @@ public class NaturalAreaController {
         // Paso 3: selectedPage: usar parametro opcional page, o en su defecto, 1
         int currentPage = page.orElse(0);
         model.addAttribute("selectedPage", currentPage);
-        return "naturalArea/listManagers";
-        // TODO if (session.getAttribute("registeredCitizen") == null) return "inicio/sana";
-        //return "inicioRegistrado/areasNaturales";
-        //return "redirect:/inicioRegistrado/areasNaturales";
     }
 
-
-
-//    @RequestMapping(value="/occupancy")
-//    public String occupancyNaturalAreas(Model model){
-//        model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
-//        return "naturalArea/occupancy";
-//    }
 
     // metodo para anyadir al modelo los datos del selector de municipio
     @ModelAttribute("municipalityList")
@@ -229,62 +226,140 @@ public class NaturalAreaController {
 
     @RequestMapping(value="/add")
     public String addNaturalArea(Model model) {
-        model.addAttribute("naturalArea", new NaturalArea());
+        model.addAttribute("naturalArea", new NaturalAreaForm());
         return "naturalArea/add";
     }
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("naturalArea") NaturalArea naturalArea,
+    public String processAddSubmit(@ModelAttribute("naturalArea") NaturalAreaForm naturalAreaForm,
                                    BindingResult bindingResult) {
         NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
-        naturalAreaValidator.validate(naturalArea, bindingResult);
+        naturalAreaValidator.validate(naturalAreaForm, bindingResult);
 
         if (bindingResult.hasErrors())
             return "naturalArea/add"; //tornem al formulari per a que el corregisca
-        naturalAreaDao.addNaturalArea(naturalArea); //usem el dao per a inserir el naturalArea
 
+        NaturalArea naturalArea = pasoANaturalArea(naturalAreaForm);
         // si es vol afegir un area restringida, redirigir a la vista per a continuar la seua creació
         if(naturalArea.getTypeOfAccess() == TypeOfAccess.restricted)
             return "naturalArea/addRestricted";
+        naturalAreaDao.addNaturalArea(naturalArea); //usem el dao per a inserir el naturalArea
         return "redirect:/naturalArea/getManagers/" + naturalArea.getName();
+    }
+
+    // addRestricted
+    @RequestMapping(value="/addRestricted", method= RequestMethod.POST)
+    public String processAddRestrictedSubmit(@ModelAttribute("naturalArea") NaturalAreaForm naturalAreaForm,
+                                             BindingResult bindingResult) {
+        //TODO hacer otro validador para ver si han introducido el restrictedTimePeriod
+
+        if (bindingResult.hasErrors())
+            return "naturalArea/addRestricted";
+
+        naturalAreaDao.addNaturalArea(pasoANaturalArea(naturalAreaForm)); //usem el dao per a inserir el naturalArea
+        return "redirect:/naturalArea/getManagers/" + naturalAreaForm.getName();
+    }
+
+    // Convierte de NaturalAreaForm a NaturalArea
+    private NaturalArea pasoANaturalArea(NaturalAreaForm naturalAreaForm) {
+        NaturalArea naturalArea = new NaturalArea();
+        naturalArea.setName(naturalAreaForm.getName());
+        naturalArea.setTypeOfAccess(naturalAreaForm.getTypeOfAccess());
+
+        // transformar las coordenadas a un único atributo
+        String coordenadas = naturalAreaForm.getLatitudGrados() + "°" + naturalAreaForm.getLatitudMin() + "′" +
+                naturalAreaForm.getLatitudSeg() + "″" + naturalAreaForm.getLatitudLetra() + " " +
+                naturalAreaForm.getLongitudGrados() + "°" + naturalAreaForm.getLongitudMin() + "′" +
+                naturalAreaForm.getLongitudSeg() + "″" + naturalAreaForm.getLongitudLetra();
+        naturalArea.setGeographicalLocation(coordenadas);
+
+        naturalArea.setTypeOfArea(naturalAreaForm.getTypeOfArea());
+        naturalArea.setLength(naturalAreaForm.getLength());
+        naturalArea.setWidth(naturalAreaForm.getWidth());
+        naturalArea.setPhysicalCharacteristics(naturalAreaForm.getPhysicalCharacteristics());
+        naturalArea.setDescription(naturalAreaForm.getDescription());
+        naturalArea.setOrientation(naturalAreaForm.getOrientation());
+        naturalArea.setMunicipality(naturalAreaForm.getMunicipality());
+        if(naturalAreaForm.getRestrictionTimePeriod() != null)
+            naturalArea.setRestrictionTimePeriod(naturalAreaForm.getRestrictionTimePeriod());
+        return naturalArea;
+    }
+
+    private NaturalAreaForm pasoDeNaturalAreaAForm(NaturalArea naturalArea) {
+        NaturalAreaForm naturalAreaForm = new NaturalAreaForm();
+        naturalAreaForm.setName(naturalArea.getName());
+        naturalAreaForm.setTypeOfAccess(naturalArea.getTypeOfAccess());
+
+        // dividir las coordenadas en los distintos campos
+        String[] dosPartes = naturalArea.getGeographicalLocation().split(" ");
+        String[] partesLatitud1 = dosPartes[0].split("′");
+        String[] partesLatitud2 = partesLatitud1[0].split("°");
+        String[] partesLatitud3 = partesLatitud1[1].split("″");
+        naturalAreaForm.setLatitudGrados(Float.parseFloat(partesLatitud2[0]));
+        naturalAreaForm.setLatitudMin(Float.parseFloat(partesLatitud2[1]));
+        naturalAreaForm.setLatitudSeg(Float.parseFloat(partesLatitud3[0]));
+        naturalAreaForm.setLatitudLetra(partesLatitud3[1]);
+
+        String[] partesLongitud1 = dosPartes[1].split("′");
+        String[] partesLongitud2 = partesLongitud1[0].split("°");
+        String[] partesLongitud3 = partesLongitud1[1].split("″");
+        naturalAreaForm.setLongitudGrados(Float.parseFloat(partesLongitud2[0]));
+        naturalAreaForm.setLongitudMin(Float.parseFloat(partesLongitud2[1]));
+        naturalAreaForm.setLongitudSeg(Float.parseFloat(partesLongitud3[0]));
+        naturalAreaForm.setLongitudLetra(partesLongitud3[1]);
+
+        naturalAreaForm.setTypeOfArea(naturalArea.getTypeOfArea());
+        naturalAreaForm.setLength(naturalArea.getLength());
+        naturalAreaForm.setWidth(naturalArea.getWidth());
+        naturalAreaForm.setPhysicalCharacteristics(naturalArea.getPhysicalCharacteristics());
+        naturalAreaForm.setDescription(naturalArea.getDescription());
+        naturalAreaForm.setOrientation(naturalArea.getOrientation());
+        naturalAreaForm.setMunicipality(naturalArea.getMunicipality());
+        if(naturalArea.getRestrictionTimePeriod() != null)
+            naturalAreaForm.setRestrictionTimePeriod(naturalArea.getRestrictionTimePeriod());
+        return naturalAreaForm;
     }
 
     // Update
     @RequestMapping(value="/update/{naturalArea}", method=RequestMethod.GET)
     public String editNaturalArea(Model model, @PathVariable String naturalArea) {
-        model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
+        model.addAttribute("naturalArea", pasoDeNaturalAreaAForm(naturalAreaDao.getNaturalArea(naturalArea)));
         return "naturalArea/update";
     }
 
     // Resposta de modificació d'objectes
     @RequestMapping(value="/update", method=RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("naturalArea") NaturalArea naturalArea,
+    public String processUpdateSubmit(@ModelAttribute("naturalArea") NaturalAreaForm naturalAreaForm,
                                       BindingResult bindingResult) {
         NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
-        naturalAreaValidator.validate(naturalArea, bindingResult);
+        naturalAreaValidator.validate(naturalAreaForm, bindingResult);
 
         if (bindingResult.hasErrors())
             return "naturalArea/update";
-        naturalAreaDao.updateNaturalArea(naturalArea);
-        // si es vol actualitzar un area restringida, redirigir a la vista per a continuar la seua creació
+
+        NaturalArea naturalArea = pasoANaturalArea(naturalAreaForm);
+        // por si he pasado de un area restringida a una no restringida
+        if(naturalArea.getTypeOfAccess() != TypeOfAccess.restricted) {
+            naturalArea.setRestrictionTimePeriod(null);
+        }
+        // si es vol actualitzar un area restringida, redirigir a la vista per a continuar
         if(naturalArea.getTypeOfAccess() == TypeOfAccess.restricted)
             return "naturalArea/updateRestricted";
-        // por si he pasado de un area restringida a una no restringida
-        naturalArea.setRestrictionTimePeriod(null);
+
+        naturalAreaDao.updateNaturalArea(naturalArea);
         return "redirect:/naturalArea/getManagers/" + naturalArea.getName();
     }
 
     // Resposta de modificació d'objectes
     @RequestMapping(value="/updateRestricted", method=RequestMethod.POST)
-    public String processUpdateRestrictedSubmit(@ModelAttribute("naturalArea") NaturalArea naturalArea,
+    public String processUpdateRestrictedSubmit(@ModelAttribute("naturalArea") NaturalAreaForm naturalAreaForm,
                                                 BindingResult bindingResult) {
-        NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
-        naturalAreaValidator.validate(naturalArea, bindingResult);
+        // TODO validador para ese atributo obligatorio
 
         if (bindingResult.hasErrors())
             return "naturalArea/updateRestricted";
-        naturalAreaDao.updateNaturalArea(naturalArea);
-        return "redirect:/naturalArea/getManagers/" + naturalArea.getName();
+        naturalAreaDao.updateNaturalArea(pasoANaturalArea(naturalAreaForm));
+        return "redirect:/naturalArea/getManagers/" + naturalAreaForm.getName();
     }
 
     // Operació esborrar
@@ -320,5 +395,17 @@ public class NaturalAreaController {
         model.addAttribute("peopleInADay", peopleInADay);
         model.addAttribute("people", people);
         return "naturalArea/occupancy";
+    }
+
+    // Vista de paneles de información para ciudadanos no registrados
+    @RequestMapping(value="/getInfo")
+    public String getInfoPanelesNoReg(Model model){
+        return "/naturalArea/getInfo";
+    }
+
+    // Vista de paneles de información para ciudadanos registrados
+    @RequestMapping(value="/getInfo2")
+    public String getInfoPanelesReg(Model model){
+        return "/naturalArea/getInfo2";
     }
 }

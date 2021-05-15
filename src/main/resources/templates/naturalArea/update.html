@@ -13,6 +13,7 @@
             <label class="control-label col-sm-2" for="name">Nombre:</label>
             <div class="col-sm-4">
                 <input type="text" required maxlength="30" class="form-control" id="name" th:field="*{name}" />
+                <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
             </div>
         </div>
 
@@ -23,44 +24,58 @@
                    <input type ="radio" required th:field ="*{typeOfAccess}" th:value ="${typeOfAccessvalue}" />
                    <label th:for="${#ids.prev('typeOfAccess')}" th:text ="${typeOfAccessvalue.descripcion}"></label>
                 </span>
+                <td th:if="${#fields.hasErrors('typeOfAccess')}" th:errors="*{typeOfAccess}"></td>
             </div>
         </div>
 
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="geographicalLocation">Coordenadas ubicación:</label>
-            <div class="col-sm-4">
-                <input type="text" required maxlength="40" placeholder="39º51'52.0''N 0º03'54.2''W" class="form-control" id="geographicalLocation" th:field="*{geographicalLocation}" />
+        <!-- coordenadas geográficas -->
+        <h6>Coordenadas geográficas</h6>
+        <ul>
+            <div class="form-group row">
+                <li><label class="control-label col-sm-2" for="latitudGrados">Latitud:</label></li>
+                <table>
+                    <tr>
+                        <td><input required style="width: 60%" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudGrados" th:field="*{latitudGrados}" />
+                            <p style="font-size:x-large">°</p></td>
+                        <td><input required style="width: 60%;" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudMin" th:field="*{latitudMin}" />
+                            <p style="font-size:x-large">′</p></td>
+                        <td><input required style="width: 60%;" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudSeg" th:field="*{latitudSeg}" />
+                            <p style="font-size:x-large">″</p></td>
+                        <td><select class="form_control" type="text" th:field="*{latitudLetra}">
+                            <option value="N">Norte (N)</option>
+                            <option value="S">Sur (S)</option>
+                        </select></td><br>
+                    </tr>
+                </table>
             </div>
-        </div>
 
-        <!--
-        <label class="control-label col-sm-2" for="latitud">Latitud:</label>
-        <div class="col-sm-4">
-            <input type="text" placeholder="39º51'52.0''"required class="form-control" id="latitud" th:field="*{latitud}" />
-            <td><select class="form_control" type="text" th:field="*{latitudOrientacion}">
-                <option value="N">Norte (N)</option>
-                <option value="S">Sur (S)</option>
-            </select>
-            </td>
-        </div>
-        <label class="control-label col-sm-2" for="longitud">Longitud:</label>
-        <div class="col-sm-4">
-            <input type="text" placeholder="0º03'54.2''" required class="form-control" id="longitud" th:field="*{longitud}" />
-            <td><select class="form_control" type="text" th:field="*{longitudOrientacion}">
-                <option value="E">Este (E)</option>
-                <option value="W">Oeste (W)</option>
-            </select>
-            </td>
-        </div>
-        -->
+            <div class="form-group row">
+                <li><label class="control-label col-sm-2" for="longitudGrados">Longitud:</label></li>
+                <table style="align:top">
+                    <tr>
+                        <td><input style="width: 60%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudGrados" th:field="*{longitudGrados}" />
+                            <p style="font-size:x-large">°</p></td>
+                        <td><input style="width: 60%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudMin" th:field="*{longitudMin}" />
+                            <p style="font-size:x-large">′</p></td>
+                        <td><input style="width: 60%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudSeg" th:field="*{longitudSeg}" />
+                            <p style="font-size:x-large">″</p></td>
+                        <td><select class="form_control" type="text" th:field="*{longitudLetra}">
+                            <option value="E">Este (E)</option>
+                            <option value="W">Oeste (W)</option>
+                        </select></td><br>
+                    </tr>
+                </table>
+            </div>
+        </ul>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="typeOfArea">Tipo de area:</label>
+            <label class="control-label col-sm-2" for="typeOfArea">Tipo de área:</label>
             <div class="col-sm-4">
                 <select class="form_control" required id="typeOfArea" type="text" th:field="*{typeOfArea}">
                     <option th:each="typeOfAreavalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfArea).values()}"
                             th:value="${typeOfAreavalue}" th:text="${typeOfAreavalue.descripcion}"></option>
                 </select>
+                <td th:if="${#fields.hasErrors('typeOfArea')}" th:errors="*{typeOfArea}"></td>
             </div>
         </div>
 
@@ -82,6 +97,7 @@
             <label class="control-label col-sm-2" for="physicalCharacteristics">Características físicas:</label>
             <div class="col-sm-4">
                 <input type="text" required maxlength="60" class="form-control" placeholder="El suelo es arena, roca..." id="physicalCharacteristics" th:field="*{physicalCharacteristics}" />
+                <td th:if="${#fields.hasErrors('physicalCharacteristics')}" th:errors="*{physicalCharacteristics}"></td>
             </div>
         </div>
 
@@ -89,6 +105,7 @@
             <label class="control-label col-sm-2" for="description">Descripción:</label>
             <div class="col-sm-4">
                 <textarea rows="3" required maxlength="100" class="form-control" id="description" th:field="*{description}"></textarea>
+                <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
             </div>
         </div>
 
@@ -99,6 +116,7 @@
                    <input type ="radio" required th:field ="*{orientation}" th:value ="${orientationvalue}" />
                    <label th:for="${#ids.prev('orientation')}" th:text ="${orientationvalue.descripcion}"></label>
                 </span>
+                <td th:if="${#fields.hasErrors('orientation')}" th:errors="*{orientation}"></td>
             </div>
         </div>
 
@@ -114,6 +132,8 @@
                 <td th:if="${#fields.hasErrors('municipality')}" th:errors="*{municipality}"></td>
             </div>
         </div>
+
+        <input type="hidden" th:field ="*{restrictionTimePeriod}"/>
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">

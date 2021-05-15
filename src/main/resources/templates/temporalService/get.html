@@ -15,7 +15,12 @@
 
     <h3>Información del servicio temporal</h3>
     <ul>
-        <li><b>Días de apertura:</b> <span th:text="${temporalService.openingDays}"></span></li>
+        <li><b>Días de apertura:</b>
+            <ul>
+                <td th:each="dia: ${dias}">
+                    <li><span th:text="${dia}"></span></li>
+                </td>
+            </ul>
         <li><b>Hora de inicio:</b> <span th:text="${temporalService.beginningTime}"></span></li>
         <li><b>Hora de fin:</b> <span th:text="${temporalService.endTime}"></span></li>
         <li><b>Fecha de inicio:</b> <span th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></span></li>
@@ -24,6 +29,10 @@
 
     <!-- TODO el boton lo usan todos los usuarios... -->
     <br>
+    <td><a th:href="@{/temporalService/update/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
+        <button type="button" class="btn btn-warning">Edita</button>
+    </a>
+    </td>
     <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
         <button type="submit" class="btn btn-primary">Volver al área natural</button>
     </a>

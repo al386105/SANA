@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+    <!-- es para el carrusel de imágenes -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </head>
@@ -23,7 +24,6 @@
         <li><b>Orientación:</b> <span th:text="${naturalArea.orientation.descripcion}"></span></li>
         <td th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
             <li><b>Restringido hasta:</b> <span th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></span></li>
-            <li><b>Ratio ocupación:</b> <span th:text="${naturalArea.occupancyRate}"></span></li>
         </td>
     </ul>
     <hr class="lineaVerde">
@@ -147,7 +147,6 @@
         <thead>
         <tr>
             <th scope="col">Servicio</th>
-            <th scope="col">Días de apertura</th>
             <th scope="col">Hora de inicio</th>
             <th scope="col">Hora de fin</th>
             <th scope="col">Fecha de inicio</th>
@@ -158,7 +157,6 @@
         <tbody>
         <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
             <td th:text="${temporalService.service}"></td>
-            <td th:text="${temporalService.openingDays}"></td>
             <td th:text="${temporalService.beginningTime}"></td>
             <td th:text="${temporalService.endTime}"></td>
             <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>

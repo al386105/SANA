@@ -10,55 +10,46 @@
         <div th:if="${#lists.isEmpty(naturalAreas)}">
             <p><b>¡No se han añadido todavía áreas naturales!</b></p>
         </div>
-        <table th:unless="${#lists.isEmpty(naturalAreas)}" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Acceso</th>
-                <th scope="col">Municipio</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
+        <div th:unless="${#lists.isEmpty(naturalAreas)}">
 
-            <tbody>
-            <tr th:each="naturalArea, iterator : ${naturalAreas}">
-                <td th:text="${naturalArea.name}"></td>
-                <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
-                <td th:text="${naturalArea.municipality}"></td>
-                <td><a th:href="@{getManagers/{naturalArea}(naturalArea=${naturalArea.name})}">
-                    <button type="button" class="btn btn-primary">Más opciones</button> </a>
-                </td>
-                <td><a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
-                    <button type="button" class="btn btn-secondary">Gestión reservas</button> </a>
-                </td>
-                <td><a th:href="@{update/{naturalArea}(naturalArea=${naturalArea.name})}">
-                    <button type="button" class="btn btn-warning">Edita</button> </a>
-                </td>
-                <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Elimina</button></td>
-                <!-- VENTANA EMERGENTE -->
-                <div class="modal" id="miModal">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Eliminar área natural</h5>
-                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <p>¿Seguro que quieres eliminar el área natural <span th:text="${naturalArea.name}"></span>?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a th:href="@{delete/{naturalArea}(naturalArea=${naturalArea.name})}">
-                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </tr>
-            </tbody>
-        </table>
+            <!-- filtro buscador por nombre del natural area -->
+            <div class="box" style="padding-bottom: 20px; padding-top: 20px">
+                <form>
+                    <span class="icon"><i class="fa fa-search"></i></span>
+                    <input th:name="patron" style="border-radius: 25px;" type="search" id="search" placeholder="Buscar..." />
+                    <button style="border-radius: 25px;" type="submit" class="btn btn-primary"> Buscar</button>
+                </form>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Acceso</th>
+                    <th scope="col">Municipio</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="naturalArea, iterator : ${naturalAreas}">
+                    <td th:text="${naturalArea.name}"></td>
+                    <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
+                    <td th:text="${naturalArea.municipality}"></td>
+                    <td><a th:href="@{getManagers/{naturalArea}(naturalArea=${naturalArea.name})}">
+                        <button type="button" class="btn btn-primary">Más opciones</button> </a>
+                    </td>
+                    <td><a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
+                        <button type="button" class="btn btn-secondary">Gestión reservas</button> </a>
+                    </td>
+                    <td><a th:href="@{update/{naturalArea}(naturalArea=${naturalArea.name})}">
+                        <button type="button" class="btn btn-warning">Edita</button> </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!--  PAGINATION BUTTONS  -->

@@ -34,7 +34,8 @@
             <label class="control-label col-sm-2">Días de apertura:</label>
             <div class="col-sm-4">
                 <td th:each="dayValue: ${T(es.uji.ei102720mgph.SANA.enums.DaysOfWeek).values()}">
-                    <input type="checkbox" th:name="${dayValue}" th:value="${dayValue}" th:field="*{openingDays}">
+                    <input type="checkbox" th:field="*{openingDays}" th:value="${dayValue}"
+                           th:checked="#{#lists.contains(openingDays, dayValue)}">
                     <label th:for="${#ids.prev('openingDays')}" th:text="${dayValue.descripcion}"></label><br>
                 </td>
                 <td th:if="${#fields.hasErrors('openingDays')}" th:errors="*{openingDays}"></td>

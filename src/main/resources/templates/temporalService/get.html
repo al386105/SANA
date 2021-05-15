@@ -15,13 +15,12 @@
 
     <h3>Información del servicio temporal</h3>
     <ul>
-        <li>
-            <dl>
-                <b>Días de apertura:</b>
+        <li><b>Días de apertura:</b>
+            <ul>
                 <td th:each="dia: ${dias}">
-                    <dd>- <span th:text="${dia}"></span></dd>
+                    <li><span th:text="${dia}"></span></li>
                 </td>
-            </dl>
+            </ul>
         <li><b>Hora de inicio:</b> <span th:text="${temporalService.beginningTime}"></span></li>
         <li><b>Hora de fin:</b> <span th:text="${temporalService.endTime}"></span></li>
         <li><b>Fecha de inicio:</b> <span th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></span></li>

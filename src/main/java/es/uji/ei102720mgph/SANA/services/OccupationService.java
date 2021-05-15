@@ -8,5 +8,7 @@ import java.util.SortedMap;
 
 public interface OccupationService {
     float getRateDayOccupancyOfNaturalArea(String naturalArea, LocalDate date);
-
-}
+    int getOccupancyOfDay(String naturalArea, LocalDate date);
+    int getTotalOccupancy(String naturalArea);
+    int getMaxCapacityOfNaturalArea(String naturalArea);
+ }

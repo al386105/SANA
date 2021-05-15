@@ -5,18 +5,15 @@
 <div th:replace="fragments/headerManager"></div>
 
 <div class="container">
-    <h1> POR HACER </h1>
+    <h1> <span th:text="${naturalArea}"></span> </h1>
     <br>
+    <h5> Hay una capacidad maxima de  <span th:text="${maxCapacity}"></span> personas </h5>
+    <h5> <span th:text="${people}"></span> personas han estado en este area natural desde su registro </h5>
+    <h5> El dia  <span th:text="${date}"></span> hubo un ratio de ocupación del
+        <span th:text="${rateOccupancy}"></span> por ciento ya que acudieron
+        <span th:text="${peopleInADay}"></span> personas </h5>
     <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <!-- TODO POR HACER -->
 
-    <span th:text="${occupancy}"></span>
-    
     <a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>
     <br><br>
 </div>

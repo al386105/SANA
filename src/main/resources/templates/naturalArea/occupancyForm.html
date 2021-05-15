@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:replace="fragments/headerManager"></div>
+
+<div class="container">
+    <h1> Occupacion </h1>
+
+    <form class="form-horizontal" action="#" th:action="@{/naturalArea/occupancyForm}"
+          th:object="${occupancyFormData}" method="post">
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="naturalArea">Area natural:</label>
+            <div class="col-sm-4">
+                <select required class="form_control" id="naturalArea" type="text" th:field="*{naturalArea}">
+                    <option value="No seleccionado">Selecciona un area natural</option>
+                    <option th:each="naturalAreaValue : ${naturalAreas}"
+                            th:value="${naturalAreaValue}"
+                            th:text="${naturalAreaValue}"></option>
+                </select>
+                <td th:if="${#fields.hasErrors('naturalArea')}" th:errors="*{naturalArea}"></td>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="date">Dia:</label>
+            <div class="col-sm-4">
+                <input required type="date" placeholder="yyyy-MM-dd" class="form-control" id="date" th:field="*{date}" />
+                <td th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></td>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="typeOfOccupancy">Occupacion: </label>
+            <div class="col-sm-4">
+                <select class="form_control" id="typeOfOccupancy" type="text" th:field="*{typeOfOccupancy}">
+                    <option th:each="typeOfOccupancyValue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfOccupancy).values()}"
+                            th:value="${typeOfOccupancyValue}" th:text="${typeOfOccupancyValue.descripcion}"></option>
+                </select>
+                <td th:if="${#fields.hasErrors('typeOfOccupancy')}" th:errors="*{typeOfOccupancy}"></td>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-success">Ver ocupacion</button>
+            </div>
+        </div>
+
+    </form>
+
+    <a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+    <br><br>
+</div>
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

@@ -54,4 +54,22 @@ public class NaturalAreaSvc implements NaturalAreaService  {
     }
 
 
+    public List<String> getNameOfNaturalAreas(){
+        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
+        ArrayList<String> nameOfNaturalAreas = new ArrayList<>(naturalAreas.size());
+        for(NaturalArea naturalArea: naturalAreas){
+            nameOfNaturalAreas.add(naturalArea.getName());
+        }
+        return nameOfNaturalAreas;
+    }
+
+    public List<String> getNameOfRestrictedNaturalAreas(){
+        List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
+        ArrayList<String> nameOfNaturalAreas = new ArrayList<>(naturalAreas.size());
+        for(NaturalArea naturalArea: naturalAreas){
+            nameOfNaturalAreas.add(naturalArea.getName());
+        }
+        return nameOfNaturalAreas;
+    }
+
 }

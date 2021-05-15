@@ -6,9 +6,11 @@ import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
+import es.uji.ei102720mgph.SANA.model.OccupancyFormData;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import es.uji.ei102720mgph.SANA.services.OccupationService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -209,11 +211,11 @@ public class NaturalAreaController {
 
 
 
-    @RequestMapping(value="/occupancy")
-    public String occupancyNaturalAreas(Model model){
-        model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
-        return "naturalArea/occupancy";
-    }
+//    @RequestMapping(value="/occupancy")
+//    public String occupancyNaturalAreas(Model model){
+//        model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
+//        return "naturalArea/occupancy";
+//    }
 
     // metodo para anyadir al modelo los datos del selector de municipio
     @ModelAttribute("municipalityList")
@@ -292,11 +294,31 @@ public class NaturalAreaController {
         return "redirect:/naturalArea/listManagers";
     }
 
-    @RequestMapping(value="/occupancy")
-    public String getOccupancy(Model model){
-        LocalDate date = LocalDate.of(2020, 10, 26);
-        float occupancy = occupationService.getRateDayOccupancyOfNaturalArea("La Albufera", date);
-        model.addAttribute("occupancy", occupancy);
-        return "/occupancy";
+    @RequestMapping(value="/occupancyForm", method=RequestMethod.GET)
+    public String getOccupancyForm(Model model) {
+        model.addAttribute("naturalAreas", naturalAreaService.getNameOfRestrictedNaturalAreas());
+        model.addAttribute("occupancyFormData", new OccupancyFormData());
+        return "naturalArea/occupancyForm";
+    }
+    @RequestMapping(value="/occupancyForm", method=RequestMethod.POST)
+    public String processOccupancySubmit(Model model,
+                                         @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData,
+                                         BindingResult bindingResult){
+        if (bindingResult.hasErrors())
+            return "naturalArea/occupancyForm"; //tornem al formulari per a que el corregisca
+        String naturalArea = occupancyFormData.getNaturalArea();
+        LocalDate date = occupancyFormData.getDate();
+        float rateOccupancy = occupationService.getRateDayOccupancyOfNaturalArea(naturalArea, date);
+        rateOccupancy = (float) (Math.round(rateOccupancy*100.0)/100.0);
+        int maxCapacity = occupationService.getMaxCapacityOfNaturalArea(naturalArea);
+        int peopleInADay = occupationService.getOccupancyOfDay(naturalArea, date);
+        int people = occupationService.getTotalOccupancy(naturalArea);
+        model.addAttribute("naturalArea", naturalArea);
+        model.addAttribute("date", date.toString());
+        model.addAttribute("rateOccupancy", rateOccupancy);
+        model.addAttribute("maxCapacity", maxCapacity);
+        model.addAttribute("peopleInADay", peopleInADay);
+        model.addAttribute("people", people);
+        return "naturalArea/occupancy";
     }
 }

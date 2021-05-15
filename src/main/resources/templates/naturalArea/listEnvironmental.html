@@ -54,7 +54,7 @@
             <li th:class="page-item" th:if="${#lists.size(naturalAreasPaged) > 0}"
                 th:each="pageNumber : ${pageNumbers}"
                 th:classappend="${pageNumber==selectedPage+1} ? active">
-                <a th:href="@{/naturalArea/listManagers?page={sele}(sele=${pageNumber-1})}"
+                <a th:href="@{/naturalArea/listEnvironmental?page={sele}(sele=${pageNumber-1})}"
                    th:text=${pageNumber}
                    th:class="page-link">
                 </a>

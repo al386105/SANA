@@ -5,6 +5,7 @@ import es.uji.ei102720mgph.SANA.dao.TemporalServiceDao;
 import es.uji.ei102720mgph.SANA.enums.DaysOfWeek;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.TemporalService;
+import es.uji.ei102720mgph.SANA.model.TemporalService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -81,20 +82,46 @@ public class TemporalServiceController {
     @RequestMapping(value="/update/{service}/{naturalArea}", method = RequestMethod.GET)
     public String editTemporalService(Model model, @PathVariable String service, @PathVariable String naturalArea) {
         TemporalService temporalService = temporalServiceDao.getTemporalService(service, naturalArea);
-        model.addAttribute("temporalService", temporalService);
+
+        TemporalService2 temporalService2 = new TemporalService2();
+        temporalService2.setBeginningDate(temporalService.getBeginningDate());
+        temporalService2.setBeginningTime(temporalService.getBeginningTime());
+        temporalService2.setEndDate(temporalService.getEndDate());
+        temporalService2.setEndTime(temporalService.getEndTime());
+        temporalService2.setNaturalArea(temporalService.getNaturalArea());
+        temporalService2.setService(temporalService.getService());
 
         List<DaysOfWeek> diasMarcados = new ArrayList<DaysOfWeek>();
         for (String dia : temporalService.getOpeningDays().split(","))
             diasMarcados.add(DaysOfWeek.valueOf(dia));
-        model.addAttribute("diasMarcados", diasMarcados);
 
+        temporalService2.setDiasMarcados(diasMarcados);
+        model.addAttribute("temporalService", temporalService2);
         return "temporalService/update";
     }
 
     // Resposta de modificació d'objectes
     @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("temporalService") TemporalService temporalService,
+    public String processUpdateSubmit(@ModelAttribute("temporalService") TemporalService2 temporalService2,
                                       BindingResult bindingResult) {
+        // Paso de lista de diasMarcados a openingDays de la bbdd
+        List<DaysOfWeek> diasMarcados = temporalService2.getDiasMarcados();
+        String openingDays = "";
+        for(int i = 0; i < diasMarcados.size(); i++) {
+            openingDays += diasMarcados.get(i);
+            if (i < diasMarcados.size() - 1)
+                openingDays += ",";
+        }
+
+        TemporalService temporalService = new TemporalService();
+        temporalService.setService(temporalService2.getService());
+        temporalService.setNaturalArea(temporalService2.getNaturalArea());
+        temporalService.setEndTime(temporalService2.getEndTime());
+        temporalService.setEndDate(temporalService2.getEndDate());
+        temporalService.setBeginningTime(temporalService2.getBeginningTime());
+        temporalService.setBeginningDate(temporalService2.getBeginningDate());
+        temporalService.setOpeningDays(openingDays);
+
         TemporalServiceValidator temporalServiceValidator = new TemporalServiceValidator();
         temporalServiceValidator.validate(temporalService, bindingResult);
 

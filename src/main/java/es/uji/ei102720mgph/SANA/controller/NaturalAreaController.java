@@ -146,7 +146,7 @@ public class NaturalAreaController {
             fin+=pageLength;
         }
         naturalAreasPaged.add(new ArrayList<NaturalArea>(naturalAreas.subList(ini, naturalAreas.size())));
-        pathPicturesPaged.add(new ArrayList<String>(pathPictures.subList(ini, naturalAreas.size())));
+        pathPicturesPaged.add(new ArrayList<String>(pathPictures.subList(ini, pathPictures.size())));
         model.addAttribute("naturalAreasPaged", naturalAreasPaged);
         model.addAttribute("pathPicturesPaged", pathPicturesPaged);
 
@@ -169,7 +169,6 @@ public class NaturalAreaController {
     @RequestMapping(value="/listEnvironmental")
     public String listNaturalAreasEnvironmental(Model model, @RequestParam(value="patron",required=false) String patron, @RequestParam("page") Optional<Integer> page){
         paginacionSinFotos(model, patron, page);
-        model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
         return "naturalArea/listEnvironmental";
     }
 

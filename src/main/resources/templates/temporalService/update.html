@@ -19,25 +19,20 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="service">Servicio temporal:</label>
             <div class="col-sm-4">
-                <select class="form_control" readonly="readonly" required id="service" type="text" th:field="*{service}">
-                    <option value="No seleccionado">Selecciona un servicio</option>
-                    <option th:each="servicevalue : ${serviceList}"
-                            th:value="${servicevalue}"
-                            th:text="${servicevalue}"></option>
-                </select>
+                <input type="text" required readonly="readonly" class="form-control" id="service" th:field="*{service}" />
                 <td th:if="${#fields.hasErrors('service')}" th:errors="*{service}"></td>
             </div>
         </div>
 
-        <!-- TODO ver cómo poner diasMarcados, no lo consigo -->
         <div class="form-group row">
             <label class="control-label col-sm-2">Días de apertura:</label>
             <div class="col-sm-4">
                 <td th:each="dayValue: ${T(es.uji.ei102720mgph.SANA.enums.DaysOfWeek).values()}">
-                    <input type="checkbox" th:name="${dayValue}" th:value="${dayValue}" th:field="*{openingDays}">
-                    <label th:for="${#ids.prev('openingDays')}" th:text="${dayValue.descripcion}"></label><br>
+                    <input type="checkbox" th:name="${dayValue}" th:value="${dayValue}" th:field="*{diasMarcados}"
+                           th:checked="${#lists.contains(temporalService.diasMarcados, dayValue)}">
+                    <label th:for="${#ids.prev('diasMarcados')}" th:text="${dayValue.descripcion}"></label><br>
                 </td>
-                <td th:if="${#fields.hasErrors('openingDays')}" th:errors="*{openingDays}"></td>
+                <!--<td th:if="${#fields.hasErrors('openingDays')}" th:errors="*{openingDays}"></td>-->
             </div>
         </div>
 

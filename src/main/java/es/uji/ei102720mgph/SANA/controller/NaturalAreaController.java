@@ -249,7 +249,8 @@ public class NaturalAreaController {
     @RequestMapping(value="/addRestricted", method= RequestMethod.POST)
     public String processAddRestrictedSubmit(@ModelAttribute("naturalArea") NaturalAreaForm naturalAreaForm,
                                              BindingResult bindingResult) {
-        //TODO hacer otro validador para ver si han introducido el restrictedTimePeriod
+        NaturalAreaValidadorRestricted naturalAreaValidator = new NaturalAreaValidadorRestricted();
+        naturalAreaValidator.validate(naturalAreaForm, bindingResult);
 
         if (bindingResult.hasErrors())
             return "naturalArea/addRestricted";
@@ -352,7 +353,8 @@ public class NaturalAreaController {
     @RequestMapping(value="/updateRestricted", method=RequestMethod.POST)
     public String processUpdateRestrictedSubmit(@ModelAttribute("naturalArea") NaturalAreaForm naturalAreaForm,
                                                 BindingResult bindingResult) {
-        // TODO validador para ese atributo obligatorio
+        NaturalAreaValidadorRestricted naturalAreaValidator = new NaturalAreaValidadorRestricted();
+        naturalAreaValidator.validate(naturalAreaForm, bindingResult);
 
         if (bindingResult.hasErrors())
             return "naturalArea/updateRestricted";

@@ -35,11 +35,11 @@
                 <li><label class="control-label col-sm-2" for="latitudGrados">Latitud:</label></li>
                 <table>
                     <tr>
-                        <td><input required style="width: 60%" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudGrados" th:field="*{latitudGrados}" />
+                        <td><input required style="width: 70%" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudGrados" th:field="*{latitudGrados}" />
                             <p style="font-size:x-large">°</p></td>
-                        <td><input required style="width: 60%;" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudMin" th:field="*{latitudMin}" />
+                        <td><input required style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudMin" th:field="*{latitudMin}" />
                             <p style="font-size:x-large">′</p></td>
-                        <td><input required style="width: 60%;" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudSeg" th:field="*{latitudSeg}" />
+                        <td><input required style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudSeg" th:field="*{latitudSeg}" />
                             <p style="font-size:x-large">″</p></td>
                         <td><select class="form_control" type="text" th:field="*{latitudLetra}">
                             <option value="N">Norte (N)</option>
@@ -53,11 +53,11 @@
                 <li><label class="control-label col-sm-2" for="longitudGrados">Longitud:</label></li>
                 <table style="align:top">
                     <tr>
-                        <td><input style="width: 60%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudGrados" th:field="*{longitudGrados}" />
+                        <td><input style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudGrados" th:field="*{longitudGrados}" />
                             <p style="font-size:x-large">°</p></td>
-                        <td><input style="width: 60%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudMin" th:field="*{longitudMin}" />
+                        <td><input style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudMin" th:field="*{longitudMin}" />
                             <p style="font-size:x-large">′</p></td>
-                        <td><input style="width: 60%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudSeg" th:field="*{longitudSeg}" />
+                        <td><input style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudSeg" th:field="*{longitudSeg}" />
                             <p style="font-size:x-large">″</p></td>
                         <td><select class="form_control" type="text" th:field="*{longitudLetra}">
                             <option value="E">Este (E)</option>
@@ -136,9 +136,29 @@
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-success">Añadir área natural</button>
+                <button type="button" data-toggle="modal" data-target="#miModal" class="btn btn-success">Añadir área natural</button>
             </div>
         </div>
+
+        <!-- VENTANA EMERGENTE -->
+        <div class="modal" id="miModal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Añadir área natural</h5>
+                        <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Va a añadir un área natural. ¿Está seguro/a de continuar con el proceso?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </form>
     <a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>
     <br><br>

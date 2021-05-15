@@ -94,7 +94,7 @@ public class ReservationDao {
             return jdbcTemplate.query("SELECT * FROM Reservation " +
                             "JOIN ReservationOfZone ON Reservation.reservationNumber = ReservationOfZone.reservationNumber " +
                             "JOIN Zone ON ReservationOfZone.zoneId = Zone.id " +
-                            "WHERE Zone.naturalArea = ? AND Zone.reservationDate = ?",
+                            "WHERE Zone.naturalArea = ? AND Reservation.reservationDate = ?",
                     new ReservationRowMapper(),
                     naturalArea, date);
         }

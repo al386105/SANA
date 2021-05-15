@@ -72,6 +72,17 @@ public class NaturalAreaDao {
         }
     }
 
+    public List<NaturalArea> getRestrictedNaturalAreas() {
+        try {
+            return jdbcTemplate.query("SELECT * FROM NaturalArea " +
+                            "WHERE typeOfAccess = 'restricted'",
+                    new NaturalAreaRowMapper());
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<NaturalArea>();
+        }
+    }
+
     public  List<NaturalArea> getNaturalAreaSearch(String patron) {
         try {
             return jdbcTemplate.query("SELECT * FROM NaturalArea WHERE name LIKE '%"+patron+"%'",

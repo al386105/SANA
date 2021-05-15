@@ -1,13 +1,10 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.*;
-import es.uji.ei102720mgph.SANA.enums.Orientation;
 import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
-import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.NaturalAreaForm;
-import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import es.uji.ei102720mgph.SANA.services.OccupationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -215,11 +211,6 @@ public class NaturalAreaController {
         model.addAttribute("selectedPage", currentPage);
     }
 
-    @RequestMapping(value="/occupancy")
-    public String occupancyNaturalAreas(Model model){
-        model.addAttribute("naturalAreas", naturalAreaDao.getNaturalAreas());
-        return "naturalArea/occupancy";
-    }
 
     // metodo para anyadir al modelo los datos del selector de municipio
     @ModelAttribute("municipalityList")
@@ -378,15 +369,14 @@ public class NaturalAreaController {
         return "redirect:/naturalArea/listManagers";
     }
 
-    /*
-    @RequestMapping(value="/occupancy")
-    public String getOccupancy(Model model){
-        LocalDate date = LocalDate.of(2020, 10, 26);
-        float occupancy = occupationService.getRateDayOccupancyOfNaturalArea("La Albufera", date);
-        model.addAttribute("occupancy", occupancy);
-        return "/occupancy";
+    @RequestMapping(value="/occupancy", method=RequestMethod.GET)
+    public String getOccupancyForm(Model model) {
+        List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
+        model.addAttribute("occupancyDataOfNaturalAreas",
+                occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
+        return "naturalArea/occupancy";
     }
-     */
+
 
     // Vista de paneles de información para ciudadanos no registrados
     @RequestMapping(value="/getInfo")

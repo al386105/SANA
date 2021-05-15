@@ -5,19 +5,29 @@
 <div th:replace="fragments/headerManager"></div>
 
 <div class="container">
-    <h1> POR HACER </h1>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <!-- TODO POR HACER -->
+    <h2> Ocupación de las areas naturales restringidas </h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Area natural</th>
+            <th scope="col">Ocupación actual (Hoy)</th>
+            <th scope="col">Capacidad máxima</th>
+            <th scope="col">Total de accesos</th>
+        </tr>
+        </thead>
 
-    <span th:text="${occupancy}"></span>
-    
+        <tbody>
+        <tr th:each="occupancyData: ${occupancyDataOfNaturalAreas}">
+            <td> <b th:text="${occupancyData.naturalArea}"> </b>  </td>
+            <td> <span th:text="${occupancyData.occupancyRate}"> </span> % </td>
+            <td> <span th:text="${occupancyData.maxCapacity}"> </span> </td>
+            <td> <span th:text="${occupancyData.totalOccupancy}"> </span> </td>
+        </tr>
+        </tbody>
+    </table>
+
     <a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+
     <br><br>
 </div>
 

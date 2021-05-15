@@ -1,13 +1,16 @@
 package es.uji.ei102720mgph.SANA.services;
 
+import es.uji.ei102720mgph.SANA.model.OccupancyData;
 import es.uji.ei102720mgph.SANA.dao.ReservationDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
+import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.Reservation;
 import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,5 +54,19 @@ public class OccupationSvc implements OccupationService{
         int maxCapacity = getMaxCapacityOfNaturalArea(naturalArea);
         int occupancyOfDay = getOccupancyOfDay(naturalArea, date);
         return ((float) occupancyOfDay / (float) maxCapacity) * 100;
+    }
+
+     public List<OccupancyData> getOccupancyDataOfNaturalAreas(List<NaturalArea> naturalAreas){
+        List<OccupancyData> occupancyDataOfNaturalAreas = new ArrayList<>(naturalAreas.size());
+        for(NaturalArea naturalArea: naturalAreas){
+            String naturalAreaName = naturalArea.getName();
+            OccupancyData occupancyData = new OccupancyData();
+            occupancyData.setNaturalArea(naturalAreaName);
+            occupancyData.setMaxCapacity(getMaxCapacityOfNaturalArea(naturalAreaName));
+            occupancyData.setTotalOccupancy(getTotalOccupancy(naturalArea.getName()));
+            occupancyData.setOccupancyRate(getOccupancyOfDay(naturalAreaName, LocalDate.now()));
+            occupancyDataOfNaturalAreas.add(occupancyData);
+        }
+        return occupancyDataOfNaturalAreas;
     }
 }

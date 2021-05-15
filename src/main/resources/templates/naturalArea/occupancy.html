@@ -5,16 +5,29 @@
 <div th:replace="fragments/headerManager"></div>
 
 <div class="container">
-    <h1> <span th:text="${naturalArea}"></span> </h1>
-    <br>
-    <h5> Hay una capacidad maxima de  <span th:text="${maxCapacity}"></span> personas </h5>
-    <h5> <span th:text="${people}"></span> personas han estado en este area natural desde su registro </h5>
-    <h5> El dia  <span th:text="${date}"></span> hubo un ratio de ocupación del
-        <span th:text="${rateOccupancy}"></span> por ciento ya que acudieron
-        <span th:text="${peopleInADay}"></span> personas </h5>
-    <br>
+    <h2> Ocupación de las areas naturales restringidas </h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Area natural</th>
+            <th scope="col">Ocupación actual (Hoy)</th>
+            <th scope="col">Capacidad máxima</th>
+            <th scope="col">Total de accesos</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="occupancyData: ${occupancyDataOfNaturalAreas}">
+            <td> <b th:text="${occupancyData.naturalArea}"> </b>  </td>
+            <td> <span th:text="${occupancyData.occupancyRate}"> </span> % </td>
+            <td> <span th:text="${occupancyData.maxCapacity}"> </span> </td>
+            <td> <span th:text="${occupancyData.totalOccupancy}"> </span> </td>
+        </tr>
+        </tbody>
+    </table>
 
     <a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+
     <br><br>
 </div>
 

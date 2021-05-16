@@ -4,6 +4,7 @@
 <body>
 <div th:replace="fragments/header"></div>
 
+<!-- TODO hacer validador -->
 <section id="contact">
     <div class="container">
         <h2 class="text-uppercase text-center text-secondary mb-0">Contáctanos</h2>
@@ -28,7 +29,27 @@
                         <div class="form-group floating-label-form-group controls mb-5 pb-2"><textarea class="form-control" id="textBody" th:field="*{textBody}" style="background-color: #e8e6e8" required placeholder="Mensaje" rows="3"></textarea><small class="form-text text-danger help-block"></small></div>
                     </div>
                     <div id="success"></div>
-                    <div class="form-group"><button class="btn btn-primary btn-xl" id="sendMessageButton" type="submit">Enviar</button></div>
+                    <div class="form-group"><button class="btn btn-primary btn-xl" id="sendMessageButton" data-toggle="modal" data-target="#miModal" type="button">Enviar</button></div>
+
+                    <!-- VENTANA EMERGENTE -->
+                    <div class="modal" id="miModal">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Contactar con SANA</h5>
+                                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>¿Desea enviar el mensaje de contacto a SANA?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a th:href="@{/inicio/contactanos/enviarCorreo}" class="btn btn-primary">Confirmar</a>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
             </div>
         </div>

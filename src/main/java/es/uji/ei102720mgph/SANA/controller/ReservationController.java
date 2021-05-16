@@ -5,7 +5,6 @@ import es.uji.ei102720mgph.SANA.dao.TimeSlotDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.*;
-import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import es.uji.ei102720mgph.SANA.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,12 +48,11 @@ public class ReservationController {
         this.timeSlotDao = timeSlotDao;
     }
 
-
     // Operació llistar
-    @RequestMapping("/list")
-    public String listReservations(Model model) {
+    @RequestMapping("/listManagers")
+    public String listManagersReservations(Model model) {
         model.addAttribute("reservations", reservationDao.getReservations());
-        return "reservation/list";
+        return "reservation/listManagers";
     }
 
     // Operació crear

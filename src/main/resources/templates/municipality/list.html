@@ -7,7 +7,7 @@
 <div class="container">
     <h1>Lista de municipios</h1>
     <div th:if="${#lists.isEmpty(municipalities)}">
-        ¡No has añadido todavía ningún municipio!
+        ¡No ha añadido todavía ningún municipio!
     </div>
     <table th:unless="${#lists.isEmpty(municipalities)}" class="table table-striped">
         <thead>

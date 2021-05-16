@@ -29,40 +29,6 @@ public class EmailController {
         return "email/list";
     }
 
-    // Operació crear
-    @RequestMapping(value="/add")
-    public String addEmail(Model model) {
-        model.addAttribute("email", new Email());
-        return "email/add";
-    }
-
-    // Gestió de la resposta del formulari de creació d'objectes
-    @RequestMapping(value="/add", method=RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("email") Email email,
-                                   BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "email/add"; //tornem al formulari per a que el corregisca
-        emailDao.addEmail(email); //usem el dao per a inserir el email
-        return "redirect:list"; //redirigim a la lista per a veure el email afegit, post/redirect/get
-    }
-
-    // Operació actualitzar
-    @RequestMapping(value="/update/{id}", method = RequestMethod.GET)
-    public String editEmail(Model model, @PathVariable String id) {
-        model.addAttribute("email", emailDao.getEmail(id));
-        return "email/update";
-    }
-
-    // Resposta de modificació d'objectes
-    @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("email") Email email,
-                                      BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "email/update";
-        emailDao.updateEmail(email);
-        return "redirect:list";
-    }
-
     // Operació esborrar
     @RequestMapping(value="/delete/{id}")
     public String processDelete(@PathVariable String id) {

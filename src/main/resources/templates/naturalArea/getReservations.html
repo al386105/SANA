@@ -21,7 +21,7 @@
     </div>
     <div th:unless="${#lists.isEmpty(reservations)}">
         <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'nonRestricted')}">
-            <p><b>Este área natural no es restringida, pero en un pasado sí, y éstas son sus reservas:</b></p>
+            <p><b>Este área natural no es restringida, pero en un pasado sí, y éstas fueron sus reservas:</b></p>
         </div>
     <table class="table table-striped">
         <thead>

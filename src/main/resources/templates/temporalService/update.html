@@ -20,7 +20,6 @@
             <label class="control-label col-sm-2" for="service">Servicio temporal:</label>
             <div class="col-sm-4">
                 <input type="text" required readonly="readonly" class="form-control" id="service" th:field="*{service}" />
-                <td th:if="${#fields.hasErrors('service')}" th:errors="*{service}"></td>
             </div>
         </div>
 
@@ -32,7 +31,7 @@
                            th:checked="${#lists.contains(temporalService.diasMarcados, dayValue)}">
                     <label th:for="${#ids.prev('diasMarcados')}" th:text="${dayValue.descripcion}"></label><br>
                 </td>
-                <!--<td th:if="${#fields.hasErrors('openingDays')}" th:errors="*{openingDays}"></td>-->
+                <td th:if="${#fields.hasErrors('diasMarcados')}" th:errors="*{diasMarcados}"></td>
             </div>
         </div>
 
@@ -83,7 +82,7 @@
                         <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <p>¿Seguro que actualizar la asignación del servicio temporal <span th:text="${temporalService.service}"></span>
+                        <p>¿Seguro que desea actualizar la asignación del servicio temporal <span th:text="${temporalService.service}"></span>
                             a <span th:text="${temporalService.naturalArea}"></span>?</p>
                     </div>
                     <div class="modal-footer">

@@ -88,7 +88,7 @@
                                 <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                             </div>
                             <div class="modal-body">
-                                <p>¿Seguro que quieres dar de baja al gestor municipal <span th:text="${municipalManager.name}"></span>
+                                <p>¿Seguro que desea dar de baja al gestor municipal <span th:text="${municipalManager.name}"></span>
                                     <span th:text="${municipalManager.surname}"></span>?</p>
                             </div>
                             <div class="modal-footer">
@@ -131,7 +131,7 @@
                             <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <p>¿Seguro que quieres eliminar el código postal <span th:text="${postalCodeMunicipality.postalCode}"></span>?</p>
+                            <p>¿Seguro que desea eliminar el código postal <span th:text="${postalCodeMunicipality.postalCode}"></span>?</p>
                         </div>
                         <div class="modal-footer">
                             <a th:href="@{/postalCode/delete/{municipality}/{postalCode}(municipality=${postalCodeMunicipality.municipality}, postalCode=${postalCodeMunicipality.postalCode})}">

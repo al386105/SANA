@@ -24,7 +24,6 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.Properties;
 
-
 class UserValidator implements Validator {
     @Override
     public boolean supports(Class<?> cls) {
@@ -32,14 +31,13 @@ class UserValidator implements Validator {
     }
     @Override
     public void validate(Object obj, Errors errors) {
-
         UserLogin user = (UserLogin) obj;
 
         if (user.getEmail().trim().equals(""))
-            errors.rejectValue("email", "obligatorio", "Necesario Introducir Email");
+            errors.rejectValue("email", "obligatorio", "Necesario introducir el email");
 
         if (user.getPassword().trim().equals(""))
-            errors.rejectValue("password", "obligatorio", "Necesario Introducir la contraseña");
+            errors.rejectValue("password", "obligatorio", "Necesario introducir la contraseña");
     }
 }
 
@@ -134,6 +132,7 @@ public class AuxiliarController {
         System.out.println("'" + motivo + "'");
         return "redirect:/inicio/registrado/reservas";
     }
+
     @RequestMapping("inicio/registrado/reservasTodas")
     public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
@@ -217,7 +216,7 @@ public class AuxiliarController {
         }
     }
 
-    @RequestMapping(value="inicio/login/autentication", method=RequestMethod.POST)
+    @RequestMapping(value="inicio/login", method=RequestMethod.POST)
     public String autenticationProcess(@ModelAttribute("userLogin") UserLogin userLogin, BindingResult bindingResult, HttpSession session){
         UserValidator userValidator = new UserValidator();
         userValidator.validate(userLogin, bindingResult);

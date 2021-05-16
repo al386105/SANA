@@ -32,22 +32,6 @@ public class PictureController {
     @Autowired
     public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){ this.naturalAreaDao = naturalAreaDao; }
 
-    // Operació llistar
-    @RequestMapping("/list")
-    public String listPictures(Model model) {
-        model.addAttribute("pictures", pictureDao.getPictures());
-        return "picture/list";
-    }
-
-    // Operació crear
-    @RequestMapping(value="/add/{naturalArea}")
-    public String addPicture(Model model, @PathVariable String naturalArea) {
-        Picture picture = new Picture();
-        picture.setNaturalArea(naturalArea);
-        model.addAttribute("picture", picture);
-        return "picture/add";
-    }
-
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add/{naturalArea}", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("picture") Picture picture, @RequestParam("file") MultipartFile file,

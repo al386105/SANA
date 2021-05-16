@@ -8,7 +8,7 @@
     <h1>Lista de áreas naturales</h1>
     <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">
         <div th:if="${#lists.isEmpty(naturalAreas)}">
-            <p><b>¡No se han añadido todavía áreas naturales!</b></p>
+            <p><b>¡No ha añadido todavía ningún área natural!</b></p>
         </div>
         <div th:unless="${#lists.isEmpty(naturalAreas)}">
 

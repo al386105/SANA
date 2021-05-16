@@ -2,49 +2,26 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.dao.TemporalServiceDao;
-import es.uji.ei102720mgph.SANA.enums.DaysOfWeek;
-import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
-import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.TemporalService;
+import es.uji.ei102720mgph.SANA.model.TemporalService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-//TODO
-public class TemporalServiceValidator implements Validator {
-    private ServiceDao serviceDao;
-    private TemporalServiceDao temporalServiceDao;
-
-    @Autowired
-    public void setServiceDao(ServiceDao serviceDao) { this.serviceDao = serviceDao; }
-
-    @Autowired
-    public void setTemporalServiceDao(TemporalServiceDao temporalServiceDao) { this.temporalServiceDao = temporalServiceDao; }
+public class TemporalServiceValidator2 implements Validator {
 
     @Override
     public boolean supports(Class<?> cls) {
-        return TemporalService.class.equals(cls);
+        return TemporalService2.class.equals(cls);
     }
 
     @Override
     public void validate(Object obj, Errors errors) {
-        TemporalService temporalService = (TemporalService) obj;
+        TemporalService2 temporalService = (TemporalService2) obj;
 
-        /* TODO no va
-        //Seleccionar servicio
-        List<Service> serviceList = serviceDao.getServices();
-        List<String> namesServices = serviceList.stream()
-                .map(Service::getNameOfService)
-                .collect(Collectors.toList());
-
-        if (!namesServices.contains(temporalService.getService())) {
-            errors.rejectValue("temporalService", "valor incorrecto",
-                    "No se ha seleccionado un servicio");
-        }*/
+        // Al menos seleccionar un dia de la semana
+        if (temporalService.getDiasMarcados().size() == 0)
+            errors.rejectValue("diasMarcados", "obligatorio", "Es obligatorio seleccionar al menos un día de la semana");
 
         // Hora de inicio obligatoria
         if (temporalService.getBeginningTime() == null)
@@ -67,9 +44,5 @@ public class TemporalServiceValidator implements Validator {
         if (temporalService.getEndDate() != null && temporalService.getBeginningDate() != null
                 && temporalService.getBeginningDate().isAfter(temporalService.getEndDate()))
             errors.rejectValue("endDate", "valor incorrecto", "La fecha de fin debe ser posterior a la fecha de inicio");
-
-        // Si ya existe el service + naturalArea...
-        /*if(temporalServiceDao.getTemporalService(temporalService.getService(), temporalService.getNaturalArea()) != null)
-            errors.rejectValue("service", "repetido", "El servicio ya está asignado a este área natural");*/
     }
 }

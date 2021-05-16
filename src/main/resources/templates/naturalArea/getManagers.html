@@ -35,7 +35,7 @@
                     <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Seguro que quieres eliminar el área natural <span th:text="${naturalArea.name}"></span>?</p>
+                    <p>¿Seguro que desea eliminar el área natural <span th:text="${naturalArea.name}"></span>?</p>
                 </div>
                 <div class="modal-footer">
                     <a th:href="@{../delete/{naturalArea}(naturalArea=${naturalArea.name})}">
@@ -52,7 +52,7 @@
         <!-- SECCION DE ZONAS DEL AREA NATURAL -->
         <h3>Lista de Zonas</h3>
         <div th:if="${#lists.isEmpty(zones)}">
-            <p><b>¡Este área natural restringida todavía no tiene zonas!</b></p>
+            <p><b>¡Todavía no ha añadido zonas a este área natural!</b></p>
         </div>
         <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
             <thead>
@@ -86,7 +86,7 @@
                                 <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                             </div>
                             <div class="modal-body">
-                                <p>¿Seguro que quieres borrar la zona <span th:text="${zone.zoneNumber}"></span> <span th:text="${zone.letter}"></span>
+                                <p>¿Seguro que desea borrar la zona <span th:text="${zone.zoneNumber}"></span> <span th:text="${zone.letter}"></span>
                                      de <span th:text="${zone.naturalArea}"></span>?</p>
                             </div>
                             <div class="modal-footer">
@@ -108,7 +108,7 @@
         <!-- SECCION DE FRANJAS HORARIAS DEL AREA NATURAL -->
         <h3>Franjas horarias</h3>
         <div th:if="${#lists.isEmpty(timeSlots)}">
-            <p><b>¡Este área natural restringida todavía no tiene franjas horarias asignadas!</b></p>
+            <p><b>¡Todavía no ha asignado ninguna franja horaria a este área natural!</b></p>
         </div>
         <table th:unless="${#lists.isEmpty(timeSlots)}" class="table table-striped">
             <thead>
@@ -144,7 +144,7 @@
                                 <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                             </div>
                             <div class="modal-body">
-                                <p>¿Seguro que quieres borrar la franja horaria de identificador <span th:text="${timeSlot.id}"></span>?</p>
+                                <p>¿Seguro que desea borrar la franja horaria de identificador <span th:text="${timeSlot.id}"></span>?</p>
                             </div>
                             <div class="modal-footer">
                                 <a th:href="@{/timeSlot/delete/{id}(id=${timeSlot.id})}">
@@ -192,7 +192,7 @@
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
     <h3>Servicios fijos</h3>
     <div th:if="${#lists.isEmpty(serviceDates)}">
-        <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
+        <p><b>¡Todavía no ha asignado ningún servicio fijo a este área natural!</b></p>
     </div>
     <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
         <thead>
@@ -232,7 +232,7 @@
                                 <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                             </div>
                             <div class="modal-body">
-                                <p>¿Seguro que quieres dar de baja el servicio fijo <span th:text="${serviceDate.service}"></span>
+                                <p>¿Seguro que desea dar de baja el servicio fijo <span th:text="${serviceDate.service}"></span>
                                      de <span th:text="${naturalArea.name}"></span>?</p>
                             </div>
                             <div class="modal-footer">
@@ -255,7 +255,7 @@
     <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
     <h3>Servicios temporales</h3>
     <div th:if="${#lists.isEmpty(temporalServices)}">
-        <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
+        <p><b>¡Todavía no ha asignado ningún servicio temporal a este área natural!</b></p>
     </div>
     <table th:unless="${#lists.isEmpty(temporalServices)}" class="table table-striped">
         <thead>
@@ -295,7 +295,7 @@
                             <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <p>¿Seguro que quieres eliminar la asignación del servicio temporal <span th:text="${temporalService.service}"></span>
+                            <p>¿Seguro que desea eliminar la asignación del servicio temporal <span th:text="${temporalService.service}"></span>
                                 de <span th:text="${naturalArea.name}"></span>?</p>
                         </div>
                         <div class="modal-footer">
@@ -318,7 +318,7 @@
     <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
     <h3>Imágenes</h3>
     <div th:if="${#lists.isEmpty(pictures)}">
-        <p><b>¡Este área natural no tiene ninguna imagen publicada!</b></p>
+        <p><b>¡Todavía no ha publicado ninguna imagen de este área natural!</b></p>
     </div>
     <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
         <tr th:each="picture: ${pictures}">
@@ -334,7 +334,7 @@
                             <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <p>¿Seguro que quieres borrar esta imagen?</p>
+                            <p>¿Seguro que desea borrar esta imagen?</p>
                         </div>
                         <div class="modal-footer">
                             <a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}">

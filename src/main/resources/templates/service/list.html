@@ -7,7 +7,7 @@
 <div class="container">
     <h1>Lista de servicios</h1>
     <div th:if="${#lists.isEmpty(services)}">
-        ¡No has creado todavía ningún servicio!
+        ¡No ha creado todavía ningún servicio!
     </div>
     <table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
         <thead>
@@ -41,7 +41,7 @@
                             <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <p>¿Seguro que quieres eliminar el servicio <span th:text="${service.nameOfService}"></span>?</p>
+                            <p>¿Seguro que desea eliminar el servicio <span th:text="${service.nameOfService}"></span>?</p>
                         </div>
                         <div class="modal-footer">
                             <a th:href="@{/service/delete/{nameOfService}(nameOfService=${service.nameOfService})}">

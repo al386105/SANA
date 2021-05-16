@@ -29,13 +29,6 @@ public class ZoneController {
         this.naturalAreaDao=naturalAreaDao;
     }
 
-    // Operació llistar
-    @RequestMapping("/list")
-    public String listZones(Model model) {
-        model.addAttribute("zones", zoneDao.getZones());
-        return "zone/list";
-    }
-
     // Operació crear
     @RequestMapping(value="/add/{naturalArea}")
     public String addZone(Model model, @PathVariable String naturalArea) {

@@ -35,13 +35,6 @@ public class ServiceDateController {
         this.serviceDao=serviceDao;
     }
 
-    // Operació llistar
-    @RequestMapping("/list")
-    public String listServiceDates(Model model) {
-        model.addAttribute("serviceDate", serviceDateDao.getServiceDates());
-        return "serviceDate/list";
-    }
-
     // metodo para anyadir al modelo los datos del selector
     @ModelAttribute("serviceList")
     public List<String> serviceList() {

@@ -22,12 +22,6 @@ public class TimeSlotController {
         this.timeSlotDao = timeSlotDao;
     }
 
-    @RequestMapping("/list")
-    public String listTimeSlot(Model model) {
-        model.addAttribute("timeSlots", timeSlotDao.getTimeSlots());
-        return "timeSlot/list";
-    }
-
     @RequestMapping(value="/add/{naturalArea}")
     public String addTimeSlot(Model model, @PathVariable String naturalArea) {
         TimeSlot timeSlot = new TimeSlot();

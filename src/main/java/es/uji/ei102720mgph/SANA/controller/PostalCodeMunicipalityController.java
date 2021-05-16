@@ -34,7 +34,6 @@ public class PostalCodeMunicipalityController {
         postalCodeMunicipalityValidator.validate(pc, bindingResult);
 
         String municipality = pc.getMunicipality();
-        //TODO e aqui el fallo
         if (bindingResult.hasErrors())
             return "/municipality/get/" + municipality;
         pcD.addPostalCode(pc);

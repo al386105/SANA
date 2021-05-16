@@ -10,7 +10,7 @@
     <hr class="barra-normal">
     <br>
     <div th:if="${#lists.isEmpty(reservas)}">
-      <h4 style="text-align: center"> Todavía no has realizado ninguna reserva</h4>
+      <h4 style="text-align: center"> Todavía no ha realizado ninguna reserva. Haga su primera reserva en tan sólo dos minutos.</h4>
     </div>
     <div th:unless="${#lists.isEmpty(reservas)}">
       <div th:each="reserva: ${#lists.sort(reservas)}">

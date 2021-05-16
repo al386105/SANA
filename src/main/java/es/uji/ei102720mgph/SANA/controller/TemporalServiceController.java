@@ -37,13 +37,6 @@ public class TemporalServiceController {
         this.serviceDao=serviceDao;
     }
 
-    // Operació llistar
-    @RequestMapping("/list")
-    public String listTemporalServices(Model model) {
-        model.addAttribute("temporalService", temporalServiceDao.getTemporalServices());
-        return "temporalService/list";
-    }
-
     // metodos para anyadir al modelo los datos del selector o radio buttons
     @ModelAttribute("serviceList")
     public List<String> serviceList() {
@@ -104,6 +97,11 @@ public class TemporalServiceController {
     @RequestMapping(value="/update", method = RequestMethod.POST)
     public String processUpdateSubmit(@ModelAttribute("temporalService") TemporalService2 temporalService2,
                                       BindingResult bindingResult) {
+        TemporalServiceValidator2 temporalServiceValidator2 = new TemporalServiceValidator2();
+        temporalServiceValidator2.validate(temporalService2, bindingResult);
+        if (bindingResult.hasErrors())
+            return "temporalService/update";
+
         // Paso de lista de diasMarcados a openingDays de la bbdd
         List<DaysOfWeek> diasMarcados = temporalService2.getDiasMarcados();
         String openingDays = "";
@@ -122,11 +120,6 @@ public class TemporalServiceController {
         temporalService.setBeginningDate(temporalService2.getBeginningDate());
         temporalService.setOpeningDays(openingDays);
 
-        TemporalServiceValidator temporalServiceValidator = new TemporalServiceValidator();
-        temporalServiceValidator.validate(temporalService, bindingResult);
-
-        if (bindingResult.hasErrors())
-            return "temporalService/update";
         temporalServiceDao.updateTemporalService(temporalService);
         String naturalAreaName = temporalService.getNaturalArea();
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;

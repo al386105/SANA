@@ -38,7 +38,7 @@ public class ZoneController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/zone/add/" + naturalArea);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         Zone zone = new Zone();
         zone.setNaturalArea(naturalArea);
@@ -66,7 +66,7 @@ public class ZoneController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/zone/update/" + id);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         model.addAttribute("zone", zoneDao.getZone(id));
         return "zone/update";
@@ -99,7 +99,7 @@ public class ZoneController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/zone/delete/" + id);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         Zone zone = zoneDao.getZone(id);
         String naturalAreaName = zone.getNaturalArea();

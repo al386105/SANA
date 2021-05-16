@@ -66,7 +66,7 @@ public class PictureController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/picture/delete/assets/img/naturalAreas/" + pictureName);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         System.out.println(pictureName);
         Picture picture = pictureDao.getPicture("/assets/img/naturalAreas/" + pictureName);

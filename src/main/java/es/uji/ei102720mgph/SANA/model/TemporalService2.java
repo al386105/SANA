@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class TemporalService2 implements Comparable<TemporalService2>  {
+    private String id;
     private List<DaysOfWeek> diasMarcados;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime beginningTime;
@@ -22,6 +23,14 @@ public class TemporalService2 implements Comparable<TemporalService2>  {
 
     public TemporalService2(){
         super();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public List<DaysOfWeek> getDiasMarcados() {
@@ -87,7 +96,8 @@ public class TemporalService2 implements Comparable<TemporalService2>  {
     @Override
     public String toString() {
         return "TemporalService2{" +
-                "diasMarcados=" + diasMarcados +
+                "id='" + id + '\'' +
+                ", diasMarcados=" + diasMarcados +
                 ", beginningTime=" + beginningTime +
                 ", endTime=" + endTime +
                 ", beginningDate=" + beginningDate +

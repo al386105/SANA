@@ -2,11 +2,17 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-<div th:replace="fragments/header"></div>
-<!-- TODO dependiendo de si está registrado o no es un header u otro! -->
+
+<!-- dependiendo de si esta registrado o no tiene un header u otro -->
+<td th:if="${registered != null}">
+    <div th:replace="fragments/headerRegistered"></div>
+</td>
+<td th:if="${registered == null}">
+    <div th:replace="fragments/header"></div>
+</td>
 
 <div class="container">
-    <h1> POR HACER no registrados</h1>
+    <h1> POR HACER</h1>
     <br>
     <br>
     <br>

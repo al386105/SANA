@@ -37,40 +37,44 @@ public class ServiceDateController {
         this.serviceDao=serviceDao;
     }
 
-    // metodo para anyadir al modelo los datos del selector
-    @ModelAttribute("serviceList")
-    public List<String> serviceList() {
-        List<Service> serviceList = serviceDao.getFixedServices();
-        List<String> namesServices = serviceList.stream()
-                .map(Service::getNameOfService)
-                .collect(Collectors.toList());
-        return namesServices;
-    }
-
     // Operació crear
     @RequestMapping(value="/add/{naturalArea}")
     public String addServiceDate(Model model, @PathVariable String naturalArea, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/serviceDate/add/" + naturalArea);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         ServiceDate serviceDate = new ServiceDate();
         serviceDate.setNaturalArea(naturalArea);
+
+        // servicios fijos no asignados ya al área natural
+        List<Service> toUseServices = serviceDao.getServiceDatesNotInNaturalArea(naturalArea);
+        List<String> namesServices = toUseServices.stream()
+                .map(Service::getNameOfService)
+                .collect(Collectors.toList());
+        model.addAttribute("serviceList", namesServices);
         model.addAttribute("serviceDate", serviceDate);
         return "serviceDate/add";
     }
 
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("serviceDate") ServiceDate serviceDate,
+    public String processAddSubmit(Model model, @ModelAttribute("serviceDate") ServiceDate serviceDate,
                                    BindingResult bindingResult) {
         ServiceDateValidator serviceDateValidator = new ServiceDateValidator();
         serviceDateValidator.validate(serviceDate, bindingResult);
 
-        if (bindingResult.hasErrors())
-            return "serviceDate/add"; //tornem al formulari per a que el corregisca
         String naturalAreaName = serviceDate.getNaturalArea();
+        if (bindingResult.hasErrors()) {
+            // servicios fijos no asignados ya al área natural
+            List<Service> toUseServices = serviceDao.getServiceDatesNotInNaturalArea(naturalAreaName);
+            List<String> namesServices = toUseServices.stream()
+                    .map(Service::getNameOfService)
+                    .collect(Collectors.toList());
+            model.addAttribute("serviceList", namesServices);
+            return "serviceDate/add"; //tornem al formulari per a que el corregisca
+        }
         serviceDateDao.addServiceDate(serviceDate); //usem el dao per a inserir el address
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
@@ -81,23 +85,39 @@ public class ServiceDateController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/serviceDate/update/" + id);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
-        model.addAttribute("serviceDate", serviceDateDao.getServiceDate(id));
+
+        ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
+        // servicios fijos no asignados ya al área natural
+        List<Service> toUseServices = serviceDao.getServiceDatesNotInNaturalArea(serviceDate.getNaturalArea());
+        List<String> namesServices = toUseServices.stream()
+                .map(Service::getNameOfService)
+                .collect(Collectors.toList());
+        model.addAttribute("serviceList", namesServices);
+        model.addAttribute("serviceDate", serviceDate);
         return "serviceDate/update";
     }
 
     // Resposta de modificació d'objectes
     @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("serviceDate") ServiceDate serviceDate,
+    public String processUpdateSubmit(Model model, @ModelAttribute("serviceDate") ServiceDate serviceDate,
                                       BindingResult bindingResult) {
         ServiceDateValidator serviceDateValidator = new ServiceDateValidator();
         serviceDateValidator.validate(serviceDate, bindingResult);
-
-        if (bindingResult.hasErrors())
-            return "serviceDate/update";
-        serviceDateDao.updateServiceDate(serviceDate);
         String naturalAreaName = serviceDate.getNaturalArea();
+
+        if (bindingResult.hasErrors()) {
+            // servicios fijos no asignados ya al área natural
+            List<Service> toUseServices = serviceDao.getServiceDatesNotInNaturalArea(naturalAreaName);
+            List<String> namesServices = toUseServices.stream()
+                    .map(Service::getNameOfService)
+                    .collect(Collectors.toList());
+            model.addAttribute("serviceList", namesServices);
+            return "serviceDate/update";
+        }
+        System.out.println(serviceDate.getBeginningDate());
+        serviceDateDao.updateServiceDate(serviceDate);
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
@@ -107,7 +127,7 @@ public class ServiceDateController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/serviceDate/delete/" + id);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
         String naturalAreaName = serviceDate.getNaturalArea();
@@ -117,19 +137,28 @@ public class ServiceDateController {
 
     // información de un servicio dijo
     @RequestMapping(value="/get/{id}")
-    public String getServiceDateNaturalArea(Model model, @PathVariable String id){
+    public String getServiceDateNaturalArea(Model model, @PathVariable String id, HttpSession session){
+        // Pasar qué tipo de usuario es para mostrar unos botones u otros en la misma vista
+        if(session.getAttribute("municipalManager") != null)
+            model.addAttribute("typeUser", "manager");
+        else if(session.getAttribute("registeredCitizen") != null)
+            model.addAttribute("typeUser", "registered");
+        else if(session.getAttribute("environmentalManager") != null)
+            model.addAttribute("typeUser", "environmental");
+
         ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
         model.addAttribute("serviceDate", serviceDateDao.getServiceDate(id));
         model.addAttribute("service", serviceDao.getService(serviceDate.getService()));
         return "/serviceDate/get";
     }
 
+    // Dar de baja servicio fijo
     @RequestMapping(value="/darDeBaja/{id}", method = RequestMethod.GET)
     public String darDeBajaServiceDate(Model model, @PathVariable String id, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/serviceDate/darDeBaja/" + id);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
         serviceDate.setEndDate(LocalDate.now());

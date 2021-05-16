@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
 <head>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </head>
-
 <body>
 
-<div th:replace="fragments/header"></div>
+<div th:switch="${typeUser}">
+    <td th:case="'registered'"><div th:replace="fragments/headerRegistered"></div></td>
+    <td th:case="*"><div th:case="notRegistered" th:replace="fragments/header"></div></td>
+</div>
 
 <div class="container">
     <h1><span th:text="${naturalArea.name}"> </span></h1>
@@ -104,7 +105,12 @@
         <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
             <td th:text="${serviceDate.service}"></td>
             <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
-            <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
+            <div th:if="${serviceDate.endDate != null}">
+                <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
+            </div>
+            <div th:if="${serviceDate.endDate == null}">
+                <td> - </td>
+            </div>
             <td><a th:href="@{/serviceDate/get/{id}(id=${serviceDate.id})}">
                 <button type="button" class="btn btn-primary">Más información</button>
             </a>
@@ -141,7 +147,7 @@
             <td th:text="${temporalService.endTime}"></td>
             <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
             <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
-            <td><a th:href="@{/temporalService/get/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
+            <td><a th:href="@{/temporalService/get/{id}(id=${temporalService.id})}">
                 <button type="button" class="btn btn-primary">Más información</button>
             </a>
             </td>
@@ -182,9 +188,6 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-
-    <br><br>
-    <a href="/naturalArea/list"><button type="button" class="btn btn-primary">Volver</button></a>
     <br><br>
 </div>
 

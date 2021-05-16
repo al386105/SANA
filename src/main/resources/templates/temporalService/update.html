@@ -9,6 +9,8 @@
     <form class="form-horizontal" action="#" th:action="@{/temporalService/update}"
           th:object="${temporalService}" method="post">
 
+        <input required type="hidden" th:field="*{id}" />
+
         <div class="form-group row">
             <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
             <div class="col-sm-4">
@@ -62,7 +64,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="endDate">Fecha de fin:</label>
             <div class="col-sm-4">
-                <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="endDate" th:field="*{endDate}"/>
+                <input type="date" required placeholder="yyyy-MM-dd" class="form-control" id="endDate" th:field="*{endDate}"/>
                 <td th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></td>
             </div>
         </div>

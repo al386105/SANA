@@ -21,7 +21,6 @@ public class ServiceDateDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
     public void addServiceDate(ServiceDate serviceDate) {
         boolean excepcion;
         Formatter fmt;
@@ -73,7 +72,6 @@ public class ServiceDateDao {
             return null;
         }
     }
-
 
     public List<ServiceDate> getServiceDates() {
         try {

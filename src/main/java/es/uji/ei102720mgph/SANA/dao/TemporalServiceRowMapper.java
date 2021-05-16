@@ -11,6 +11,7 @@ import java.time.LocalTime;
 public class TemporalServiceRowMapper implements RowMapper<TemporalService> {
     public TemporalService mapRow(ResultSet rs, int rowNum) throws SQLException {
         TemporalService temporalService = new TemporalService();
+        temporalService.setId(rs.getString("id"));
         temporalService.setOpeningDays(rs.getString("openingDays"));
         temporalService.setBeginningTime(rs.getObject("beginningTime", LocalTime.class));
         temporalService.setEndTime(rs.getObject("endTime", LocalTime.class));

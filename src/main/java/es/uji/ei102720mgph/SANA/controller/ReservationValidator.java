@@ -20,5 +20,7 @@ public class ReservationValidator implements Validator {
         // TODO: Ese valor se puede obtener de zone (atributo: maximumCapacity)
         if (reservation.getNumberOfPeople() <= 0 )
             errors.rejectValue("numberOfPeople", "obligatorio", "Es obligatorio introducir un número de personas");
+
+        // Validar el selector de fecha como en el resto, da fallo
     }
 }

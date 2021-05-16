@@ -160,8 +160,13 @@
             <td th:text="${temporalService.beginningTime}"></td>
             <td th:text="${temporalService.endTime}"></td>
             <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
-            <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
-            <td><a th:href="@{/temporalService/get/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
+            <div th:if="${serviceDate.endDate != null}">
+                <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
+            </div>
+            <div th:if="${serviceDate.endDate == null}">
+                <td> - </td>
+            </div>
+            <td><a th:href="@{/temporalService/get/{id}(id=${temporalService.id})}">
                 <button type="button" class="btn btn-primary">Más información</button>
             </a>
             </td>

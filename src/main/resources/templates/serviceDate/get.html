@@ -2,7 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-<div th:replace="fragments/headerManager"></div>
+<div th:switch="${typeUser}">
+    <td th:case="'manager'"><div th:replace="fragments/headerManager"></div></td>
+    <td th:case="'environmental'"><div th:replace="fragments/headerEnvironmental"></div></td>
+    <td th:case="'registered'"><div th:replace="fragments/headerRegistered"></div></td>
+    <td th:case="*"><div th:case="notRegistered" th:replace="fragments/header"></div></td>
+</div>
 
 <div class="container">
     <h1><span th:text="${service.nameOfService}"></span> en <span th:text="${serviceDate.naturalArea}"></span></h1>
@@ -16,18 +21,60 @@
     <h3>Información del servicio fijo</h3>
     <ul>
         <li><b>Fecha de inicio:</b> <span th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></span></li>
-        <li><b>Fecha de fin:</b> <span th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></span></li>
+        <li><b>Fecha de fin:</b>
+            <td th:if="${serviceDate.endDate != null}">
+                <span th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></span>
+            </td>
+            <td th:if="${serviceDate.endDate == null}">
+                <span>El servicio continúa operativo</span>
+            </td>
+        </li>
     </ul>
 
-    <!-- TODO el boton lo usan todos los usuarios... -->
-    <br>
-    <td><a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
-        <button type="button" class="btn btn-warning">Edita</button>
-    </a>
-    </td>
-    <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${serviceDate.naturalArea})}">
-        <button type="submit" class="btn btn-primary">Volver al área natural</button>
-    </a>
+    <!-- dependiendo del usuario que sea, querrá volver a un sitio o a otro -->
+    <div th:switch="${typeUser}">
+        <td th:case="'manager'">
+            <div th:if="${serviceDate.endDate == null}">
+                <a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
+                    <button type="button" class="btn btn-warning">Edita</button>
+                </a>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Dar de baja</button>
+                <!-- VENTANA EMERGENTE -->
+                <div class="modal" id="miModal">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Dar de baja servicio fijo</h5>
+                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Seguro que desea dar de baja el servicio fijo <span th:text="${serviceDate.service}"></span>
+                                    de <span th:text="${serviceDate.naturalArea}"></span>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a th:href="@{/serviceDate/darDeBaja/{id}(id=${serviceDate.id})}">
+                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${serviceDate.naturalArea})}">
+                <button type="submit" class="btn btn-primary">Volver al área natural</button>
+            </a>
+        </td>
+        <td th:case="'environmental'">
+            <a th:href="@{/naturalArea/getEnvironmental/{naturalAreaName}(naturalAreaName=${serviceDate.naturalArea})}">
+                <button type="submit" class="btn btn-primary">Volver al área natural</button>
+            </a>
+        </td>
+        <td th:case="*">
+            <a th:href="@{/naturalArea/get/{naturalAreaName}(naturalAreaName=${serviceDate.naturalArea})}">
+                <button type="submit" class="btn btn-primary">Volver al área natural</button>
+            </a>
+        </td>
+    </div>
     <br><br>
 </div>
 

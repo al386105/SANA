@@ -2,10 +2,7 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.*;
 import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
-import es.uji.ei102720mgph.SANA.model.Municipality;
-import es.uji.ei102720mgph.SANA.model.NaturalArea;
-import es.uji.ei102720mgph.SANA.model.NaturalAreaForm;
-import es.uji.ei102720mgph.SANA.model.UserLogin;
+import es.uji.ei102720mgph.SANA.model.*;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import es.uji.ei102720mgph.SANA.services.OccupationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +30,7 @@ public class NaturalAreaController {
     private TimeSlotDao timeSlotDao;
     private ServiceDateDao serviceDateDao;
     private TemporalServiceDao temporalServiceDao;
+    private ServiceDao serviceDao;
 
     private final int pageLength = 5;
 
@@ -73,8 +71,13 @@ public class NaturalAreaController {
     @Autowired
     public void setTemporalServiceDao(TemporalServiceDao temporalServiceDao) { this.temporalServiceDao = temporalServiceDao; }
 
+    @Autowired
+    public void setTemporalServiceDao(ServiceDao serviceDao) { this.serviceDao = serviceDao; }
+
     @RequestMapping(value="/get/{naturalArea}")
-    public String getNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea){
+    public String getNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session) {
+        if(session.getAttribute("registeredCitizen") != null)
+            model.addAttribute("typeUser", "registered");
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
@@ -89,7 +92,7 @@ public class NaturalAreaController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/naturalArea/getManagers/" + naturalArea);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
@@ -98,11 +101,17 @@ public class NaturalAreaController {
         model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
+        model.addAttribute("serviceDatesFaltan", serviceDao.getServiceDatesNotInNaturalArea(naturalArea));
         return "/naturalArea/getManagers";
     }
 
     @RequestMapping(value="/getEnvironmental/{naturalArea}")
-    public String getNaturalAreaEnvironmental(Model model, @PathVariable("naturalArea") String naturalArea){
+    public String getNaturalAreaEnvironmental(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/getEnvironmental/" + naturalArea);
+            return "redirect:/inicio/login";
+        }
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
@@ -113,7 +122,7 @@ public class NaturalAreaController {
         return "/naturalArea/getEnvironmental";
     }
 
-    // TODO en proceso
+    // TODO en proceso ¿de quien es esto?
     @RequestMapping(value="/getReservations/{naturalArea}")
     public String getReservationsNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea){
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
@@ -174,7 +183,12 @@ public class NaturalAreaController {
     }
 
     @RequestMapping(value="/listEnvironmental")
-    public String listNaturalAreasEnvironmental(Model model, @RequestParam(value="patron",required=false) String patron, @RequestParam("page") Optional<Integer> page){
+    public String listNaturalAreasEnvironmental(HttpSession session, Model model, @RequestParam(value="patron",required=false) String patron, @RequestParam("page") Optional<Integer> page){
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/listEnvironmental");
+            return "redirect:/inicio/login";
+        }
         paginacionSinFotos(model, patron, page);
         return "naturalArea/listEnvironmental";
     }
@@ -184,7 +198,7 @@ public class NaturalAreaController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/naturalArea/listManagers");
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         paginacionSinFotos(model, patron, page);
         return "naturalArea/listManagers";
@@ -237,7 +251,7 @@ public class NaturalAreaController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/naturalArea/add");
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         model.addAttribute("naturalArea", new NaturalAreaForm());
         return "naturalArea/add";
@@ -340,7 +354,7 @@ public class NaturalAreaController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/naturalArea/update/" + naturalArea);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         model.addAttribute("naturalArea", pasoDeNaturalAreaAForm(naturalAreaDao.getNaturalArea(naturalArea)));
         return "naturalArea/update";
@@ -388,30 +402,30 @@ public class NaturalAreaController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/naturalArea/delete/" + naturalArea);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         naturalAreaDao.deleteNaturalArea(naturalArea);
         return "redirect:/naturalArea/listManagers";
     }
 
     @RequestMapping(value="/occupancy", method=RequestMethod.GET)
-    public String getOccupancyForm(Model model) {
+    public String getOccupancyForm(Model model, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/occupancy");
+            return "redirect:/inicio/login";
+        }
         List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
         model.addAttribute("occupancyDataOfNaturalAreas",
                 occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
         return "naturalArea/occupancy";
     }
 
-
-    // Vista de paneles de información para ciudadanos no registrados
-    @RequestMapping(value="/getInfo")
-    public String getInfoPanelesNoReg(Model model){
-        return "/naturalArea/getInfo";
-    }
-
     // Vista de paneles de información para ciudadanos registrados
-    @RequestMapping(value="/getInfo2")
-    public String getInfoPanelesReg(Model model){
-        return "/naturalArea/getInfo2";
+    @RequestMapping(value="/getInfo")
+    public String getInfoPaneles(Model model, HttpSession session){
+        // si es null es que no esta registrado
+        model.addAttribute("registered", session.getAttribute("registeredCitizen"));
+        return "/naturalArea/getInfo";
     }
 }

@@ -68,8 +68,8 @@ public class TemporalServiceValidator implements Validator {
                 && temporalService.getBeginningDate().isAfter(temporalService.getEndDate()))
             errors.rejectValue("endDate", "valor incorrecto", "La fecha de fin debe ser posterior a la fecha de inicio");
 
-        // Si ya existe el service + naturalArea...
-        /*if(temporalServiceDao.getTemporalService(temporalService.getService(), temporalService.getNaturalArea()) != null)
-            errors.rejectValue("service", "repetido", "El servicio ya está asignado a este área natural");*/
+        // Al menos seleccionar un dia de la semana
+        if (temporalService.getOpeningDays() == null)
+            errors.rejectValue("openingDays", "obligatorio", "Es obligatorio seleccionar al menos un día de la semana");
     }
 }

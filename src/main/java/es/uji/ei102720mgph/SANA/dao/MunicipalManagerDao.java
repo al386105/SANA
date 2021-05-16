@@ -59,6 +59,18 @@ public class MunicipalManagerDao {
         }
     }
 
+
+    public MunicipalManager getMunicipalManagerUsername(String username) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM MunicipalManager " +
+                            "WHERE username = ? ",
+                    new MunicipalManagerRowMapper(), username);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public List<MunicipalManager> getManagersOfMunicipality(String municipality) {
         try {
             return jdbcTemplate.query("SELECT * FROM MunicipalManager " +

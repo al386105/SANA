@@ -209,19 +209,25 @@
         <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
             <td th:text="${serviceDate.service}"></td>
             <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
-            <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
+            <div th:if="${serviceDate.endDate != null}">
+                <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
+            </div>
+            <div th:if="${serviceDate.endDate == null}">
+                <td> - </td>
+            </div>
             <td><a th:href="@{/serviceDate/get/{id}(id=${serviceDate.id})}">
                 <button type="button" class="btn btn-primary">Más información</button>
             </a>
             </td>
-            <td><a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
-                    <button type="button" class="btn btn-warning">Edita</button>
-                </a>
-            </td>
             <div th:if="${serviceDate.endDate != null}">
+                <td></td>
                 <td></td>
             </div>
             <div th:if="${serviceDate.endDate == null}">
+                <td><a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
+                    <button type="button" class="btn btn-warning">Edita</button>
+                </a>
+                </td>
                 <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal2">Dar de baja</button></td>
                 <!-- VENTANA EMERGENTE -->
                 <div class="modal" id="miModal2">
@@ -247,9 +253,14 @@
         </tr>
         </tbody>
     </table>
-    <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-        <button type="button" class="btn btn-success">Asignar servicio fijo</button>
-    </a></td>
+    <div th:if="${#lists.isEmpty(serviceDatesFaltan)}">
+        <p><b>¡Todos los servicios fijos están operativos en el área natural!</b></p>
+    </div>
+    <div th:unless="${#lists.isEmpty(serviceDatesFaltan)}">
+        <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-success">Asignar servicio fijo</button>
+        </a></td>
+    </div>
     <hr class="lineaVerde">
 
     <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
@@ -277,35 +288,14 @@
             <td th:text="${temporalService.endTime}"></td>
             <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
             <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
-            <td><a th:href="@{/temporalService/get/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
+            <td><a th:href="@{/temporalService/get/{id}(id=${temporalService.id})}">
                 <button type="button" class="btn btn-primary">Más información</button>
             </a>
             </td>
-            <td><a th:href="@{/temporalService/update/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
+            <td><a th:href="@{/temporalService/update/{id}(id=${temporalService.id})}">
                 <button type="button" class="btn btn-warning">Edita</button>
             </a>
             </td>
-            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal3">Elimina</button></td>
-            <!-- VENTANA EMERGENTE -->
-            <div class="modal" id="miModal3">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Eliminar servicio temporal</h5>
-                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <p>¿Seguro que desea eliminar la asignación del servicio temporal <span th:text="${temporalService.service}"></span>
-                                de <span th:text="${naturalArea.name}"></span>?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <a th:href="@{/temporalService/delete/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
-                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </tr>
         </tbody>
     </table>
@@ -313,7 +303,6 @@
         <button type="button" class="btn btn-success">Asignar servicio temporal</button>
     </a></td>
     <hr class="lineaVerde">
-
 
     <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
     <h3>Imágenes</h3>

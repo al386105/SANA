@@ -131,6 +131,7 @@ public class NaturalAreaController {
         else
             naturalAreas = naturalAreaDao.getNaturalAreas();
         Collections.sort(naturalAreas);
+
         // las áreas naturales cerradas no pueden ser vistas por los ciudadanos
         naturalAreas.removeIf(naturalArea -> naturalArea.getTypeOfAccess().getDescripcion().equals("Cerrado"));
 
@@ -145,8 +146,8 @@ public class NaturalAreaController {
             ini+=pageLength;
             fin+=pageLength;
         }
-        naturalAreasPaged.add(new ArrayList<NaturalArea>(naturalAreas.subList(ini, naturalAreas.size())));
-        pathPicturesPaged.add(new ArrayList<String>(pathPictures.subList(ini, pathPictures.size())));
+        naturalAreasPaged.add(new ArrayList<>(naturalAreas.subList(ini, naturalAreas.size())));
+        pathPicturesPaged.add(new ArrayList<>(pathPictures.subList(ini, pathPictures.size())));
         model.addAttribute("naturalAreasPaged", naturalAreasPaged);
         model.addAttribute("pathPicturesPaged", pathPicturesPaged);
 

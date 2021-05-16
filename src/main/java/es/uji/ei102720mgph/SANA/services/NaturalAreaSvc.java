@@ -47,7 +47,14 @@ public class NaturalAreaSvc implements NaturalAreaService  {
         for (int i = 0; i < naturalAreas.size(); i++){
             List<Picture> picturesOfNaturalArea = pictureDao.getPicturesOfNaturalArea(naturalAreas.get(i).getName());
             if (picturesOfNaturalArea.size() > 0){
-                pictures.add(i, picturesOfNaturalArea.get(0).getPicturePath());
+                pictures.add(picturesOfNaturalArea.get(0).getPicturePath());
+            }
+            else{
+                //Si no tiene imagenes, añadimos una imagen por defecto asociada
+//                pictures.add("/assets/img/naturalAreas/noPicture1.png");
+//                pictures.add("/assets/img/naturalAreas/noPicture2.png");
+                pictures.add("/assets/img/naturalAreas/noPicture.png");
+
             }
         }
         return pictures;

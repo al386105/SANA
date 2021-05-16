@@ -2,10 +2,9 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ReservationDao;
 import es.uji.ei102720mgph.SANA.dao.TimeSlotDao;
+import es.uji.ei102720mgph.SANA.dao.ZoneDao;
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
-import es.uji.ei102720mgph.SANA.model.NuevaReserva;
-import es.uji.ei102720mgph.SANA.model.Reservation;
-import es.uji.ei102720mgph.SANA.model.TimeSlot;
+import es.uji.ei102720mgph.SANA.model.*;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import es.uji.ei102720mgph.SANA.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +27,16 @@ public class ReservationController {
     private ReservationDao reservationDao;
     private ReservationService reservationService;
     private TimeSlotDao timeSlotDao;
+    private ZoneDao zoneDao;
 
     @Autowired
     public void setReservationDao(ReservationDao reservationDao) {
         this.reservationDao=reservationDao;
+    }
+
+    @Autowired
+    public void setZoneDao(ZoneDao zoneDao) {
+        this.zoneDao = zoneDao;
     }
 
     @Autowired
@@ -58,28 +63,38 @@ public class ReservationController {
         if (session.getAttribute("registeredCitizen") == null) return "redirect:/inicio/login";
         model.addAttribute("reservation", new NuevaReserva());
         model.addAttribute("naturalArea", naturalArea);
-        model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
-        LocalDate[] fechas = new LocalDate[3];
-        fechas[0] = LocalDate.now();
-        fechas[1] = LocalDate.now().plusDays(1);
-        fechas[2] = LocalDate.now().plusDays(2);
+        model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalAreaActuales(naturalArea));
+        LocalDate[] fechas = new LocalDate[2];
+        //fechas[0] = LocalDate.now(); PARA ESE MISMO DIA SE PUEDE RESERVAR ?? TODO
+        fechas[0] = LocalDate.now().plusDays(1);
+        fechas[1] = LocalDate.now().plusDays(2);
         model.addAttribute("fechas", fechas);
         return "reservation/add";
+    }
+
+    @RequestMapping(value="/add2/{naturalArea}")
+    public String addReservation2(@ModelAttribute("reservation") NuevaReserva reservation, @PathVariable String naturalArea, Model model, HttpSession session) {
+        model.addAttribute("reservation", reservation);
+        model.addAttribute("naturalArea", naturalArea);
+        List<Zone> zonas = zoneDao.getZoneDisponibles(reservation.getReservationDate(), reservation.getTimeSlotId(), reservation.getNumberOfPeople(), (String) model.getAttribute("naturalArea"));
+        model.addAttribute("zones", zonas);
+        return "reservation/add2";
     }
 
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add", method=RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("reservation") NuevaReserva reservation,
-                                   BindingResult bindingResult) {
+                                   BindingResult bindingResult, HttpSession session) {
         //ReservationValidator reservationValidator = new ReservationValidator();
         //reservationValidator.validate(reservation, bindingResult);
 
         if (bindingResult.hasErrors())
             return "reservation/add"; //tornem al formulari per a que el corregisca
 
-
-        //reservationService.addReservation(reservation);
-        System.out.println(reservation);
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        reservation.setCitizenEmail(citizen.getEmail());
+        int numRes = reservationDao.addReservationPocosValores(reservation);
+        reservationDao.addReservationOfZone(numRes, reservation.getZoneid());
 
         return "redirect:/inicio/registrado/reservas"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
     }

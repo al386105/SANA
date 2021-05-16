@@ -67,6 +67,20 @@ public class ZoneDao {
         }
     }
 
+    public List<Zone> getZoneDisponibles(LocalDate fecha, String timeslot, int personas, String natArea) {
+        try {
+            return jdbcTemplate.query(
+                    "SELECT * FROM zone " +
+                            "WHERE naturalArea = ? " +
+                            "AND maximumcapacity >= ? " +
+                            "AND (zonenumber, letter) NOT IN (SELECT z.zonenumber, z.letter FROM reservation AS r JOIN reservationofzone AS rz ON rz.reservationnumber = r.reservationnumber JOIN zone AS z ON z.id = rz.zoneid WHERE CAST(reservationdate AS date) = CAST(? AS date) AND timeslotid = ?);",
+                    new ZoneRowMapper(), natArea, personas, fecha, timeslot);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public List<Zone> getZonesOfNaturalArea(String naturalArea) {
         try {
             return jdbcTemplate.query("SELECT * FROM Zone WHERE naturalArea =?",

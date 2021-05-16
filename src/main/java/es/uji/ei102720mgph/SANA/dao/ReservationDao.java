@@ -1,6 +1,10 @@
 package es.uji.ei102720mgph.SANA.dao;
 
+import es.uji.ei102720mgph.SANA.enums.ReservationState;
+import es.uji.ei102720mgph.SANA.model.NuevaReserva;
 import es.uji.ei102720mgph.SANA.model.Reservation;
+import es.uji.ei102720mgph.SANA.model.ReservationOfZone;
+import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -43,6 +47,45 @@ public class ReservationDao {
                 excepcion = true;
             } finally {
                 Reservation.incrementaContador();
+            }
+        } while (excepcion);
+    }
+
+    public int addReservationPocosValores(NuevaReserva reservation) {
+        boolean excepcion;
+        Formatter fmt;
+        do {
+            try {
+                fmt = new Formatter();
+                jdbcTemplate.update(
+                        "INSERT INTO Reservation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                        Reservation.getContador(), reservation.getReservationDate(), LocalDate.now(),
+                        LocalTime.now(), reservation.getNumberOfPeople(), ReservationState.created.name(),
+                        "assets/img/qrCodes/qr"+ fmt.format("%07d", Reservation.getContador()), null, null, reservation.getCitizenEmail(), reservation.getTimeSlotId());
+
+                excepcion = false;
+            } catch (DuplicateKeyException e) {
+                excepcion = true;
+            } finally {
+                Reservation.incrementaContador();
+            }
+        } while (excepcion);
+        return Reservation.getContador()-1;
+    }
+
+    public void addReservationOfZone(int numRes, String zoneNumber) {
+        boolean excepcion;
+        do {
+            try {
+                jdbcTemplate.update(
+                        "INSERT INTO ReservationOfZone VALUES(?, ?, ?)",
+                        ReservationOfZone.getContador(), numRes, zoneNumber);
+
+                excepcion = false;
+            } catch (DuplicateKeyException e) {
+                excepcion = true;
+            } finally {
+                ReservationOfZone.incrementaContador();
             }
         } while (excepcion);
     }

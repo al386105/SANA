@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
@@ -64,6 +65,20 @@ public class TimeSlotDao {
                             "WHERE naturalArea = ?",
                     new TimeSlotRowMapper(),
                     naturalArea);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<TimeSlot>();
+        }
+    }
+
+    public List<TimeSlot> getTimeSlotNaturalAreaActuales(String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM TimeSlot " +
+                            "WHERE naturalArea = ?" +
+                            "AND CAST(beginningdate AS date) <= CAST( ? AS date)" +
+                            "AND CAST(enddate AS date) >= CAST( ? AS date)",
+                    new TimeSlotRowMapper(),
+                    naturalArea, LocalDate.now(), LocalDate.now());
         }
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<TimeSlot>();

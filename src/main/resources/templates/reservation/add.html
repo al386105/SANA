@@ -2,23 +2,14 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-<div th:replace="fragments/headerManager"></div>
+<div th:replace="fragments/headerRegistered"></div>
 
 
 <div class="container">
     <h2>Realizar nueva reserva en <span th:text="${naturalArea}"></span></h2>
     <br>
-    <form class="form-horizontal" action="#" th:action="@{/reservation/add}"
-          th:object="${reservation}" method="post">
-
-        <!--
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="reservationNumber">Número reserva:</label>
-            <div class="col-sm-4">
-                <input type="number" min="1" required class="form-control" id="reservationNumber" th:field="*{reservationNumber}" />
-            </div>
-        </div>
-        -->
+    <form class="form-horizontal" action="#" th:action="${'/reservation/add2/' + naturalArea}"
+          th:object="${reservation}">
 
         <div class="form-group row">
             <label class="control-label col-sm-2">Fecha reserva:</label>
@@ -32,53 +23,14 @@
             </div>
         </div>
 
-        <!--
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="creationDate">Fecha creación:</label>
-            <div class="col-sm-4">
-                <input type="date" required class="form-control" id="creationDate" th:field="*{creationDate}" />
-            </div>
-        </div>
-        -->
-
-        <!--
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="creationTime">Hora creación:</label>
-            <div class="col-sm-4">
-                <input type="time" required class="form-control" id="creationTime" th:field="*{creationTime}" />
-            </div>
-        </div>
-        -->
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="numberOfPeople">Num. personas:</label>
             <div class="col-sm-4">
-                <input type="number" min="1" max="10" required class="form-control" id="numberOfPeople" th:field="*{numberOfPeople}" />
+                <input type="number" min="1" max="8" required class="form-control" id="numberOfPeople" th:field="*{numberOfPeople}" value="1"/>
             </div>
         </div>
 
-        <!--
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="state">Estado:</label>
-            <div class="col-sm-4">
-                <input type="text" placeholder="created" required class="form-control" id="state" th:field="*{state}" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="QRcode">Código QR:</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="QRcode" th:field="*{QRcode}"/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="citizenEmail">Ciudadano (email):</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="citizenEmail" th:field="*{citizenEmail}"/>
-            </div>
-        </div>
-        -->
 
         <div class="form-group row">
             <label class="control-label col-sm-2">Horario:</label>
@@ -95,7 +47,7 @@
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
                 <a href="/naturalArea/pagedlist"><button type="button" class="btn btn-secondary">Volver</button></a>
-                <button type="submit" class="btn btn-primary">Reservar</button>
+                <button type="submit" class="btn btn-primary">Ver zonas disponibles</button>
             </div>
         </div>
 

@@ -9,9 +9,9 @@ public class NuevaReserva {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reservationDate;
     private int numberOfPeople;
-    private int zoneNumber;
-    private char letter;
+    private String zoneid;
     private String timeSlotId;
+    private String citizenEmail;
 
     public LocalDate getReservationDate() {
         return reservationDate;
@@ -29,22 +29,6 @@ public class NuevaReserva {
         this.numberOfPeople = numberOfPeople;
     }
 
-    public int getZoneNumber() {
-        return zoneNumber;
-    }
-
-    public void setZoneNumber(int zoneNumber) {
-        this.zoneNumber = zoneNumber;
-    }
-
-    public char getLetter() {
-        return letter;
-    }
-
-    public void setLetter(char letter) {
-        this.letter = letter;
-    }
-
     public String getTimeSlotId() {
         return timeSlotId;
     }
@@ -53,14 +37,30 @@ public class NuevaReserva {
         this.timeSlotId = timeSlotId;
     }
 
+    public String getZoneid() {
+        return zoneid;
+    }
+
+    public void setZoneid(String zoneid) {
+        this.zoneid = zoneid;
+    }
+
+    public String getCitizenEmail() {
+        return citizenEmail;
+    }
+
+    public void setCitizenEmail(String citizenEmail) {
+        this.citizenEmail = citizenEmail;
+    }
+
     @Override
     public String toString() {
         return "NuevaReserva{" +
                 "reservationDate=" + reservationDate +
                 ", numberOfPeople=" + numberOfPeople +
-                ", zoneNumber=" + zoneNumber +
-                ", letter=" + letter +
+                ", zoneid='" + zoneid + '\'' +
                 ", timeSlotId='" + timeSlotId + '\'' +
+                ", citizenEmail='" + citizenEmail + '\'' +
                 '}';
     }
 }

@@ -226,3 +226,13 @@ h4.colorTierra {
 .form-control-corto {
     width:50%;
 }
+
+select {
+    background: #FFFFFF;
+    border-color: gray;
+    font-size: 9px;
+    height: 20px;
+    padding: 5px;
+    width: 350px;
+}
+

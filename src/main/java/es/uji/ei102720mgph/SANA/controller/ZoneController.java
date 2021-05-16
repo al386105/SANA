@@ -43,6 +43,7 @@ public class ZoneController {
         Zone zone = new Zone();
         zone.setNaturalArea(naturalArea);
         model.addAttribute("zone", zone);
+        session.setAttribute("section", "#zones");
         return "zone/add";
     }
 
@@ -69,6 +70,7 @@ public class ZoneController {
             return "redirect:/inicio/login";
         }
         model.addAttribute("zone", zoneDao.getZone(id));
+        session.setAttribute("section", "#zones");
         return "zone/update";
     }
 
@@ -104,6 +106,7 @@ public class ZoneController {
         Zone zone = zoneDao.getZone(id);
         String naturalAreaName = zone.getNaturalArea();
         zoneDao.deleteZone(id);
+        session.setAttribute("section", "#zones");
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }

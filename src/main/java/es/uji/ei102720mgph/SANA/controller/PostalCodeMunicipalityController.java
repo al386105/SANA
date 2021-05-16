@@ -33,6 +33,7 @@ public class PostalCodeMunicipalityController {
             return "redirect:/inicio/login";
         }
         model.addAttribute("postalCode", new PostalCodeMunicipality());
+        session.setAttribute("section", "#postalCodes");
         return "postalCode/add";
     }
 
@@ -56,6 +57,7 @@ public class PostalCodeMunicipalityController {
             return "redirect:/inicio/login";
         }
         pcD.deletePostalCode(municipality, postalCode);
+        session.setAttribute("section", "#postalCodes");
         return "redirect:/municipality/get/" + municipality;
     }
 }

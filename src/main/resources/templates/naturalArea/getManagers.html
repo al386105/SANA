@@ -25,144 +25,128 @@
     <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
         <button type="button" class="btn btn-warning">Edita</button> </a>
     </td>
-    <!--
-    <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Elimina</button></td>
-    <div class="modal" id="miModal">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Eliminar área natural</h5>
-                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>¿Seguro que desea eliminar el área natural <span th:text="${naturalArea.name}"></span>?</p>
-                </div>
-                <div class="modal-footer">
-                    <a th:href="@{../delete/{naturalArea}(naturalArea=${naturalArea.name})}">
-                        <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                </div>
-            </div>
-        </div>
-    </div>-->
-    <hr class="lineaVerde">
 
     <!-- solo se pueden gestionar las zonas y franjas horarias de los espacios restringidos -->
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
-        <!-- SECCION DE ZONAS DEL AREA NATURAL -->
-        <h3>Lista de Zonas</h3>
-        <div th:if="${#lists.isEmpty(zones)}">
-            <p><b>¡Todavía no ha añadido zonas a este área natural!</b></p>
-        </div>
-        <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Número zona</th>
-                <th scope="col">Letra</th>
-                <th scope="col">Capacidad máx.</th>
-                <th scope="col">Fecha creación</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="zone: ${#lists.sort(zones)}">
-                <td th:text="${zone.zoneNumber}"></td>
-                <td th:text="${zone.letter}"></td>
-                <td th:text="${zone.maximumCapacity}"></td>
-                <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
-                <td><a th:href="@{/zone/update/{id}(id=${zone.id})}">
-                    <button type="button" class="btn btn-warning">Edita</button>
-                </a>
-                </td>
-                <!--
-                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal6">
-                    Elimina</button></td>
-                <div class="modal" id="miModal6">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Eliminar zona</h5>
-                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <p>¿Seguro que desea borrar la zona <span th:text="${zone.zoneNumber}"></span> <span th:text="${zone.letter}"></span>
-                                     de <span th:text="${zone.naturalArea}"></span>?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a th:href="@{/zone/delete/{id}(id=${zone.id})}">
-                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+        <section id="zones">
+            <hr class="lineaVerde">
+            <!-- SECCION DE ZONAS DEL AREA NATURAL -->
+            <h3>Lista de Zonas</h3>
+            <div th:if="${#lists.isEmpty(zones)}">
+                <p><b>¡Todavía no ha añadido zonas a este área natural!</b></p>
+            </div>
+            <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Número zona</th>
+                    <th scope="col">Letra</th>
+                    <th scope="col">Capacidad máx.</th>
+                    <th scope="col">Fecha creación</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="zone: ${#lists.sort(zones)}">
+                    <td th:text="${zone.zoneNumber}"></td>
+                    <td th:text="${zone.letter}"></td>
+                    <td th:text="${zone.maximumCapacity}"></td>
+                    <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
+                    <td><a th:href="@{/zone/update/{id}(id=${zone.id})}">
+                        <button type="button" class="btn btn-warning">Edita</button>
+                    </a>
+                    </td>
+                    <!--
+                    <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal6">
+                        Elimina</button></td>
+                    <div class="modal" id="miModal6">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Eliminar zona</h5>
+                                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>¿Seguro que desea borrar la zona <span th:text="${zone.zoneNumber}"></span> <span th:text="${zone.letter}"></span>
+                                         de <span th:text="${zone.naturalArea}"></span>?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a th:href="@{/zone/delete/{id}(id=${zone.id})}">
+                                        <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>-->
-            </tr>
-            </tbody>
-        </table>
-        <td><a th:href="@{/zone/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-success">Añadir zona</button>
-        </a></td>
-        <hr class="lineaVerde">
+                    </div>-->
+                </tr>
+                </tbody>
+            </table>
+            <td><a th:href="@{/zone/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+                <button type="button" class="btn btn-success">Añadir zona</button>
+            </a></td>
+        </section>
 
         <!-- SECCION DE FRANJAS HORARIAS DEL AREA NATURAL -->
-        <h3>Franjas horarias</h3>
-        <div th:if="${#lists.isEmpty(timeSlots)}">
-            <p><b>¡Todavía no ha asignado ninguna franja horaria a este área natural!</b></p>
-        </div>
-        <table th:unless="${#lists.isEmpty(timeSlots)}" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Identificador franja horaria</th>
-                <th scope="col">Fecha de inicio</th>
-                <th scope="col">Fecha de fin</th>
-                <th scope="col">Hora de inicio</th>
-                <th scope="col">Hora de fin</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="timeSlot: ${#lists.sort(timeSlots)}">
-                <td scope="row" th:text="${timeSlot.id}"></td>
-                <td th:text="${#temporals.format(timeSlot.beginningDate,'dd/MM/yyyy')}"></td>
-                <td th:text="${#temporals.format(timeSlot.endDate,'dd/MM/yyyy')}"></td>
-                <td th:text="${timeSlot.beginningTime}"></td>
-                <td th:text="${timeSlot.endTime}"></td>
-                <td><a th:href="@{/timeSlot/update/{id}(id=${timeSlot.id})}">
-                    <button type="button" class="btn btn-warning">Edita</button>
-                </a>
-                </td>
-                <!--
-                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal5">
-                    Elimina</button></td>
-                <div class="modal" id="miModal5">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Eliminar franja horaria</h5>
-                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <p>¿Seguro que desea borrar la franja horaria de identificador <span th:text="${timeSlot.id}"></span>?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a th:href="@{/timeSlot/delete/{id}(id=${timeSlot.id})}">
-                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+        <section id="timeSlots">
+            <hr class="lineaVerde">
+            <h3>Franjas horarias</h3>
+            <div th:if="${#lists.isEmpty(timeSlots)}">
+                <p><b>¡Todavía no ha asignado ninguna franja horaria a este área natural!</b></p>
+            </div>
+            <table th:unless="${#lists.isEmpty(timeSlots)}" class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Identificador franja horaria</th>
+                    <th scope="col">Fecha de inicio</th>
+                    <th scope="col">Fecha de fin</th>
+                    <th scope="col">Hora de inicio</th>
+                    <th scope="col">Hora de fin</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="timeSlot: ${#lists.sort(timeSlots)}">
+                    <td scope="row" th:text="${timeSlot.id}"></td>
+                    <td th:text="${#temporals.format(timeSlot.beginningDate,'dd/MM/yyyy')}"></td>
+                    <td th:text="${#temporals.format(timeSlot.endDate,'dd/MM/yyyy')}"></td>
+                    <td th:text="${timeSlot.beginningTime}"></td>
+                    <td th:text="${timeSlot.endTime}"></td>
+                    <td><a th:href="@{/timeSlot/update/{id}(id=${timeSlot.id})}">
+                        <button type="button" class="btn btn-warning">Edita</button>
+                    </a>
+                    </td>
+                    <!--
+                    <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal5">
+                        Elimina</button></td>
+                    <div class="modal" id="miModal5">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Eliminar franja horaria</h5>
+                                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>¿Seguro que desea borrar la franja horaria de identificador <span th:text="${timeSlot.id}"></span>?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a th:href="@{/timeSlot/delete/{id}(id=${timeSlot.id})}">
+                                        <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>-->
-            </tr>
-            </tbody>
-        </table>
-        <td><a th:href="@{/timeSlot/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-success">Asignar franja horaria</button>
-        </a></td>
-        <hr class="lineaVerde">
+                    </div>-->
+                </tr>
+                </tbody>
+            </table>
+            <td><a th:href="@{/timeSlot/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+                <button type="button" class="btn btn-success">Asignar franja horaria</button>
+            </a></td><br><br><br>
+        </section>
     </div>
 
+    <hr class="lineaVerde">
     <!-- SECCION DE COMENTARIOS DEL AREA NATURAL -->
     <h3>Comentarios</h3>
     <div th:if="${#lists.isEmpty(comments)}">
@@ -186,170 +170,176 @@
             <td th:text="${comment.citizenEmail}"></td>
         </tr>
         </tbody>
-    </table>
-    <hr class="lineaVerde">
+    </table><br><br>
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
-    <h3>Servicios fijos</h3>
-    <div th:if="${#lists.isEmpty(serviceDates)}">
-        <p><b>¡Todavía no ha asignado ningún servicio fijo a este área natural!</b></p>
-    </div>
-    <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Servicio</th>
-            <th scope="col">Fecha de inicio</th>
-            <th scope="col">Fecha de fin</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
-            <td th:text="${serviceDate.service}"></td>
-            <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
-            <div th:if="${serviceDate.endDate != null}">
-                <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
-            </div>
-            <div th:if="${serviceDate.endDate == null}">
-                <td> - </td>
-            </div>
-            <td><a th:href="@{/serviceDate/get/{id}(id=${serviceDate.id})}">
-                <button type="button" class="btn btn-primary">Más información</button>
-            </a>
-            </td>
-            <div th:if="${serviceDate.endDate != null}">
-                <td></td>
-                <td></td>
-            </div>
-            <div th:if="${serviceDate.endDate == null}">
-                <td><a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
+    <section id="serviceDates">
+        <hr class="lineaVerde">
+        <h3>Servicios fijos</h3>
+        <div th:if="${#lists.isEmpty(serviceDates)}">
+            <p><b>¡Todavía no ha asignado ningún servicio fijo a este área natural!</b></p>
+        </div>
+        <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Servicio</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha de fin</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
+                <td th:text="${serviceDate.service}"></td>
+                <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
+                <div th:if="${serviceDate.endDate != null}">
+                    <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
+                </div>
+                <div th:if="${serviceDate.endDate == null}">
+                    <td> - </td>
+                </div>
+                <td><a th:href="@{/serviceDate/get/{id}(id=${serviceDate.id})}">
+                    <button type="button" class="btn btn-primary">Más información</button>
+                </a>
+                </td>
+                <div th:if="${serviceDate.endDate != null}">
+                    <td></td>
+                    <td></td>
+                </div>
+                <div th:if="${serviceDate.endDate == null}">
+                    <td><a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
+                        <button type="button" class="btn btn-warning">Edita</button>
+                    </a>
+                    </td>
+                    <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal2">Dar de baja</button></td>
+                    <!-- VENTANA EMERGENTE -->
+                    <div class="modal" id="miModal2">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Dar de baja servicio fijo</h5>
+                                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>¿Seguro que desea dar de baja el servicio fijo <span th:text="${serviceDate.service}"></span>
+                                         de <span th:text="${naturalArea.name}"></span>?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a th:href="@{/serviceDate/darDeBaja/{id}(id=${serviceDate.id})}">
+                                        <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+            </tbody>
+        </table>
+        <div th:if="${#lists.isEmpty(serviceDatesFaltan)}">
+            <p><b>¡Todos los servicios fijos están operativos en el área natural!</b></p>
+        </div>
+        <div th:unless="${#lists.isEmpty(serviceDatesFaltan)}">
+            <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+                <button type="button" class="btn btn-success">Asignar servicio fijo</button>
+            </a></td>
+        </div>
+    </section>
+
+    <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
+    <section id="temporalServices">
+        <hr class="lineaVerde">
+        <h3>Servicios temporales</h3>
+        <div th:if="${#lists.isEmpty(temporalServices)}">
+            <p><b>¡Todavía no ha asignado ningún servicio temporal a este área natural!</b></p>
+        </div>
+        <table th:unless="${#lists.isEmpty(temporalServices)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Servicio</th>
+                <th scope="col">Hora de inicio</th>
+                <th scope="col">Hora de fin</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha de fin</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
+                <td th:text="${temporalService.service}"></td>
+                <td th:text="${temporalService.beginningTime}"></td>
+                <td th:text="${temporalService.endTime}"></td>
+                <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
+                <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
+                <td><a th:href="@{/temporalService/get/{id}(id=${temporalService.id})}">
+                    <button type="button" class="btn btn-primary">Más información</button>
+                </a>
+                </td>
+                <td><a th:href="@{/temporalService/update/{id}(id=${temporalService.id})}">
                     <button type="button" class="btn btn-warning">Edita</button>
                 </a>
                 </td>
-                <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal2">Dar de baja</button></td>
+            </tr>
+            </tbody>
+        </table>
+        <td><a th:href="@{/temporalService/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-success">Asignar servicio temporal</button>
+        </a></td>
+    </section>
+
+    <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
+    <section id="pictures">
+        <hr class="lineaVerde">
+        <h3>Imágenes</h3>
+        <div th:if="${#lists.isEmpty(pictures)}">
+            <p><b>¡Todavía no ha publicado ninguna imagen de este área natural!</b></p>
+        </div>
+        <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
+            <tr th:each="picture: ${pictures}">
+                <td scope="row"><img class="fotoListado" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
+                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal4">
+                    Elimina</button></td>
                 <!-- VENTANA EMERGENTE -->
-                <div class="modal" id="miModal2">
+                <div class="modal" id="miModal4">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Dar de baja servicio fijo</h5>
+                                <h5 class="modal-title">Eliminar imagen</h5>
                                 <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                             </div>
                             <div class="modal-body">
-                                <p>¿Seguro que desea dar de baja el servicio fijo <span th:text="${serviceDate.service}"></span>
-                                     de <span th:text="${naturalArea.name}"></span>?</p>
+                                <p>¿Seguro que desea borrar esta imagen?</p>
                             </div>
                             <div class="modal-footer">
-                                <a th:href="@{/serviceDate/darDeBaja/{id}(id=${serviceDate.id})}">
+                                <a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}">
                                     <button type="submit" class="btn btn-primary">Confirmar</button></a>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </tr>
-        </tbody>
-    </table>
-    <div th:if="${#lists.isEmpty(serviceDatesFaltan)}">
-        <p><b>¡Todos los servicios fijos están operativos en el área natural!</b></p>
-    </div>
-    <div th:unless="${#lists.isEmpty(serviceDatesFaltan)}">
-        <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-success">Asignar servicio fijo</button>
-        </a></td>
-    </div>
-    <hr class="lineaVerde">
-
-    <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
-    <h3>Servicios temporales</h3>
-    <div th:if="${#lists.isEmpty(temporalServices)}">
-        <p><b>¡Todavía no ha asignado ningún servicio temporal a este área natural!</b></p>
-    </div>
-    <table th:unless="${#lists.isEmpty(temporalServices)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Servicio</th>
-            <th scope="col">Hora de inicio</th>
-            <th scope="col">Hora de fin</th>
-            <th scope="col">Fecha de inicio</th>
-            <th scope="col">Fecha de fin</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
-            <td th:text="${temporalService.service}"></td>
-            <td th:text="${temporalService.beginningTime}"></td>
-            <td th:text="${temporalService.endTime}"></td>
-            <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
-            <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
-            <td><a th:href="@{/temporalService/get/{id}(id=${temporalService.id})}">
-                <button type="button" class="btn btn-primary">Más información</button>
-            </a>
-            </td>
-            <td><a th:href="@{/temporalService/update/{id}(id=${temporalService.id})}">
-                <button type="button" class="btn btn-warning">Edita</button>
-            </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <td><a th:href="@{/temporalService/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-        <button type="button" class="btn btn-success">Asignar servicio temporal</button>
-    </a></td>
-    <hr class="lineaVerde">
-
-    <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
-    <h3>Imágenes</h3>
-    <div th:if="${#lists.isEmpty(pictures)}">
-        <p><b>¡Todavía no ha publicado ninguna imagen de este área natural!</b></p>
-    </div>
-    <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
-        <tr th:each="picture: ${pictures}">
-            <td scope="row"><img class="fotoListado" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
-            <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal4">
-                Elimina</button></td>
-            <!-- VENTANA EMERGENTE -->
-            <div class="modal" id="miModal4">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Eliminar imagen</h5>
-                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <p>¿Seguro que desea borrar esta imagen?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}">
-                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                        </div>
+            </tr>
+            </tbody>
+        </table>
+        <!-- TODO gestionar error si la foto es demasiado grande -->
+        <!-- selector de imagenes -->
+        <div class="container">
+            <form class="form-horizontal" action="#" th:action="@{/picture/add/{naturalArea}(naturalArea=${naturalArea.name})}"
+                  enctype="multipart/form-data" th:object="${picture}" method="post">
+                <input required type="file" name="file" id="file" /> <br/><br/>
+                <div class="form-group row">
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <button type="submit" class="btn btn-success"><img src="/assets/img/photo.png" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
                     </div>
                 </div>
-            </div>
-        </tr>
-        </tbody>
-    </table>
-    <!-- TODO gestionar error si la foto es demasiado grande -->
-    <!-- selector de imagenes -->
-    <div class="container">
-        <form class="form-horizontal" action="#" th:action="@{/picture/add/{naturalArea}(naturalArea=${naturalArea.name})}"
-              enctype="multipart/form-data" th:object="${picture}" method="post">
-            <input required type="file" name="file" id="file" /> <br/><br/>
-            <div class="form-group row">
-                <div class="col-sm-offset-2 col-sm-4">
-                    <button type="submit" class="btn btn-success"><img src="/assets/img/photo.png" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
-                </div>
-            </div>
-            <br><br>
-        </form>
-    </div>
+                <br><br>
+            </form>
+        </div>
+    </section>
 </div>
 
 <div th:replace="fragments/footer"></div>

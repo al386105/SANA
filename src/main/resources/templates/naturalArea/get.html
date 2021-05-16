@@ -33,6 +33,7 @@
 
     <!-- SECCION DE ZONAS DEL AREA NATURAL -->
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
+        <hr class="lineaVerde">
         <h3>Lista de Zonas</h3>
         <div th:if="${#lists.isEmpty(zones)}">
             <p><b>¡Este área natural no es restringida y por tanto no tiene zonas!</b></p>
@@ -55,106 +56,106 @@
             </tr>
             </tbody>
         </table>
-
-        <hr class="lineaVerde">
     </div>
 
     <!-- SECCION DE COMENTARIOS DEL AREA NATURAL -->
-    <h3>Comentarios</h3>
-    <div th:if="${#lists.isEmpty(comments)}">
-        <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
-    </div>
-    <table th:unless="${#lists.isEmpty(comments)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Fecha</th>
-            <th scope="col">Puntuacion</th>
-            <th scope="col">Comentario</th>
-            <th scope="col">Usuario</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="comment: ${#lists.sort(comments)}">
-            <td th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></td>
-            <td th:text="${comment.score}"></td>
-            <td th:text="${comment.commentBody}"></td>
-            <td th:text="${comment.citizenEmail}"></td>
-        </tr>
-        </tbody>
-    </table>
-
-    <a href="@{/comment/add/{naturalArea}(naturalArea=${naturalArea.name})}"><button type="button" class="btn btn-success">Añadir Comentario</button></a>
-
-    <hr class="lineaVerde">
+    <section id="comments">
+        <hr class="lineaVerde">
+        <h3>Comentarios</h3>
+        <div th:if="${#lists.isEmpty(comments)}">
+            <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
+        </div>
+        <table th:unless="${#lists.isEmpty(comments)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Puntuacion</th>
+                <th scope="col">Comentario</th>
+                <th scope="col">Usuario</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="comment: ${#lists.sort(comments)}">
+                <td th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></td>
+                <td th:text="${comment.score}"></td>
+                <td th:text="${comment.commentBody}"></td>
+                <td th:text="${comment.citizenEmail}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <a href="@{/comment/add/{naturalArea}(naturalArea=${naturalArea.name})}"><button type="button" class="btn btn-success">Añadir Comentario</button></a>
+    </section>
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
-    <h3>Servicios fijos</h3>
-    <div th:if="${#lists.isEmpty(serviceDates)}">
-        <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
-    </div>
-    <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Servicio</th>
-            <th scope="col">Fecha de inicio</th>
-            <th scope="col">Fecha de fin</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
-            <td th:text="${serviceDate.service}"></td>
-            <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
-            <div th:if="${serviceDate.endDate != null}">
-                <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
-            </div>
-            <div th:if="${serviceDate.endDate == null}">
-                <td> - </td>
-            </div>
-            <td><a th:href="@{/serviceDate/get/{id}(id=${serviceDate.id})}">
-                <button type="button" class="btn btn-primary">Más información</button>
-            </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <hr class="lineaVerde">
-
+    <section id="serviceDates">
+        <hr class="lineaVerde">
+        <h3>Servicios fijos</h3>
+        <div th:if="${#lists.isEmpty(serviceDates)}">
+            <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
+        </div>
+        <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Servicio</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha de fin</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
+                <td th:text="${serviceDate.service}"></td>
+                <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
+                <div th:if="${serviceDate.endDate != null}">
+                    <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
+                </div>
+                <div th:if="${serviceDate.endDate == null}">
+                    <td> - </td>
+                </div>
+                <td><a th:href="@{/serviceDate/get/{id}(id=${serviceDate.id})}">
+                    <button type="button" class="btn btn-primary">Más información</button>
+                </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
 
     <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
-    <h3>Servicios temporales</h3>
-    <div th:if="${#lists.isEmpty(temporalServices)}">
-        <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
-    </div>
-    <table th:unless="${#lists.isEmpty(temporalServices)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Servicio</th>
-            <th scope="col">Días de apertura</th>
-            <th scope="col">Hora de inicio</th>
-            <th scope="col">Hora de fin</th>
-            <th scope="col">Fecha de inicio</th>
-            <th scope="col">Fecha de fin</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
-            <td th:text="${temporalService.service}"></td>
-            <td th:text="${temporalService.openingDays}"></td>
-            <td th:text="${temporalService.beginningTime}"></td>
-            <td th:text="${temporalService.endTime}"></td>
-            <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
-            <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
-            <td><a th:href="@{/temporalService/get/{id}(id=${temporalService.id})}">
-                <button type="button" class="btn btn-primary">Más información</button>
-            </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
+    <section id="temporalServices">
+        <hr class="lineaVerde">
+        <h3>Servicios temporales</h3>
+        <div th:if="${#lists.isEmpty(temporalServices)}">
+            <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
+        </div>
+        <table th:unless="${#lists.isEmpty(temporalServices)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Servicio</th>
+                <th scope="col">Días de apertura</th>
+                <th scope="col">Hora de inicio</th>
+                <th scope="col">Hora de fin</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha de fin</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
+                <td th:text="${temporalService.service}"></td>
+                <td th:text="${temporalService.openingDays}"></td>
+                <td th:text="${temporalService.beginningTime}"></td>
+                <td th:text="${temporalService.endTime}"></td>
+                <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
+                <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
+                <td><a th:href="@{/temporalService/get/{id}(id=${temporalService.id})}">
+                    <button type="button" class="btn btn-primary">Más información</button>
+                </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
     <hr class="lineaVerde">
 
     <!-- SECCION DE IMAGENES DEL AREA NATURAL -->

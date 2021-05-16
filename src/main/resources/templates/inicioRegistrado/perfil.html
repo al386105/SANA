@@ -18,6 +18,12 @@
     <h3 class="colorMarron">Correo:</h3>
     <h4 class="colorTierra" th:text="*{email}"></h4>
     <br>
+    <h3 class="colorMarron">DNI/NIE:</h3>
+    <h4 class="colorTierra" th:text="*{idNumber}"></h4>
+    <br>
+    <h3 class="colorMarron">Nombre de usuario:</h3>
+    <h4 class="colorTierra" th:text="*{citizenCode}"></h4>
+    <br>
     <h3 class="colorMarron">Fecha de nacimiento:</h3>
     <h4 class="colorTierra" th:text="${#temporals.format(citizen.dateOfBirth,'dd/MM/yyyy')}"></h4>
     <br>

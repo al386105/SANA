@@ -36,6 +36,7 @@ public class TimeSlotController {
         TimeSlot timeSlot = new TimeSlot();
         timeSlot.setNaturalArea(naturalArea);
         model.addAttribute("timeSlot", timeSlot);
+        session.setAttribute("section", "#timeSlots");
         return "timeSlot/add";
     }
 
@@ -60,6 +61,7 @@ public class TimeSlotController {
             return "redirect:/inicio/login";
         }
         model.addAttribute("timeSlot", timeSlotDao.getTimeSlot(id));
+        session.setAttribute("section", "#timeSlots");
         return "timeSlot/update";
     }
 
@@ -86,6 +88,7 @@ public class TimeSlotController {
         TimeSlot timeSlot = timeSlotDao.getTimeSlot(id);
         String naturalAreaName = timeSlot.getNaturalArea();
         timeSlotDao.deleteTimeSlot(id);
+        session.setAttribute("section", "#timeSlots");
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }

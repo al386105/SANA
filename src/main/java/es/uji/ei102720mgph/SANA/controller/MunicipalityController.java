@@ -48,6 +48,8 @@ public class MunicipalityController {
             return "redirect:/inicio/login";
         }
         model.addAttribute("municipalities", municipalityDao.getMunicipalities());
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         return "municipality/list";
     }
 
@@ -64,6 +66,11 @@ public class MunicipalityController {
         PostalCodeMunicipality postalCode = new PostalCodeMunicipality();
         postalCode.setMunicipality(name);
         model.addAttribute("postalCode", postalCode);
+        if(session.getAttribute("section") != null) {
+            String section = (String) session.getAttribute("section");
+            session.removeAttribute("section");
+            return "redirect:/municipality/get/" + name + section;
+        }
         return "/municipality/get";
     }
 
@@ -87,7 +94,7 @@ public class MunicipalityController {
         if (bindingResult.hasErrors())
             return "municipality/add"; //tornem al formulari per a que el corregisca
         municipalityDao.addMunicipality(municipality);
-        return "redirect:list"; //redirigim a la lista, post/redirect/get
+        return "redirect:list"; //redirigim a la lista,
     }
 
     @RequestMapping(value="/update/{name}", method = RequestMethod.GET)
@@ -98,6 +105,8 @@ public class MunicipalityController {
             return "redirect:/inicio/login";
         }
         model.addAttribute("municipality", municipalityDao.getMunicipality(name));
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         return "municipality/update";
     }
 

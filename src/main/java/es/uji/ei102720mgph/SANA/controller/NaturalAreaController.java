@@ -84,6 +84,13 @@ public class NaturalAreaController {
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
         model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
+
+        if(session.getAttribute("section") != null) {
+            String section = (String) session.getAttribute("section");
+            // Eliminar atribut de la sessio
+            session.removeAttribute("section");
+            return "redirect:/naturalArea/get/" + naturalArea + section;
+        }
         return "/naturalArea/get";
     }
 
@@ -102,6 +109,13 @@ public class NaturalAreaController {
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
         model.addAttribute("serviceDatesFaltan", serviceDao.getServiceDatesNotInNaturalArea(naturalArea));
+
+        if(session.getAttribute("section") != null) {
+            String section = (String) session.getAttribute("section");
+            // Eliminar atribut de la sessio
+            session.removeAttribute("section");
+            return "redirect:/naturalArea/getManagers/" + naturalArea + section;
+        }
         return "/naturalArea/getManagers";
     }
 
@@ -119,6 +133,13 @@ public class NaturalAreaController {
         model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
+
+        if(session.getAttribute("section") != null) {
+            String section = (String) session.getAttribute("section");
+            // Eliminar atribut de la sessio
+            session.removeAttribute("section");
+            return "redirect:/naturalArea/getEnvironmental/" + naturalArea + section;
+        }
         return "/naturalArea/getEnvironmental";
     }
 
@@ -131,14 +152,18 @@ public class NaturalAreaController {
     }
 
     @RequestMapping(value="/list")
-    public String listNaturalAreas(Model model){
+    public String listNaturalAreas(Model model, HttpSession session){
         model.addAttribute("naturalAreas", naturalAreaService.getNaturalAreasWithImage());
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         return "naturalArea/list";
     }
 
     @RequestMapping(value="/pagedlist")
     public String listNaturalAreasPaged(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron,
                                         @RequestParam("page") Optional<Integer> page){
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         // Paso 1: Crear la lista paginada de naturalAreas
         List<NaturalArea> naturalAreas;
         if (patron != null)
@@ -189,6 +214,8 @@ public class NaturalAreaController {
             session.setAttribute("nextUrl", "/naturalArea/listEnvironmental");
             return "redirect:/inicio/login";
         }
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         paginacionSinFotos(model, patron, page);
         return "naturalArea/listEnvironmental";
     }
@@ -201,6 +228,8 @@ public class NaturalAreaController {
             return "redirect:/inicio/login";
         }
         paginacionSinFotos(model, patron, page);
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         return "naturalArea/listManagers";
     }
 
@@ -356,6 +385,8 @@ public class NaturalAreaController {
             session.setAttribute("nextUrl", "/naturalArea/update/" + naturalArea);
             return "redirect:/inicio/login";
         }
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         model.addAttribute("naturalArea", pasoDeNaturalAreaAForm(naturalAreaDao.getNaturalArea(naturalArea)));
         return "naturalArea/update";
     }

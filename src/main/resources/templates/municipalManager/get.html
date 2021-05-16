@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-<div th:replace="fragments/headerManager"></div>
+<div th:replace="fragments/headerEnvironmental"></div>
 
 <div class="container">
     <h1><span th:text="${municipalManager.name}"></span> <span th:text="${municipalManager.surname}"></span></h1>
@@ -42,7 +42,7 @@
         </div>
     </ul>
     <br>
-
+    <a href="/municipality/list"><button type="submit" class="btn btn-primary">Volver al listado</button></a>
     <a th:href="@{/municipality/get/{name}(name=${municipalManager.municipality})}">
         <button type="submit" class="btn btn-primary">Ir al municipio</button>
     </a>

@@ -45,6 +45,8 @@ public class CommentController {
         comment.setNaturalArea(naturalArea);
         comment.setDate(LocalDate.now());
         comment.setCitizenEmail(citizen.getEmail());
+        // no borrar la siguiente linea!
+        session.setAttribute("section", "#comments");
         model.addAttribute("comment", comment);
         return "comment/add";
     }

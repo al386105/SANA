@@ -53,6 +53,7 @@ public class ServiceDateController {
         List<String> namesServices = toUseServices.stream()
                 .map(Service::getNameOfService)
                 .collect(Collectors.toList());
+        session.setAttribute("section", "#serviceDates");
         model.addAttribute("serviceList", namesServices);
         model.addAttribute("serviceDate", serviceDate);
         return "serviceDate/add";
@@ -87,7 +88,7 @@ public class ServiceDateController {
             session.setAttribute("nextUrl", "/serviceDate/update/" + id);
             return "redirect:/inicio/login";
         }
-
+        session.setAttribute("section", "#serviceDates");
         ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
         // servicios fijos no asignados ya al área natural
         List<Service> toUseServices = serviceDao.getServiceDatesNotInNaturalArea(serviceDate.getNaturalArea());
@@ -116,7 +117,6 @@ public class ServiceDateController {
             model.addAttribute("serviceList", namesServices);
             return "serviceDate/update";
         }
-        System.out.println(serviceDate.getBeginningDate());
         serviceDateDao.updateServiceDate(serviceDate);
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
@@ -129,6 +129,7 @@ public class ServiceDateController {
             session.setAttribute("nextUrl", "/serviceDate/delete/" + id);
             return "redirect:/inicio/login";
         }
+        session.setAttribute("section", "#serviceDates");
         ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
         String naturalAreaName = serviceDate.getNaturalArea();
         serviceDateDao.deleteServiceDate(id);
@@ -146,6 +147,7 @@ public class ServiceDateController {
         else if(session.getAttribute("environmentalManager") != null)
             model.addAttribute("typeUser", "environmental");
 
+        session.setAttribute("section", "#serviceDates");
         ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
         model.addAttribute("serviceDate", serviceDateDao.getServiceDate(id));
         model.addAttribute("service", serviceDao.getService(serviceDate.getService()));
@@ -164,6 +166,7 @@ public class ServiceDateController {
         serviceDate.setEndDate(LocalDate.now());
         String naturalAreaName = serviceDate.getNaturalArea();
         serviceDateDao.updateServiceDate(serviceDate);
+        session.setAttribute("section", "#serviceDates");
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }

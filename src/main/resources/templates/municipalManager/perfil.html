@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:replace="fragments/headerManager"></div>
+    <div class="container" th:object ="${municipalManager}">
+        <h2 class="text-uppercase text-center text-secondary mb-0">Mi Perfil</h2>
+        <br>
+        <hr class="barra-normal">
+        <br>
+        <h3 class="colorMarron">Nombre:</h3>
+        <h4 class="colorTierra" th:text="*{name}"></h4>
+        <br>
+        <h3 class="colorMarron">Apellidos:</h3>
+        <h4 class="colorTierra" th:text="*{surname}"></h4>
+        <br>
+        <h3 class="colorMarron">Nombre de usuario:</h3>
+        <h4 class="colorTierra" th:text="*{username}"></h4>
+        <br>
+        <h3 class="colorMarron">Correo:</h3>
+        <h4 class="colorTierra" th:text="*{email}"></h4>
+        <br>
+        <h3 class="colorMarron">Municipio:</h3>
+        <h4 class="colorTierra" th:text="*{municipality}"></h4>
+        <br>
+        <h3 class="colorMarron">Fecha de nacimiento:</h3>
+        <h4 class="colorTierra" th:text="${#temporals.format(municipalManager.dateOfBirth,'dd/MM/yyyy')}"></h4>
+        <br>
+        <div class="row">
+            <div class="col-lg-8 mx-auto" >
+                <button style="float: right; margin-left: 15px" type="button" class="btn btn-primary btn-xl" data-toggle="modal" data-target="#miModal">Cerrar sesión</button>
+            </div>
+        </div><br><br>
+
+        <!-- VENTANA EMERGENTE -->
+        <div class="modal" id="miModal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Cerrar sesión</h5>
+                        <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Está seguro de que desea cerrar su sesión actual?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/logout" class="btn btn-primary">Cerrar sesión</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

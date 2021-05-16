@@ -57,6 +57,7 @@ public class TemporalServiceController {
         }
         TemporalService temporalService = new TemporalService();
         temporalService.setNaturalArea(naturalArea);
+        session.setAttribute("section", "#temporalServices");
         model.addAttribute("temporalService", temporalService);
         return "temporalService/add";
     }
@@ -97,6 +98,7 @@ public class TemporalServiceController {
         for (String dia : temporalService.getOpeningDays().split(","))
             diasMarcados.add(DaysOfWeek.valueOf(dia));
         temporalService2.setDiasMarcados(diasMarcados);
+        session.setAttribute("section", "#temporalServices");
         model.addAttribute("temporalService", temporalService2);
         return "temporalService/update";
     }
@@ -146,6 +148,7 @@ public class TemporalServiceController {
         else if(session.getAttribute("environmentalManager") != null)
             model.addAttribute("typeUser", "environmental");
 
+        session.setAttribute("section", "#temporalServices");
         TemporalService temporalService = temporalServiceDao.getTemporalService(id);
         model.addAttribute("temporalService", temporalService);
         model.addAttribute("service", serviceDao.getService(temporalService.getService()));

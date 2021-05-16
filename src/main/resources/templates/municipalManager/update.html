@@ -60,12 +60,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="municipality">Municipio:</label>
             <div class="col-sm-4">
-                <select class="form_control" required id="municipality" type="text" th:field="*{municipality}">
-                    <!--TODO validador <option value="No seleccionado">Selecciona un municipio</option> -->
-                    <option th:each="municipalityvalue : ${municipalityList}"
-                            th:value="${municipalityvalue}"
-                            th:text="${municipalityvalue}"></option>
-                </select>
+                <input type="text" readonly="readonly" required class="form-control" id="municipality" th:field="*{municipality}" />
             </div>
         </div>
 
@@ -107,7 +102,7 @@
     </form>
     <a href="/municipalManager/list"><button type="submit" class="btn btn-primary">Volver al listado</button></a>
     <a th:href="@{/municipality/get/{municipality}(municipality=${municipalManager.municipality})}">
-        <button type="submit" class="btn btn-primary">Volver al municipio</button>
+        <button type="submit" class="btn btn-primary">Ir al municipio</button>
     </a>
     <br><br>
 </div>

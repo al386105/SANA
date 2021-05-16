@@ -37,7 +37,7 @@ public class PictureController {
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add/{naturalArea}", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("picture") Picture picture, @RequestParam("file") MultipartFile file,
-                                   @PathVariable String naturalArea,
+                                   @PathVariable String naturalArea, HttpSession session,
                                    RedirectAttributes redirectAttributes, BindingResult bindingResult) {
         if (file.isEmpty()) {
             // Enviar mensaje de error porque no hay fichero seleccionado
@@ -57,6 +57,7 @@ public class PictureController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        session.setAttribute("section", "#pictures");
         return "redirect:/naturalArea/getManagers/" + naturalArea;
     }
 
@@ -72,6 +73,7 @@ public class PictureController {
         Picture picture = pictureDao.getPicture("/assets/img/naturalAreas/" + pictureName);
         String naturalAreaName = picture.getNaturalArea();
         pictureDao.deletePicture("/assets/img/naturalAreas/" + pictureName);
+        session.setAttribute("section", "#pictures");
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }

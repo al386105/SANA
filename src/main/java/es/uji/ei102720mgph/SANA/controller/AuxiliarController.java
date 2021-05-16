@@ -121,7 +121,7 @@ public class AuxiliarController {
     public String redirigirRegistradoReservas(Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
             model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicioRegistrado/reservas");
+            session.setAttribute("nextUrl", "/inicio/registrado/reservas");
             return "redirect:/inicio/login";
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
@@ -152,7 +152,7 @@ public class AuxiliarController {
     public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
             model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicioRegistrado/reservasTodas");
+            session.setAttribute("nextUrl", "/inicio/registrado/reservasTodas");
             return "redirect:/inicio/login";
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
@@ -165,7 +165,7 @@ public class AuxiliarController {
     public String redirigirRegistradoPerfil(Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
             model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicioRegistrado/perfil");
+            session.setAttribute("nextUrl", "/inicio/registrado/perfil");
             return "redirect:/inicio/login";
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
@@ -259,6 +259,12 @@ public class AuxiliarController {
         // TODO acceso responsable fatal
         if(userLogin.getEmail().equals("responsable@gmail.com") && userLogin.getPassword().equals("responsable")) {
             session.setAttribute("environmentalManager", "dentro");
+            String nextUrl = (String) session.getAttribute("nextUrl");
+            if (nextUrl != null) {
+                // Eliminar atribut de la sessio
+                session.removeAttribute("nextUrl");
+                return "redirect:" + nextUrl;
+            }
             return "redirect:/section/environmentalManager";
         }
         //!!!!!!!!!
@@ -410,7 +416,11 @@ public class AuxiliarController {
     }
 
     @RequestMapping("section/environmentalManager")
-    public String sectionEnvironmentalmanager(Model model) {
+    public String sectionEnvironmentalmanager(Model model, HttpSession session) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            return "/inicio/login";
+        }
         return "section/environmentalManager";
     }
 }

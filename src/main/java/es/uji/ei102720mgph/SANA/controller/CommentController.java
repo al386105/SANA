@@ -3,6 +3,7 @@ package es.uji.ei102720mgph.SANA.controller;
 import es.uji.ei102720mgph.SANA.dao.CommentDao;
 import es.uji.ei102720mgph.SANA.model.Comment;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
+import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,11 @@ public class CommentController {
     @RequestMapping(value="/add/{naturalArea}")
     public String addComment(Model model, HttpSession session, @PathVariable String naturalArea) {
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        if (citizen == null) return "redirect:/inicio/login";
+        if (citizen == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/comment/add/" + naturalArea);
+            return "/inicio/login";
+        }
         Comment comment = new Comment();
         comment.setNaturalArea(naturalArea);
         comment.setDate(LocalDate.now());

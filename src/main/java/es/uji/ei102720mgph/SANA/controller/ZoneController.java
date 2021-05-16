@@ -2,6 +2,7 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
+import es.uji.ei102720mgph.SANA.model.UserLogin;
 import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/zone")
@@ -31,7 +34,12 @@ public class ZoneController {
 
     // Operació crear
     @RequestMapping(value="/add/{naturalArea}")
-    public String addZone(Model model, @PathVariable String naturalArea) {
+    public String addZone(Model model, @PathVariable String naturalArea, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/zone/add/" + naturalArea);
+            return "/inicio/login";
+        }
         Zone zone = new Zone();
         zone.setNaturalArea(naturalArea);
         model.addAttribute("zone", zone);
@@ -54,7 +62,12 @@ public class ZoneController {
 
     // Operació actualitzar
     @RequestMapping(value="/update/{id}", method = RequestMethod.GET)
-    public String editZone(Model model, @PathVariable String id) {
+    public String editZone(Model model, @PathVariable String id, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/zone/update/" + id);
+            return "/inicio/login";
+        }
         model.addAttribute("zone", zoneDao.getZone(id));
         return "zone/update";
     }
@@ -82,7 +95,12 @@ public class ZoneController {
 
     // Operació esborrar
     @RequestMapping(value="/delete/{id}")
-    public String processDelete(@PathVariable String id) {
+    public String processDelete(Model model, @PathVariable String id, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/zone/delete/" + id);
+            return "/inicio/login";
+        }
         Zone zone = zoneDao.getZone(id);
         String naturalAreaName = zone.getNaturalArea();
         zoneDao.deleteZone(id);

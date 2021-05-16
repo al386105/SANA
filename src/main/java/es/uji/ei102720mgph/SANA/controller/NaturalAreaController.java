@@ -5,6 +5,7 @@ import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.NaturalAreaForm;
+import es.uji.ei102720mgph.SANA.model.UserLogin;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import es.uji.ei102720mgph.SANA.services.OccupationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +85,12 @@ public class NaturalAreaController {
     }
 
     @RequestMapping(value="/getManagers/{naturalArea}")
-    public String getNaturalAreaManagers(Model model, @PathVariable("naturalArea") String naturalArea){
+    public String getNaturalAreaManagers(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/getManagers/" + naturalArea);
+            return "/inicio/login";
+        }
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
@@ -174,7 +180,12 @@ public class NaturalAreaController {
     }
 
     @RequestMapping(value="/listManagers")
-    public String listNaturalAreasManagers(Model model, @RequestParam(value="patron",required=false) String patron, @RequestParam("page") Optional<Integer> page){
+    public String listNaturalAreasManagers(Model model, @RequestParam(value="patron",required=false) String patron, @RequestParam("page") Optional<Integer> page, HttpSession session){
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/listManagers");
+            return "/inicio/login";
+        }
         paginacionSinFotos(model, patron, page);
         return "naturalArea/listManagers";
     }
@@ -211,7 +222,6 @@ public class NaturalAreaController {
         model.addAttribute("selectedPage", currentPage);
     }
 
-
     // metodo para anyadir al modelo los datos del selector de municipio
     @ModelAttribute("municipalityList")
     public List<String> municipalityList() {
@@ -223,7 +233,12 @@ public class NaturalAreaController {
     }
 
     @RequestMapping(value="/add")
-    public String addNaturalArea(Model model) {
+    public String addNaturalArea(Model model, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/add");
+            return "/inicio/login";
+        }
         model.addAttribute("naturalArea", new NaturalAreaForm());
         return "naturalArea/add";
     }
@@ -321,7 +336,12 @@ public class NaturalAreaController {
 
     // Update
     @RequestMapping(value="/update/{naturalArea}", method=RequestMethod.GET)
-    public String editNaturalArea(Model model, @PathVariable String naturalArea) {
+    public String editNaturalArea(Model model, @PathVariable String naturalArea, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/update/" + naturalArea);
+            return "/inicio/login";
+        }
         model.addAttribute("naturalArea", pasoDeNaturalAreaAForm(naturalAreaDao.getNaturalArea(naturalArea)));
         return "naturalArea/update";
     }
@@ -364,7 +384,12 @@ public class NaturalAreaController {
 
     // Operació esborrar
     @RequestMapping(value="/delete/{naturalArea}")
-    public String processDelete(@PathVariable String naturalArea) {
+    public String processDelete(Model model, @PathVariable String naturalArea, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/delete/" + naturalArea);
+            return "/inicio/login";
+        }
         naturalAreaDao.deleteNaturalArea(naturalArea);
         return "redirect:/naturalArea/listManagers";
     }

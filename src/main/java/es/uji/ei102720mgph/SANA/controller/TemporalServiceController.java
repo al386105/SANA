@@ -6,6 +6,7 @@ import es.uji.ei102720mgph.SANA.enums.DaysOfWeek;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.TemporalService;
 import es.uji.ei102720mgph.SANA.model.TemporalService2;
+import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +52,12 @@ public class TemporalServiceController {
 
     // Operació crear
     @RequestMapping(value="/add/{naturalArea}")
-    public String addTemporalService(Model model, @PathVariable String naturalArea) {
+    public String addTemporalService(Model model, @PathVariable String naturalArea, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/temporalService/add/" + naturalArea);
+            return "/inicio/login";
+        }
         TemporalService temporalService = new TemporalService();
         temporalService.setNaturalArea(naturalArea);
         model.addAttribute("temporalService", temporalService);
@@ -73,9 +80,13 @@ public class TemporalServiceController {
 
     // Operació actualitzar
     @RequestMapping(value="/update/{service}/{naturalArea}", method = RequestMethod.GET)
-    public String editTemporalService(Model model, @PathVariable String service, @PathVariable String naturalArea) {
+    public String editTemporalService(Model model, @PathVariable String service, @PathVariable String naturalArea, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/temporalService/update/" + service + "/" + naturalArea);
+            return "/inicio/login";
+        }
         TemporalService temporalService = temporalServiceDao.getTemporalService(service, naturalArea);
-
         TemporalService2 temporalService2 = new TemporalService2();
         temporalService2.setBeginningDate(temporalService.getBeginningDate());
         temporalService2.setBeginningTime(temporalService.getBeginningTime());
@@ -127,7 +138,12 @@ public class TemporalServiceController {
 
     // Operació esborrar
     @RequestMapping(value="/delete/{service}/{naturalArea}")
-    public String processDelete(@PathVariable String service, @PathVariable String naturalArea) {
+    public String processDelete(Model model, @PathVariable String service, @PathVariable String naturalArea, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/temporalService/delete/" + service + "/" + naturalArea);
+            return "/inicio/login";
+        }
         TemporalService temporalService = temporalServiceDao.getTemporalService(service, naturalArea);
         String naturalAreaName = temporalService.getNaturalArea();
         temporalServiceDao.deleteTemporalService(service, naturalArea);
@@ -136,7 +152,7 @@ public class TemporalServiceController {
 
     // información de un servicio temporal
     @RequestMapping(value="/get/{serviceName}/{naturalArea}")
-    public String getTemporalServiceNaturalArea(Model model, @PathVariable("serviceName") String serviceName,
+    public String getTemporalServiceNaturalArea(Model model, HttpSession session, @PathVariable("serviceName") String serviceName,
                                                 @PathVariable("naturalArea") String naturalArea){
         TemporalService temporalService = temporalServiceDao.getTemporalService(serviceName, naturalArea);
         model.addAttribute("temporalService", temporalService);

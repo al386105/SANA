@@ -58,7 +58,11 @@ public class ReservationController {
     // Operació crear
     @RequestMapping(value="/add/{naturalArea}")
     public String addReservation(Model model, @PathVariable String naturalArea, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) return "redirect:/inicio/login";
+        if (session.getAttribute("registeredCitizen") == null)  {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/reservation/add/" + naturalArea);
+            return "/inicio/login";
+        }
         model.addAttribute("reservation", new NuevaReserva());
         model.addAttribute("naturalArea", naturalArea);
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalAreaActuales(naturalArea));

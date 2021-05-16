@@ -5,6 +5,7 @@ import es.uji.ei102720mgph.SANA.dao.ServiceDateDao;
 import es.uji.ei102720mgph.SANA.model.MunicipalManager;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.ServiceDate;
+import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +49,12 @@ public class ServiceDateController {
 
     // Operació crear
     @RequestMapping(value="/add/{naturalArea}")
-    public String addServiceDate(Model model, @PathVariable String naturalArea) {
+    public String addServiceDate(Model model, @PathVariable String naturalArea, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/serviceDate/add/" + naturalArea);
+            return "/inicio/login";
+        }
         ServiceDate serviceDate = new ServiceDate();
         serviceDate.setNaturalArea(naturalArea);
         model.addAttribute("serviceDate", serviceDate);
@@ -70,7 +77,12 @@ public class ServiceDateController {
 
     // Operació actualitzar
     @RequestMapping(value="/update/{id}", method = RequestMethod.GET)
-    public String editService(Model model, @PathVariable String id) {
+    public String editService(Model model, @PathVariable String id, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/serviceDate/update/" + id);
+            return "/inicio/login";
+        }
         model.addAttribute("serviceDate", serviceDateDao.getServiceDate(id));
         return "serviceDate/update";
     }
@@ -91,7 +103,12 @@ public class ServiceDateController {
 
     // Operació esborrar
     @RequestMapping(value="/delete/{id}")
-    public String processDelete(@PathVariable String id) {
+    public String processDelete(Model model, @PathVariable String id, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/serviceDate/delete/" + id);
+            return "/inicio/login";
+        }
         ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
         String naturalAreaName = serviceDate.getNaturalArea();
         serviceDateDao.deleteServiceDate(id);
@@ -108,7 +125,12 @@ public class ServiceDateController {
     }
 
     @RequestMapping(value="/darDeBaja/{id}", method = RequestMethod.GET)
-    public String darDeBajaServiceDate(@PathVariable String id) {
+    public String darDeBajaServiceDate(Model model, @PathVariable String id, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/serviceDate/darDeBaja/" + id);
+            return "/inicio/login";
+        }
         ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
         serviceDate.setEndDate(LocalDate.now());
         String naturalAreaName = serviceDate.getNaturalArea();

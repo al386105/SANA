@@ -211,7 +211,7 @@ public class AuxiliarController {
             return "redirect:/inicio/login";
         }else {
             //Usuario ya registrado en el sistema
-            bindingResult.rejectValue("email", "bademail", "Usuario ya Registrado");
+            bindingResult.rejectValue("email", "bademail", "Usuario ya registrado");
             return "redirect:/inicio/login";
         }
     }
@@ -236,20 +236,27 @@ public class AuxiliarController {
         if (sanaUser != null){
             //El usuario esta registrado en el sistema
 
-            // TODO NO VA
             if (sanaUser.getTypeOfUser().equals(TypeOfUser.municipalManager)){
                 MunicipalManager municipalManager = municipalManagerDao.getMunicipalManager(sanaUser.getEmail());
 
                 // Si está dado de baja, no puede entrar
-                if(municipalManager.getLeavingDate() == null) {
+                if(municipalManager.getLeavingDate() != null) {
                     //El usuario no está registrado en el sistema
-                    bindingResult.rejectValue("email", "dadoDeBaja", "Has sido dado de baja como gestor");
+                    bindingResult.rejectValue("email", "dadoDeBaja", "Ha sido dado de baja como gestor");
                     return "inicio/login";
                 }
 
+                // Gestor municipal dado de alta
                 if (municipalManager.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
                     session.setAttribute("municipalManager", municipalManager);
+                    // Comprova si l'usuari volia accedir a una altra pagina
+                    String nextUrl = (String) session.getAttribute("nextUrl");
+                    if (nextUrl != null) {
+                        // Eliminar atribut de la sessio
+                        session.removeAttribute("nextUrl");
+                        return "redirect:" + nextUrl;
+                    }
                     return "redirect:/section/managers";
                 }else{
                     //Contraseña Incorrecta
@@ -277,6 +284,13 @@ public class AuxiliarController {
                     if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
                         //Contraseña Correcta
                         session.setAttribute("registeredCitizen", registeredCitizen);
+                        // Comprova si l'usuari volia accedir a una altra pagina
+                        String nextUrl = (String) session.getAttribute("nextUrl");
+                        if (nextUrl != null) {
+                            // Eliminar atribut de la sessio
+                            session.removeAttribute("nextUrl");
+                            return "redirect:" + nextUrl;
+                        }
                         return "redirect:/naturalArea/pagedlist";
                     } else {
                         //Contraseña Incorrecta
@@ -355,7 +369,11 @@ public class AuxiliarController {
     }
 
     @RequestMapping("section/managers")
-    public String sectionManagers(Model model) {
+    public String sectionManagers(Model model, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            return "/inicio/login";
+        }
         return "section/managers";
     }
 

@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </head>
@@ -83,7 +84,44 @@
             </tr>
             </tbody>
         </table>
-        <a href="@{/comment/add/{naturalArea}(naturalArea=${naturalArea.name})}"><button type="button" class="btn btn-success">Añadir Comentario</button></a>
+
+        <br/>
+
+        <!-- SECCION DE AÑADIR COMENTARIO -->
+        <form class="form-horizontal" action="#" th:action="@{/comment/add}"
+              th:object="${comment}" method="post">
+
+            <div class="form-group row">
+                <label class="control-label col-sm-2" for="commentBody">Nuevo comentario: </label>
+                <div class="col-sm-4">
+                    <input type="text" required class="form-control" id="commentBody" th:field="*{commentBody}" />
+                </div>
+            </div>
+
+            <!-- Stars rating -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="stars">
+                        <input class="star star-5" id="star-5" type="radio" name="star" />
+                        <label class="star star-5" for="star-5"></label>
+                        <input class="star star-4" id="star-4" type="radio" name="star" />
+                        <label class="star star-4" for="star-4"></label>
+                        <input class="star star-3" id="star-3" type="radio" name="star" />
+                        <label class="star star-3" for="star-3"></label>
+                        <input class="star star-2" id="star-2" type="radio" name="star" />
+                        <label class="star star-2" for="star-2"></label>
+                        <input class="star star-1" id="star-1" type="radio" name="star" />
+                        <label class="star star-1" for="star-1"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-success">Añadir valoración</button>
+                </div>
+            </div>
+        </form>
     </section>
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->

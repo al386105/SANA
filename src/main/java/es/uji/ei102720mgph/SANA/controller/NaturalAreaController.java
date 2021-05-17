@@ -84,7 +84,7 @@ public class NaturalAreaController {
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
         model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
-
+        model.addAttribute("comment", new Comment());
         if(session.getAttribute("section") != null) {
             String section = (String) session.getAttribute("section");
             // Eliminar atribut de la sessio

@@ -93,4 +93,15 @@ public class NaturalAreaDao {
         }
     }
 
+    public NaturalArea getNaturalAreaOfZone(String id) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM naturalArea JOIN zone ON naturalArea.name = zone.naturalArea " +
+                            "WHERE zone.id = ?",
+                    new NaturalAreaRowMapper(), id);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
 }

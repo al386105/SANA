@@ -1,12 +1,15 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.ReservationDao;
 import es.uji.ei102720mgph.SANA.dao.TimeSlotDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.*;
 import es.uji.ei102720mgph.SANA.services.ReservationService;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,14 +19,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Time;
 import java.time.LocalDate;
+import java.util.Formatter;
 import java.util.List;
 
 @Controller
 @RequestMapping("/reservation")
 public class ReservationController {
+    @Value("${upload.file.directory}")
+    private String uploadDirectory;
 
     private ReservationDao reservationDao;
+    private NaturalAreaDao naturalAreaDao;
     private ReservationService reservationService;
     private TimeSlotDao timeSlotDao;
     private ZoneDao zoneDao;
@@ -31,6 +43,11 @@ public class ReservationController {
     @Autowired
     public void setReservationDao(ReservationDao reservationDao) {
         this.reservationDao=reservationDao;
+    }
+
+    @Autowired
+    public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao) {
+        this.naturalAreaDao=naturalAreaDao;
     }
 
     @Autowired
@@ -88,6 +105,7 @@ public class ReservationController {
     @RequestMapping(value="/add", method=RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("reservation") NuevaReserva reservation,
                                    BindingResult bindingResult, HttpSession session) {
+        // TODO VALIDADOR RESERVA
         //ReservationValidator reservationValidator = new ReservationValidator();
         //reservationValidator.validate(reservation, bindingResult);
 
@@ -98,10 +116,35 @@ public class ReservationController {
         reservation.setCitizenEmail(citizen.getEmail());
         int numRes = reservationDao.addReservationPocosValores(reservation);
         reservationDao.addReservationOfZone(numRes, reservation.getZoneid());
+        String naturalArea = naturalAreaDao.getNaturalAreaOfZone(reservation.getZoneid()).getName();
+        String timeSlotId = reservation.getTimeSlotId();
+        TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
+        Zone zone = zoneDao.getZone(reservation.getZoneid());
+
+        // todo OJO QUE CUANDO PODAMOS RESERVAR VARIAS ZONAS EL TEXTO CAMBIA (MIRAR ALGUNA LO QUE HE PEUSTO)
+        Formatter fmt = new Formatter();
+        QRCode qr = new QRCode();
+        File f = new File("qr" + fmt.format("%07d", numRes) + ".png");
+        String text = "Reserva por " + reservation.getCitizenEmail() + " en " + naturalArea + ", de fecha " + reservation.getReservationDate()
+        + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", en la zona " + zone.getZoneNumber() + zone.getLetter() +
+                " para " + reservation.getNumberOfPeople() + " personas.";
+
+        try {
+            qr.generateQR(f, text, 300, 300);
+            byte[] bytes = Files.readAllBytes(f.toPath());
+            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
+            Files.write(path, bytes);
+            System.out.println("QRCode Generated: " + f.getAbsolutePath());
+            String qrString = qr.decoder(f);
+            System.out.println("Text QRCode: " + qrString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "redirect:/inicio/registrado/reservas"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
     }
 
+    // todo SI ACTUALIZAMOS, GENERAR DE NUEVO EL QR PQ SU INFO CAMBIA
     // Operació actualitzar
     @RequestMapping(value="/update/{reservationNumber}", method = RequestMethod.GET)
     public String editReservation(Model model, @PathVariable int reservationNumber) {

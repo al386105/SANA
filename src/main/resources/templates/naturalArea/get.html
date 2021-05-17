@@ -84,12 +84,12 @@
             </tr>
             </tbody>
         </table>
-
         <br/>
-            <div class="form-group row">
-                <a th:href="@{/comment/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-                    <button type="button" class="btn btn-primary">Añadir valoración</button> </a>
-            </div>
+        <!-- solo los ciudadanos registrados pueden hacer comentarios -->
+        <div th:if="${#strings.equals(typeUser, 'registered')}">
+            <a th:href="@{/comment/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+                <button type="button" class="btn btn-success">Añadir valoración</button> </a>
+        </div>
     </section>
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->

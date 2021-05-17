@@ -64,16 +64,15 @@ public class TemporalServiceController {
 
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(Model model, @ModelAttribute("temporalService") TemporalService temporalService,
+    public String processAddSubmit(@ModelAttribute("temporalService") TemporalService temporalService,
                                    BindingResult bindingResult) {
         TemporalServiceValidator temporalServiceValidator = new TemporalServiceValidator();
         temporalServiceValidator.validate(temporalService, bindingResult);
 
         if (bindingResult.hasErrors())
             return "temporalService/add";
-        temporalServiceDao.addTemporalService(temporalService); //usem el dao per a inserir el temporalService
-        String naturalAreaName = temporalService.getNaturalArea();
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
+        temporalServiceDao.addTemporalService(temporalService);
+        return "redirect:/naturalArea/getManagers/" + temporalService.getNaturalArea();
     }
 
     // Operació actualitzar

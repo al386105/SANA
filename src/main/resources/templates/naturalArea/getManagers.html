@@ -213,9 +213,9 @@
                         <button type="button" class="btn btn-warning">Edita</button>
                     </a>
                     </td>
-                    <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal2">Dar de baja</button></td>
+                    <td><button type="button" class="btn btn-danger" data-toggle="modal" th:data-target="${'#miModal' + serviceDate.id}">Dar de baja</button></td>
                     <!-- VENTANA EMERGENTE -->
-                    <div class="modal" id="miModal2">
+                    <div class="modal" th:id="${'miModal' + serviceDate.id}">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -299,12 +299,12 @@
             <p><b>¡Todavía no ha publicado ninguna imagen de este área natural!</b></p>
         </div>
         <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
-            <tr th:each="picture: ${pictures}">
+            <tr th:each="picture,iterador : ${pictures}">
                 <td scope="row"><img class="fotoListado" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
-                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal4">
+                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" th:data-target="${'#miModal' + iterador.index}">
                     Elimina</button></td>
                 <!-- VENTANA EMERGENTE -->
-                <div class="modal" id="miModal4">
+                <div class="modal" th:id="${'miModal' + iterador.index}">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">

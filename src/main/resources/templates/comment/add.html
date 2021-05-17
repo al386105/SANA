@@ -2,50 +2,74 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-<div th:replace="fragments/header"></div>
+<div th:replace="fragments/headerRegistered"></div>
 
 <div class="container">
     <h2>Nuevo comentario</h2>
     <form class="form-horizontal" action="#" th:action="@{/comment/add}"
           th:object="${comment}" method="post">
 
+        <input required type="hidden" th:field ="*{naturalArea}"/>
+        <input required type="hidden" th:field ="*{citizenEmail}"/>
+
         <div class="form-group row">
             <label class="control-label col-sm-2" for="commentBody">Nuevo comentario: </label>
             <div class="col-sm-4">
-                <input type="text" required class="form-control" id="commentBody" th:field="*{commentBody}" />
+                <textarea rows="3" required maxlength="120" class="form-control" placeholder="Cuerpo del comentario..."
+                          id="commentBody" th:field="*{commentBody}"></textarea>
+                <td th:if="${#fields.hasErrors('commentBody')}" th:errors="*{commentBody}"></td>
             </div>
         </div>
 
         <!-- Stars rating -->
-        <div class="row">
+        <div class="form-group row">
             <div class="col-md-12">
                 <div class="stars">
-                    <input class="star star-5" id="star-5" type="radio" name="star" value="5" />
+                    <input class="star star-5" id="star-5" type="radio" name="star" value="5" th:field ="*{score}" />
                     <label class="star star-5" for="star-5"></label>
-                    <input class="star star-4" id="star-4" type="radio" name="star" value="4" />
+                    <input class="star star-4" id="star-4" type="radio" name="star" value="4" th:field ="*{score}"/>
                     <label class="star star-4" for="star-4"></label>
-                    <input class="star star-3" id="star-3" type="radio" name="star" value="3"/>
+                    <input class="star star-3" id="star-3" type="radio" name="star" value="3" th:field ="*{score}"/>
                     <label class="star star-3" for="star-3"></label>
-                    <input class="star star-2" id="star-2" type="radio" name="star" value="2"/>
+                    <input class="star star-2" id="star-2" type="radio" name="star" value="2" th:field ="*{score}"/>
                     <label class="star star-2" for="star-2"></label>
-                    <input class="star star-1" id="star-1" type="radio" name="star" value="1"/>
+                    <input class="star star-1" id="star-1" type="radio" name="star" value="1" th:field ="*{score}"/>
                     <label class="star star-1" for="star-1"></label>
+                    <td th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></td>
                 </div>
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-primary">Añadir valoración</button>
+                <button type="button" data-toggle="modal" data-target="#miModal" class="btn btn-success">Añadir valoración</button>
+            </div>
+        </div>
+
+        <!-- VENTANA EMERGENTE -->
+        <div class="modal" id="miModal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Añadir comentario</h5>
+                        <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Seguro que desea añadir el comentario al área natural <span th:text="${comment.naturalArea}"></span>?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                    </div>
+                </div>
             </div>
         </div>
 
     </form>
 
-    <!--
     <a th:href="@{/naturalArea/get/{naturalAreaName}(naturalAreaName=${comment.naturalArea})}">
         <button type="submit" class="btn btn-primary">Volver al área natural</button>
-    </a>-->
+    </a>
     <br><br>
 
 </div>

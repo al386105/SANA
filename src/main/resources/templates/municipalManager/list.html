@@ -46,9 +46,10 @@
                 <td></td>
             </div>
             <div th:if="${municipalManager.leavingDate == null}">
-                <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Dar de baja</button></td>
+                <td><button type="button" class="btn btn-danger" data-toggle="modal"
+                            th:data-target="${'#miModal' + municipalManager.username}">Dar de baja</button></td>
                 <!-- VENTANA EMERGENTE -->
-                <div class="modal" id="miModal">
+                <div class="modal" th:id="${'miModal' + municipalManager.username}">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">

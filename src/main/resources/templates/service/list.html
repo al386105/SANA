@@ -30,10 +30,10 @@
                 <button type="button" class="btn btn-warning">Edita</button>
             </a>
             </td>
-            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Elimina</button></td>
+            <td><button type="button" class="btn btn-danger" data-toggle="modal" th:data-target="${'#miModal' + service.nameOfService}">Elimina</button></td>
 
             <!-- VENTANA EMERGENTE -->
-            <div class="modal" id="miModal">
+            <div class="modal" th:id="${'miModal' + service.nameOfService}">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">

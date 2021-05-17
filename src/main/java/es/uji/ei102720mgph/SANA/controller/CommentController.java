@@ -43,23 +43,23 @@ public class CommentController {
         }
         Comment comment = new Comment();
         comment.setNaturalArea(naturalArea);
-        comment.setDate(LocalDate.now());
         comment.setCitizenEmail(citizen.getEmail());
-        // no borrar la siguiente linea!
         session.setAttribute("section", "#comments");
         model.addAttribute("comment", comment);
         return "comment/add";
     }
 
     // Gestió de la resposta del formulari de creació d'objectes
-    @RequestMapping(value="/add/{naturalArea}", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("comment") Comment comment,
-                                   @PathVariable String naturalArea,
-                                   BindingResult bindingResult) {
+    @RequestMapping(value="/add", method= RequestMethod.POST)
+    public String processAddSubmit(@ModelAttribute("comment") Comment comment, BindingResult bindingResult) {
+        CommentValidator commentValidator = new CommentValidator();
+        commentValidator.validate(comment, bindingResult);
+
         if (bindingResult.hasErrors())
-            return "comment/add/" + naturalArea; //tornem al formulari per a que el corregisca
+            return "comment/add";
+        System.out.println(comment.getCitizenEmail());
         commentDao.addComment(comment);
-        return "redirect:/naturalArea/get/" + naturalArea;
+        return "redirect:/naturalArea/get/" + comment.getNaturalArea();
     }
 
     // Operació actualitzar

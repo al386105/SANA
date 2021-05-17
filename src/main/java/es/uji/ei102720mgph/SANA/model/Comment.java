@@ -54,16 +54,16 @@ public class Comment implements Comparable<Comment> {
         return citizenEmail;
     }
 
-    public void setCitizenEmail(String citizenId) {
-        this.citizenEmail = citizenId;
+    public void setCitizenEmail(String citizenEmail) {
+        this.citizenEmail = citizenEmail;
     }
 
     public String getNaturalArea() {
         return naturalArea;
     }
 
-    public void setNaturalArea(String naturaArea) {
-        this.naturalArea = naturaArea;
+    public void setNaturalArea(String naturalArea) {
+        this.naturalArea = naturalArea;
     }
 
     public static int getContador() {
@@ -90,7 +90,7 @@ public class Comment implements Comparable<Comment> {
                 ", score=" + score +
                 ", date=" + date +
                 ", citizenEmail='" + citizenEmail + '\'' +
-                ", naturaArea='" + naturalArea + '\'' +
+                ", naturalArea='" + naturalArea + '\'' +
                 '}';
     }
 }

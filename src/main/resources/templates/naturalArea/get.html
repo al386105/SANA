@@ -86,42 +86,10 @@
         </table>
 
         <br/>
-
-        <!-- SECCION DE AÑADIR COMENTARIO -->
-        <form class="form-horizontal" action="#" th:action="@{/comment/add}"
-              th:object="${comment}" method="post">
-
             <div class="form-group row">
-                <label class="control-label col-sm-2" for="commentBody">Nuevo comentario: </label>
-                <div class="col-sm-4">
-                    <input type="text" required class="form-control" id="commentBody" th:field="*{commentBody}" />
-                </div>
+                <a th:href="@{/comment/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+                    <button type="button" class="btn btn-primary">Añadir valoración</button> </a>
             </div>
-
-            <!-- Stars rating -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="stars">
-                        <input class="star star-5" id="star-5" type="radio" name="star" />
-                        <label class="star star-5" for="star-5"></label>
-                        <input class="star star-4" id="star-4" type="radio" name="star" />
-                        <label class="star star-4" for="star-4"></label>
-                        <input class="star star-3" id="star-3" type="radio" name="star" />
-                        <label class="star star-3" for="star-3"></label>
-                        <input class="star star-2" id="star-2" type="radio" name="star" />
-                        <label class="star star-2" for="star-2"></label>
-                        <input class="star star-1" id="star-1" type="radio" name="star" />
-                        <label class="star star-1" for="star-1"></label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-sm-offset-2 col-sm-4">
-                    <button type="submit" class="btn btn-success">Añadir valoración</button>
-                </div>
-            </div>
-        </form>
     </section>
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->

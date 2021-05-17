@@ -54,11 +54,12 @@ public class CommentController {
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add/{naturalArea}", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("comment") Comment comment,
+                                   @PathVariable String naturalArea,
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors())
-            return "comment/add"; //tornem al formulari per a que el corregisca
+            return "comment/add/" + naturalArea; //tornem al formulari per a que el corregisca
         commentDao.addComment(comment);
-        return "redirect:list"; //redirigim a la lista per a veure el comment afegit, post/redirect/get
+        return "redirect:/naturalArea/get/" + naturalArea;
     }
 
     // Operació actualitzar

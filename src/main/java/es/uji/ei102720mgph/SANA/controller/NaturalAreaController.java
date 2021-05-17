@@ -154,16 +154,14 @@ public class NaturalAreaController {
     @RequestMapping(value="/list")
     public String listNaturalAreas(Model model, HttpSession session){
         model.addAttribute("naturalAreas", naturalAreaService.getNaturalAreasWithImage());
-        if(session.getAttribute("section") != null)
-            session.removeAttribute("section");
+        quitarAtributoSeccion(session);
         return "naturalArea/list";
     }
 
     @RequestMapping(value="/pagedlist")
     public String listNaturalAreasPaged(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron,
                                         @RequestParam("page") Optional<Integer> page){
-        if(session.getAttribute("section") != null)
-            session.removeAttribute("section");
+        quitarAtributoSeccion(session);
         // Paso 1: Crear la lista paginada de naturalAreas
         List<NaturalArea> naturalAreas;
         if (patron != null)
@@ -214,8 +212,7 @@ public class NaturalAreaController {
             session.setAttribute("nextUrl", "/naturalArea/listEnvironmental");
             return "redirect:/inicio/login";
         }
-        if(session.getAttribute("section") != null)
-            session.removeAttribute("section");
+        quitarAtributoSeccion(session);
         paginacionSinFotos(model, patron, page);
         return "naturalArea/listEnvironmental";
     }
@@ -228,8 +225,7 @@ public class NaturalAreaController {
             return "redirect:/inicio/login";
         }
         paginacionSinFotos(model, patron, page);
-        if(session.getAttribute("section") != null)
-            session.removeAttribute("section");
+        quitarAtributoSeccion(session);
         return "naturalArea/listManagers";
     }
 
@@ -385,8 +381,7 @@ public class NaturalAreaController {
             session.setAttribute("nextUrl", "/naturalArea/update/" + naturalArea);
             return "redirect:/inicio/login";
         }
-        if(session.getAttribute("section") != null)
-            session.removeAttribute("section");
+        quitarAtributoSeccion(session);
         model.addAttribute("naturalArea", pasoDeNaturalAreaAForm(naturalAreaDao.getNaturalArea(naturalArea)));
         return "naturalArea/update";
     }
@@ -447,8 +442,7 @@ public class NaturalAreaController {
             return "redirect:/inicio/login";
         }
         List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
-        model.addAttribute("occupancyDataOfNaturalAreas",
-                occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
+        model.addAttribute("occupancyDataOfNaturalAreas", occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
         return "naturalArea/occupancy";
     }
 
@@ -458,5 +452,10 @@ public class NaturalAreaController {
         // si es null es que no esta registrado
         model.addAttribute("registered", session.getAttribute("registeredCitizen"));
         return "/naturalArea/getInfo";
+    }
+
+    private void quitarAtributoSeccion(HttpSession session) {
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
     }
 }

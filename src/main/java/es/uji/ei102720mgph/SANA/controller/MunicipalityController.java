@@ -48,8 +48,7 @@ public class MunicipalityController {
             return "redirect:/inicio/login";
         }
         model.addAttribute("municipalities", municipalityDao.getMunicipalities());
-        if(session.getAttribute("section") != null)
-            session.removeAttribute("section");
+        quitarAtributoSeccion(session);
         return "municipality/list";
     }
 
@@ -105,8 +104,7 @@ public class MunicipalityController {
             return "redirect:/inicio/login";
         }
         model.addAttribute("municipality", municipalityDao.getMunicipality(name));
-        if(session.getAttribute("section") != null)
-            session.removeAttribute("section");
+        quitarAtributoSeccion(session);
         return "municipality/update";
     }
 
@@ -131,5 +129,10 @@ public class MunicipalityController {
         }
         municipalityDao.deleteMunicipality(name);
         return "redirect:../list";
+    }
+
+    private void quitarAtributoSeccion(HttpSession session) {
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
     }
 }

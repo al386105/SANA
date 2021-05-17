@@ -86,7 +86,7 @@ public class AuxiliarController {
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/naturalArea/pagedlist";
+        return "redirect:/inicio/login";
     }
 
     // TODO esto debe ser / en vez de inicio
@@ -96,13 +96,13 @@ public class AuxiliarController {
     }
 
     @RequestMapping("inicio/contactanos")
-    public String redirigirContactanos(Model model) {
+    public String redirigirContactanos(Model model, HttpSession session) {
         model.addAttribute("email", new Email());
         return "inicio/contactanos";
     }
 
     @RequestMapping("inicio/login")
-    public String redirigirLogin(Model model) {
+    public String redirigirLogin(Model model, HttpSession session) {
         model.addAttribute("userLogin", new UserLogin() {});
         return "inicio/login";
     }

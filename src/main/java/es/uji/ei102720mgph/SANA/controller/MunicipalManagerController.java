@@ -53,8 +53,7 @@ public class MunicipalManagerController {
             return "redirect:/inicio/login";
         }
         model.addAttribute("municipalManagers", municipalManagerDao.getMunicipalManagers());
-        if(session.getAttribute("section") != null)
-            session.removeAttribute("section");
+        quitarAtributoSeccion(session);
         return "municipalManager/list";
     }
 
@@ -116,8 +115,7 @@ public class MunicipalManagerController {
             session.setAttribute("nextUrl", "/municipalManager/update/" + email);
             return "redirect:/inicio/login";
         }
-        if(session.getAttribute("section") != null)
-            session.removeAttribute("section");
+        quitarAtributoSeccion(session);
         model.addAttribute("municipalManager", municipalManagerDao.getMunicipalManager(email));
         return "municipalManager/update";
     }
@@ -144,8 +142,6 @@ public class MunicipalManagerController {
         MunicipalManager municipalManager = municipalManagerDao.getMunicipalManager(email);
         municipalManager.setLeavingDate(LocalDate.now());
         municipalManagerDao.updateMunicipalManager(municipalManager);
-        if(session.getAttribute("section") != null)
-            session.removeAttribute("section");
         return "redirect:/municipalManager/list";
     }
 
@@ -177,5 +173,10 @@ public class MunicipalManagerController {
         MunicipalManager municipalManager = (MunicipalManager) session.getAttribute("municipalManager");
         model.addAttribute("municipalManager", municipalManager);
         return "/municipalManager/perfil";
+    }
+
+    private void quitarAtributoSeccion(HttpSession session) {
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
     }
 }

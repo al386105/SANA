@@ -38,6 +38,8 @@ public class ServiceController {
             session.setAttribute("nextUrl", "/service/list");
             return "redirect:/inicio/login";
         }
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         model.addAttribute("services", serviceDao.getServices());
         return "service/list";
     }

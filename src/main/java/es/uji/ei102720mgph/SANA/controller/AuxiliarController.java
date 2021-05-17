@@ -238,6 +238,9 @@ public class AuxiliarController {
             registeredCitizen.setCitizenCode(registrationCitizen.getCitizenCode());
             registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
 
+
+
+
             return "redirect:/inicio/login";
         }else {
             //Usuario ya registrado en el sistema

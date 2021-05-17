@@ -9,6 +9,8 @@
     <form class="form-horizontal" action="#" th:action="@{/timeSlot/update}"
           th:object="${timeSlot}" method="post">
 
+        <input required type="hidden" th:field="*{id}" />
+
         <div class="form-group row">
             <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
             <div class="col-sm-4">

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class TemporalService implements Comparable<TemporalService>  {
+    private String id;
     private String openingDays;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime beginningTime;
@@ -17,9 +18,18 @@ public class TemporalService implements Comparable<TemporalService>  {
     private LocalDate endDate;
     private String service;
     private String naturalArea;
+    private static int contador = 1;
 
     public TemporalService(){
         super();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getOpeningDays() {
@@ -78,18 +88,31 @@ public class TemporalService implements Comparable<TemporalService>  {
         this.naturalArea = naturalArea;
     }
 
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        TemporalService.contador = contador;
+    }
+
+    public static void incrementaContador() {
+        TemporalService.contador++;
+    }
+
     public int compareTo(TemporalService altre) {
         return this.getService().compareTo(altre.getService());
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "TemporalService{" +
-                "openingDays='" + openingDays + '\'' +
-                ", beginningTime='" + beginningTime + '\'' +
+                "id='" + id + '\'' +
+                ", openingDays='" + openingDays + '\'' +
+                ", beginningTime=" + beginningTime +
                 ", endTime=" + endTime +
-                ", beginningDate='" + beginningDate+ '\'' +
-                ", endDate='" + endDate + '\'' +
+                ", beginningDate=" + beginningDate +
+                ", endDate=" + endDate +
                 ", service='" + service + '\'' +
                 ", naturalArea='" + naturalArea + '\'' +
                 '}';

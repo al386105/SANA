@@ -62,6 +62,39 @@ public class RegisteredCitizenDao {
         }
     }
 
+    public RegisteredCitizen getRegisteredCitizenNIE(String idNumber){
+        try{
+            return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen " +
+                            "WHERE idNumber = ? ",
+                    new RegisteredCitizenRowMapper(), idNumber);
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    public RegisteredCitizen getRegisteredCitizenTelf(String telf){
+        try{
+            return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen " +
+                            "WHERE mobilePhoneNumber = ? ",
+                    new RegisteredCitizenRowMapper(), telf);
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    public RegisteredCitizen getRegisteredCitizenCode(String code){
+        try{
+            return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen " +
+                            "WHERE citizenCode = ? ",
+                    new RegisteredCitizenRowMapper(), code);
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
     public List<RegisteredCitizen> getRegisteredCitizens(){
         try{
             return jdbcTemplate.query("SELECT * FROM RegisteredCitizen " +

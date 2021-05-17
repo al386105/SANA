@@ -61,13 +61,14 @@ public class ReservationController {
         if (session.getAttribute("registeredCitizen") == null)  {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/reservation/add/" + naturalArea);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         model.addAttribute("reservation", new NuevaReserva());
         model.addAttribute("naturalArea", naturalArea);
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalAreaActuales(naturalArea));
         LocalDate[] fechas = new LocalDate[2];
         //fechas[0] = LocalDate.now(); PARA ESE MISMO DIA SE PUEDE RESERVAR ?? TODO
+        // Sip, hasta 1 hora antes del inicio de la franja horaria
         fechas[0] = LocalDate.now().plusDays(1);
         fechas[1] = LocalDate.now().plusDays(2);
         model.addAttribute("fechas", fechas);

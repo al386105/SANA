@@ -4,9 +4,7 @@ import es.uji.ei102720mgph.SANA.dao.EmailDao;
 import es.uji.ei102720mgph.SANA.dao.MunicipalManagerDao;
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
-import es.uji.ei102720mgph.SANA.model.Email;
-import es.uji.ei102720mgph.SANA.model.MunicipalManager;
-import es.uji.ei102720mgph.SANA.model.Municipality;
+import es.uji.ei102720mgph.SANA.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,8 +46,15 @@ public class MunicipalManagerController {
     }
 
     @RequestMapping("/list")
-    public String listMunicipalManager(Model model) {
+    public String listMunicipalManager(Model model, HttpSession session) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipalManager/list");
+            return "redirect:/inicio/login";
+        }
         model.addAttribute("municipalManagers", municipalManagerDao.getMunicipalManagers());
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         return "municipalManager/list";
     }
 
@@ -63,7 +69,12 @@ public class MunicipalManagerController {
     }
 
     @RequestMapping(value="/add")
-    public String addMunicipalManager(Model model) {
+    public String addMunicipalManager(Model model, HttpSession session) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipalManager/add");
+            return "redirect:/inicio/login";
+        }
         model.addAttribute("municipalManager", new MunicipalManager());
         return "municipalManager/add";
     }
@@ -99,7 +110,14 @@ public class MunicipalManagerController {
     }
 
     @RequestMapping(value="/update/{email}", method = RequestMethod.GET)
-    public String editMunicipalManager(Model model, @PathVariable String email) {
+    public String editMunicipalManager(Model model, @PathVariable String email, HttpSession session) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipalManager/update/" + email);
+            return "redirect:/inicio/login";
+        }
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         model.addAttribute("municipalManager", municipalManagerDao.getMunicipalManager(email));
         return "municipalManager/update";
     }
@@ -117,23 +135,47 @@ public class MunicipalManagerController {
     }
 
     @RequestMapping(value="/darDeBaja/{email}", method = RequestMethod.GET)
-    public String darDeBajaMunicipalManager(@PathVariable String email) {
+    public String darDeBajaMunicipalManager(Model model, @PathVariable String email,HttpSession session) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipalManager/darDeBaja/" + email);
+            return "redirect:/inicio/login";
+        }
         MunicipalManager municipalManager = municipalManagerDao.getMunicipalManager(email);
         municipalManager.setLeavingDate(LocalDate.now());
         municipalManagerDao.updateMunicipalManager(municipalManager);
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         return "redirect:/municipalManager/list";
     }
 
     @RequestMapping(value="/delete/{email}")
-    public String processDelete(@PathVariable String email) {
+    public String processDelete(Model model, @PathVariable String email, HttpSession session) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipalManager/delete/" + email);
+            return "redirect:/inicio/login";
+        }
         municipalManagerDao.deleteMunicipalManager(email);
         sanaUserDao.deleteSanaUser(email);
         return "redirect:../list";
     }
 
     @RequestMapping(value="/get/{email}")
-    public String getMunicipalManager(Model model, @PathVariable String email){
+    public String getMunicipalManager(Model model, @PathVariable String email, HttpSession session){
         model.addAttribute("municipalManager", municipalManagerDao.getMunicipalManager(email));
         return "/municipalManager/get";
+    }
+
+    @RequestMapping("/perfil")
+    public String perfilMunicipalManager(Model model, HttpSession session) {
+        if (session.getAttribute("municipalManager") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipalManager/perfil");
+            return "redirect:/inicio/login";
+        }
+        MunicipalManager municipalManager = (MunicipalManager) session.getAttribute("municipalManager");
+        model.addAttribute("municipalManager", municipalManager);
+        return "/municipalManager/perfil";
     }
 }

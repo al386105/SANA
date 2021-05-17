@@ -108,68 +108,77 @@
         </tr>
         </tbody>
     </table>
-    <hr class="lineaVerde">
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
-    <h3>Servicios fijos</h3>
-    <div th:if="${#lists.isEmpty(serviceDates)}">
-        <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
-    </div>
-    <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Servicio</th>
-            <th scope="col">Fecha de inicio</th>
-            <th scope="col">Fecha de fin</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
-            <td th:text="${serviceDate.service}"></td>
-            <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
-            <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
-            <td><a th:href="@{/serviceDate/get/{id}(id=${serviceDate.id})}">
-                <button type="button" class="btn btn-primary">Más información</button>
-            </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <hr class="lineaVerde">
+    <section id="serviceDates">
+        <hr class="lineaVerde">
+        <h3>Servicios fijos</h3>
+        <div th:if="${#lists.isEmpty(serviceDates)}">
+            <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
+        </div>
+        <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Servicio</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha de fin</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
+                <td th:text="${serviceDate.service}"></td>
+                <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
+                <div th:if="${serviceDate.endDate != null}">
+                    <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
+                </div>
+                <div th:if="${serviceDate.endDate == null}">
+                    <td> - </td>
+                </div>
+                <td><a th:href="@{/serviceDate/get/{id}(id=${serviceDate.id})}">
+                    <button type="button" class="btn btn-primary">Más información</button>
+                </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
 
     <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
-    <h3>Servicios temporales</h3>
-    <div th:if="${#lists.isEmpty(temporalServices)}">
-        <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
-    </div>
-    <table th:unless="${#lists.isEmpty(temporalServices)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Servicio</th>
-            <th scope="col">Hora de inicio</th>
-            <th scope="col">Hora de fin</th>
-            <th scope="col">Fecha de inicio</th>
-            <th scope="col">Fecha de fin</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
-            <td th:text="${temporalService.service}"></td>
-            <td th:text="${temporalService.beginningTime}"></td>
-            <td th:text="${temporalService.endTime}"></td>
-            <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
-            <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
-            <td><a th:href="@{/temporalService/get/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
-                <button type="button" class="btn btn-primary">Más información</button>
-            </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <hr class="lineaVerde">
+    <section id="temporalServices">
+        <hr class="lineaVerde">
+        <h3>Servicios temporales</h3>
+        <div th:if="${#lists.isEmpty(temporalServices)}">
+            <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
+        </div>
+        <table th:unless="${#lists.isEmpty(temporalServices)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Servicio</th>
+                <th scope="col">Hora de inicio</th>
+                <th scope="col">Hora de fin</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha de fin</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
+                <td th:text="${temporalService.service}"></td>
+                <td th:text="${temporalService.beginningTime}"></td>
+                <td th:text="${temporalService.endTime}"></td>
+                <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
+                <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
+                <td><a th:href="@{/temporalService/get/{id}(id=${temporalService.id})}">
+                    <button type="button" class="btn btn-primary">Más información</button>
+                </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
 
+    <hr class="lineaVerde">
     <!-- carrusel de imágenes -->
     <h3>Imágenes</h3>
     <br>

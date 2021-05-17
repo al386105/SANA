@@ -31,11 +31,12 @@ public class TimeSlotController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/timeSlot/add/" + naturalArea);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         TimeSlot timeSlot = new TimeSlot();
         timeSlot.setNaturalArea(naturalArea);
         model.addAttribute("timeSlot", timeSlot);
+        session.setAttribute("section", "#timeSlots");
         return "timeSlot/add";
     }
 
@@ -57,9 +58,10 @@ public class TimeSlotController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/timeSlot/update/" + id);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         model.addAttribute("timeSlot", timeSlotDao.getTimeSlot(id));
+        session.setAttribute("section", "#timeSlots");
         return "timeSlot/update";
     }
 
@@ -81,11 +83,12 @@ public class TimeSlotController {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/timeSlot/delete/" + id);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         TimeSlot timeSlot = timeSlotDao.getTimeSlot(id);
         String naturalAreaName = timeSlot.getNaturalArea();
         timeSlotDao.deleteTimeSlot(id);
+        session.setAttribute("section", "#timeSlots");
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }

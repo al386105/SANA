@@ -108,12 +108,22 @@ public class AuxiliarController {
     }
 
     @RequestMapping("inicio/registrado")
-    public String redirigirRegistrado(Model model) {
+    public String redirigirRegistrado(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicioRegistrado/areasNaturales");
+            return "redirect:/inicio/login";
+        }
         return "inicioRegistrado/areasNaturales";
     }
 
     @RequestMapping("inicio/registrado/reservas")
     public String redirigirRegistradoReservas(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicio/registrado/reservas");
+            return "redirect:/inicio/login";
+        }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
         for (int i = 0; i < listaReservas.size(); i++) {
@@ -125,6 +135,11 @@ public class AuxiliarController {
 
     @RequestMapping("inicio/registrado/cancelarReserva/{id}")
     public String cancelarReserva(@PathVariable String id, Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicio/registrado/reservas");
+            return "redirect:/inicio/login";
+        }
         //reservaDatosDao.cancelaReservaPorCiudadano(id);
         String motivo = (String) model.getAttribute("motivo18");
         System.out.println("'" + motivo + "'");
@@ -135,6 +150,11 @@ public class AuxiliarController {
 
     @RequestMapping("inicio/registrado/reservasTodas")
     public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicio/registrado/reservasTodas");
+            return "redirect:/inicio/login";
+        }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasTodasEmail(citizen.getEmail());
         model.addAttribute("reservas", listaReservas);
@@ -143,6 +163,11 @@ public class AuxiliarController {
 
     @RequestMapping("inicio/registrado/perfil")
     public String redirigirRegistradoPerfil(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicio/registrado/perfil");
+            return "redirect:/inicio/login";
+        }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         model.addAttribute("citizen", citizen);
         return "inicioRegistrado/perfil";
@@ -150,6 +175,11 @@ public class AuxiliarController {
 
     @RequestMapping("inicio/registrado/editarPerfil")
     public String redirigirRegistradoEditarPerfil(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicioRegistrado/editarPerfil");
+            return "redirect:/inicio/login";
+        }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         model.addAttribute("citizen", citizen);
         return "inicioRegistrado/editarPerfil";
@@ -208,6 +238,9 @@ public class AuxiliarController {
             registeredCitizen.setCitizenCode(registrationCitizen.getCitizenCode());
             registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
 
+
+
+
             return "redirect:/inicio/login";
         }else {
             //Usuario ya registrado en el sistema
@@ -227,8 +260,16 @@ public class AuxiliarController {
 
         //!!!!!!!!!
         // TODO acceso responsable fatal
-        if(userLogin.getEmail().equals("responsable@gmail.com") && userLogin.getPassword().equals("responsable"))
+        if(userLogin.getEmail().equals("responsable@gmail.com") && userLogin.getPassword().equals("responsable")) {
+            session.setAttribute("environmentalManager", "dentro");
+            String nextUrl = (String) session.getAttribute("nextUrl");
+            if (nextUrl != null) {
+                // Eliminar atribut de la sessio
+                session.removeAttribute("nextUrl");
+                return "redirect:" + nextUrl;
+            }
             return "redirect:/section/environmentalManager";
+        }
         //!!!!!!!!!
 
 
@@ -378,7 +419,11 @@ public class AuxiliarController {
     }
 
     @RequestMapping("section/environmentalManager")
-    public String sectionEnvironmentalmanager(Model model) {
+    public String sectionEnvironmentalmanager(Model model, HttpSession session) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            return "/inicio/login";
+        }
         return "section/environmentalManager";
     }
 }

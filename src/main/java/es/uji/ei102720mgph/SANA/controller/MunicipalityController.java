@@ -5,6 +5,7 @@ import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.dao.PostalCodeMunicipalityDao;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.PostalCodeMunicipality;
+import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/municipality")
@@ -38,24 +41,46 @@ public class MunicipalityController {
     }
 
     @RequestMapping("/list")
-    public String listMunicipalities(Model model) {
+    public String listMunicipalities(Model model, HttpSession session) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipality/list");
+            return "redirect:/inicio/login";
+        }
         model.addAttribute("municipalities", municipalityDao.getMunicipalities());
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         return "municipality/list";
     }
 
     @RequestMapping(value="/get/{name}")
-    public String getMunicipality(Model model, @PathVariable("name") String name){
+    public String getMunicipality(Model model, @PathVariable("name") String name, HttpSession session){
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipality/get/" + name);
+            return "redirect:/inicio/login";
+        }
         model.addAttribute("municipality", municipalityDao.getMunicipality(name));
         model.addAttribute("municipalManagers", municipalManagerDao.getManagersOfMunicipality(name));
         model.addAttribute("postalCodes", postalCodeMunicipalityDao.getPostalCodeOfMuni(name));
         PostalCodeMunicipality postalCode = new PostalCodeMunicipality();
         postalCode.setMunicipality(name);
         model.addAttribute("postalCode", postalCode);
+        if(session.getAttribute("section") != null) {
+            String section = (String) session.getAttribute("section");
+            session.removeAttribute("section");
+            return "redirect:/municipality/get/" + name + section;
+        }
         return "/municipality/get";
     }
 
     @RequestMapping(value="/add")
-    public String addMunicipality(Model model) {
+    public String addMunicipality(Model model, HttpSession session) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipality/add");
+            return "redirect:/inicio/login";
+        }
         model.addAttribute("municipality", new Municipality());
         return "municipality/add";
     }
@@ -69,12 +94,19 @@ public class MunicipalityController {
         if (bindingResult.hasErrors())
             return "municipality/add"; //tornem al formulari per a que el corregisca
         municipalityDao.addMunicipality(municipality);
-        return "redirect:list"; //redirigim a la lista, post/redirect/get
+        return "redirect:list"; //redirigim a la lista,
     }
 
     @RequestMapping(value="/update/{name}", method = RequestMethod.GET)
-    public String editMunicipality(Model model, @PathVariable String name) {
+    public String editMunicipality(Model model, @PathVariable String name, HttpSession session) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipality/update/" + name);
+            return "redirect:/inicio/login";
+        }
         model.addAttribute("municipality", municipalityDao.getMunicipality(name));
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         return "municipality/update";
     }
 
@@ -91,7 +123,12 @@ public class MunicipalityController {
     }
 
     @RequestMapping(value="/delete/{name}")
-    public String processDelete(@PathVariable String name) {
+    public String processDelete(Model model, @PathVariable String name, HttpSession session) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipality/delete/" + name);
+            return "redirect:/inicio/login";
+        }
         municipalityDao.deleteMunicipality(name);
         return "redirect:../list";
     }

@@ -1,6 +1,7 @@
 package es.uji.ei102720mgph.SANA.dao;
 
 import es.uji.ei102720mgph.SANA.model.Service;
+import es.uji.ei102720mgph.SANA.model.TemporalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -79,6 +80,18 @@ public class ServiceDao {
             return jdbcTemplate.query(
                     "SELECT * FROM Service WHERE temporality='temporal'",
                     new ServiceRowMapper());
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Service>();
+        }
+    }
+
+    public List<Service> getServiceDatesNotInNaturalArea(String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Service WHERE temporality='fixed' AND nameOfService NOT IN " +
+                            "(SELECT service FROM ServiceDate WHERE naturalArea = ? AND endDate IS NULL)",
+                    new ServiceRowMapper(),
+                    naturalArea);
         }
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<Service>();

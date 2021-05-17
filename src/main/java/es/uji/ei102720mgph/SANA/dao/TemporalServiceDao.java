@@ -3,12 +3,14 @@ package es.uji.ei102720mgph.SANA.dao;
 import es.uji.ei102720mgph.SANA.model.ServiceDate;
 import es.uji.ei102720mgph.SANA.model.TemporalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 @Repository
@@ -21,30 +23,39 @@ public class TemporalServiceDao {
     }
 
     public void addTemporalService(TemporalService temporalService) {
-        jdbcTemplate.update(
-                "INSERT INTO TemporalService VALUES(?, ?, ?, ?, ?, ?, ?)",
-                temporalService.getOpeningDays(), temporalService.getBeginningTime(), temporalService.getEndTime(),
-                temporalService.getBeginningDate(), temporalService.getEndDate(), temporalService.getService(),
-                temporalService.getNaturalArea());
-    }
-
-    public void deleteTemporalService(String service, String naturalArea) {
-        //System.out.println("TemporalService Delete Dao: "+service + naturalArea);
-        jdbcTemplate.update("DELETE FROM TemporalService WHERE service =? AND naturalArea=?", service, naturalArea);
+        boolean excepcion;
+        Formatter fmt;
+        do {
+            try {
+                fmt = new Formatter();
+                jdbcTemplate.update(
+                        "INSERT INTO TemporalService VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+                        "" + fmt.format("%06d", TemporalService.getContador()), temporalService.getOpeningDays(),
+                        temporalService.getBeginningTime(), temporalService.getEndTime(),
+                        temporalService.getBeginningDate(), temporalService.getEndDate(), temporalService.getService(),
+                        temporalService.getNaturalArea());
+                excepcion = false;
+            } catch (DuplicateKeyException e) {
+                excepcion = true;
+            } finally {
+                ServiceDate.incrementaContador();
+            }
+        } while (excepcion);
     }
 
     public void updateTemporalService(TemporalService temporalService) {
         jdbcTemplate.update("UPDATE TemporalService SET openingDays = ?, beginningTime = ?, endTime = ?, beginningDate = ?, " +
-                        "endDate = ? WHERE service =? AND naturalArea = ?",
+                        "endDate = ?, service = ?, naturalArea = ? WHERE id = ?",
                 temporalService.getOpeningDays(), temporalService.getBeginningTime(), temporalService.getEndTime(),
-                temporalService.getBeginningDate(), temporalService.getEndDate(), temporalService.getService(), temporalService.getNaturalArea());
+                temporalService.getBeginningDate(), temporalService.getEndDate(), temporalService.getService(),
+                temporalService.getNaturalArea(), temporalService.getId());
     }
 
-    public TemporalService getTemporalService(String service, String naturalArea) {
+    public TemporalService getTemporalService(String id) {
         try {
             return jdbcTemplate.queryForObject(
-                    "SELECT * FROM TemporalService WHERE service =? AND naturalArea =?",
-                    new TemporalServiceRowMapper(), service, naturalArea);
+                    "SELECT * FROM TemporalService WHERE id =?",
+                    new TemporalServiceRowMapper(), id);
         }
         catch(EmptyResultDataAccessException e) {
             return null;
@@ -56,17 +67,6 @@ public class TemporalServiceDao {
             return jdbcTemplate.query("SELECT * FROM TemporalService WHERE naturalArea = ?",
                     new TemporalServiceRowMapper(),
                     naturalArea);
-        }
-        catch(EmptyResultDataAccessException e) {
-            return new ArrayList<TemporalService>();
-        }
-    }
-
-    public List<TemporalService> getTemporalServices() {
-        try {
-            return jdbcTemplate.query(
-                    "SELECT * FROM TemporalService",
-                    new TemporalServiceRowMapper());
         }
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<TemporalService>();

@@ -67,6 +67,18 @@ public class ZoneDao {
         }
     }
 
+    /* Obté el zone amb la lletra y numero donats. Torna null si no existeix. */
+    public Zone getZone(int zoneNumber, String letter) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM Zone WHERE zoneNumber = ? AND letter = ?",
+                    new ZoneRowMapper(), zoneNumber, letter);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public List<Zone> getZoneDisponibles(LocalDate fecha, String timeslot, int personas, String natArea) {
         try {
             return jdbcTemplate.query(

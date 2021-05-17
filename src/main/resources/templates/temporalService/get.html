@@ -2,7 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-<div th:replace="fragments/headerManager"></div>
+
+<div th:switch="${typeUser}">
+    <td th:case="'manager'"><div th:replace="fragments/headerManager"></div></td>
+    <td th:case="'environmental'"><div th:replace="fragments/headerEnvironmental"></div></td>
+    <td th:case="'registered'"><div th:replace="fragments/headerRegistered"></div></td>
+    <td th:case="*"><div th:case="notRegistered" th:replace="fragments/header"></div></td>
+</div>
 
 <div class="container">
     <h1><span th:text="${service.nameOfService}"></span> en <span th:text="${temporalService.naturalArea}"></span></h1>
@@ -24,18 +30,37 @@
         <li><b>Hora de inicio:</b> <span th:text="${temporalService.beginningTime}"></span></li>
         <li><b>Hora de fin:</b> <span th:text="${temporalService.endTime}"></span></li>
         <li><b>Fecha de inicio:</b> <span th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></span></li>
-        <li><b>Fecha de fin:</b> <span th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></span></li>
+        <li><b>Fecha de fin:</b>
+            <td th:if="${temporalService.endDate != null}">
+                <span th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></span>
+            </td>
+            <td th:if="${temporalService.endDate == null}">
+                <span>El servicio continúa operativo</span>
+            </td>
+        </li>
     </ul>
 
-    <!-- TODO el boton lo usan todos los usuarios... -->
-    <br>
-    <td><a th:href="@{/temporalService/update/{service}/{naturalArea}(service=${temporalService.service}, naturalArea=${temporalService.naturalArea})}">
-        <button type="button" class="btn btn-warning">Edita</button>
-    </a>
-    </td>
-    <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
-        <button type="submit" class="btn btn-primary">Volver al área natural</button>
-    </a>
+    <!-- dependiendo del usuario que sea, querrá volver a un sitio o a otro -->
+    <div th:switch="${typeUser}">
+        <td th:case="'manager'">
+            <a th:href="@{/temporalService/update/{id}(id=${temporalService.id})}">
+                <button type="button" class="btn btn-warning">Edita</button>
+            </a>
+            <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
+                <button type="submit" class="btn btn-primary">Volver al área natural</button>
+            </a>
+        </td>
+        <td th:case="'environmental'">
+            <a th:href="@{/naturalArea/getEnvironmental/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
+                <button type="submit" class="btn btn-primary">Volver al área natural</button>
+            </a>
+        </td>
+        <td th:case="*">
+            <a th:href="@{/naturalArea/get/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
+                <button type="submit" class="btn btn-primary">Volver al área natural</button>
+            </a>
+        </td>
+    </div>
     <br><br>
 
 </div>

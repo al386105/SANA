@@ -39,12 +39,14 @@ public class CommentController {
         if (citizen == null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/comment/add/" + naturalArea);
-            return "/inicio/login";
+            return "redirect:/inicio/login";
         }
         Comment comment = new Comment();
         comment.setNaturalArea(naturalArea);
         comment.setDate(LocalDate.now());
         comment.setCitizenEmail(citizen.getEmail());
+        // no borrar la siguiente linea!
+        session.setAttribute("section", "#comments");
         model.addAttribute("comment", comment);
         return "comment/add";
     }
@@ -61,7 +63,12 @@ public class CommentController {
 
     // Operació actualitzar
     @RequestMapping(value="/update/{commentId}", method = RequestMethod.GET)
-    public String editComment(Model model, @PathVariable String commentId) {
+    public String editComment(Model model, @PathVariable String commentId, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/comment/update/" + commentId);
+            return "redirect:/inicio/login";
+        }
         model.addAttribute("comment", commentDao.getComment(commentId));
         return "comment/update";
     }
@@ -78,7 +85,12 @@ public class CommentController {
 
     // Operació esborrar
     @RequestMapping(value="/delete/{commentId}")
-    public String processDelete(@PathVariable String commentId) {
+    public String processDelete(Model model, @PathVariable String commentId, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/comment/update/" + commentId);
+            return "redirect:/inicio/login";
+        }
         commentDao.deleteComment(commentId);
         return "redirect:../list";
     }

@@ -52,6 +52,7 @@ public class AuxiliarController {
     private ControlStaffDao controlStaffDao;
     private ReservaDatosDao reservaDatosDao;
     private AddressDao addressDao;
+    private ReservationDao reservationDao;
 
     @Autowired
     public void setControlStaffDao(ControlStaffDao controlStaffDao){
@@ -61,6 +62,11 @@ public class AuxiliarController {
     @Autowired
     public void setAddressDao(AddressDao addressDao){
         this.addressDao = addressDao;
+    }
+
+    @Autowired
+    public void setReservationDao(ReservationDao reservationDao) {
+        this.reservationDao = reservationDao;
     }
 
     @Autowired
@@ -126,6 +132,11 @@ public class AuxiliarController {
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
+        for (int i = 0; i < listaReservas.size(); i++) {
+            Reservation res = reservationDao.getReservation(listaReservas.get(i).getReservationNumber());
+            int max = reservationDao.getMaximumCapacity(res.getReservationNumber());
+            model.addAttribute("maxPersonas" + listaReservas.get(i).getReservationNumber(), max);
+        }
         model.addAttribute("motivo", new MotivoCancelancion());
         model.addAttribute("personas", new PersonasReserva());
         model.addAttribute("reservas", listaReservas);

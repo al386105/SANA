@@ -90,6 +90,9 @@
             <a th:href="@{/comment/add/{naturalArea}(naturalArea=${naturalArea.name})}">
                 <button type="button" class="btn btn-success okey">Añadir valoración</button> </a>
         </div>
+        <div th:unless="${#strings.equals(typeUser, 'registered')}">
+            <p><b>¡Inicie sesión para poder hacer comentarios!</b></p>
+        </div>
     </section>
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->

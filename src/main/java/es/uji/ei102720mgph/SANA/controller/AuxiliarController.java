@@ -141,6 +141,7 @@ public class AuxiliarController {
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
         model.addAttribute("motivo", new MotivoCancelancion());
+        model.addAttribute("personas", new PersonasReserva());
         model.addAttribute("reservas", listaReservas);
         return "inicioRegistrado/reservas";
     }
@@ -170,6 +171,21 @@ public class AuxiliarController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return "redirect:/inicio/registrado/reservas";
+    }
+
+    @RequestMapping("inicio/registrado/editarReserva/{id}")
+    public String editarReserva(@ModelAttribute("personas") PersonasReserva personas, @PathVariable String id, Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicio/registrado/reservas");
+            return "redirect:/inicio/login";
+        }
+
+        int pers = personas.getNum();
+        System.out.println(pers);
+        //reservaDatosDao.cancelaReservaPorCiudadano(id, personas);
 
         return "redirect:/inicio/registrado/reservas";
     }

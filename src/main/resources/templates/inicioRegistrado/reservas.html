@@ -24,43 +24,81 @@
                             <span th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></span>
                         </h6>
                         <p style="font-weight: bold" class="card-text">
-                            <span style="font-weight: bold" th:text="${#temporals.format(reserva.beginningTime, 'HH:mm')}"></span>
+                            <span style="font-weight: bold"
+                                  th:text="${#temporals.format(reserva.beginningTime, 'HH:mm')}"></span>
                             <span>/</span>
-                            <span style="font-weight: bold" th:text="${#temporals.format(reserva.endTime, 'HH:mm')}"></span>
+                            <span style="font-weight: bold"
+                                  th:text="${#temporals.format(reserva.endTime, 'HH:mm')}"></span>
                         </p>
-                        <p class="card-text"> <span th:text="${reserva.numberOfPeople}"></span> personas</p>
+                        <p class="card-text"><span th:text="${reserva.numberOfPeople}"></span> personas</p>
                         <p class="card-text" style="float: left">Zona:
                             <span th:text="${reserva.zoneNumber}"></span>
                             <span th:text="${reserva.letter}"></span>
                         </p>
-                        <button style="float: right" type="button" class="btn btn-primary" data-toggle="modal" th:data-target="${'#miModal' + reserva.reservationNumber}">Cancelar reserva</button>
+                        <button style="float: right" type="button" class="btn btn-primary" data-toggle="modal"
+                                th:data-target="${'#miModal' + reserva.reservationNumber}">Cancelar reserva
+                        </button>
+                        <button style="float: right; margin-right: 10px" type="button" class="btn btn-secondary"
+                                data-toggle="modal" th:data-target="${'#miModal2' + reserva.reservationNumber}">Editar
+                        </button>
                     </div>
                 </div>
                 <br>
-                <!-- VENTANA EMERGENTE -->
+                <!-- VENTANA EMERGENTE CANCELAR-->
                 <div class="modal" th:id="${'miModal' + reserva.reservationNumber}">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Cancelar reserva</h5>
-                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                                <button style="font-size:x-large; color: #b86f52" type="button" class="close"
+                                        data-dismiss="modal" aria-label="Close">&times;
+                                </button>
                             </div>
                             <div class="modal-body">
                                 <p>Indique, si lo desea, el motivo de su cancelación:</p>
                             </div>
-                            <form action="#" th:action="@{cancelarReserva/} + ${reserva.reservationNumber}" th:object="${motivo}">
-                            <input class="form-control motivo" id="motivo" th:field="${motivo.mot}" placeholder="Motivo">
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Cancelar reserva</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                            <form action="#" th:action="@{cancelarReserva/} + ${reserva.reservationNumber}"
+                                  th:object="${motivo}">
+                                <input class="form-control motivo" id="motivo" th:field="${motivo.mot}"
+                                       placeholder="Motivo">
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Cancelar reserva</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VENTANA EMERGENTE EDITAR-->
+                <div class="modal" th:id="${'miModal2' + reserva.reservationNumber}">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Editar reserva</h5>
+                                <button style="font-size:x-large; color: #b86f52" type="button" class="close"
+                                        data-dismiss="modal" aria-label="Close">&times;
+                                </button>
                             </div>
+                            <div class="modal-body">
+                                <p>Indique el número de personas que finalmente acudirán:</p>
+                            </div>
+                            <form th:action="@{editarReserva/} + ${reserva.reservationNumber}" th:object="${personas}">
+                                <input type="number" class="form-control motivo" id="personas"
+                                       th:field="${personas.num}">
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <br>
-        <a style="align-content: center" href="/inicio/registrado/reservasTodas" class="btn btn-primary">Mostrar historial de reservas</a>
+        <a style="align-content: center" href="/inicio/registrado/reservasTodas" class="btn btn-primary">Mostrar
+            historial de reservas</a>
 
     </div>
 </section>

@@ -88,7 +88,7 @@
         <!-- solo los ciudadanos registrados pueden hacer comentarios -->
         <div th:if="${#strings.equals(typeUser, 'registered')}">
             <a th:href="@{/comment/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-                <button type="button" class="btn btn-success">Añadir valoración</button> </a>
+                <button type="button" class="btn btn-success okey">Añadir valoración</button> </a>
         </div>
     </section>
 

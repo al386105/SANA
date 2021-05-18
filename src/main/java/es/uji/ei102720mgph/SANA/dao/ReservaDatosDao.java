@@ -68,7 +68,7 @@ public class ReservaDatosDao {
         }
     }
 
-    public void cancelaReservaPorCiudadano(String id){
-        jdbcTemplate.update("UPDATE Reservation SET state = ? WHERE reservationNumber =?", ReservationState.cancelledCitizen.name(), Integer.parseInt(id));
+    public void cancelaReservaPorCiudadano(String id, String mot){
+        jdbcTemplate.update("UPDATE Reservation SET state = ?, cancellationreason = ? WHERE reservationNumber =?", ReservationState.cancelledCitizen.name(), mot, Integer.parseInt(id));
     }
 }

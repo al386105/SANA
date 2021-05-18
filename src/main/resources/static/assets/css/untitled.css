@@ -227,11 +227,11 @@ h4.colorTierra {
     width:50%;
 }
 
-select {
+.selectReserva {
     background: #FFFFFF;
     border-color: gray;
-    font-size: 9px;
-    height: 20px;
+    font-size: 16px;
+    height: 34px;
     padding: 5px;
     width: 350px;
 }
@@ -280,4 +280,15 @@ label.star:hover {
 label.star:before {
     content: '\f006';
     font-family: FontAwesome
+}
+
+.okey {
+    background-color: #697f40!important;
+    border-color: #697f40!important;
+}
+
+.motivo {
+    background-color: #e8e6e8;
+    width: 70%;
+    margin:0px auto;
 }

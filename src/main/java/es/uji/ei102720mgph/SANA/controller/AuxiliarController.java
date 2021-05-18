@@ -126,25 +126,23 @@ public class AuxiliarController {
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
-        for (int i = 0; i < listaReservas.size(); i++) {
-            model.addAttribute("motivo"+listaReservas.get(i).getReservationNumber(), "");
-        }
+        model.addAttribute("motivo", new MotivoCancelancion());
         model.addAttribute("reservas", listaReservas);
         return "inicioRegistrado/reservas";
     }
 
     @RequestMapping("inicio/registrado/cancelarReserva/{id}")
-    public String cancelarReserva(@PathVariable String id, Model model, HttpSession session) {
+    public String cancelarReserva(@ModelAttribute("motivo") MotivoCancelancion motivo, @PathVariable String id, Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/inicio/registrado/reservas");
             return "redirect:/inicio/login";
         }
-        //reservaDatosDao.cancelaReservaPorCiudadano(id);
-        String motivo = (String) model.getAttribute("motivo18");
-        System.out.println("'" + motivo + "'");
-        motivo = (String) model.getAttribute("motivo19");
-        System.out.println("'" + motivo + "'");
+
+        String mot = motivo.getMot();
+        mot = mot.substring(0, mot.length()-1);
+        reservaDatosDao.cancelaReservaPorCiudadano(id, mot);
+
         return "redirect:/inicio/registrado/reservas";
     }
 

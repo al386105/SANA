@@ -18,7 +18,7 @@
     <div class="form-group row">
       <label class="control-label col-sm-2">Zonas disponibles:</label>
       <div class="col-sm-4">
-        <select class="form_control form-control-lg" type="text" th:field="*{zoneid}">
+        <select class="selectReserva" type="text" th:field="*{zoneid}">
           <option th:each="zon : ${zones}"
                   th:value="${zon.id}"
                   th:text="${zon.zoneNumber + ' ' + zon.letter}"></option>

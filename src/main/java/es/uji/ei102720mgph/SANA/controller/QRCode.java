@@ -39,9 +39,7 @@ public class QRCode {
         }
 
         ImageIO.write(image, "png", file);
-
         return file;
-
     }
 
     public String decoder(File file) throws Exception {

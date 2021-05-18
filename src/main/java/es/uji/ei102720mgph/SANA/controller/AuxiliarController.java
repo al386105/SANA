@@ -5,6 +5,7 @@ import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import es.uji.ei102720mgph.SANA.model.*;
 import es.uji.ei102720mgph.SANA.model.Address;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,10 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Formatter;
 import java.util.List;
@@ -45,12 +50,15 @@ class UserValidator implements Validator {
 @Controller
 @RequestMapping("/")
 public class AuxiliarController {
+    @Value("${upload.file.directory}")
+    private String uploadDirectory;
 
     private SanaUserDao sanaUserDao;
     private RegisteredCitizenDao registeredCitizenDao;
     private MunicipalManagerDao municipalManagerDao;
     private ControlStaffDao controlStaffDao;
     private ReservaDatosDao reservaDatosDao;
+    private ReservationDao reservationDao;
     private AddressDao addressDao;
 
     @Autowired
@@ -71,6 +79,11 @@ public class AuxiliarController {
     @Autowired
     public void setSanaUsertDao(SanaUserDao sanaUserDao){
         this.sanaUserDao = sanaUserDao;
+    }
+
+    @Autowired
+    public void setReservationDao(ReservationDao reservationDao){
+        this.reservationDao = reservationDao;
     }
 
     @Autowired
@@ -117,6 +130,7 @@ public class AuxiliarController {
         return "inicioRegistrado/areasNaturales";
     }
 
+    // TODO este método igual debería ir en el controller de reservation
     @RequestMapping("inicio/registrado/reservas")
     public String redirigirRegistradoReservas(Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
@@ -138,10 +152,24 @@ public class AuxiliarController {
             session.setAttribute("nextUrl", "/inicio/registrado/reservas");
             return "redirect:/inicio/login";
         }
-
         String mot = motivo.getMot();
         mot = mot.substring(0, mot.length()-1);
         reservaDatosDao.cancelaReservaPorCiudadano(id, mot);
+
+        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
+        // Actualizar QR con la cancelacion
+        Formatter fmt = new Formatter();
+        QRCode qr = new QRCode();
+        File f = new File("qr" + fmt.format("%07d", id) + ".png");
+        String text = "Reserva cancelada por " + reservation.getCitizenEmail() + " de fecha " + reservation.getReservationDate() + ".";
+        try {
+            qr.generateQR(f, text, 300, 300);
+            byte[] bytes = Files.readAllBytes(f.toPath());
+            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
+            Files.write(path, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "redirect:/inicio/registrado/reservas";
     }
@@ -236,8 +264,7 @@ public class AuxiliarController {
             registeredCitizen.setCitizenCode(registrationCitizen.getCitizenCode());
             registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
 
-
-
+            // TODO ENVIAR MAIL!!!!
 
             return "redirect:/inicio/login";
         }else {

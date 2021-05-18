@@ -122,21 +122,18 @@ public class ReservationController {
         Zone zone = zoneDao.getZone(reservation.getZoneid());
 
         // todo OJO QUE CUANDO PODAMOS RESERVAR VARIAS ZONAS EL TEXTO CAMBIA (MIRAR ALGUNA LO QUE HE PEUSTO)
+        // Generar QR
         Formatter fmt = new Formatter();
         QRCode qr = new QRCode();
         File f = new File("qr" + fmt.format("%07d", numRes) + ".png");
         String text = "Reserva por " + reservation.getCitizenEmail() + " en " + naturalArea + ", de fecha " + reservation.getReservationDate()
-        + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", en la zona " + zone.getZoneNumber() + zone.getLetter() +
-                " para " + reservation.getNumberOfPeople() + " personas.";
+        + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
 
         try {
             qr.generateQR(f, text, 300, 300);
             byte[] bytes = Files.readAllBytes(f.toPath());
             Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
             Files.write(path, bytes);
-            System.out.println("QRCode Generated: " + f.getAbsolutePath());
-            String qrString = qr.decoder(f);
-            System.out.println("Text QRCode: " + qrString);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -195,6 +192,9 @@ public class ReservationController {
             return "reservation/update";
         reservation.setCancellationDate(LocalDate.now());
         reservationDao.updateReservation(reservation);
+
+        // GENERAR DE NUEVO QR (mirar lo que he puesto en un QR de cancelado por gestor municipal
+
         return "redirect:/reservation/listManagers/";
     }
 

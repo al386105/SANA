@@ -60,7 +60,6 @@ public class AuxiliarController {
     private ReservaDatosDao reservaDatosDao;
     private ReservationDao reservationDao;
     private AddressDao addressDao;
-    private ReservationDao reservationDao;
 
     @Autowired
     public void setControlStaffDao(ControlStaffDao controlStaffDao){
@@ -70,11 +69,6 @@ public class AuxiliarController {
     @Autowired
     public void setAddressDao(AddressDao addressDao){
         this.addressDao = addressDao;
-    }
-
-    @Autowired
-    public void setReservationDao(ReservationDao reservationDao) {
-        this.reservationDao = reservationDao;
     }
 
     @Autowired

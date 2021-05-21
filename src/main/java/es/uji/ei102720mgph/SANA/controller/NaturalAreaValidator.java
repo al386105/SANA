@@ -1,32 +1,17 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
-import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.enums.Orientation;
 import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
-import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.NaturalAreaForm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import es.uji.ei102720mgph.SANA.model.NaturalArea;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-// TODO no va el validador de selectores ni con @Component ni @Controller
-
 public class NaturalAreaValidator implements Validator {
-    private MunicipalityDao municipalityDao;
-    private NaturalAreaDao naturalAreaDao;
-
-    @Autowired
-    public void setMunicipalityDao(MunicipalityDao municipalityDao) { this.municipalityDao = municipalityDao; }
-
-    @Autowired
-    public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao) { this.naturalAreaDao = naturalAreaDao; }
 
     @Override
     public boolean supports(Class<?> cls) {
@@ -41,15 +26,11 @@ public class NaturalAreaValidator implements Validator {
         if (naturalArea.getName().trim().equals(""))
             errors.rejectValue("name", "obligatorio", "Es obligatorio completar el nombre");
 
-        // Si ya existe el nombre del área natural...
-        /*if(naturalAreaDao.getNaturalArea(naturalArea.getName()) != null)
-            errors.rejectValue("name", "repetido", "El nombre del área natural ya existe");*/
-
         // Radio button tipo de acceso comprobar que se haya seleccionado
         if (naturalArea.getTypeOfAccess() == null)
             errors.rejectValue("typeOfAccess", "obligatorio", "Es obligatorio seleccionar el tipo de acceso");
         else {
-            // Radio button para tipo de acceso, igual no es necesario //TODO
+            // Radio button para tipo de acceso
             List<String> namesTypesOfAccess = Stream.of(TypeOfAccess.values())
                     .map(Enum::name)
                     .collect(Collectors.toList());
@@ -58,13 +39,55 @@ public class NaturalAreaValidator implements Validator {
             }
         }
 
-        // Selecccionar tipo de area, igual no es necesario //TODO
+        // Latitud grados
+        if (naturalArea.getLatitudGrados() < 0.0)
+            errors.rejectValue("latitudGrados", "incorrecto", "Los grados de latitud deben ser un número superior a 0");
+
+        // Latitud minutos
+        if (naturalArea.getLongitudMin() < 0.0)
+            errors.rejectValue("latitudMin", "incorrecto", "Los minutos de latitud deben ser un número superior a 0");
+
+        // Latitud segundos
+        if (naturalArea.getLatitudSeg() < 0.0)
+            errors.rejectValue("latitudSeg", "incorrecto", "Los segundos de latitud deben ser un número superior a 0");
+
+        // Selecccionar letra latitud
+        if (!naturalArea.getLatitudLetra().trim().equals("N") & !naturalArea.getLatitudLetra().trim().equals("S")) {
+            errors.rejectValue("latitudLetra", "obligatorio", "Seleccionar Norte o Sur");
+        }
+
+        // Longitud grados
+        if (naturalArea.getLongitudGrados() < 0.0)
+            errors.rejectValue("longitudGrados", "incorrecto", "Los grados de longitud deben ser un número superior a 0");
+
+        // Longitud minutos
+        if (naturalArea.getLongitudMin() < 0.0)
+            errors.rejectValue("longitudMin", "incorrecto", "Los minutos de longitud deben ser un número superior a 0");
+
+        // Longitud segundos
+        if (naturalArea.getLongitudSeg() < 0.0)
+            errors.rejectValue("longitudSeg", "incorrecto", "Los segundos de longitud deben ser un número superior a 0");
+
+        // Selecccionar letra longitud
+        if (!naturalArea.getLongitudLetra().trim().equals("E") & !naturalArea.getLongitudLetra().trim().equals("W")) {
+            errors.rejectValue("longitudLetra", "obligatorio", "Seleccionar Este u Oeste");
+        }
+
+        // Selecccionar tipo de area, igual no es necesario
         List<String> namesTypesOfArea = Stream.of(TypeOfArea.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
         if (!namesTypesOfArea.contains(naturalArea.getTypeOfArea().name())) {
             errors.rejectValue("typeOfArea", "obligatorio", "No se ha seleccionado un tipo de área");
         }
+
+        // Longitud positiva
+        if (naturalArea.getLength() < 0.0)
+            errors.rejectValue("length", "incorrecto", "La longitud debe ser un número superior a 0");
+
+        // Ancho positivo
+        if (naturalArea.getWidth() < 0.0)
+            errors.rejectValue("width", "incorrecto", "El ancho debe ser un número superior a 0");
 
         // Caracteristicas fisicas obligatorias
         if (naturalArea.getPhysicalCharacteristics().trim().equals(""))
@@ -78,7 +101,7 @@ public class NaturalAreaValidator implements Validator {
         if (naturalArea.getOrientation() == null)
             errors.rejectValue("orientation", "obligatorio", "Es obligatorio seleccionar la orientación");
         else {
-            // Radio button orientacion ver si hay que hacerlo //TODO
+            // Radio button orientacion ver si hay que hacerlo
             List<String> namesOrientation = Stream.of(Orientation.values())
                     .map(Enum::name)
                     .collect(Collectors.toList());
@@ -86,17 +109,6 @@ public class NaturalAreaValidator implements Validator {
                 errors.rejectValue("orientation", "incorrecto", "La orientación no es correcta");
             }
         }
-
-        // Selecccionar municipio
-        // TODO NO VA
-        /*if(municipalityDao ==  null) System.out.println("ES NULL");
-        List<Municipality> municipalityList = municipalityDao.getMunicipalities();
-        List<String> namesMunicipalities = municipalityList.stream()
-                .map(Municipality::getName)
-                .collect(Collectors.toList());
-        if (!namesMunicipalities.contains(naturalArea.getMunicipality())) {
-            errors.rejectValue("municipality", "obligatorio", "No se ha seleccionado un municipio");
-        }*/
     }
 }
 

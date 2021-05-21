@@ -6,6 +6,7 @@ import es.uji.ei102720mgph.SANA.model.*;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import es.uji.ei102720mgph.SANA.services.OccupationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -283,7 +284,7 @@ public class NaturalAreaController {
     }
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("naturalArea") NaturalAreaForm naturalAreaForm,
+    public String processAddSubmit(Model model, @ModelAttribute("naturalArea") NaturalAreaForm naturalAreaForm,
                                    BindingResult bindingResult) {
         NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
         naturalAreaValidator.validate(naturalAreaForm, bindingResult);
@@ -295,21 +296,40 @@ public class NaturalAreaController {
         // si es vol afegir un area restringida, redirigir a la vista per a continuar la seua creació
         if(naturalArea.getTypeOfAccess() == TypeOfAccess.restricted)
             return "naturalArea/addRestricted";
-        naturalAreaDao.addNaturalArea(naturalArea); //usem el dao per a inserir el naturalArea
+        try {
+            naturalAreaDao.addNaturalArea(naturalArea);
+        } catch (DataIntegrityViolationException e) {
+            // nombre del área ya existente
+            if(naturalAreaDao.getNaturalArea(naturalArea.getName()) != null)
+                model.addAttribute("claveRepetida", "repetida");
+            // selector no seleccionado
+            if(naturalArea.getMunicipality().equals("No seleccionado"))
+                model.addAttribute("selector", "noSeleccionado");
+            return "naturalArea/add";
+        }
         return "redirect:/naturalArea/getManagers/" + naturalArea.getName();
     }
 
     // addRestricted
     @RequestMapping(value="/addRestricted", method= RequestMethod.POST)
-    public String processAddRestrictedSubmit(@ModelAttribute("naturalArea") NaturalAreaForm naturalAreaForm,
+    public String processAddRestrictedSubmit(Model model, @ModelAttribute("naturalArea") NaturalAreaForm naturalAreaForm,
                                              BindingResult bindingResult) {
         NaturalAreaValidadorRestricted naturalAreaValidator = new NaturalAreaValidadorRestricted();
         naturalAreaValidator.validate(naturalAreaForm, bindingResult);
-
         if (bindingResult.hasErrors())
             return "naturalArea/addRestricted";
-
-        naturalAreaDao.addNaturalArea(pasoANaturalArea(naturalAreaForm)); //usem el dao per a inserir el naturalArea
+        NaturalArea naturalArea = naturalAreaDao.getNaturalArea(naturalAreaForm.getName());
+        try {
+            naturalAreaDao.addNaturalArea(pasoANaturalArea(naturalAreaForm));
+        } catch (DataIntegrityViolationException e) {
+            // nombre del área ya existente
+            if(naturalAreaDao.getNaturalArea(naturalArea.getName()) != null)
+                model.addAttribute("claveRepetida", "repetida");
+            // selector no seleccionado
+            if(naturalArea.getMunicipality().equals("No seleccionado"))
+                model.addAttribute("selector", "noSeleccionado");
+            return "naturalArea/add";
+        }
         return "redirect:/naturalArea/getManagers/" + naturalAreaForm.getName();
     }
 

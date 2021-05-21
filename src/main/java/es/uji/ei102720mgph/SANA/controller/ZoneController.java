@@ -5,6 +5,7 @@ import es.uji.ei102720mgph.SANA.dao.ZoneDao;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
 import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,15 +50,18 @@ public class ZoneController {
 
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add", method=RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("zone") Zone zone,
-                                   BindingResult bindingResult) {
+    public String processAddSubmit(Model model, @ModelAttribute("zone") Zone zone, BindingResult bindingResult) {
         ZoneValidator zoneValidator = new ZoneValidator();
         zoneValidator.validate(zone, bindingResult);
-
         if (bindingResult.hasErrors())
             return "zone/add"; //tornem al formulari per a que el corregisca
         String naturalAreaName = zone.getNaturalArea();
-        zoneDao.addZone(zone); //usem el dao per a inserir el zone
+        try {
+            zoneDao.addZone(zone); //usem el dao per a inserir el zone
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("claveRepetida", "repetida");
+            return "zone/add";
+        }
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
@@ -76,15 +80,18 @@ public class ZoneController {
 
     // Resposta de modificació d'objectes
     @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("zone") Zone zone,
-                                      BindingResult bindingResult) {
+    public String processUpdateSubmit(Model model, @ModelAttribute("zone") Zone zone, BindingResult bindingResult) {
         ZoneValidator zoneValidator = new ZoneValidator();
         zoneValidator.validate(zone, bindingResult);
-
         if (bindingResult.hasErrors())
             return "zone/update";
         String naturalAreaName = zone.getNaturalArea();
-        zoneDao.updateZone(zone);
+        try {
+            zoneDao.updateZone(zone);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("claveRepetida", "repetida");
+            return "zone/update";
+        }
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 

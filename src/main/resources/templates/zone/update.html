@@ -9,12 +9,7 @@
     <form class="form-horizontal" action="#" th:action="@{/zone/update}"
           th:object="${zone}" th:field="*{creationDate}"method="post">
 
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="id">Id:</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="id" th:field="*{id}" readonly="readonly"/>
-            </div>
-        </div>
+        <input required type="hidden" th:field="*{id}" />
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="zoneNumber">Número zona:</label>
@@ -29,6 +24,7 @@
             <div class="col-sm-4">
                 <input type="text" placeholder="A" required maxlength="1" class="form-control" id="letter" th:field="*{letter}" />
                 <td th:if="${#fields.hasErrors('letter')}" th:errors="*{letter}"></td>
+                <td th:if="${#strings.equals(claveRepetida, 'repetida')}">La combinación de número y letra ya está en uso</td>
             </div>
         </div>
 
@@ -56,29 +52,10 @@
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="button" data-toggle="modal" data-target="#miModal" class="btn btn-success">Actualizar zona</button>
+                <button type="submit" class="btn btn-success">Actualizar zona</button>
             </div>
         </div>
 
-        <!-- VENTANA EMERGENTE -->
-        <div class="modal" id="miModal">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Actualizar zona</h5>
-                        <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>¿Seguro que desea actualizar la zona <span th:text="${zone.zoneNumber}"></span> <span th:text="${zone.letter}"></span>
-                            de <span th:text="${zone.naturalArea}"></span>?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Confirmar</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </form>
 
     <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${zone.naturalArea})}">

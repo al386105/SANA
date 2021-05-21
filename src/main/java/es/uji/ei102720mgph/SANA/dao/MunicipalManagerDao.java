@@ -59,11 +59,11 @@ public class MunicipalManagerDao {
         }
     }
 
-
     public MunicipalManager getMunicipalManagerUsername(String username) {
         try {
             return jdbcTemplate.queryForObject("SELECT * FROM MunicipalManager " +
-                            "WHERE username = ? ",
+                            "JOIN SanaUser ON MunicipalManager.email = SanaUser.email " +
+                            "WHERE MunicipalManager.username = ? ",
                     new MunicipalManagerRowMapper(), username);
         }
         catch(EmptyResultDataAccessException e) {

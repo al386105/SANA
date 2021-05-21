@@ -7,6 +7,7 @@ import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -58,14 +59,19 @@ public class ServiceController {
 
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("service") Service service,
+    public String processAddSubmit(Model model, @ModelAttribute("service") Service service,
                                    BindingResult bindingResult) {
         ServiceValidator serviceValidator = new ServiceValidator();
         serviceValidator.validate(service, bindingResult);
-
         if (bindingResult.hasErrors())
             return "service/add"; //tornem al formulari per a que el corregisca
-        serviceDao.addService(service); //usem el dao per a inserir el address
+
+        try {
+            serviceDao.addService(service);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("claveRepetida", "repetida");
+            return "service/add";
+        }
         return "redirect:list"; //redirigim a la lista per a veure el service afegit, post/redirect/get
     }
 
@@ -83,14 +89,17 @@ public class ServiceController {
 
     // Resposta de modificació d'objectes
     @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("service") Service service,
-                                      BindingResult bindingResult) {
+    public String processUpdateSubmit(Model model, @ModelAttribute("service") Service service, BindingResult bindingResult) {
         ServiceValidator serviceValidator = new ServiceValidator();
         serviceValidator.validate(service, bindingResult);
-
         if (bindingResult.hasErrors())
             return "service/update";
-        serviceDao.updateService(service);
+        try {
+            serviceDao.updateService(service);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("claveRepetida", "repetida");
+            return "service/update";
+        }
         return "redirect:list";
     }
 

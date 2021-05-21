@@ -7,6 +7,7 @@ import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.ServiceDate;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -76,7 +77,14 @@ public class ServiceDateController {
             model.addAttribute("serviceList", namesServices);
             return "serviceDate/add"; //tornem al formulari per a que el corregisca
         }
-        serviceDateDao.addServiceDate(serviceDate); //usem el dao per a inserir el address
+
+        try {
+            serviceDateDao.addServiceDate(serviceDate);
+        } catch (DataIntegrityViolationException e) {
+            // selector no seleccionado
+            model.addAttribute("selector", "noSeleccionado");
+            return "serviceDate/add";
+        }
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 

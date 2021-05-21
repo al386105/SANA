@@ -6,6 +6,7 @@ import es.uji.ei102720mgph.SANA.model.Picture;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,15 +39,13 @@ public class PictureController {
     @RequestMapping(value="/add/{naturalArea}", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("picture") Picture picture, @RequestParam("file") MultipartFile file,
                                    @PathVariable String naturalArea, HttpSession session,
-                                   RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+                                   RedirectAttributes redirectAttributes) {
         if (file.isEmpty()) {
             // Enviar mensaje de error porque no hay fichero seleccionado
-            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+            redirectAttributes.addFlashAttribute("message", "Selecciona un fichero para subir");
             return "redirect:/uploadStatus";
         }
         try {
-            if (bindingResult.hasErrors())
-                return "picture/add";
             // Obtener el fichero y guardarlo
             byte[] bytes = file.getBytes();
             Path path = Paths.get(uploadDirectory + "naturalAreas/" + file.getOriginalFilename());

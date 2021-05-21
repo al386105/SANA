@@ -14,6 +14,7 @@
             <div class="col-sm-4">
                 <input type="text" required maxlength="30" class="form-control" id="nameOfService" th:field="*{nameOfService}" />
                 <td th:if="${#fields.hasErrors('nameOfService')}" th:errors="*{nameOfService}"></td>
+                <td th:if="${#strings.equals(claveRepetida, 'repetida')}">El nombre ya lo ha asignado a otro servicio</td>
             </div>
         </div>
 
@@ -46,26 +47,7 @@
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#miModal">Añadir servicio</button>
-            </div>
-        </div>
-
-        <!-- VENTANA EMERGENTE -->
-        <div class="modal" id="miModal">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Añadir servicio</h5>
-                        <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>¿Seguro que desea añadir el servicio?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Confirmar</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                    </div>
-                </div>
+                <button type="submit" class="btn btn-success">Añadir servicio</button>
             </div>
         </div>
 

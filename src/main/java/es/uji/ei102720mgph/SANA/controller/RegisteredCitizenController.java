@@ -6,6 +6,7 @@ import es.uji.ei102720mgph.SANA.model.Address;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
 import es.uji.ei102720mgph.SANA.model.SanaUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,12 +47,23 @@ public class RegisteredCitizenController {
 
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add", method=RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("registeredCitizen")RegisteredCitizen registeredCitizen,
+    public String processAddSubmit(Model model, @ModelAttribute("registeredCitizen")RegisteredCitizen registeredCitizen,
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors())
-            return "registeredCitizen/add"; //tornem al formulari per a que el corregisca
-        registeredCitizenDao.addRegisteredCitizen(registeredCitizen); //usem el dao per a inserir el address
-        return "redirect:list"; //redirigim a la lista per a veure el address afegit, post/redirect/get
+            return "registeredCitizen/add";
+        try {
+            registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
+        } catch (DataIntegrityViolationException e) {
+            // alguna clave primaria o alternativa repetida, ver cuál es
+            if(sanaUserDao.getSanaUser(registeredCitizen.getEmail()) != null)
+                model.addAttribute("emailRepetido", "repetido");
+            if(registeredCitizenDao.getRegisteredCitizenNIE(registeredCitizen.getIdNumber()) != null)
+                model.addAttribute("NIERepetido", "repetido");
+            if(registeredCitizenDao.getRegisteredCitizenTelf(registeredCitizen.getMobilePhoneNumber()) != null)
+                model.addAttribute("telfRepetido", "repetido");
+            return "registeredCitizen/add";
+        }
+        return "redirect:list";
     }
 
     // Operació actualitzar

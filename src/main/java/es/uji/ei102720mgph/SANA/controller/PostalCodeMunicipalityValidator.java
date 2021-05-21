@@ -8,16 +8,10 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 public class PostalCodeMunicipalityValidator implements Validator {
-    private PostalCodeMunicipalityDao postalCodeMunicipalityDao; //TODO
 
     @Override
     public boolean supports(Class<?> cls) {
         return PostalCodeMunicipality.class.equals(cls);
-    }
-
-    @Autowired
-    public void setPostalCodeMunicipalityDao(PostalCodeMunicipalityDao postalCodeMunicipalityDao) {
-        this.postalCodeMunicipalityDao = postalCodeMunicipalityDao;
     }
 
     @Override
@@ -32,9 +26,9 @@ public class PostalCodeMunicipalityValidator implements Validator {
         if(!esNumerico(postalCodeMunicipality.getPostalCode()))
             errors.rejectValue("postalCode", "formato incorrecto", "El código postal debe ser numérico");
 
-        // Si ya existe el código postal...
-        /*if(postalCodeMunicipalityDao.getPostalCodeOfMuni(postalCodeMunicipality.getPostalCode()) != null)
-            errors.rejectValue("postalCode", "repetido", "El código postal ya está asignado a un municipio");*/
+        // Codigo postal de 5 dígitos
+        if(postalCodeMunicipality.getPostalCode().trim().length() != 5)
+            errors.rejectValue("postalCode", "formato incorrecto", "El código postal debe tener 5 dígitos");
     }
 
     // devuelve true si la cadena es numérica

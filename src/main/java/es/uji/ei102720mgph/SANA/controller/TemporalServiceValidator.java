@@ -1,29 +1,12 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-import es.uji.ei102720mgph.SANA.dao.ServiceDao;
-import es.uji.ei102720mgph.SANA.dao.TemporalServiceDao;
-import es.uji.ei102720mgph.SANA.enums.DaysOfWeek;
-import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
-import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.TemporalService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-//TODO
+@Component
 public class TemporalServiceValidator implements Validator {
-    private ServiceDao serviceDao;
-    private TemporalServiceDao temporalServiceDao;
-
-    @Autowired
-    public void setServiceDao(ServiceDao serviceDao) { this.serviceDao = serviceDao; }
-
-    @Autowired
-    public void setTemporalServiceDao(TemporalServiceDao temporalServiceDao) { this.temporalServiceDao = temporalServiceDao; }
 
     @Override
     public boolean supports(Class<?> cls) {
@@ -33,18 +16,6 @@ public class TemporalServiceValidator implements Validator {
     @Override
     public void validate(Object obj, Errors errors) {
         TemporalService temporalService = (TemporalService) obj;
-
-        /* TODO no va
-        //Seleccionar servicio
-        List<Service> serviceList = serviceDao.getServices();
-        List<String> namesServices = serviceList.stream()
-                .map(Service::getNameOfService)
-                .collect(Collectors.toList());
-
-        if (!namesServices.contains(temporalService.getService())) {
-            errors.rejectValue("temporalService", "valor incorrecto",
-                    "No se ha seleccionado un servicio");
-        }*/
 
         // Hora de inicio obligatoria
         if (temporalService.getBeginningTime() == null)

@@ -14,58 +14,44 @@
         <form id="contactForm" novalidate="novalidate" th:action="@{editarPerfil}" th:object="${citizen}" method="post">
           <div class="control-group">
             <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Nombre:</label>
-              <input class="form-control" id="name" th:field="*{name}" style="background-color: #e8e6e8">
+              <input class="form-control" required id="name" th:field="*{name}" style="background-color: #e8e6e8">
+              <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
             </div>
           </div>
           <div class="control-group">
             <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Apellidos</label>
-              <input class="form-control" id="surname" th:field="*{surname}" style="background-color: #e8e6e8">
+              <input class="form-control" required id="surname" th:field="*{surname}" style="background-color: #e8e6e8">
+              <div class="error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
             </div>
           </div>
           <div class="control-group">
             <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Correo</label>
-              <input class="form-control" id="email" th:field="*{email}" style="background-color: #dbdbdb" readonly="readonly">
+              <input class="form-control" required id="email" th:field="*{email}" style="background-color: #dbdbdb" readonly="readonly">
             </div>
           </div>
           <div class="control-group">
             <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Nacimiento</label>
-              <input class="form-control" type="date" id="dateOfBirth" th:field="*{dateOfBirth}" style="background-color: #e8e6e8">
+              <input class="form-control" required type="date" id="dateOfBirth" th:field="*{dateOfBirth}" style="background-color: #e8e6e8">
+              <div class="error" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
             </div>
           </div>
           <div class="control-group">
             <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Teléfono</label>
-              <input class="form-control" id="mobilePhoneNumber" th:field="*{mobilePhoneNumber}" style="background-color: #e8e6e8">
+              <input class="form-control" required id="mobilePhoneNumber" th:field="*{mobilePhoneNumber}" style="background-color: #e8e6e8">
+              <div class="error" th:if="${#fields.hasErrors('mobilePhoneNumber')}" th:errors="*{mobilePhoneNumber}"></div>
+              <td th:if="${#strings.equals(claveRepetida, 'repetida')}">El teléfono ya está registrado en la apliación</td>
             </div>
           </div>
-          <input class="form-control" id="leavingDate" th:field="*{leavingDate}" type="hidden">
-          <input class="form-control" id="registrationDate" th:field="*{registrationDate}" type="hidden">
-          <input class="form-control" id="typeOfUser" th:field="*{typeOfUser}" type="hidden">
-          <input class="form-control" id="idNumber" th:field="*{idNumber}" type="hidden">
-          <input class="form-control" id="citizenCode" th:field="*{citizenCode}" type="hidden">
-          <input class="form-control" id="pin" th:field="*{pin}" type="hidden">
-          <input class="form-control" id="addressId" th:field="*{addressId}" type="hidden">
+          <input required th:field="*{leavingDate}" type="hidden">
+          <input required th:field="*{registrationDate}" type="hidden">
+          <input required th:field="*{typeOfUser}" type="hidden">
+          <input required th:field="*{idNumber}" type="hidden">
+          <input required th:field="*{citizenCode}" type="hidden">
+          <input required th:field="*{pin}" type="hidden">
+          <input required th:field="*{addressId}" type="hidden">
           <div id="success"></div>
           <br>
           <div class="form-group"><button class="btn btn-primary btn-xl" id="guardarCambios" type="submit">Guardar cambios</button></div>
-
-          <!-- VENTANA EMERGENTE -->
-          <div class="modal" id="miModal">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Editar perfil</h5>
-                  <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                </div>
-                <div class="modal-body">
-                  <p>¿Desea editar su perfil con los nuevos datos?</p>
-                </div>
-                <div class="modal-footer">
-                  <a th:href="@{/inicio/registrado/editarPerfil}" class="btn btn-primary">Confirmar</a>
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                </div>
-              </div>
-            </div>
-          </div>
 
         </form>
       </div>

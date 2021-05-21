@@ -139,30 +139,13 @@
                     <div class="col-sm-4">
                         <input type="text" minlength="5" maxlength="5" class="form-control" id="cp" th:field="*{postalCode}"/>
                         <td th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></td>
+                        <td th:if="${#strings.equals(claveRepetida, 'repetida')}">Este código postal ya pertenece a un municipio</td>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <div class="col-sm-offset-2 col-sm-4">
-                        <button type="button" data-toggle="modal" data-target="#miModal" class="btn btn-success">Añadir código postal</button>
-                    </div>
-                </div>
-                <!-- VENTANA EMERGENTE -->
-                <div class="modal" id="miModal">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Asignar servicio fijo</h5>
-                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <p>¿Seguro que desea añadir el código postal al municipio <span th:text="${municipality.name}"></span>?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Confirmar</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                            </div>
-                        </div>
+                        <button type="submit" class="btn btn-success">Añadir código postal</button>
                     </div>
                 </div>
             </form>

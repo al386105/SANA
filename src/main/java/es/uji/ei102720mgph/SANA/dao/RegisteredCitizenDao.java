@@ -65,7 +65,8 @@ public class RegisteredCitizenDao {
     public RegisteredCitizen getRegisteredCitizenNIE(String idNumber){
         try{
             return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen " +
-                            "WHERE idNumber = ? ",
+                            "JOIN SanaUser ON RegisteredCitizen.email = SanaUser.email " +
+                            "WHERE RegisteredCitizen.idNumber = ? ",
                     new RegisteredCitizenRowMapper(), idNumber);
         }
         catch (EmptyResultDataAccessException e){
@@ -76,19 +77,9 @@ public class RegisteredCitizenDao {
     public RegisteredCitizen getRegisteredCitizenTelf(String telf){
         try{
             return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen " +
-                            "WHERE mobilePhoneNumber = ? ",
+                            "JOIN SanaUser ON RegisteredCitizen.email = SanaUser.email " +
+                            "WHERE RegisteredCitizen.mobilePhoneNumber = ?",
                     new RegisteredCitizenRowMapper(), telf);
-        }
-        catch (EmptyResultDataAccessException e){
-            return null;
-        }
-    }
-
-    public RegisteredCitizen getRegisteredCitizenCode(String code){
-        try{
-            return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen " +
-                            "WHERE citizenCode = ? ",
-                    new RegisteredCitizenRowMapper(), code);
         }
         catch (EmptyResultDataAccessException e){
             return null;

@@ -6,6 +6,7 @@ import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
 import es.uji.ei102720mgph.SANA.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -79,14 +80,26 @@ public class MunicipalManagerController {
     }
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("municipalManager") MunicipalManager manager,
+    public String processAddSubmit(Model model, @ModelAttribute("municipalManager") MunicipalManager manager,
                                    BindingResult bindingResult) {
         MunicipalManagerValidator municipalManagerValidator = new MunicipalManagerValidator();
         municipalManagerValidator.validate(manager, bindingResult);
 
         if (bindingResult.hasErrors())
             return "municipalManager/add"; //tornem al formulari per a que el corregisca
-        municipalManagerDao.addMunicipalManager(manager); //usem el dao per a inserir el reservation
+        try {
+            municipalManagerDao.addMunicipalManager(manager);
+        } catch (DataIntegrityViolationException e) {
+            // hay alguna clave primaria o alternativa repetida, ver cuál es
+            if(municipalManagerDao.getMunicipalManager(manager.getEmail()) != null)
+                model.addAttribute("emailRepetido", "repetido");
+            if(municipalManagerDao.getMunicipalManagerUsername(manager.getUsername()) != null)
+                model.addAttribute("usernameRepetido", "repetido");
+            // selector no seleccionado
+            if(manager.getMunicipality().equals("No seleccionado"))
+                model.addAttribute("selector", "noSeleccionado");
+            return "municipalManager/add";
+        }
 
         // Enviar mail al nuevo municipal manager
         String destinatario = manager.getEmail();
@@ -121,14 +134,19 @@ public class MunicipalManagerController {
     }
 
     @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("municipalManager") MunicipalManager manager,
+    public String processUpdateSubmit(Model model, @ModelAttribute("municipalManager") MunicipalManager manager,
                                       BindingResult bindingResult) {
         MunicipalManagerValidator municipalManagerValidator = new MunicipalManagerValidator();
         municipalManagerValidator.validate(manager, bindingResult);
-
         if (bindingResult.hasErrors())
             return "municipalManager/update";
-        municipalManagerDao.updateMunicipalManager(manager);
+        try {
+            municipalManagerDao.updateMunicipalManager(manager);
+        } catch (DataIntegrityViolationException e) {
+            if(municipalManagerDao.getMunicipalManagerUsername(manager.getUsername()) != null)
+                model.addAttribute("usernameRepetido", "repetido");
+            return "municipalManager/update";
+        }
         return "redirect:/municipalManager/list";
     }
 

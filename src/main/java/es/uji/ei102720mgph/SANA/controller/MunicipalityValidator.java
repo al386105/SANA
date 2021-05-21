@@ -30,11 +30,5 @@ public class MunicipalityValidator implements Validator {
         // Descripción obligatoria
         if (municipality.getDescription().trim().equals(""))
             errors.rejectValue("description", "obligatorio", "Es obligatorio introducir una descripción");
-
-        //TODO no va
-        // Si ya existe el nombre del municipio...
-        /*
-        if(municipalityDao.getMunicipality(municipality.getName()) != null)
-            errors.rejectValue("name", "repetido", "El nombre del municipio ya existe");*/
     }
 }

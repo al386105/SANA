@@ -14,6 +14,7 @@
             <div class="col-sm-4">
                 <input required type="text" maxlength="30" class="form-control" id="name" th:field="*{name}" />
                 <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+                <td th:if="${#strings.equals(claveRepetida, 'repetida')}">El nombre del área natural ya está en uso</td>
             </div>
         </div>
 
@@ -43,7 +44,12 @@
                         <option value="S">Sur (S)</option>
                     </select></td>
             </tr>
+            <td th:if="${#fields.hasErrors('latitudGrados')}" th:errors="*{latitudGrados}"></td>
+            <td th:if="${#fields.hasErrors('latitudMin')}" th:errors="*{latitudMin}"></td>
+            <td th:if="${#fields.hasErrors('latitudSeg')}" th:errors="*{latitudSeg}"></td>
+            <td th:if="${#fields.hasErrors('latitudLetra')}" th:errors="*{latitudLetra}"></td>
         </table>
+
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="longitudGrados">Longitud:</label></li>
@@ -61,6 +67,10 @@
                     </select></td><br>
                 </tr>
             </table>
+            <td th:if="${#fields.hasErrors('longitudGrados')}" th:errors="*{longitudGrados}"></td>
+            <td th:if="${#fields.hasErrors('longitudMin')}" th:errors="*{longitudMin}"></td>
+            <td th:if="${#fields.hasErrors('longitudSeg')}" th:errors="*{longitudSeg}"></td>
+            <td th:if="${#fields.hasErrors('longitudLetra')}" th:errors="*{longitudLetra}"></td>
         </div>
 
         <div class="form-group row">
@@ -125,32 +135,13 @@
                             th:value="${municipalityvalue}"
                             th:text="${municipalityvalue}"></option>
                 </select>
-                <td th:if="${#fields.hasErrors('municipality')}" th:errors="*{municipality}"></td>
+                <td th:if="${#strings.equals(selector, 'noSeleccionado')}">Seleccione un municipio</td>
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="button" data-toggle="modal" data-target="#miModal" class="btn btn-success">Añadir área natural</button>
-            </div>
-        </div>
-
-        <!-- VENTANA EMERGENTE -->
-        <div class="modal" id="miModal">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Añadir área natural</h5>
-                        <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Va a añadir un área natural. ¿Seguro que desea continuar con el proceso?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Confirmar</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                    </div>
-                </div>
+                <button type="submit" class="btn btn-success">Añadir área natural</button>
             </div>
         </div>
 

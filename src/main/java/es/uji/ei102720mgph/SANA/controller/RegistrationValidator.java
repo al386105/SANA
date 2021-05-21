@@ -1,9 +1,6 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-import es.uji.ei102720mgph.SANA.dao.RegisteredCitizenDao;
-import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
 import es.uji.ei102720mgph.SANA.model.RegistrationCitizen;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -11,32 +8,19 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class RegistrationValidator implements Validator {
-    private SanaUserDao sanaUserDao;
-    private RegisteredCitizenDao registeredCitizenDao;
 
     @Override
     public boolean supports(Class<?> cls) {
         return RegistrationCitizen.class.equals(cls);
     }
 
-    @Autowired
-    public void setSanaUserDao(SanaUserDao sanaUserDao) { this.sanaUserDao = sanaUserDao; }
-
-    @Autowired
-    public void setRegisteredCitizenDao(RegisteredCitizenDao registeredCitizenDao) { this.registeredCitizenDao = registeredCitizenDao; }
-
     @Override
     public void validate(Object obj, Errors errors) {
         RegistrationCitizen registrationCitizen = (RegistrationCitizen)obj;
 
-        // TODO NO VA
         // Email obligatorio
-        /*if (registrationCitizen.getEmail().trim().equals(""))
+        if (registrationCitizen.getEmail().trim().equals(""))
             errors.rejectValue("email", "obligatorio", "Es obligatorio introducir el email");
-
-        // Si ya existe el email en el sistema...
-        if(sanaUserDao.getSanaUser(registrationCitizen.getEmail()) != null)
-            errors.rejectValue("email", "repetido", "El email ya está registrado en la apliación");
 
         // Nombre obligatorio
         if (registrationCitizen.getNombre().trim().equals(""))
@@ -50,9 +34,9 @@ public class RegistrationValidator implements Validator {
         if (registrationCitizen.getDni().trim().equals(""))
             errors.rejectValue("dni", "obligatorio", "Es obligatorio introducir el DNI/NIE");
 
-        // Si ya existe el nie en el sistema...
-        if(registeredCitizenDao.getRegisteredCitizenNIE(registrationCitizen.getDni()) != null)
-            errors.rejectValue("dni", "repetido", "El DNI/NIE ya está registrado en la apliación");
+        // DNI/NIE de 9 caracteres
+        if (registrationCitizen.getDni().trim().length() != 9)
+            errors.rejectValue("dni", "obligatorio", "El DNI/NIE tiene 9 caracteres");
 
         // Fecha de nacimiento obligatoria
         if (registrationCitizen.getDateOfBirth() == null)
@@ -67,25 +51,21 @@ public class RegistrationValidator implements Validator {
         if (registrationCitizen.getTelefono().trim().equals(""))
             errors.rejectValue("telefono", "obligatorio", "Es obligatorio introducir el número de teléfono");
 
-        // Si ya existe el móvil en el sistema...
-        if(registeredCitizenDao.getRegisteredCitizenTelf(registrationCitizen.getTelefono()) != null)
-            errors.rejectValue("telefono", "repetido", "El teléfono ya está registrado en la apliación");
-
         // Número de teléfono numérico
         if(!esNumerico(registrationCitizen.getTelefono()))
             errors.rejectValue("telefono", "incorrecto", "El número de teléfono debe ser numérico");
 
-        // Código de ciudadano obligatorio
-        if (registrationCitizen.getCitizenCode().trim().equals(""))
-            errors.rejectValue("citizenCode", "obligatorio", "Es obligatorio introducir el nombre de usuario");
-
-        // Si ya existe el código de ciudadano en el sistema...
-        if(registeredCitizenDao.getRegisteredCitizenCode(registrationCitizen.getCitizenCode()) != null)
-            errors.rejectValue("citizenCode", "repetido", "El nombre de usuario ya está registrado en la apliación");
+        // Número de teléfono de 9 dígitos
+        if(registrationCitizen.getTelefono().trim().length() != 9)
+            errors.rejectValue("telefono", "incorrecto", "El número de teléfono debe tener 9 dígitos");
 
         // Calle obligatoria
         if (registrationCitizen.getStreet().trim().equals(""))
             errors.rejectValue("street", "obligatorio", "Es obligatorio introducir la calle");
+
+        // Número mayor que 0
+        if (registrationCitizen.getNumber() < 1)
+            errors.rejectValue("number", "incorrecto", "El número debe ser mayor que 0");
 
         // Piso y puerta obligatorios
         if (registrationCitizen.getFloorDoor().trim().equals(""))
@@ -103,6 +83,10 @@ public class RegistrationValidator implements Validator {
         if(!esNumerico(registrationCitizen.getPostalCode()))
             errors.rejectValue("postalCode", "incorrecto", "El código postal debe ser numérico");
 
+        // Código postal de 5 dígitos
+        if(registrationCitizen.getPostalCode().trim().length() != 5)
+            errors.rejectValue("postalCode", "incorrecto", "El código postal debe tener 5 dígitos");
+
         // País obligatorio
         if (registrationCitizen.getCountry().trim().equals(""))
             errors.rejectValue("country", "obligatorio", "Es obligatorio introducir el país");
@@ -115,7 +99,9 @@ public class RegistrationValidator implements Validator {
         if(!esNumerico(registrationCitizen.getPassword()))
             errors.rejectValue("password", "incorrecto", "La contraseña es de cuatro dígitos numéricos");
 
-         */
+        // Contraseña de 4 dígitos
+        if(registrationCitizen.getPassword().trim().length() != 4)
+            errors.rejectValue("password", "incorrecto", "La contraseña debe tener 4 dígitos");
     }
 
     // devuelve true si la cadena es numérica

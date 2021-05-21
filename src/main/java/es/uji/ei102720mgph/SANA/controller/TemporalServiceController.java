@@ -5,6 +5,7 @@ import es.uji.ei102720mgph.SANA.dao.TemporalServiceDao;
 import es.uji.ei102720mgph.SANA.enums.DaysOfWeek;
 import es.uji.ei102720mgph.SANA.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -65,13 +66,18 @@ public class TemporalServiceController {
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add", method= RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("temporalService") TemporalService temporalService,
-                                   BindingResult bindingResult) {
+                                   Model model, BindingResult bindingResult) {
         TemporalServiceValidator temporalServiceValidator = new TemporalServiceValidator();
         temporalServiceValidator.validate(temporalService, bindingResult);
-
         if (bindingResult.hasErrors())
             return "temporalService/add";
-        temporalServiceDao.addTemporalService(temporalService);
+        try {
+            temporalServiceDao.addTemporalService(temporalService);
+        } catch (DataIntegrityViolationException e) {
+            // selector no seleccionado
+            model.addAttribute("selector", "noSeleccionado");
+            return "serviceDate/add";
+        }
         return "redirect:/naturalArea/getManagers/" + temporalService.getNaturalArea();
     }
 

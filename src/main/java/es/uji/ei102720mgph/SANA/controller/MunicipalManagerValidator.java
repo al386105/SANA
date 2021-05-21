@@ -1,30 +1,17 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-import es.uji.ei102720mgph.SANA.dao.MunicipalManagerDao;
-import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
-import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
 import es.uji.ei102720mgph.SANA.model.MunicipalManager;
-import es.uji.ei102720mgph.SANA.model.SanaUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import java.time.LocalDate;
 
 public class MunicipalManagerValidator implements Validator {
-    private MunicipalManagerDao municipalManagerDao;
-    private SanaUserDao sanaUserDao;
 
     @Override
     public boolean supports(Class<?> cls) {
         return MunicipalManager.class.equals(cls);
     }
-
-    @Autowired
-    public void setMunicipalManagerDao(MunicipalManagerDao municipalManagerDao) { this.municipalManagerDao = municipalManagerDao; }
-
-    @Autowired
-    public void setSanaUserDao(SanaUserDao sanaUserDao) { this.sanaUserDao = sanaUserDao; }
 
     @Override
     public void validate(Object obj, Errors errors) {
@@ -41,14 +28,6 @@ public class MunicipalManagerValidator implements Validator {
         // Email obligatorio
         if (municipalManager.getEmail().trim().equals(""))
             errors.rejectValue("email", "obligatorio", "Es obligatorio introducir el email");
-
-        // TODO no va
-        /*// Si ya existe el email en el sistema...
-        if(sanaUserDao.getSanaUser(municipalManager.getEmail()) != null)
-            errors.rejectValue("email", "repetido", "El email ya está registrado en la apliación");
-        // Si ya existe el username en el sistema...
-        if(municipalManagerDao.getMunicipalManagerUsername(municipalManager.getUsername()) != null)
-            errors.rejectValue("username", "repetido", "El nombre de usuario asignado ya existe");*/
 
         // Nombre obligatorio
         if (municipalManager.getName().trim().equals(""))

@@ -23,6 +23,7 @@
             <div class="col-sm-4">
                 <input style="width: 60%;" required maxlength="30" type="text" class="form-control" id="email" th:field="*{email}" />
                 <!--<div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>-->
+                <td th:if="${#strings.equals(emailRepetido, 'repetido')}">El email ya está registrado en la apliación</td>
             </div>
             <label class="control-label col-sm-2" for="street">Calle:</label>
             <div class="col-sm-4">
@@ -40,6 +41,7 @@
             <label class="control-label col-sm-2" for="number">Número:</label>
             <div class="col-sm-4">
                 <input style="width: 60%;" type="number" min="1" required class="form-control" id="number" th:field="*{number}"/>
+                <!--<div class="error" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div>-->
             </div>
         </div>
 
@@ -59,8 +61,9 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="dni">DNI/NIE:</label>
             <div class="col-sm-4">
-                <input style="width: 60%;" maxlength="9" type="text" required class="form-control" id="dni" th:field="*{dni}"/>
+                <input style="width: 60%;" minlength="9" maxlength="9" type="text" required class="form-control" id="dni" th:field="*{dni}"/>
                 <!--<div class="error" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>-->
+                <td th:if="${#strings.equals(NIERepetido, 'repetido')}">El DNI/NIE ya está registrado en la apliación</td>
             </div>
             <label class="control-label col-sm-2" for="city">Ciudad:</label>
             <div class="col-sm-4">
@@ -87,6 +90,7 @@
             <div class="col-sm-4">
                 <input style="width: 60%;" minlength="9" maxlength="9" type="text" required class="form-control" id="telefono" th:field="*{telefono}"  />
                 <!--<div class="error" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>-->
+                <td th:if="${#strings.equals(telfRepetido, 'repetido')}">El teléfono ya está registrado en la apliación</td>
             </div>
             <label class="control-label col-sm-2" for="country">País:</label>
             <div class="col-sm-4">
@@ -99,7 +103,6 @@
             <label class="control-label col-sm-2" for="citizenCode">Nombre de usuario:</label>
             <div class="col-sm-4">
                 <input style="width: 60%;" maxlength="6" type="text" required class="form-control" id="citizenCode" th:field="*{citizenCode}"/>
-                <!--<div class="error" th:if="${#fields.hasErrors('citizenCode')}" th:errors="*{citizenCode}"></div>-->
             </div>
             <label class="control-label col-sm-2" for="password">Contraseña:</label>
             <div class="col-sm-4">
@@ -116,28 +119,6 @@
                 <button th:data-target="${'#miModal'}" type="submit" style="float:right;" class="btn btn-primary" data-toggle="modal" data-target="#miModal">Registrarse</button>
             </div>
         </div>
-
-        <!-- VENTANA EMERGENTE
-        <div class="modal" th:id="${'miModal'}">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Resultado Registro</h5>
-                        <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                    </div>
-
-                    <div class="modal-body">
-                        <p>Ha sido registrado satisfactoriamente</p>
-                    </div>
-
-                    <div class="modal-footer">
-                        <a th:href="@{sana}" class="btn btn-primary">Cancelar</a>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
 
     </form>
 </div>

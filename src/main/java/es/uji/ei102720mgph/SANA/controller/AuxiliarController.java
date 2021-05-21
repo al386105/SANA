@@ -50,15 +50,10 @@ class UserValidator implements Validator {
 @Controller
 @RequestMapping("/")
 public class AuxiliarController {
-    @Value("${upload.file.directory}")
-    private String uploadDirectory;
-
     private SanaUserDao sanaUserDao;
     private RegisteredCitizenDao registeredCitizenDao;
     private MunicipalManagerDao municipalManagerDao;
     private ControlStaffDao controlStaffDao;
-    private ReservaDatosDao reservaDatosDao;
-    private ReservationDao reservationDao;
     private AddressDao addressDao;
 
     @Autowired
@@ -82,18 +77,8 @@ public class AuxiliarController {
     }
 
     @Autowired
-    public void setReservationDao(ReservationDao reservationDao){
-        this.reservationDao = reservationDao;
-    }
-
-    @Autowired
     public void setMunicipalManagerDao(MunicipalManagerDao municipalManagerDao){
         this.municipalManagerDao = municipalManagerDao;
-    }
-
-    @Autowired
-    public void setReservaDatosDao(ReservaDatosDao reservaDatosDao){
-        this.reservaDatosDao = reservaDatosDao;
     }
 
     @RequestMapping("/logout")
@@ -102,7 +87,6 @@ public class AuxiliarController {
         return "redirect:/inicio/login";
     }
 
-    // TODO esto debe ser / en vez de inicio
     @RequestMapping("inicio")
     public String redirigirSana(Model model) {
         return "inicio/sana";
@@ -118,125 +102,6 @@ public class AuxiliarController {
     public String redirigirLogin(Model model, HttpSession session) {
         model.addAttribute("userLogin", new UserLogin() {});
         return "inicio/login";
-    }
-
-    @RequestMapping("inicio/registrado")
-    public String redirigirRegistrado(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicioRegistrado/areasNaturales");
-            return "redirect:/inicio/login";
-        }
-        return "inicioRegistrado/areasNaturales";
-    }
-
-    // TODO este método igual debería ir en el controller de reservation
-    @RequestMapping("inicio/registrado/reservas")
-    public String redirigirRegistradoReservas(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicio/registrado/reservas");
-            return "redirect:/inicio/login";
-        }
-        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
-        model.addAttribute("motivo", new MotivoCancelancion());
-        model.addAttribute("personas", new PersonasReserva());
-        model.addAttribute("reservas", listaReservas);
-        return "inicioRegistrado/reservas";
-    }
-
-    @RequestMapping("inicio/registrado/cancelarReserva/{id}")
-    public String cancelarReserva(@ModelAttribute("motivo") MotivoCancelancion motivo, @PathVariable String id, Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicio/registrado/reservas");
-            return "redirect:/inicio/login";
-        }
-        String mot = motivo.getMot();
-        mot = mot.substring(0, mot.length()-1);
-        reservaDatosDao.cancelaReservaPorCiudadano(id, mot);
-
-        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
-        // Actualizar QR con la cancelacion
-        Formatter fmt = new Formatter();
-        QRCode qr = new QRCode();
-        File f = new File("qr" + fmt.format("%07d", id) + ".png");
-        String text = "Reserva cancelada por " + reservation.getCitizenEmail() + " de fecha " + reservation.getReservationDate() + ".";
-        try {
-            qr.generateQR(f, text, 300, 300);
-            byte[] bytes = Files.readAllBytes(f.toPath());
-            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
-            Files.write(path, bytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "redirect:/inicio/registrado/reservas";
-    }
-
-    @RequestMapping("inicio/registrado/editarReserva/{id}")
-    public String editarReserva(@ModelAttribute("personas") PersonasReserva personas, @PathVariable String id, Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicio/registrado/reservas");
-            return "redirect:/inicio/login";
-        }
-
-        int pers = personas.getNum();
-        System.out.println(pers);
-        //reservaDatosDao.cancelaReservaPorCiudadano(id, personas);
-
-        return "redirect:/inicio/registrado/reservas";
-    }
-
-    @RequestMapping("inicio/registrado/reservasTodas")
-    public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicio/registrado/reservasTodas");
-            return "redirect:/inicio/login";
-        }
-        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        List<ReservaDatos> listaReservas = reservaDatosDao.getReservasTodasEmail(citizen.getEmail());
-        model.addAttribute("reservas", listaReservas);
-        return "inicioRegistrado/reservasTodas";
-    }
-
-    @RequestMapping("inicio/registrado/perfil")
-    public String redirigirRegistradoPerfil(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicio/registrado/perfil");
-            return "redirect:/inicio/login";
-        }
-        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        model.addAttribute("citizen", citizen);
-        return "inicioRegistrado/perfil";
-    }
-
-    @RequestMapping("inicio/registrado/editarPerfil")
-    public String redirigirRegistradoEditarPerfil(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicioRegistrado/editarPerfil");
-            return "redirect:/inicio/login";
-        }
-        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        model.addAttribute("citizen", citizen);
-        return "inicioRegistrado/editarPerfil";
-    }
-
-    @RequestMapping(value="inicio/registrado/editarPerfil", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("citizen") RegisteredCitizen registeredCitizen,
-                                      BindingResult bindingResult, Model model, HttpSession session) {
-        if (bindingResult.hasErrors())
-            return "inicio/registrado/editarPerfil";
-
-        registeredCitizenDao.updateRegisteredCitizen(registeredCitizen);
-        model.addAttribute("citizen", registeredCitizen);
-        session.setAttribute("registeredCitizen", registeredCitizen);
-        return "redirect:perfil";
     }
 
     @RequestMapping("inicio/register_form")
@@ -404,8 +269,8 @@ public class AuxiliarController {
         String asunto1 = "Su petición ha sido recibida con éxito";
         String cuerpo1 = "Gracias por compartir con nosotros esta información.\n\n" +
                 "Uno de nuestros responsables internos ha sido notificado de la situación, " +
-                "nos ponemos manos a la obra para resolverlo lo más pronto posible" +
-                " recibirás noticias sobre el incidente en breve.\n\n" +
+                "nos ponemos manos a la obra para resolverlo lo más pronto posible," +
+                " recibirás noticias en breve.\n\n" +
                 "Un cordial saludo del equipo de SANA.";
         String destinatario2 = "sana.espais.naturals@gmail.com";
         String asunto2 = "Nueva incidencia recibida";
@@ -426,7 +291,7 @@ public class AuxiliarController {
         Properties props = System.getProperties();
         props.put("mail.smtp.host", "smtp.gmail.com");  //El servidor SMTP de Google
         props.put("mail.smtp.user", remitente);
-        props.put("mail.smtp.clave", "barrachina");     //La clave de la cuenta TODO no se deberia ver
+        props.put("mail.smtp.clave", System.getenv("PASS"));     //La clave de la cuenta TODO no se deberia ver
         props.put("mail.smtp.auth", "true");            //Usar autenticación mediante usuario y clave
         props.put("mail.smtp.starttls.enable", "true"); //Para conectar de manera segura al servidor SMTP
         props.put("mail.smtp.port", "587");             //El puerto SMTP seguro de Google
@@ -448,23 +313,5 @@ public class AuxiliarController {
         catch (MessagingException me) {
             me.printStackTrace();   //Si se produce un error
         }
-    }
-
-    @RequestMapping("section/managers")
-    public String sectionManagers(Model model, HttpSession session) {
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            return "/inicio/login";
-        }
-        return "section/managers";
-    }
-
-    @RequestMapping("section/environmentalManager")
-    public String sectionEnvironmentalmanager(Model model, HttpSession session) {
-        if(session.getAttribute("environmentalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            return "/inicio/login";
-        }
-        return "section/environmentalManager";
     }
 }

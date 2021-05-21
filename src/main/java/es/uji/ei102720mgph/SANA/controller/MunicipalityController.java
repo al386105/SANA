@@ -7,7 +7,10 @@ import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.PostalCodeMunicipality;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -85,14 +88,19 @@ public class MunicipalityController {
     }
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("municipality") Municipality municipality,
+    public String processAddSubmit(Model model, @ModelAttribute("municipality") Municipality municipality,
                                    BindingResult bindingResult) {
         MunicipalityValidator municipalityValidator = new MunicipalityValidator();
         municipalityValidator.validate(municipality, bindingResult);
-
         if (bindingResult.hasErrors())
             return "municipality/add"; //tornem al formulari per a que el corregisca
-        municipalityDao.addMunicipality(municipality);
+
+        try {
+            municipalityDao.addMunicipality(municipality);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("claveRepetida", "repetida");
+            return "municipality/add";
+        }
         return "redirect:list"; //redirigim a la lista,
     }
 

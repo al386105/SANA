@@ -152,8 +152,16 @@ h3.colorMarron {
     color: #634133;
 }
 
+h3.colorTierra {
+    color: #b86f52;
+}
+
 h4.colorTierra {
     color: #b86f52;
+}
+
+h4.colorMarron {
+    color: #634133;
 }
 
 .card-horizontal {

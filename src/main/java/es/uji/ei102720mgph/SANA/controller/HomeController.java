@@ -3,7 +3,6 @@ package es.uji.ei102720mgph.SANA.controller;
 import es.uji.ei102720mgph.SANA.dao.*;
 import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import es.uji.ei102720mgph.SANA.model.*;
-import es.uji.ei102720mgph.SANA.model.Address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.mail.*;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
@@ -24,37 +26,29 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Properties;
 
-class UserValidator implements Validator {
-    @Override
-    public boolean supports(Class<?> cls) {
-        return UserLogin.class.isAssignableFrom(cls);
-    }
-    @Override
-    public void validate(Object obj, Errors errors) {
-        UserLogin user = (UserLogin) obj;
-
-        if (user.getEmail().trim().equals(""))
-            errors.rejectValue("email", "obligatorio", "Necesario introducir el email");
-
-        if (user.getPassword().trim().equals(""))
-            errors.rejectValue("password", "obligatorio", "Necesario introducir la contraseña");
-    }
-}
-
-
 @Controller
 @RequestMapping("/")
-public class AuxiliarController {
-    private SanaUserDao sanaUserDao;
+public class HomeController {
     private RegisteredCitizenDao registeredCitizenDao;
-    private MunicipalManagerDao municipalManagerDao;
+    private SanaUserDao sanaUserDao;
     private ControlStaffDao controlStaffDao;
     private AddressDao addressDao;
+    private MunicipalManagerDao municipalManagerDao;
+
+
+    @Autowired
+    public void setMunicipalManagerDao(MunicipalManagerDao municipalManagerDao){
+        this.municipalManagerDao = municipalManagerDao;
+    }
+
+    @Autowired
+    public void setSanaUsertDao(SanaUserDao sanaUserDao){
+        this.sanaUserDao = sanaUserDao;
+    }
 
     @Autowired
     public void setControlStaffDao(ControlStaffDao controlStaffDao){
@@ -66,19 +60,21 @@ public class AuxiliarController {
         this.addressDao = addressDao;
     }
 
+
     @Autowired
     public void setRegisteredCitizenDao(RegisteredCitizenDao registeredCitizenDao){
         this.registeredCitizenDao = registeredCitizenDao;
     }
 
-    @Autowired
-    public void setSanaUsertDao(SanaUserDao sanaUserDao){
-        this.sanaUserDao = sanaUserDao;
-    }
-
-    @Autowired
-    public void setMunicipalManagerDao(MunicipalManagerDao municipalManagerDao){
-        this.municipalManagerDao = municipalManagerDao;
+    @RequestMapping("/")
+    public String home(Model model, HttpSession session) {
+        if(session.getAttribute("registeredCitizen") != null)
+            return "inicioRegistrado/home";
+        else if (session.getAttribute("environmentalManager") != null)
+            return "environmentalManager/home";
+        else if (session.getAttribute("municipalManager") != null)
+            return "municipalManager/home";
+        return "inicio/home";
     }
 
     @RequestMapping("/logout")
@@ -87,10 +83,6 @@ public class AuxiliarController {
         return "redirect:/inicio/login";
     }
 
-    @RequestMapping("inicio")
-    public String redirigirSana(Model model) {
-        return "inicio/sana";
-    }
 
     @RequestMapping("inicio/contactanos")
     public String redirigirContactanos(Model model, HttpSession session) {
@@ -102,6 +94,52 @@ public class AuxiliarController {
     public String redirigirLogin(Model model, HttpSession session) {
         model.addAttribute("userLogin", new UserLogin() {});
         return "inicio/login";
+    }
+
+    @RequestMapping("inicio/registrado")
+    public String redirigirRegistrado(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicioRegistrado/areasNaturales");
+            return "redirect:/inicio/login";
+        }
+        return "inicioRegistrado/areasNaturales";
+    }
+
+    @RequestMapping("inicio/registrado/perfil")
+    public String redirigirRegistradoPerfil(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicio/registrado/perfil");
+            return "redirect:/inicio/login";
+        }
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("citizen", citizen);
+        return "inicioRegistrado/perfil";
+    }
+
+    @RequestMapping("inicio/registrado/editarPerfil")
+    public String redirigirRegistradoEditarPerfil(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicioRegistrado/editarPerfil");
+            return "redirect:/inicio/login";
+        }
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("citizen", citizen);
+        return "inicioRegistrado/editarPerfil";
+    }
+
+    @RequestMapping(value="inicio/registrado/editarPerfil", method = RequestMethod.POST)
+    public String processUpdateSubmit(@ModelAttribute("citizen") RegisteredCitizen registeredCitizen,
+                                      BindingResult bindingResult, Model model, HttpSession session) {
+        if (bindingResult.hasErrors())
+            return "inicio/registrado/editarPerfil";
+
+        registeredCitizenDao.updateRegisteredCitizen(registeredCitizen);
+        model.addAttribute("citizen", registeredCitizen);
+        session.setAttribute("registeredCitizen", registeredCitizen);
+        return "redirect:perfil";
     }
 
     @RequestMapping("inicio/register_form")
@@ -174,7 +212,7 @@ public class AuxiliarController {
                 session.removeAttribute("nextUrl");
                 return "redirect:" + nextUrl;
             }
-            return "redirect:/section/environmentalManager";
+            return "redirect:/environmentalManager/home";
         }
         //!!!!!!!!!
 
@@ -204,7 +242,7 @@ public class AuxiliarController {
                         session.removeAttribute("nextUrl");
                         return "redirect:" + nextUrl;
                     }
-                    return "redirect:/section/managers";
+                    return "redirect:/municipalManager/home";
                 }else{
                     //Contraseña Incorrecta
                     bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
@@ -269,8 +307,8 @@ public class AuxiliarController {
         String asunto1 = "Su petición ha sido recibida con éxito";
         String cuerpo1 = "Gracias por compartir con nosotros esta información.\n\n" +
                 "Uno de nuestros responsables internos ha sido notificado de la situación, " +
-                "nos ponemos manos a la obra para resolverlo lo más pronto posible," +
-                " recibirás noticias en breve.\n\n" +
+                "nos ponemos manos a la obra para resolverlo lo más pronto posible" +
+                " recibirás noticias sobre el incidente en breve.\n\n" +
                 "Un cordial saludo del equipo de SANA.";
         String destinatario2 = "sana.espais.naturals@gmail.com";
         String asunto2 = "Nueva incidencia recibida";
@@ -291,7 +329,7 @@ public class AuxiliarController {
         Properties props = System.getProperties();
         props.put("mail.smtp.host", "smtp.gmail.com");  //El servidor SMTP de Google
         props.put("mail.smtp.user", remitente);
-        props.put("mail.smtp.clave", System.getenv("PASS"));     //La clave de la cuenta TODO no se deberia ver
+        props.put("mail.smtp.clave", "barrachina");     //La clave de la cuenta TODO no se deberia ver
         props.put("mail.smtp.auth", "true");            //Usar autenticación mediante usuario y clave
         props.put("mail.smtp.starttls.enable", "true"); //Para conectar de manera segura al servidor SMTP
         props.put("mail.smtp.port", "587");             //El puerto SMTP seguro de Google
@@ -314,4 +352,5 @@ public class AuxiliarController {
             me.printStackTrace();   //Si se produce un error
         }
     }
+
 }

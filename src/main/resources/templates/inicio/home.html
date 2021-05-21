@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<body id="page-top">
+
+<body>
+
     <div th:replace="fragments/header"></div>
 
     <header class="text-center text-white bg-primary">
@@ -19,12 +21,11 @@
         </div>
     </header>
 
-    <!-- NATURAL AREAS LISTED SECTION    -->
-    <section class="text-white bg-primary mb-0" id="natural_areas">
-        <div class="container">
-            <div class="container" th:replace="/naturalArea/pagedlist"></div>
-        </div>
-    </section>
-<div th:replace="fragments/footer"></div>
+    <br>
+    <br>
+
+
+    <div th:replace="fragments/footer"></div>
+
 </body>
 </html>

@@ -4,7 +4,6 @@ import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.NuevaReserva;
 import es.uji.ei102720mgph.SANA.model.Reservation;
 import es.uji.ei102720mgph.SANA.model.ReservationOfZone;
-import es.uji.ei102720mgph.SANA.model.Zone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
@@ -112,6 +110,20 @@ public class ReservationDao {
             return jdbcTemplate.queryForObject(
                     "SELECT * FROM Reservation WHERE reservationNumber =?",
                     new ReservationRowMapper(), reservationNumber);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public Integer getMaximumCapacity(int reservationNumber) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT z.maximumcapacity FROM reservation AS r " +
+                            "JOIN reservationofzone AS res ON r.reservationnumber = res.reservationnumber " +
+                            "JOIN zone AS z ON res.zoneid = z.id " +
+                            "WHERE r.reservationnumber = ?",
+                    Integer.class, reservationNumber);
         }
         catch(EmptyResultDataAccessException e) {
             return null;

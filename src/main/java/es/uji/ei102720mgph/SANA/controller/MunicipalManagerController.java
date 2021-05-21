@@ -45,6 +45,15 @@ public class MunicipalManagerController {
         this.emailDao = emailDao;
     }
 
+    @RequestMapping("home")
+    public String sectionManagers(Model model, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            return "/inicio/login";
+        }
+        return "municipalManager/home";
+    }
+
     @RequestMapping("/list")
     public String listMunicipalManager(Model model, HttpSession session) {
         if(session.getAttribute("environmentalManager") ==  null) {
@@ -94,7 +103,7 @@ public class MunicipalManagerController {
         String cuerpo = "¡Has sido dado de alta en SANA como gestor municipal en " + manager.getMunicipality() + "! \n" +
                 "Tu usuario es " + manager.getUsername() + " y tu contraseña es " + manager.getPassword() + ". \n\n" +
                 "SANA. Safe Access to Natural Areas.\nGeneralitat Valenciana";
-        AuxiliarController.enviarMail(destinatario, asunto, cuerpo);
+        HomeController.enviarMail(destinatario, asunto, cuerpo);
 
         // Anyadir a la tabla de email
         Email email = new Email();

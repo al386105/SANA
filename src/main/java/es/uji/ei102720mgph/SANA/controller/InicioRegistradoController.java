@@ -53,10 +53,11 @@ public class InicioRegistradoController {
             session.setAttribute("nextUrl", "/inicioRegistrado/areasNaturales");
             return "redirect:/inicio/login";
         }
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("citizen", citizen);
         return "inicioRegistrado/areasNaturales";
     }
 
-    // TODO este método igual debería ir en el controller de reservation
     @RequestMapping("/reservas")
     public String redirigirRegistradoReservas(Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
@@ -66,6 +67,11 @@ public class InicioRegistradoController {
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
+        for (int i = 0; i < listaReservas.size(); i++) {
+            Reservation res = reservationDao.getReservation(listaReservas.get(i).getReservationNumber());
+            int max = reservationDao.getMaximumCapacity(res.getReservationNumber());
+            model.addAttribute("maxPersonas" + listaReservas.get(i).getReservationNumber(), max);
+        }
         model.addAttribute("motivo", new MotivoCancelancion());
         model.addAttribute("personas", new PersonasReserva());
         model.addAttribute("reservas", listaReservas);

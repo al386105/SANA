@@ -83,7 +83,6 @@ public class HomeController {
         return "redirect:/inicio/login";
     }
 
-
     @RequestMapping("inicio/contactanos")
     public String redirigirContactanos(Model model, HttpSession session) {
         model.addAttribute("email", new Email());
@@ -94,52 +93,6 @@ public class HomeController {
     public String redirigirLogin(Model model, HttpSession session) {
         model.addAttribute("userLogin", new UserLogin() {});
         return "inicio/login";
-    }
-
-    @RequestMapping("inicio/registrado")
-    public String redirigirRegistrado(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicioRegistrado/areasNaturales");
-            return "redirect:/inicio/login";
-        }
-        return "inicioRegistrado/areasNaturales";
-    }
-
-    @RequestMapping("inicio/registrado/perfil")
-    public String redirigirRegistradoPerfil(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicio/registrado/perfil");
-            return "redirect:/inicio/login";
-        }
-        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        model.addAttribute("citizen", citizen);
-        return "inicioRegistrado/perfil";
-    }
-
-    @RequestMapping("inicio/registrado/editarPerfil")
-    public String redirigirRegistradoEditarPerfil(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicioRegistrado/editarPerfil");
-            return "redirect:/inicio/login";
-        }
-        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        model.addAttribute("citizen", citizen);
-        return "inicioRegistrado/editarPerfil";
-    }
-
-    @RequestMapping(value="inicio/registrado/editarPerfil", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("citizen") RegisteredCitizen registeredCitizen,
-                                      BindingResult bindingResult, Model model, HttpSession session) {
-        if (bindingResult.hasErrors())
-            return "inicio/registrado/editarPerfil";
-
-        registeredCitizenDao.updateRegisteredCitizen(registeredCitizen);
-        model.addAttribute("citizen", registeredCitizen);
-        session.setAttribute("registeredCitizen", registeredCitizen);
-        return "redirect:perfil";
     }
 
     @RequestMapping("inicio/register_form")
@@ -329,7 +282,7 @@ public class HomeController {
         Properties props = System.getProperties();
         props.put("mail.smtp.host", "smtp.gmail.com");  //El servidor SMTP de Google
         props.put("mail.smtp.user", remitente);
-        props.put("mail.smtp.clave", "barrachina");     //La clave de la cuenta TODO no se deberia ver
+        props.put("mail.smtp.clave", System.getenv("PASS"));     //La clave de la cuenta
         props.put("mail.smtp.auth", "true");            //Usar autenticación mediante usuario y clave
         props.put("mail.smtp.starttls.enable", "true"); //Para conectar de manera segura al servidor SMTP
         props.put("mail.smtp.port", "587");             //El puerto SMTP seguro de Google

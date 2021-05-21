@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class EnvironmentalManagerController {
 
     @RequestMapping("home")
-    public String sectionManagers(Model model, HttpSession session) {
+    public String sectionEnvironmentalManager(Model model, HttpSession session) {
         if(session.getAttribute("environmentalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             return "/inicio/login";

@@ -121,7 +121,6 @@ public class ReservationController {
         TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
         Zone zone = zoneDao.getZone(reservation.getZoneid());
 
-        // todo OJO QUE CUANDO PODAMOS RESERVAR VARIAS ZONAS EL TEXTO CAMBIA (MIRAR ALGUNA LO QUE HE PEUSTO)
         // Generar QR
         Formatter fmt = new Formatter();
         QRCode qr = new QRCode();

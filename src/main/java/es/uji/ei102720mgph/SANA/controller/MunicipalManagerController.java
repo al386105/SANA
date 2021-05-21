@@ -84,50 +84,76 @@ public class MunicipalManagerController {
             session.setAttribute("nextUrl", "/municipalManager/add");
             return "redirect:/inicio/login";
         }
-        model.addAttribute("municipalManager", new MunicipalManager());
+        model.addAttribute("municipalManager", new MunicipalManagerForm());
         return "municipalManager/add";
     }
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(Model model, @ModelAttribute("municipalManager") MunicipalManager manager,
+    public String processAddSubmit(Model model, @ModelAttribute("municipalManager") MunicipalManagerForm managerForm,
                                    BindingResult bindingResult) {
         MunicipalManagerValidator municipalManagerValidator = new MunicipalManagerValidator();
-        municipalManagerValidator.validate(manager, bindingResult);
+        municipalManagerValidator.validate(managerForm, bindingResult);
+
+        // si ha saltaado la excepción, quitar su atributo
+        if(model.getAttribute("emailRepetido") != null)
+            model.addAttribute("emailRepetido", null);
+        if(model.getAttribute("usernameRepetido") != null)
+            model.addAttribute("usernameRepetido", null);
+        if(model.getAttribute("selector") != null)
+            model.addAttribute("selector", null);
 
         if (bindingResult.hasErrors())
             return "municipalManager/add"; //tornem al formulari per a que el corregisca
         try {
-            municipalManagerDao.addMunicipalManager(manager);
+            municipalManagerDao.addMunicipalManager(pasoAMunicipalManager(managerForm));
+
+            // Enviar mail al nuevo municipal manager
+            String destinatario = managerForm.getEmail();
+            String asunto = "Dado de alta";
+            String cuerpo = "¡Ha sido dado de alta en SANA como gestor municipal en " + managerForm.getMunicipality() + "! \n" +
+                    "Su usuario es " + managerForm.getUsername() + " y su contraseña es " + managerForm.getPassword() + ". \n\n" +
+                    "Un cordial saludo del equipo de SANA.";
+            HomeController.enviarMail(destinatario, asunto, cuerpo);
+
+            // Anyadir a la tabla de email
+            Email email = new Email();
+            email.setSanaUser(destinatario);
+            email.setSubject(asunto);
+            email.setTextBody(cuerpo);
+            email.setSender("sana.espais.naturals@gmail.com");
+            email.setDate(LocalDate.now());
+            emailDao.addEmail(email);
+
         } catch (DataIntegrityViolationException e) {
             // hay alguna clave primaria o alternativa repetida, ver cuál es
-            if(municipalManagerDao.getMunicipalManager(manager.getEmail()) != null)
+            if(sanaUserDao.getSanaUser(managerForm.getEmail()) != null)
                 model.addAttribute("emailRepetido", "repetido");
-            if(municipalManagerDao.getMunicipalManagerUsername(manager.getUsername()) != null)
+            // se inserta en user para pasar al resto de comprobaciones, debo eliminarlo, sino da error de email repetido
+            municipalManagerDao.deleteMunicipalManager(managerForm.getEmail());
+            if(municipalManagerDao.getMunicipalManagerUsername(managerForm.getUsername()) != null)
                 model.addAttribute("usernameRepetido", "repetido");
             // selector no seleccionado
-            if(manager.getMunicipality().equals("No seleccionado"))
+            if(managerForm.getMunicipality().equals("No seleccionado"))
                 model.addAttribute("selector", "noSeleccionado");
             return "municipalManager/add";
         }
+        return "redirect:list";
+    }
 
-        // Enviar mail al nuevo municipal manager
-        String destinatario = manager.getEmail();
-        String asunto = "Dado de alta";
-        String cuerpo = "¡Has sido dado de alta en SANA como gestor municipal en " + manager.getMunicipality() + "! \n" +
-                "Tu usuario es " + manager.getUsername() + " y tu contraseña es " + manager.getPassword() + ". \n\n" +
-                "SANA. Safe Access to Natural Areas.\nGeneralitat Valenciana";
-        HomeController.enviarMail(destinatario, asunto, cuerpo);
-
-        // Anyadir a la tabla de email
-        Email email = new Email();
-        email.setSanaUser(destinatario);
-        email.setSubject(asunto);
-        email.setTextBody(cuerpo);
-        email.setSender("sana.espais.naturals@gmail.com");
-        email.setDate(LocalDate.now());
-        emailDao.addEmail(email);
-
-        return "redirect:list"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
+    private MunicipalManager pasoAMunicipalManager(MunicipalManagerForm managerForm) {
+        MunicipalManager manager = new MunicipalManager();
+        manager.setMunicipality(managerForm.getMunicipality());
+        manager.setPassword(managerForm.getPassword());
+        manager.setUsername(managerForm.getUsername());
+        manager.setDateOfBirth(managerForm.getDateOfBirth());
+        manager.setEmail(managerForm.getEmail());
+        manager.setName(managerForm.getName());
+        manager.setSurname(managerForm.getSurname());
+        manager.setRegistrationDate(managerForm.getRegistrationDate());
+        manager.setTypeOfUser(managerForm.getTypeOfUser());
+        if(managerForm.getLeavingDate() != null)
+            manager.setLeavingDate(managerForm.getLeavingDate());
+        return manager;
     }
 
     @RequestMapping(value="/update/{email}", method = RequestMethod.GET)
@@ -138,24 +164,35 @@ public class MunicipalManagerController {
             return "redirect:/inicio/login";
         }
         quitarAtributoSeccion(session);
-        model.addAttribute("municipalManager", municipalManagerDao.getMunicipalManager(email));
+        MunicipalManager manager = municipalManagerDao.getMunicipalManager(email);
+
+        // Pasar al objeto de MunicipalManagerForm para el formulario
+        MunicipalManagerForm municipalManagerForm = new MunicipalManagerForm();
+        municipalManagerForm.setName(manager.getName());
+        municipalManagerForm.setSurname(manager.getSurname());
+        municipalManagerForm.setPassword(manager.getPassword());
+        municipalManagerForm.setDateOfBirth(manager.getDateOfBirth());
+        municipalManagerForm.setEmail(manager.getEmail());
+        municipalManagerForm.setMunicipality(manager.getMunicipality());
+        municipalManagerForm.setRegistrationDate(manager.getRegistrationDate());
+        municipalManagerForm.setTypeOfUser(manager.getTypeOfUser());
+        municipalManagerForm.setUsername(manager.getUsername());
+        if(manager.getLeavingDate() != null)
+            municipalManagerForm.setLeavingDate(manager.getLeavingDate());
+        model.addAttribute("municipalManager", municipalManagerForm);
         return "municipalManager/update";
     }
 
     @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(Model model, @ModelAttribute("municipalManager") MunicipalManager manager,
+    public String processUpdateSubmit(Model model, @ModelAttribute("municipalManager") MunicipalManagerForm managerForm,
                                       BindingResult bindingResult) {
+        // ya que en el validador hay password2 y es vacía al actualizar
+        managerForm.setPassword2(managerForm.getPassword());
         MunicipalManagerValidator municipalManagerValidator = new MunicipalManagerValidator();
-        municipalManagerValidator.validate(manager, bindingResult);
+        municipalManagerValidator.validate(managerForm, bindingResult);
         if (bindingResult.hasErrors())
             return "municipalManager/update";
-        try {
-            municipalManagerDao.updateMunicipalManager(manager);
-        } catch (DataIntegrityViolationException e) {
-            if(municipalManagerDao.getMunicipalManagerUsername(manager.getUsername()) != null)
-                model.addAttribute("usernameRepetido", "repetido");
-            return "municipalManager/update";
-        }
+        municipalManagerDao.updateMunicipalManager(pasoAMunicipalManager(managerForm));
         return "redirect:/municipalManager/list";
     }
 

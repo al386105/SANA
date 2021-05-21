@@ -59,10 +59,12 @@ public class ServiceController {
 
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(Model model, @ModelAttribute("service") Service service,
-                                   BindingResult bindingResult) {
+    public String processAddSubmit(Model model, @ModelAttribute("service") Service service, BindingResult bindingResult) {
         ServiceValidator serviceValidator = new ServiceValidator();
         serviceValidator.validate(service, bindingResult);
+        if(model.getAttribute("claveRepetida") != null)
+            model.addAttribute("claveRepetida", null);
+
         if (bindingResult.hasErrors())
             return "service/add"; //tornem al formulari per a que el corregisca
 
@@ -89,17 +91,13 @@ public class ServiceController {
 
     // Resposta de modificació d'objectes
     @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(Model model, @ModelAttribute("service") Service service, BindingResult bindingResult) {
+    public String processUpdateSubmit(Model model, @ModelAttribute("service") Service service,
+                                      BindingResult bindingResult) {
         ServiceValidator serviceValidator = new ServiceValidator();
         serviceValidator.validate(service, bindingResult);
         if (bindingResult.hasErrors())
             return "service/update";
-        try {
-            serviceDao.updateService(service);
-        } catch (DataIntegrityViolationException e) {
-            model.addAttribute("claveRepetida", "repetida");
-            return "service/update";
-        }
+        serviceDao.updateService(service);
         return "redirect:list";
     }
 

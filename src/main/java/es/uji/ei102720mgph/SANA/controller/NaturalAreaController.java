@@ -2,6 +2,7 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.*;
 import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
+import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.*;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
 import es.uji.ei102720mgph.SANA.services.OccupationService;
@@ -144,14 +145,6 @@ public class NaturalAreaController {
         return "/naturalArea/getEnvironmental";
     }
 
-    // TODO en proceso ¿de quien es esto?
-    @RequestMapping(value="/getReservations/{naturalArea}")
-    public String getReservationsNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea){
-        model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
-        model.addAttribute("reservations", reservationDao.getReservationsOfNaturalArea(naturalArea));
-        return "/naturalArea/getReservations";
-    }
-
     @RequestMapping(value="/list")
     public String listNaturalAreas(Model model, HttpSession session){
         model.addAttribute("naturalAreas", naturalAreaService.getNaturalAreasWithImage());
@@ -159,17 +152,31 @@ public class NaturalAreaController {
         return "naturalArea/list";
     }
 
+    // metodo para anyadir al modelo los datos del selector de municipio
+    @ModelAttribute("municipalityList")
+    public List<String> municipalityList() {
+        List<Municipality> municipalityList = municipalityDao.getMunicipalities();
+        List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
+                .map(Municipality::getName)
+                .collect(Collectors.toList());
+        return namesMunicipalities;
+    }
+
     @RequestMapping(value="/pagedlist")
     public String listNaturalAreasPaged(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron,
+                                        @RequestParam(value="typeOfArea",required=false) String typeOfArea,
+                                        @RequestParam(value="typeOfAccess",required=false) String typeOfAccess,
+                                        @RequestParam(value="municipality",required=false) String municipality,
                                         @RequestParam("page") Optional<Integer> page){
         quitarAtributoSeccion(session);
         // Paso 1: Crear la lista paginada de naturalAreas
         List<NaturalArea> naturalAreas;
-        if (patron != null)
-            naturalAreas = naturalAreaDao.getNaturalAreaSearch(patron);
-        else
+        if (patron != null) {
+            // Aplicar filtros
+            naturalAreas = new ArrayList<>();
+            naturalAreas = filtrar(naturalAreas, patron, typeOfArea, typeOfAccess, municipality);
+        } else
             naturalAreas = naturalAreaDao.getNaturalAreas();
-        Collections.sort(naturalAreas);
 
         // las áreas naturales cerradas no pueden ser vistas por los ciudadanos
         naturalAreas.removeIf(naturalArea -> naturalArea.getTypeOfAccess().getDescripcion().equals("Cerrado"));
@@ -206,38 +213,71 @@ public class NaturalAreaController {
         return "inicioRegistrado/areasNaturales";
     }
 
+    private List<NaturalArea> filtrar(List<NaturalArea> naturalAreas, String patron, String typeOfArea, String typeOfAccess, String municipality) {
+        if (patron != null && !patron.equals(""))
+            naturalAreas = naturalAreaDao.getNaturalAreaSearch(patron);
+        else
+            naturalAreas = naturalAreaDao.getNaturalAreas();
+
+        // filtro por tipo de área
+        if (typeOfArea != null && !typeOfArea.equals("todas"))
+            naturalAreas.removeIf(naturalArea -> naturalArea.getTypeOfArea() != TypeOfArea.valueOf(typeOfArea));
+
+        // filtro por tipo de acceso
+        if (typeOfAccess != null && !typeOfAccess.equals("todas"))
+            naturalAreas.removeIf(naturalArea -> naturalArea.getTypeOfAccess() != TypeOfAccess.valueOf(typeOfAccess));
+
+        // filtro por municipio
+        if (municipality != null && !municipality.equals("todos"))
+            naturalAreas.removeIf(naturalArea -> !naturalArea.getMunicipality().equals(municipality));
+
+        Collections.sort(naturalAreas);
+        return naturalAreas;
+    }
+
     @RequestMapping(value="/listEnvironmental")
-    public String listNaturalAreasEnvironmental(HttpSession session, Model model, @RequestParam(value="patron",required=false) String patron, @RequestParam("page") Optional<Integer> page){
+    public String listNaturalAreasEnvironmental(HttpSession session, Model model, @RequestParam(value="patron",required=false) String patron,
+                                                @RequestParam(value="typeOfArea",required=false) String typeOfArea,
+                                                @RequestParam(value="typeOfAccess",required=false) String typeOfAccess,
+                                                @RequestParam(value="municipality",required=false) String municipality,
+                                                @RequestParam("page") Optional<Integer> page){
         if(session.getAttribute("environmentalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/naturalArea/listEnvironmental");
             return "redirect:/inicio/login";
         }
         quitarAtributoSeccion(session);
-        paginacionSinFotos(model, patron, page);
+        paginacionSinFotos(model, patron, typeOfArea, typeOfAccess, municipality, page);
         return "naturalArea/listEnvironmental";
     }
 
     @RequestMapping(value="/listManagers")
-    public String listNaturalAreasManagers(Model model, @RequestParam(value="patron",required=false) String patron, @RequestParam("page") Optional<Integer> page, HttpSession session){
+    public String listNaturalAreasManagers(Model model, @RequestParam(value="patron",required=false) String patron,
+                                           @RequestParam(value="typeOfArea",required=false) String typeOfArea,
+                                           @RequestParam(value="typeOfAccess",required=false) String typeOfAccess,
+                                           @RequestParam(value="municipality",required=false) String municipality,
+                                           @RequestParam("page") Optional<Integer> page, HttpSession session){
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/naturalArea/listManagers");
             return "redirect:/inicio/login";
         }
-        paginacionSinFotos(model, patron, page);
+        paginacionSinFotos(model, patron, typeOfArea, typeOfAccess, municipality, page);
         quitarAtributoSeccion(session);
         return "naturalArea/listManagers";
     }
 
-    private void paginacionSinFotos(Model model, String patron, @RequestParam("page") Optional<Integer> page) {
+    private void paginacionSinFotos(Model model, String patron, String typeOfArea, String typeOfAccess,
+                                    String municipality, @RequestParam("page") Optional<Integer> page) {
         // Paso 1: Crear la lista paginada de naturalAreas
         List<NaturalArea> naturalAreas;
-        if (patron != null)
-            naturalAreas = naturalAreaDao.getNaturalAreaSearch(patron);
-        else
+        if (patron != null) {
+            // Aplicar filtros
+            naturalAreas = new ArrayList<>();
+            naturalAreas = filtrar(naturalAreas, patron, typeOfArea, typeOfAccess, municipality);
+        } else
             naturalAreas = naturalAreaDao.getNaturalAreas();
-        Collections.sort(naturalAreas);
+
         ArrayList<ArrayList<NaturalArea>> naturalAreasPaged = new ArrayList<>();
         int ini=0;
         int fin=pageLength;
@@ -262,16 +302,6 @@ public class NaturalAreaController {
         model.addAttribute("selectedPage", currentPage);
     }
 
-    // metodo para anyadir al modelo los datos del selector de municipio
-    @ModelAttribute("municipalityList")
-    public List<String> municipalityList() {
-        List<Municipality> municipalityList = municipalityDao.getMunicipalities();
-        List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
-                .map(Municipality::getName)
-                .collect(Collectors.toList());
-        return namesMunicipalities;
-    }
-
     @RequestMapping(value="/add")
     public String addNaturalArea(Model model, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
@@ -288,6 +318,11 @@ public class NaturalAreaController {
                                    BindingResult bindingResult) {
         NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
         naturalAreaValidator.validate(naturalAreaForm, bindingResult);
+
+        if(model.getAttribute("claveRepetida") != null)
+            model.addAttribute("claveRepetida", null);
+        if(model.getAttribute("selector") != null)
+            model.addAttribute("selector", null);
 
         if (bindingResult.hasErrors())
             return "naturalArea/add"; //tornem al formulari per a que el corregisca
@@ -313,9 +348,15 @@ public class NaturalAreaController {
     // addRestricted
     @RequestMapping(value="/addRestricted", method= RequestMethod.POST)
     public String processAddRestrictedSubmit(Model model, @ModelAttribute("naturalArea") NaturalAreaForm naturalAreaForm,
-                                             BindingResult bindingResult) {
+                                             BindingResult bindingResult, HttpSession session) {
         NaturalAreaValidadorRestricted naturalAreaValidator = new NaturalAreaValidadorRestricted();
         naturalAreaValidator.validate(naturalAreaForm, bindingResult);
+
+        if(model.getAttribute("claveRepetida") != null)
+            model.addAttribute("claveRepetida", null);
+        if(model.getAttribute("selector") != null)
+            model.addAttribute("selector", null);
+
         if (bindingResult.hasErrors())
             return "naturalArea/addRestricted";
         NaturalArea naturalArea = naturalAreaDao.getNaturalArea(naturalAreaForm.getName());

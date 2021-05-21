@@ -64,6 +64,9 @@ public class PostalCodeMunicipalityController {
                                    BindingResult bindingResult) {
         PostalCodeMunicipalityValidator postalCodeMunicipalityValidator = new PostalCodeMunicipalityValidator();
         postalCodeMunicipalityValidator.validate(pc, bindingResult);
+        if(model.getAttribute("claveRepetida") != null)
+            model.addAttribute("claveRepetida", null);
+
         String municipality = pc.getMunicipality();
         if (bindingResult.hasErrors()) {
             recargaGet(model, municipality);

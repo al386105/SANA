@@ -1,6 +1,6 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-import es.uji.ei102720mgph.SANA.model.MunicipalManager;
+import es.uji.ei102720mgph.SANA.model.MunicipalManagerForm;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -10,12 +10,12 @@ public class MunicipalManagerValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> cls) {
-        return MunicipalManager.class.equals(cls);
+        return MunicipalManagerForm.class.equals(cls);
     }
 
     @Override
     public void validate(Object obj, Errors errors) {
-        MunicipalManager municipalManager = (MunicipalManager)obj;
+        MunicipalManagerForm municipalManager = (MunicipalManagerForm)obj;
 
         // Nombre de usuario obligatorio
         if (municipalManager.getUsername().trim().equals(""))
@@ -24,6 +24,14 @@ public class MunicipalManagerValidator implements Validator {
         // Contrasenya obligatoria
         if (municipalManager.getPassword().trim().equals(""))
             errors.rejectValue("password", "obligatorio", "Es obligatorio introducir una contraseña");
+
+        // Repetir contraseña obligatorio
+        if (municipalManager.getPassword2().trim().equals(""))
+            errors.rejectValue("password2", "obligatorio", "Por favor, repita la contraseña");
+
+        // Contrasenya mal escrita
+        if (!municipalManager.getPassword().trim().equals(municipalManager.getPassword2().trim()))
+            errors.rejectValue("password2", "obligatorio", "Las contraseñas no coinciden");
 
         // Email obligatorio
         if (municipalManager.getEmail().trim().equals(""))

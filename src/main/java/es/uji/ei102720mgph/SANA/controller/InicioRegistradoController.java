@@ -27,13 +27,19 @@ public class InicioRegistradoController {
     @Value("${upload.file.directory}")
     private String uploadDirectory;
 
-    private RegisteredCitizenDao registeredCitizenDao;
+    private NaturalAreaDao naturalAreaDao;
+    private TimeSlotDao timeSlotDao;
     private ReservaDatosDao reservaDatosDao;
     private ReservationDao reservationDao;
 
     @Autowired
-    public void setRegisteredCitizenDao(RegisteredCitizenDao registeredCitizenDao){
-        this.registeredCitizenDao = registeredCitizenDao;
+    public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){
+        this.naturalAreaDao = naturalAreaDao;
+    }
+
+    @Autowired
+    public void setTimeSlotDao(TimeSlotDao timeSlotDao){
+        this.timeSlotDao = timeSlotDao;
     }
 
     @Autowired
@@ -89,8 +95,8 @@ public class InicioRegistradoController {
         mot = mot.substring(0, mot.length()-1);
         reservaDatosDao.cancelaReservaPorCiudadano(id, mot);
 
-        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
         // Actualizar QR con la cancelacion
+        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
         Formatter fmt = new Formatter();
         QRCode qr = new QRCode();
         File f = new File("qr" + fmt.format("%07d", id) + ".png");
@@ -118,6 +124,26 @@ public class InicioRegistradoController {
         int pers = personas.getNum();
         System.out.println(pers);
         //reservaDatosDao.cancelaReservaPorCiudadano(id, personas);
+
+
+        // Actualizar QR con los nuevos datos de la reserva
+        /*Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
+        String naturalArea = naturalAreaDao.getNaturalAreaOfZone(reservation.getZoneid()).getName(); // TODO da problemas con varias zonas
+        String timeSlotId = reservation.getTimeSlotId();
+        TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
+        Formatter fmt = new Formatter();
+        QRCode qr = new QRCode();
+        File f = new File("qr" + fmt.format("%07d", id) + ".png");
+        String text = "Reserva por " + reservation.getCitizenEmail() + " en " + naturalArea + ", de fecha " + reservation.getReservationDate()
+                + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
+        try {
+            qr.generateQR(f, text, 300, 300);
+            byte[] bytes = Files.readAllBytes(f.toPath());
+            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
+            Files.write(path, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
 
         return "redirect:/inicio/registrado/reservas";
     }
@@ -164,17 +190,8 @@ public class InicioRegistradoController {
                                       BindingResult bindingResult, Model model, HttpSession session) {
         PerfilValidator perfilValidator = new PerfilValidator();
         perfilValidator.validate(registeredCitizen, bindingResult);
-
         if (bindingResult.hasErrors())
             return "inicio/registrado/editarPerfil";
-
-        // si el teléfono ya existe en la app
-        try {
-            registeredCitizenDao.updateRegisteredCitizen(registeredCitizen);
-        } catch (DataIntegrityViolationException e) {
-                model.addAttribute("claveRepetida", "repetida");
-            return "inicio/registrado/editarPerfil";
-        }
         model.addAttribute("citizen", registeredCitizen);
         session.setAttribute("registeredCitizen", registeredCitizen);
         return "redirect:perfil";

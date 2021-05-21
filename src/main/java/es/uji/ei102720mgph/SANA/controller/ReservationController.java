@@ -116,10 +116,9 @@ public class ReservationController {
         reservation.setCitizenEmail(citizen.getEmail());
         int numRes = reservationDao.addReservationPocosValores(reservation);
         reservationDao.addReservationOfZone(numRes, reservation.getZoneid());
-        String naturalArea = naturalAreaDao.getNaturalAreaOfZone(reservation.getZoneid()).getName();
+        String naturalArea = naturalAreaDao.getNaturalAreaOfZone(reservation.getZoneid()).getName(); //TODO dara problemas
         String timeSlotId = reservation.getTimeSlotId();
         TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
-        Zone zone = zoneDao.getZone(reservation.getZoneid());
 
         // Generar QR
         Formatter fmt = new Formatter();

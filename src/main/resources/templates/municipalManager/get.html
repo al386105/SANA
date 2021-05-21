@@ -10,12 +10,12 @@
         <li><b>Nombre de usuario:</b> <span th:text="${municipalManager.username}"></span></li>
         <li><b>Email:</b> <span th:text="${municipalManager.email}"></span></li>
         <li><b>Municipio:</b> <span th:text="${municipalManager.municipality}"></span></li>
-        <li><b>Fecha de nacimiento:</b> <span th:text="${municipalManager.dateOfBirth}"></span></li>
-        <li><b>Fecha de alta:</b> <span th:text="${municipalManager.registrationDate}"></span></li>
+        <li><b>Fecha de nacimiento:</b> <span th:text="${#temporals.format(municipalManager.dateOfBirth,'dd/MM/yyyy')}"></span></li>
+        <li><b>Fecha de alta:</b> <span th:text="${#temporals.format(municipalManager.registrationDate,'dd/MM/yyyy')}"></span></li>
 
         <!-- si ha sido dado de baja, mostrar fecha. Si no, mostrar opcion para dar de baja -->
         <div th:if="${municipalManager.leavingDate != null}">
-            <li><b>Fecha de baja:</b> <span th:text="${municipalManager.leavingDate}"></span></li>
+            <li><b>Fecha de baja:</b> <span th:text="${#temporals.format(municipalManager.leavingDate,'dd/MM/yyyy')}"></span></li>
         </div>
         <div th:if="${municipalManager.leavingDate == null}">
             <br>

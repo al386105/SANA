@@ -62,10 +62,12 @@ public class ServiceDateController {
 
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add", method= RequestMethod.POST)
-    public String processAddSubmit(Model model, @ModelAttribute("serviceDate") ServiceDate serviceDate,
-                                   BindingResult bindingResult) {
+    public String processAddSubmit(Model model, @ModelAttribute("serviceDate") ServiceDate serviceDate, BindingResult bindingResult) {
         ServiceDateValidator serviceDateValidator = new ServiceDateValidator();
         serviceDateValidator.validate(serviceDate, bindingResult);
+
+        if(model.getAttribute("selector") != null)
+            model.addAttribute("selector", null);
 
         String naturalAreaName = serviceDate.getNaturalArea();
         if (bindingResult.hasErrors()) {
@@ -83,6 +85,12 @@ public class ServiceDateController {
         } catch (DataIntegrityViolationException e) {
             // selector no seleccionado
             model.addAttribute("selector", "noSeleccionado");
+            // servicios fijos no asignados ya al área natural
+            List<Service> toUseServices = serviceDao.getServiceDatesNotInNaturalArea(naturalAreaName);
+            List<String> namesServices = toUseServices.stream()
+                    .map(Service::getNameOfService)
+                    .collect(Collectors.toList());
+            model.addAttribute("serviceList", namesServices);
             return "serviceDate/add";
         }
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;

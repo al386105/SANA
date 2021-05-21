@@ -258,14 +258,13 @@ public class HomeController {
 
         String destinatario1 = email.getSanaUser();
         String asunto1 = "Su petición ha sido recibida con éxito";
-        String cuerpo1 = "Gracias por compartir con nosotros esta información.\n\n" +
-                "Uno de nuestros responsables internos ha sido notificado de la situación, " +
-                "nos ponemos manos a la obra para resolverlo lo más pronto posible" +
+        String cuerpo1 = "Gracias por contactar con nosotros.\n\n" +
+                "Uno de nuestros responsables internos ha sido notificado de la situación," +
                 " recibirás noticias sobre el incidente en breve.\n\n" +
                 "Un cordial saludo del equipo de SANA.";
         String destinatario2 = "sana.espais.naturals@gmail.com";
-        String asunto2 = "Nueva incidencia recibida";
-        String cuerpo2 = "Un usuario con correo: '" + email.getSanaUser() + "' ha enviado una incidencia.\n" +
+        String asunto2 = "Nuevo mensaje recibido";
+        String cuerpo2 = "Un usuario con correo: '" + email.getSanaUser() + "' ha enviado un correo.\n" +
                 "Asunto: " + email.getSubject() + "\n" +
                 "Cuerpo: " + email.getTextBody();
 

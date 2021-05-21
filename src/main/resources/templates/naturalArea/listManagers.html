@@ -7,19 +7,47 @@
 <div class="container">
     <h1>Lista de áreas naturales</h1>
     <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">
+        <!-- filtro buscador -->
+        <div class="box" style="padding-bottom: 20px; padding-top: 20px">
+            <form>
+                <!-- por tipo de acceso -->
+                <select class="form_control" id="typeOfAccess" type="text" th:name="typeOfAccess">
+                    <option value="todas">Tipo de acceso</option>
+                    <option th:each="typeOfAccessvalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfAccess).values()}"
+                            th:value="${typeOfAccessvalue}" th:text="${typeOfAccessvalue.descripcion}"></option>
+                </select>
+
+                <!-- por tipo de area -->
+                <select class="form_control" id="typeOfArea" type="text" th:name="typeOfArea">
+                    <option value="todas">Tipo de área</option>
+                    <option th:each="typeOfAreavalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfArea).values()}"
+                            th:value="${typeOfAreavalue}" th:text="${typeOfAreavalue.descripcion}"></option>
+                </select>
+
+                <!-- por municipio -->
+                <select class="form_control" id="municipality" type="text"  th:name="municipality">
+                    <option value="todos">Municipio</option>
+                    <option th:each="municipalityvalue : ${municipalityList}"
+                            th:value="${municipalityvalue}"
+                            th:text="${municipalityvalue}"></option>
+                </select>
+
+                <!-- por nombre -->
+                <div style="float: right;">
+                    <span class="icon"><i class="fa fa-search"></i></span>
+                    <input th:name="patron" style="border-radius: 25px; background-color: #e8e6e8" type="search" id="search" placeholder=" Buscar..." />
+                    <button style="border-radius: 25px;" type="submit" class="btn btn-primary">Buscar</button>
+                    <a th:href="@{/naturalArea/pagedList}">
+                        <button style="border-radius: 25px; text-color:white" type="submit" class="btn btn-secondary">Resetear</button>
+                    </a>
+                </div><br>
+            </form>
+        </div>
+
         <div th:if="${#lists.isEmpty(naturalAreas)}">
             <p><b>¡No ha añadido todavía ningún área natural!</b></p>
         </div>
         <div th:unless="${#lists.isEmpty(naturalAreas)}">
-
-            <!-- filtro buscador por nombre del natural area -->
-            <div class="box" style="padding-bottom: 20px; padding-top: 20px">
-                <form>
-                    <span class="icon"><i class="fa fa-search"></i></span>
-                    <input th:name="patron" style="border-radius: 25px;" type="search" id="search" placeholder="Buscar..." />
-                    <button style="border-radius: 25px;" type="submit" class="btn btn-primary"> Buscar</button>
-                </form>
-            </div>
             <table class="table table-striped">
                 <thead>
                 <tr>

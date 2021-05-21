@@ -69,6 +69,9 @@ public class TemporalServiceController {
                                    Model model, BindingResult bindingResult) {
         TemporalServiceValidator temporalServiceValidator = new TemporalServiceValidator();
         temporalServiceValidator.validate(temporalService, bindingResult);
+        if(model.getAttribute("selector") != null)
+            model.addAttribute("selector", null);
+
         if (bindingResult.hasErrors())
             return "temporalService/add";
         try {

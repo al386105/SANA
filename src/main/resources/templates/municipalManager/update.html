@@ -12,19 +12,14 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="username">Nombre de usuario:</label>
             <div class="col-sm-4">
-                <input type="text" required maxlength="15" class="form-control" id="username" th:field="*{username}" />
+                <input type="text" required readonly="readonly" maxlength="15" class="form-control" id="username" th:field="*{username}" />
                 <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></td>
-                <td th:if="${#strings.equals(usernameRepetido, 'repetido')}">El nombre de usuario ya está registrado en la apliación</td>
             </div>
         </div>
 
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="password">Contraseña:</label>
-            <div class="col-sm-4">
-                <input type="password" maxlength="20" required class="form-control" id="password" th:field="*{password}" />
-                <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>
-            </div>
-        </div>
+        <input required type="hidden" th:field ="*{password}"/>
+        <input required type="hidden" th:field ="*{password2}"/>
+        <input required type="hidden" th:field ="*{registrationDate}"/>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="email">Email:</label>
@@ -76,7 +71,7 @@
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-success">Actualizar gestor municipal</button>
+                <button type="submit" class="btn btn-success okey">Actualizar gestor municipal</button>
             </div>
         </div>
     </form>

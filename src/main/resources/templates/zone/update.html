@@ -14,17 +14,14 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="zoneNumber">Número zona:</label>
             <div class="col-sm-4">
-                <input type="number" min="1" required class="form-control" id="zoneNumber" th:field="*{zoneNumber}" />
-                <td th:if="${#fields.hasErrors('zoneNumber')}" th:errors="*{zoneNumber}"></td>
+                <input type="number" min="1" readonly="readonly" required class="form-control" id="zoneNumber" th:field="*{zoneNumber}" />
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="letter">Letra:</label>
             <div class="col-sm-4">
-                <input type="text" placeholder="A" required maxlength="1" class="form-control" id="letter" th:field="*{letter}" />
-                <td th:if="${#fields.hasErrors('letter')}" th:errors="*{letter}"></td>
-                <td th:if="${#strings.equals(claveRepetida, 'repetida')}">La combinación de número y letra ya está en uso</td>
+                <input type="text" placeholder="A" readonly="readonly" required maxlength="1" class="form-control" id="letter" th:field="*{letter}" />
             </div>
         </div>
 
@@ -52,7 +49,7 @@
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-success">Actualizar zona</button>
+                <button type="submit" class="btn btn-success okey">Actualizar zona</button>
             </div>
         </div>
 

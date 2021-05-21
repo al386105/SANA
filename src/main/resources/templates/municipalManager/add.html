@@ -27,6 +27,14 @@
         </div>
 
         <div class="form-group row">
+            <label class="control-label col-sm-2" for="password">Repita la contraseña:</label>
+            <div class="col-sm-4">
+                <input type="password" maxlength="20" required class="form-control" id="password2" th:field="*{password2}" />
+                <td th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}"></td>
+            </div>
+        </div>
+
+        <div class="form-group row">
             <label class="control-label col-sm-2" for="email">Email:</label>
             <div class="col-sm-4">
                 <input type="text" maxlength="30" required class="form-control" id="email" th:field="*{email}" />
@@ -68,13 +76,13 @@
                             th:value="${municipalityvalue}"
                             th:text="${municipalityvalue}"></option>
                 </select>
-                <td th:if="${#strings.equals(selector, 'noSeleccionado')}">Seleccione un municipio</td>
+                <td th:if="${#strings.equals(selector, 'noSeleccionado')}">No seleccionado</td>
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-success">Añadir gestor municipal</button>
+                <button type="submit" class="btn btn-success okey">Añadir gestor municipal</button>
             </div>
         </div>
     </form>

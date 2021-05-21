@@ -37,9 +37,8 @@
           </div>
           <div class="control-group">
             <div class="form-group floating-label-form-group controls mb-0 pb-2" style="color: black"><label>Teléfono</label>
-              <input class="form-control" required id="mobilePhoneNumber" th:field="*{mobilePhoneNumber}" style="background-color: #e8e6e8">
+              <input class="form-control" readonly="readonly" required id="mobilePhoneNumber" th:field="*{mobilePhoneNumber}" style="background-color: #e8e6e8">
               <div class="error" th:if="${#fields.hasErrors('mobilePhoneNumber')}" th:errors="*{mobilePhoneNumber}"></div>
-              <td th:if="${#strings.equals(claveRepetida, 'repetida')}">El teléfono ya está registrado en la apliación</td>
             </div>
           </div>
           <input required th:field="*{leavingDate}" type="hidden">

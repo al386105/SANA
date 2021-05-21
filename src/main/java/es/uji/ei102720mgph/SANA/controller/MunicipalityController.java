@@ -92,6 +92,8 @@ public class MunicipalityController {
                                    BindingResult bindingResult) {
         MunicipalityValidator municipalityValidator = new MunicipalityValidator();
         municipalityValidator.validate(municipality, bindingResult);
+        if(model.getAttribute("claveRepetida") != null)
+            model.addAttribute("claveRepetida", null);
         if (bindingResult.hasErrors())
             return "municipality/add"; //tornem al formulari per a que el corregisca
 

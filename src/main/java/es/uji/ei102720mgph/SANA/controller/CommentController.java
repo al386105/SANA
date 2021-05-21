@@ -57,7 +57,6 @@ public class CommentController {
 
         if (bindingResult.hasErrors())
             return "comment/add";
-        System.out.println(comment.getCitizenEmail());
         commentDao.addComment(comment);
         return "redirect:/naturalArea/get/" + comment.getNaturalArea();
     }

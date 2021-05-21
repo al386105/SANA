@@ -53,6 +53,9 @@ public class ZoneController {
     public String processAddSubmit(Model model, @ModelAttribute("zone") Zone zone, BindingResult bindingResult) {
         ZoneValidator zoneValidator = new ZoneValidator();
         zoneValidator.validate(zone, bindingResult);
+        if(model.getAttribute("claveRepetida") != null)
+            model.addAttribute("claveRepetida", null);
+
         if (bindingResult.hasErrors())
             return "zone/add"; //tornem al formulari per a que el corregisca
         String naturalAreaName = zone.getNaturalArea();
@@ -80,19 +83,14 @@ public class ZoneController {
 
     // Resposta de modificació d'objectes
     @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(Model model, @ModelAttribute("zone") Zone zone, BindingResult bindingResult) {
+    public String processUpdateSubmit(Model model, @ModelAttribute("zone") Zone zone, BindingResult bindingResult,
+                                      HttpSession session) {
         ZoneValidator zoneValidator = new ZoneValidator();
         zoneValidator.validate(zone, bindingResult);
         if (bindingResult.hasErrors())
             return "zone/update";
-        String naturalAreaName = zone.getNaturalArea();
-        try {
-            zoneDao.updateZone(zone);
-        } catch (DataIntegrityViolationException e) {
-            model.addAttribute("claveRepetida", "repetida");
-            return "zone/update";
-        }
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
+        zoneDao.updateZone(zone);
+        return "redirect:/naturalArea/getManagers/" + zone.getNaturalArea();
     }
 
     // Operacio de llistar totes les zones d'un area natural

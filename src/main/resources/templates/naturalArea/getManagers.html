@@ -23,7 +23,7 @@
     </ul><br>
     <!-- Botones -->
     <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
-        <button type="button" class="btn btn-warning">Edita</button> </a>
+        <button type="button" class="btn btn-warning">Editar datos</button> </a>
     </td>
 
     <!-- solo se pueden gestionar las zonas y franjas horarias de los espacios restringidos -->
@@ -56,33 +56,11 @@
                         <button type="button" class="btn btn-warning">Edita</button>
                     </a>
                     </td>
-                    <!--
-                    <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal6">
-                        Elimina</button></td>
-                    <div class="modal" id="miModal6">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Eliminar zona</h5>
-                                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>¿Seguro que desea borrar la zona <span th:text="${zone.zoneNumber}"></span> <span th:text="${zone.letter}"></span>
-                                         de <span th:text="${zone.naturalArea}"></span>?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <a th:href="@{/zone/delete/{id}(id=${zone.id})}">
-                                        <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
                 </tr>
                 </tbody>
             </table>
             <td><a th:href="@{/zone/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-                <button type="button" class="btn btn-success">Añadir zona</button>
+                <button type="button" class="btn btn-success okey">Añadir zona</button>
             </a></td>
         </section>
 
@@ -116,32 +94,11 @@
                         <button type="button" class="btn btn-warning">Edita</button>
                     </a>
                     </td>
-                    <!--
-                    <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal5">
-                        Elimina</button></td>
-                    <div class="modal" id="miModal5">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Eliminar franja horaria</h5>
-                                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>¿Seguro que desea borrar la franja horaria de identificador <span th:text="${timeSlot.id}"></span>?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <a th:href="@{/timeSlot/delete/{id}(id=${timeSlot.id})}">
-                                        <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
                 </tr>
                 </tbody>
             </table>
             <td><a th:href="@{/timeSlot/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-                <button type="button" class="btn btn-success">Asignar franja horaria</button>
+                <button type="button" class="btn btn-success okey">Asignar franja horaria</button>
             </a></td><br><br><br>
         </section>
     </div>
@@ -243,7 +200,7 @@
         </div>
         <div th:unless="${#lists.isEmpty(serviceDatesFaltan)}">
             <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-                <button type="button" class="btn btn-success">Asignar servicio fijo</button>
+                <button type="button" class="btn btn-success okey">Asignar servicio fijo</button>
             </a></td>
         </div>
     </section>
@@ -287,7 +244,7 @@
             </tbody>
         </table>
         <td><a th:href="@{/temporalService/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-            <button type="button" class="btn btn-success">Asignar servicio temporal</button>
+            <button type="button" class="btn btn-success okey">Asignar servicio temporal</button>
         </a></td>
     </section>
 
@@ -333,7 +290,7 @@
                 <input required type="file" name="file" id="file" /> <br/><br/>
                 <div class="form-group row">
                     <div class="col-sm-offset-2 col-sm-4">
-                        <button type="submit" class="btn btn-success"><img src="/assets/img/photo.png" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
+                        <button type="submit" class="btn btn-success okey"><img src="/assets/img/photo.png" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
                     </div>
                 </div>
                 <br><br>

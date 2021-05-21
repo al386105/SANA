@@ -12,9 +12,8 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="nameOfService">Nombre del servicio:</label>
             <div class="col-sm-4">
-                <input type="text" required maxlength="30" class="form-control" id="nameOfService" th:field="*{nameOfService}" />
+                <input type="text" required readonly="readonly" maxlength="30" class="form-control" id="nameOfService" th:field="*{nameOfService}" />
                 <td th:if="${#fields.hasErrors('nameOfService')}" th:errors="*{nameOfService}"></td>
-                <td th:if="${#strings.equals(claveRepetida, 'repetida')}">El nombre ya está lo ha asignado a otro servicio</td>
             </div>
         </div>
 
@@ -47,7 +46,7 @@
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-success">Actualizar servicio</button>
+                <button type="submit" class="btn btn-success okey">Actualizar servicio</button>
             </div>
         </div>
 

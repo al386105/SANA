@@ -12,7 +12,7 @@
         <li><b>Fecha de registro:</b> <span th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></span></li>
     </ul><br>
     <td><a th:href="@{/municipality/update/{name}(name=${municipality.name})}">
-        <button type="button" class="btn btn-warning">Edita</button> </a>
+        <button type="button" class="btn btn-warning">Editar datos</button> </a>
     </td>
     <hr class="lineaVerde">
 
@@ -39,7 +39,7 @@
             <td th:text="${municipalManager.surname}"></td>
             <td th:text="${municipalManager.municipality}"></td>
             <div th:if="${municipalManager.leavingDate != null}">
-                <td th:text="${municipalManager.leavingDate}"></td>
+                <td th:text="${#temporals.format(municipalManager.leavingDate,'dd/MM/yyyy')}"></td>
             </div>
             <div th:if="${municipalManager.leavingDate == null}">
                 <td> - </td>
@@ -91,7 +91,7 @@
         <div th:if="${#lists.isEmpty(postalCodes)}">
             <p><b>¡Este municipio no tiene ningún código postal asignado!</b></p>
         </div>
-        <!--<div class="scroll">-->
+        <div class="scroll">
         <table th:unless="${#lists.isEmpty(postalCodes)}" class="table table-striped">
             <thead>
             <tr>
@@ -126,7 +126,7 @@
             </tr>
             </tbody>
         </table>
-        <!--</div>-->
+        </div>
         <br>
         <!-- añadir un nuevo codigo postal -->
         <h5>Añadir código postal</h5>
@@ -145,7 +145,7 @@
 
                 <div class="form-group row">
                     <div class="col-sm-offset-2 col-sm-4">
-                        <button type="submit" class="btn btn-success">Añadir código postal</button>
+                        <button type="submit" class="btn btn-success okey">Añadir código postal</button>
                     </div>
                 </div>
             </form>

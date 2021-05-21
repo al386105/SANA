@@ -31,11 +31,17 @@ import java.util.List;
 import java.util.Properties;
 
 @Controller
-public class MainController {
+public class HomeController {
 
     @RequestMapping("/")
-    public String home(Model model) {
-        return "inicio/index";
+    public String home(Model model, HttpSession session) {
+        if(session.getAttribute("registeredCitizen") != null)
+            return "inicioRegistrado/home";
+        else if (session.getAttribute("environmentalManager") != null)
+            return "section/environmentalManager";
+        else if (session.getAttribute("municipalManager") != null)
+            return "section/managers";
+        return "inicio/home";
     }
 
 

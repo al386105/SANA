@@ -102,12 +102,6 @@ public class AuxiliarController {
         return "redirect:/inicio/login";
     }
 
-    // TODO esto debe ser / en vez de inicio
-    @RequestMapping("inicio")
-    public String redirigirSana(Model model) {
-        return "inicio/sana";
-    }
-
     @RequestMapping("inicio/contactanos")
     public String redirigirContactanos(Model model, HttpSession session) {
         model.addAttribute("email", new Email());

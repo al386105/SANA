@@ -88,11 +88,6 @@ public class ReservationDao {
         } while (excepcion);
     }
 
-    /* Esborra el reservation de la base de dades */
-    public void deleteReservation(int reservationNumber) {
-        jdbcTemplate.update("DELETE FROM Reservation WHERE reservationNumber =?", reservationNumber);
-    }
-
     /* Actualitza els atributs del reservation */
     public void updateReservation(Reservation reservation) {
         jdbcTemplate.update("UPDATE Reservation SET reservationDate = ?, creationDate = ?, creationTime = ?, " +

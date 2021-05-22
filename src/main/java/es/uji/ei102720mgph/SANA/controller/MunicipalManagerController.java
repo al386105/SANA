@@ -209,7 +209,7 @@ public class MunicipalManagerController {
         return "redirect:/municipalManager/list";
     }
 
-    @RequestMapping(value="/delete/{email}")
+    /*@RequestMapping(value="/delete/{email}")
     public String processDelete(Model model, @PathVariable String email, HttpSession session) {
         if(session.getAttribute("environmentalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
@@ -219,7 +219,7 @@ public class MunicipalManagerController {
         municipalManagerDao.deleteMunicipalManager(email);
         sanaUserDao.deleteSanaUser(email);
         return "redirect:../list";
-    }
+    }*/
 
     @RequestMapping(value="/get/{email}")
     public String getMunicipalManager(Model model, @PathVariable String email, HttpSession session){

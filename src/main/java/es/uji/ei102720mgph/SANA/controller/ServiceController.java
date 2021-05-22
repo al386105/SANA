@@ -1,9 +1,6 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
-import es.uji.ei102720mgph.SANA.enums.Temporality;
-import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
-import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/service")
@@ -71,7 +66,8 @@ public class ServiceController {
         try {
             serviceDao.addService(service);
         } catch (DataIntegrityViolationException e) {
-            model.addAttribute("claveRepetida", "repetida");
+            if(serviceDao.getService(service.getNameOfService()) != null)
+                model.addAttribute("claveRepetida", "repetida");
             return "service/add";
         }
         return "redirect:list"; //redirigim a la lista per a veure el service afegit, post/redirect/get

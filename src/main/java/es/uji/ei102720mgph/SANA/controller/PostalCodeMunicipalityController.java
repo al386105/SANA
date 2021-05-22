@@ -23,6 +23,7 @@ public class PostalCodeMunicipalityController {
     private MunicipalityDao municipalityDao;
     private MunicipalManagerDao municipalManagerDao;
     private PostalCodeMunicipalityDao postalCodeMunicipalityDao;
+    private PostalCodeMunicipalityDao pcD;
 
     @Autowired
     public void setMunicipalityDao(MunicipalityDao municipalityDao){
@@ -38,9 +39,6 @@ public class PostalCodeMunicipalityController {
     public void setPostalCodeMunicipalityDao(PostalCodeMunicipalityDao postalCodeMunicipalityDao){
         this.postalCodeMunicipalityDao = postalCodeMunicipalityDao;
     }
-
-
-    private PostalCodeMunicipalityDao pcD;
 
     @Autowired
     public void setPostalCodeDao(PostalCodeMunicipalityDao postalCodeDao){

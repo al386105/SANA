@@ -130,7 +130,7 @@ public class MunicipalityController {
         return "redirect:list";
     }
 
-    @RequestMapping(value="/delete/{name}")
+    /*@RequestMapping(value="/delete/{name}")
     public String processDelete(Model model, @PathVariable String name, HttpSession session) {
         if(session.getAttribute("environmentalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
@@ -139,7 +139,7 @@ public class MunicipalityController {
         }
         municipalityDao.deleteMunicipality(name);
         return "redirect:../list";
-    }
+    }*/
 
     private void quitarAtributoSeccion(HttpSession session) {
         if(session.getAttribute("section") != null)

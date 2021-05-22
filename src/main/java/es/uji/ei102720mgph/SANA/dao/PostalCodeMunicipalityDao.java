@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -35,17 +34,6 @@ public class PostalCodeMunicipalityDao {
         }
         catch(EmptyResultDataAccessException e) {
             return null;
-        }
-    }
-
-    public List<PostalCodeMunicipality> getPostalCodes() {
-        try {
-            return jdbcTemplate.query(
-                    "SELECT * FROM PostalCodeMunicipality",
-                    new PostalCodeMunicipalityRowMapper());
-        }
-        catch(EmptyResultDataAccessException e) {
-            return new ArrayList<PostalCodeMunicipality>();
         }
     }
 }

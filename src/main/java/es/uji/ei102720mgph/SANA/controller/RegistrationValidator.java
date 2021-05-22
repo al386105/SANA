@@ -5,7 +5,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 public class RegistrationValidator implements Validator {
 

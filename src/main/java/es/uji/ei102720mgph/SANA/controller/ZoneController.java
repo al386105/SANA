@@ -1,6 +1,5 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
 import es.uji.ei102720mgph.SANA.model.Zone;
@@ -21,16 +20,10 @@ import javax.servlet.http.HttpSession;
 public class ZoneController {
 
     private ZoneDao zoneDao;
-    private NaturalAreaDao naturalAreaDao;
 
     @Autowired
     public void setZoneDao(ZoneDao zoneDao) {
         this.zoneDao=zoneDao;
-    }
-
-    @Autowired
-    public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao) {
-        this.naturalAreaDao=naturalAreaDao;
     }
 
     // Operació crear
@@ -101,7 +94,7 @@ public class ZoneController {
     }
 
     // Operació esborrar
-    @RequestMapping(value="/delete/{id}")
+    /*@RequestMapping(value="/delete/{id}")
     public String processDelete(Model model, @PathVariable String id, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
@@ -113,6 +106,6 @@ public class ZoneController {
         zoneDao.deleteZone(id);
         session.setAttribute("section", "#zones");
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
-    }
+    }*/
 }
 

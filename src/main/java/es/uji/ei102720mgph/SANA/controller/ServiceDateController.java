@@ -2,7 +2,6 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.dao.ServiceDateDao;
-import es.uji.ei102720mgph.SANA.model.MunicipalManager;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.ServiceDate;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
@@ -138,7 +137,7 @@ public class ServiceDateController {
     }
 
     // Operació esborrar
-    @RequestMapping(value="/delete/{id}")
+    /*@RequestMapping(value="/delete/{id}")
     public String processDelete(Model model, @PathVariable String id, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
@@ -150,7 +149,7 @@ public class ServiceDateController {
         String naturalAreaName = serviceDate.getNaturalArea();
         serviceDateDao.deleteServiceDate(id);
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
-    }
+    }*/
 
     // información de un servicio dijo
     @RequestMapping(value="/get/{id}")

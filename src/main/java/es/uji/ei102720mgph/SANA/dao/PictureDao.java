@@ -25,11 +25,6 @@ public class PictureDao {
                 picture.getPicturePath(), picture.getNaturalArea());
     }
 
-    public void deletePicture(Picture picture){
-        jdbcTemplate.update("DELETE FROM Picture WHERE picturePath = ?",
-                picture.getPicturePath());
-    }
-
     public void deletePicture(String picturePath){
         jdbcTemplate.update("DELETE FROM Picture WHERE picturePath = ?",
                 picturePath);
@@ -56,15 +51,4 @@ public class PictureDao {
             return new ArrayList<Picture>();
         }
     }
-
-    public List<Picture> getPictures() {
-        try {
-            return jdbcTemplate.query("SELECT * FROM Picture",
-                    new PictureRowMapper());
-        }
-        catch(EmptyResultDataAccessException e) {
-            return new ArrayList<Picture>();
-        }
-    }
-
 }

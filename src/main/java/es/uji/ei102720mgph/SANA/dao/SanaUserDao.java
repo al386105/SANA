@@ -32,7 +32,5 @@ public class SanaUserDao {
 
     public void deleteSanaUser(String email) {
         jdbcTemplate.update("DELETE FROM SanaUser WHERE email =?", email);
-        jdbcTemplate.update("DELETE FROM SanaUser WHERE email =?", email);
     }
-
 }

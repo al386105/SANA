@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.method.HandlerTypePredicate;
 
 import javax.servlet.http.HttpSession;
 
@@ -78,7 +77,7 @@ public class TimeSlotController {
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
-    @RequestMapping(value="/delete/{id}")
+    /*@RequestMapping(value="/delete/{id}")
     public String processDelete(Model model, @PathVariable String id, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
@@ -90,5 +89,5 @@ public class TimeSlotController {
         timeSlotDao.deleteTimeSlot(id);
         session.setAttribute("section", "#timeSlots");
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
-    }
+    }*/
 }

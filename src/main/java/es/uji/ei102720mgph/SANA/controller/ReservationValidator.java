@@ -1,6 +1,5 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-import es.uji.ei102720mgph.SANA.model.RegistrationCitizen;
 import es.uji.ei102720mgph.SANA.model.Reservation;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -22,5 +21,7 @@ public class ReservationValidator implements Validator {
             errors.rejectValue("numberOfPeople", "obligatorio", "Es obligatorio introducir un número de personas");
 
         // Validar el selector de fecha como en el resto, da fallo
+
+        // Validar campos vacíos para asegurarse que se han introducido valores
     }
 }

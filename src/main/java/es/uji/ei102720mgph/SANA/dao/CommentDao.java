@@ -41,52 +41,11 @@ public class CommentDao {
         } while (excepcion);
     }
 
-    public void deleteComment(Comment comment){
-        jdbcTemplate.update("DELETE FROM Comment WHERE commentId = ?",
-                comment.getCommentId());
-    }
-
-    public void deleteComment(String commentId){
-        jdbcTemplate.update("DELETE FROM Comment WHERE commentId = ?",
-                commentId);
-    }
-
-    public void updateComment(Comment comment){
-        jdbcTemplate.update("UPDATE Comment " +
-                "SET commentBody = ?, score = ?, date = ?, " +
-                "citizenEmail = ?, naturalArea = ? " +
-                "WHERE commentId = ?",
-                comment.getCommentBody(), comment.getScore(), comment.getDate(),
-                comment.getCitizenEmail(), comment.getNaturalArea(),
-                comment.getCommentId());
-    }
-
-    public Comment getComment(String commentId) {
-        try {
-            return jdbcTemplate.queryForObject("SELECT * FROM Comment WHERE commentId = ?",
-                    new CommentRowMapper(),
-                    commentId);
-        }
-        catch(EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
-
     public List<Comment> getCommentsOfNaturalArea(String naturalArea) {
         try {
             return jdbcTemplate.query("SELECT * FROM Comment WHERE naturalArea = ?",
                     new CommentRowMapper(),
                     naturalArea);
-        }
-        catch(EmptyResultDataAccessException e) {
-            return new ArrayList<Comment>();
-        }
-    }
-
-    public List<Comment> getComments() {
-        try {
-            return jdbcTemplate.query("SELECT * FROM Comment",
-                    new CommentRowMapper());
         }
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<Comment>();

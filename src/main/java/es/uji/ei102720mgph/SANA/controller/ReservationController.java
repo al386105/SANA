@@ -197,9 +197,9 @@ public class ReservationController {
     }
 
     // Operació esborrar
-    @RequestMapping(value="/delete/{reservationNumber}")
+    /*@RequestMapping(value="/delete/{reservationNumber}")
     public String processDelete(@PathVariable int reservationNumber) {
         reservationDao.deleteReservation(reservationNumber);
         return "redirect:../list";
-    }
+    }*/
 }

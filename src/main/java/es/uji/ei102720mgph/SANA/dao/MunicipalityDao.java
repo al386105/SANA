@@ -1,7 +1,5 @@
 package es.uji.ei102720mgph.SANA.dao;
 
-import es.uji.ei102720mgph.SANA.model.Comment;
-import es.uji.ei102720mgph.SANA.model.MunicipalManager;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,10 +24,6 @@ public class MunicipalityDao {
         jdbcTemplate.update(
                 "INSERT INTO Municipality VALUES(?, ?, ?)",
                 muni.getName(), muni.getDescription(), LocalDate.now());
-    }
-
-    public void deleteMunicipality(String name) {
-        jdbcTemplate.update("DELETE FROM Municipality WHERE name =?", name);
     }
 
     public void updateMunicipality(Municipality muni) {

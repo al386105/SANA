@@ -23,7 +23,7 @@ public class EmailController {
     }
 
     // Operació llistar
-    @RequestMapping("/list")
+    /*@RequestMapping("/list")
     public String listEmails(Model model) {
         model.addAttribute("emails", emailDao.getEmails());
         return "email/list";
@@ -34,5 +34,5 @@ public class EmailController {
     public String processDelete(@PathVariable String id) {
         emailDao.deleteEmail(id);
         return "redirect:../list";
-    }
+    }*/
 }

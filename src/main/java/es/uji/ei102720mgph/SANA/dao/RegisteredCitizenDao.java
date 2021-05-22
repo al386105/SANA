@@ -8,8 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 public class RegisteredCitizenDao {
@@ -22,7 +20,6 @@ public class RegisteredCitizenDao {
     }
 
     public void addRegisteredCitizen(RegisteredCitizen registeredCitizen){
-
         jdbcTemplate.update("INSERT INTO SanaUser VALUES(?, ?, ?, ?, ?, ?, ?)",
                 registeredCitizen.getEmail(), registeredCitizen.getName(), registeredCitizen.getSurname(),
                 registeredCitizen.getDateOfBirth(), LocalDate.now(), null, TypeOfUser.registeredCitizen.name());
@@ -30,11 +27,6 @@ public class RegisteredCitizenDao {
                 registeredCitizen.getEmail(), registeredCitizen.getIdNumber(),
                 registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
                 registeredCitizen.getPin(), registeredCitizen.getAddressId());
-    }
-
-    public void deleteRegisteredCitizen(String email){
-        jdbcTemplate.update("DELETE FROM RegisteredCitizen WHERE email =?", email);
-        jdbcTemplate.update("DELETE FROM SanaUser WHERE email =?", email);
     }
 
     public void updateRegisteredCitizen(RegisteredCitizen registeredCitizen){
@@ -85,16 +77,4 @@ public class RegisteredCitizenDao {
             return null;
         }
     }
-
-    public List<RegisteredCitizen> getRegisteredCitizens(){
-        try{
-            return jdbcTemplate.query("SELECT * FROM RegisteredCitizen " +
-                    "JOIN SanaUser ON RegisteredCitizen.email = SanaUser.email",
-                    new RegisteredCitizenRowMapper());
-        }
-        catch (EmptyResultDataAccessException e){
-            return new ArrayList<RegisteredCitizen>();
-        }
-    }
-
 }

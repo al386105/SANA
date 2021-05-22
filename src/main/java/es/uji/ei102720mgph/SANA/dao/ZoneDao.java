@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
@@ -40,11 +39,6 @@ public class ZoneDao {
                 Zone.incrementaContador();
             }
         } while (excepcion);
-    }
-
-    /* Esborra el zone de la base de dades */
-    public void deleteZone(String id) {
-        jdbcTemplate.update("DELETE FROM Zone WHERE id =?", id);
     }
 
     /* Actualitza els atributs del zone */
@@ -100,18 +94,6 @@ public class ZoneDao {
         }
         catch(EmptyResultDataAccessException e) {
             return null;
-        }
-    }
-
-    /* Obté tots els zones. Torna una llista buida si no n'hi ha cap. */
-    public List<Zone> getZones() {
-        try {
-            return jdbcTemplate.query(
-                    "SELECT * FROM Zone",
-                    new ZoneRowMapper());
-        }
-        catch(EmptyResultDataAccessException e) {
-            return new ArrayList<Zone>();
         }
     }
 }

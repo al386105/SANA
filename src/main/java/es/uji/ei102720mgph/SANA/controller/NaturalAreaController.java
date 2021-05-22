@@ -28,7 +28,6 @@ public class NaturalAreaController {
     private CommentDao commentDao;
     private MunicipalityDao municipalityDao;
     private PictureDao pictureDao;
-    private ReservationDao reservationDao;
     private TimeSlotDao timeSlotDao;
     private ServiceDateDao serviceDateDao;
     private TemporalServiceDao temporalServiceDao;
@@ -60,9 +59,6 @@ public class NaturalAreaController {
 
     @Autowired
     public void setPictureDao(PictureDao pictureDao) { this.pictureDao = pictureDao; }
-
-    @Autowired
-    public void setReservationDao(ReservationDao reservationDao) { this.reservationDao = reservationDao; }
 
     @Autowired
     public void setTimeSlotDao(TimeSlotDao timeSlotDao) { this.timeSlotDao = timeSlotDao; }
@@ -145,12 +141,12 @@ public class NaturalAreaController {
         return "/naturalArea/getEnvironmental";
     }
 
-    @RequestMapping(value="/list")
+    /*@RequestMapping(value="/list")
     public String listNaturalAreas(Model model, HttpSession session){
         model.addAttribute("naturalAreas", naturalAreaService.getNaturalAreasWithImage());
         quitarAtributoSeccion(session);
         return "naturalArea/list";
-    }
+    }*/
 
     // metodo para anyadir al modelo los datos del selector de municipio
     @ModelAttribute("municipalityList")
@@ -484,7 +480,7 @@ public class NaturalAreaController {
     }
 
     // Operació esborrar
-    @RequestMapping(value="/delete/{naturalArea}")
+    /*@RequestMapping(value="/delete/{naturalArea}")
     public String processDelete(Model model, @PathVariable String naturalArea, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
@@ -493,7 +489,7 @@ public class NaturalAreaController {
         }
         naturalAreaDao.deleteNaturalArea(naturalArea);
         return "redirect:/naturalArea/listManagers";
-    }
+    }*/
 
     @RequestMapping(value="/occupancy", method=RequestMethod.GET)
     public String getOccupancyForm(Model model, HttpSession session) {

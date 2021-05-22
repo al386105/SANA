@@ -41,10 +41,6 @@ public class TimeSlotDao {
         } while (excepcion);
     }
 
-    public void deleteTimeSlot(String id) {
-        jdbcTemplate.update("DELETE FROM TimeSlot WHERE id =?", id);
-    }
-
     public void updateTimeSlot(TimeSlot ts) {
         jdbcTemplate.update("UPDATE TimeSlot SET beginningDate = ?, endDate = ?, beginningTime = ?, endTime = ?, naturalArea = ? WHERE id =?",
                 ts.getBeginningDate(), ts.getEndDate(), ts.getBeginningTime(), ts.getEndTime(), ts.getNaturalArea(), ts.getId());
@@ -79,17 +75,6 @@ public class TimeSlotDao {
                             "AND CAST(enddate AS date) >= CAST( ? AS date)",
                     new TimeSlotRowMapper(),
                     naturalArea, LocalDate.now(), LocalDate.now());
-        }
-        catch(EmptyResultDataAccessException e) {
-            return new ArrayList<TimeSlot>();
-        }
-    }
-
-    public List<TimeSlot> getTimeSlots() {
-        try {
-            return jdbcTemplate.query(
-                    "SELECT * FROM TimeSlot",
-                    new TimeSlotRowMapper());
         }
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<TimeSlot>();

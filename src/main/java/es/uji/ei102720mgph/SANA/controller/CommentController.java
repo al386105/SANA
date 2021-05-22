@@ -25,13 +25,6 @@ public class CommentController {
     @Autowired
     public void setCommentDao(CommentDao commentDao) { this.commentDao = commentDao; }
 
-    // Operació llistar
-    @RequestMapping("/list")
-    public String listComments(Model model) {
-        model.addAttribute("comments", commentDao.getComments());
-        return "comment/list";
-    }
-
     // Operació crear
     @RequestMapping(value="/add/{naturalArea}")
     public String addComment(Model model, HttpSession session, @PathVariable String naturalArea) {
@@ -59,28 +52,6 @@ public class CommentController {
             return "comment/add";
         commentDao.addComment(comment);
         return "redirect:/naturalArea/get/" + comment.getNaturalArea();
-    }
-
-    // Operació actualitzar
-    @RequestMapping(value="/update/{commentId}", method = RequestMethod.GET)
-    public String editComment(Model model, @PathVariable String commentId, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/comment/update/" + commentId);
-            return "redirect:/inicio/login";
-        }
-        model.addAttribute("comment", commentDao.getComment(commentId));
-        return "comment/update";
-    }
-
-    // Resposta de modificació d'objectes
-    @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("comment") Comment comment,
-                                      BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "comment/update";
-        commentDao.updateComment(comment);
-        return "redirect:list";
     }
 
     // Operació esborrar

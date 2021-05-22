@@ -107,6 +107,7 @@ public class NaturalAreaController {
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
         model.addAttribute("serviceDatesFaltan", serviceDao.getServiceDatesNotInNaturalArea(naturalArea));
+        model.addAttribute("service", new Service());
 
         if(session.getAttribute("section") != null) {
             String section = (String) session.getAttribute("section");

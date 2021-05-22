@@ -1,6 +1,5 @@
 package es.uji.ei102720mgph.SANA.dao;
 
-import es.uji.ei102720mgph.SANA.model.ServiceDate;
 import es.uji.ei102720mgph.SANA.model.TemporalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -28,6 +27,7 @@ public class TemporalServiceDao {
         do {
             try {
                 fmt = new Formatter();
+                System.out.println(TemporalService.getContador());
                 jdbcTemplate.update(
                         "INSERT INTO TemporalService VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
                         "" + fmt.format("%06d", TemporalService.getContador()), temporalService.getOpeningDays(),
@@ -38,7 +38,7 @@ public class TemporalServiceDao {
             } catch (DuplicateKeyException e) {
                 excepcion = true;
             } finally {
-                ServiceDate.incrementaContador();
+                TemporalService.incrementaContador();
             }
         } while (excepcion);
     }

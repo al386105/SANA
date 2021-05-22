@@ -78,7 +78,7 @@ public class TemporalServiceController {
         } catch (DataIntegrityViolationException e) {
             // selector no seleccionado
             model.addAttribute("selector", "noSeleccionado");
-            return "serviceDate/add";
+            return "temporalService/add";
         }
         return "redirect:/naturalArea/getManagers/" + temporalService.getNaturalArea();
     }

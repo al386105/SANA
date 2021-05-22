@@ -248,6 +248,18 @@
         </a></td>
     </section>
 
+    <!-- solicitar un nuevo servicio -->
+    <div class="form-center" style="text-align:center;position: relative;z-index: 1;">
+        <form class="form-horizontal" action="#" th:action="@{/service/solicitar/{naturalArea}(naturalArea=${naturalArea.name})}" th:object="${service}" method="post">
+            <div class="row justify-content-center">
+                <div class="col-md-auto">
+                    <button style="float: right;margin-left: 15px" type="submit" class="btn btn-success okey">Solicitar</button>
+                    <input type="text" style="width:200px;float:right;" required class="form-control" placeholder="Servicio a solicitar..." th:field="*{nameOfService}"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
     <section id="pictures">
         <hr class="lineaVerde">

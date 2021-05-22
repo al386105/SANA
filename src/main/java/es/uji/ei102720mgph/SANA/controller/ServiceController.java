@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static es.uji.ei102720mgph.SANA.controller.HomeController.enviarMail;
+
 @Controller
 @RequestMapping("/service")
 public class ServiceController {
@@ -114,5 +116,18 @@ public class ServiceController {
         }
         serviceDao.deleteService(nameOfService);
         return "redirect:../list";
+    }
+
+    // Solicitar crear un servicio al responsable
+    @RequestMapping(value="/solicitar/{naturalArea}")
+    public String processSolicitarServicio(@PathVariable String naturalArea, Service service) {
+        // Enviar mensaje al responsable para solicitar el servicio
+        String destinatario = "responsablesana1@gmail.com";
+        String asunto = "Solicitud de servicio";
+        String cuerpo = "Se ha solicitado crear el servicio de " + service.getNameOfService() + " para poder asignarlo al área natural " +
+                naturalArea + ".";
+        enviarMail(destinatario, asunto, cuerpo);
+
+        return "redirect:/naturalArea/getManagers/" + naturalArea + "#temporalServices";
     }
 }

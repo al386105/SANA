@@ -23,7 +23,7 @@
     </ul><br>
     <!-- Botones -->
     <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
-        <button type="button" class="btn btn-warning">Editar datos</button> </a>
+        <button type="button" class="btn btn-warning edit">Editar datos</button> </a>
     </td>
 
     <!-- solo se pueden gestionar las zonas y franjas horarias de los espacios restringidos -->
@@ -53,7 +53,7 @@
                     <td th:text="${zone.maximumCapacity}"></td>
                     <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
                     <td><a th:href="@{/zone/update/{id}(id=${zone.id})}">
-                        <button type="button" class="btn btn-warning">Edita</button>
+                        <button type="button" class="btn btn-warning edit">Edita</button>
                     </a>
                     </td>
                 </tr>
@@ -91,7 +91,7 @@
                     <td th:text="${timeSlot.beginningTime}"></td>
                     <td th:text="${timeSlot.endTime}"></td>
                     <td><a th:href="@{/timeSlot/update/{id}(id=${timeSlot.id})}">
-                        <button type="button" class="btn btn-warning">Edita</button>
+                        <button type="button" class="btn btn-warning edit">Edita</button>
                     </a>
                     </td>
                 </tr>
@@ -167,10 +167,10 @@
                 </div>
                 <div th:if="${serviceDate.endDate == null}">
                     <td><a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
-                        <button type="button" class="btn btn-warning">Edita</button>
+                        <button type="button" class="btn btn-warning edit">Edita</button>
                     </a>
                     </td>
-                    <td><button type="button" class="btn btn-danger" data-toggle="modal" th:data-target="${'#miModal' + serviceDate.id}">Dar de baja</button></td>
+                    <td><button type="button" class="btn btn-danger delete" data-toggle="modal" th:data-target="${'#miModal' + serviceDate.id}">Dar de baja</button></td>
                     <!-- VENTANA EMERGENTE -->
                     <div class="modal" th:id="${'miModal' + serviceDate.id}">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -237,7 +237,7 @@
                 </a>
                 </td>
                 <td><a th:href="@{/temporalService/update/{id}(id=${temporalService.id})}">
-                    <button type="button" class="btn btn-warning">Edita</button>
+                    <button type="button" class="btn btn-warning edit">Edita</button>
                 </a>
                 </td>
             </tr>
@@ -258,7 +258,7 @@
         <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
             <tr th:each="picture,iterador : ${pictures}">
                 <td scope="row"><img class="fotoListado" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
-                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger" data-toggle="modal" th:data-target="${'#miModal' + iterador.index}">
+                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger delete" data-toggle="modal" th:data-target="${'#miModal' + iterador.index}">
                     Elimina</button></td>
                 <!-- VENTANA EMERGENTE -->
                 <div class="modal" th:id="${'miModal' + iterador.index}">

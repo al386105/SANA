@@ -136,21 +136,6 @@ public class ServiceDateController {
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 
-    // Operació esborrar
-    /*@RequestMapping(value="/delete/{id}")
-    public String processDelete(Model model, @PathVariable String id, HttpSession session) {
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/serviceDate/delete/" + id);
-            return "redirect:/inicio/login";
-        }
-        session.setAttribute("section", "#serviceDates");
-        ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
-        String naturalAreaName = serviceDate.getNaturalArea();
-        serviceDateDao.deleteServiceDate(id);
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
-    }*/
-
     // información de un servicio dijo
     @RequestMapping(value="/get/{id}")
     public String getServiceDateNaturalArea(Model model, @PathVariable String id, HttpSession session){

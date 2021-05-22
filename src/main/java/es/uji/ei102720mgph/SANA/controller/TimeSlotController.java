@@ -76,18 +76,4 @@ public class TimeSlotController {
         String naturalAreaName = timeSlot.getNaturalArea();
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
-
-    /*@RequestMapping(value="/delete/{id}")
-    public String processDelete(Model model, @PathVariable String id, HttpSession session) {
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/timeSlot/delete/" + id);
-            return "redirect:/inicio/login";
-        }
-        TimeSlot timeSlot = timeSlotDao.getTimeSlot(id);
-        String naturalAreaName = timeSlot.getNaturalArea();
-        timeSlotDao.deleteTimeSlot(id);
-        session.setAttribute("section", "#timeSlots");
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
-    }*/
 }

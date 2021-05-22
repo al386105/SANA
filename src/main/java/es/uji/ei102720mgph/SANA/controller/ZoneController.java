@@ -92,20 +92,5 @@ public class ZoneController {
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         return "zone/porNaturalArea";
     }
-
-    // Operació esborrar
-    /*@RequestMapping(value="/delete/{id}")
-    public String processDelete(Model model, @PathVariable String id, HttpSession session) {
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/zone/delete/" + id);
-            return "redirect:/inicio/login";
-        }
-        Zone zone = zoneDao.getZone(id);
-        String naturalAreaName = zone.getNaturalArea();
-        zoneDao.deleteZone(id);
-        session.setAttribute("section", "#zones");
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
-    }*/
 }
 

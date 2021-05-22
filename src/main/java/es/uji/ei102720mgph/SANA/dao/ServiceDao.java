@@ -85,4 +85,14 @@ public class ServiceDao {
             return new ArrayList<Service>();
         }
     }
+
+    public  List<Service> getServiceSearch(String patron) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Service WHERE nameOfService LIKE '%"+patron+"%'",
+                    new ServiceRowMapper());
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Service>();
+        }
+    }
 }

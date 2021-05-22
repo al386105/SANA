@@ -51,4 +51,13 @@ public class MunicipalityDao {
         }
     }
 
+    public  List<Municipality> getMunicipalitySearch(String patron) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Municipality WHERE name LIKE '%"+patron+"%'",
+                    new MunicipalityRowMapper());
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Municipality>();
+        }
+    }
 }

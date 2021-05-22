@@ -12,7 +12,7 @@
         <li><b>Fecha de registro:</b> <span th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></span></li>
     </ul><br>
     <td><a th:href="@{/municipality/update/{name}(name=${municipality.name})}">
-        <button type="button" class="btn btn-warning">Editar datos</button> </a>
+        <button type="button" class="btn btn-warning edit">Editar datos</button> </a>
     </td>
     <hr class="lineaVerde">
 
@@ -50,7 +50,7 @@
                 <button type="button" class="btn btn-primary">Más información</button> </a>
             </td>
             <td><a th:href="@{/municipalManager/update/{email}(email=${municipalManager.email})}">
-                <button type="button" class="btn btn-warning">Edita</button>
+                <button type="button" class="btn btn-warning edit">Edita</button>
             </a>
             </td>
             <!-- opcion para dar de baja, si no lo está ya -->
@@ -58,7 +58,7 @@
                 <td></td>
             </div>
             <div th:if="${municipalManager.leavingDate == null}">
-                <td><button type="button" class="btn btn-danger" data-toggle="modal" th:data-target="${'#miModal' + municipalManager.username}">Dar de baja</button></td>
+                <td><button type="button" class="btn btn-danger delete" data-toggle="modal" th:data-target="${'#miModal' + municipalManager.username}">Dar de baja</button></td>
                 <!-- VENTANA EMERGENTE -->
                 <div class="modal" th:id="${'miModal' + municipalManager.username}">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -102,7 +102,7 @@
             <tbody>
             <tr th:each="postalCodeMunicipality: ${#lists.sort(postalCodes)}">
                 <td scope="row" th:text="${postalCodeMunicipality.postalCode}"></td>
-                <td><button type="button" class="btn btn-danger" data-toggle="modal"
+                <td><button type="button" class="btn btn-danger delete" data-toggle="modal"
                             th:data-target="${'#miModal' + postalCodeMunicipality.postalCode}">Elimina</button></td>
                 <!-- VENTANA EMERGENTE -->
                 <div class="modal" th:id="${'miModal' + postalCodeMunicipality.postalCode}">

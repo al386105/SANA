@@ -5,7 +5,27 @@
 <div th:replace="fragments/headerEnvironmental"></div>
 
 <div class="container">
-    <h1>Lista de municipios</h1>
+    <!-- filtro buscador y botón ocupación por municipios -->
+    <div class="box" style="padding-bottom: 20px; padding-top: 20px">
+        <form>
+            <div style="float: right;">
+                <span class="icon"><i class="fa fa-search"></i></span>
+                <input th:name="patron" style="border-radius: 25px; background-color: #e8e6e8" type="search" id="search" placeholder=" Buscar..." />
+                <button style="border-radius: 25px;" type="submit" class="btn btn-primary">Buscar</button>
+                <a th:href="@{/municipality/list}">
+                    <button style="border-radius: 25px; text-color:white" type="submit" class="btn btn-secondary">Resetear</button>
+                </a>
+            </div><br>
+        </form>
+    </div>
+
+    <div>
+        <h1>Lista de municipios</h1>
+        <div style="float: right;">
+            <a href="/municipality/occupancy"><button type="button" class="btn btn-primary">Histórico de ocupación</button></a>
+        </div>
+    </div>
+
     <div th:if="${#lists.isEmpty(municipalities)}">
         ¡No ha añadido todavía ningún municipio!
     </div>
@@ -27,7 +47,7 @@
             </a>
             </td>
             <td><a th:href="@{/municipality/update/{name}(name=${municipality.name})}">
-                <button type="button" class="btn btn-warning">Edita</button>
+                <button type="button" class="btn btn-warning edit">Edita</button>
             </a>
             </td>
         </tr>

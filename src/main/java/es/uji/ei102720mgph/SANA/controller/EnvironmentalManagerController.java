@@ -19,5 +19,4 @@ public class EnvironmentalManagerController {
         }
         return "environmentalManager/home";
     }
-
 }

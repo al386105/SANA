@@ -1,6 +1,7 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
+import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/service")
@@ -28,7 +27,7 @@ public class ServiceController {
 
     // Operació llistar
     @RequestMapping("/list")
-    public String listServices(Model model, HttpSession session) {
+    public String listServices(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron) {
         if(session.getAttribute("environmentalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/service/list");
@@ -36,7 +35,15 @@ public class ServiceController {
         }
         if(session.getAttribute("section") != null)
             session.removeAttribute("section");
-        model.addAttribute("services", serviceDao.getServices());
+
+        // Aplicar filtro
+        List<Service> services;
+        if (patron != null) {
+            services = serviceDao.getServiceSearch(patron);
+        } else
+            services = serviceDao.getServices();
+
+        model.addAttribute("services", services);
         return "service/list";
     }
 

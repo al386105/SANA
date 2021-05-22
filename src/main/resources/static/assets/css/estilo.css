@@ -294,6 +294,16 @@ label.star:before {
     border-color: #697f40!important;
 }
 
+.delete {
+    background-color: #BD2E1B!important;
+    border-color: #BD2E1B!important;
+}
+
+.edit {
+    background-color: #FFCB22!important;
+    border-color: #FFCB22!important;
+}
+
 .motivo {
     background-color: #e8e6e8;
     width: 70%;

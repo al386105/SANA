@@ -36,9 +36,9 @@
         <td th:case="'manager'">
             <div th:if="${serviceDate.endDate == null}">
                 <a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
-                    <button type="button" class="btn btn-warning">Edita</button>
+                    <button type="button" class="btn btn-warning edit">Edita</button>
                 </a>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#miModal">Dar de baja</button>
+                <button type="button" class="btn btn-danger delete" data-toggle="modal" data-target="#miModal">Dar de baja</button>
                 <!-- VENTANA EMERGENTE -->
                 <div class="modal" id="miModal">
                     <div class="modal-dialog modal-dialog-centered" role="document">

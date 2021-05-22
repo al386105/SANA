@@ -27,16 +27,6 @@ public class NaturalAreaDao {
                 naturalArea.getRestrictionTimePeriod(), naturalArea.getOccupancyRate(), naturalArea.getMunicipality());
     }
 
-    /*public void deleteNaturalArea(NaturalArea naturalArea) {
-        jdbcTemplate.update("DELETE FROM NaturalArea WHERE name = ?",
-                naturalArea.getName());
-    }
-
-    public void deleteNaturalArea(String naturalAreaName) {
-        jdbcTemplate.update("DELETE FROM NaturalArea WHERE name = ?",
-                naturalAreaName);
-    }*/
-
     public void updateNaturalArea(NaturalArea naturalArea) {
         jdbcTemplate.update("UPDATE NaturalArea " +
                         "SET typeOfAccess = ?, geographicalLocation = ?, typeOfArea = ?, " +
@@ -103,5 +93,4 @@ public class NaturalAreaDao {
             return null;
         }
     }
-
 }

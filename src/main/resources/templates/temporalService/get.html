@@ -44,7 +44,7 @@
     <div th:switch="${typeUser}">
         <td th:case="'manager'">
             <a th:href="@{/temporalService/update/{id}(id=${temporalService.id})}">
-                <button type="button" class="btn btn-warning">Edita</button>
+                <button type="button" class="btn btn-warning edit">Edita</button>
             </a>
             <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
                 <button type="submit" class="btn btn-primary">Volver al área natural</button>

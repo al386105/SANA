@@ -141,13 +141,6 @@ public class NaturalAreaController {
         return "/naturalArea/getEnvironmental";
     }
 
-    /*@RequestMapping(value="/list")
-    public String listNaturalAreas(Model model, HttpSession session){
-        model.addAttribute("naturalAreas", naturalAreaService.getNaturalAreasWithImage());
-        quitarAtributoSeccion(session);
-        return "naturalArea/list";
-    }*/
-
     // metodo para anyadir al modelo los datos del selector de municipio
     @ModelAttribute("municipalityList")
     public List<String> municipalityList() {
@@ -479,18 +472,7 @@ public class NaturalAreaController {
         return "redirect:/naturalArea/getManagers/" + naturalAreaForm.getName();
     }
 
-    // Operació esborrar
-    /*@RequestMapping(value="/delete/{naturalArea}")
-    public String processDelete(Model model, @PathVariable String naturalArea, HttpSession session) {
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/delete/" + naturalArea);
-            return "redirect:/inicio/login";
-        }
-        naturalAreaDao.deleteNaturalArea(naturalArea);
-        return "redirect:/naturalArea/listManagers";
-    }*/
-
+    // Historico de ocupacion de áreas naturales para el gestor municipal
     @RequestMapping(value="/occupancy", method=RequestMethod.GET)
     public String getOccupancyForm(Model model, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
@@ -503,7 +485,7 @@ public class NaturalAreaController {
         return "naturalArea/occupancy";
     }
 
-    // Vista de paneles de información para ciudadanos registrados
+    // Vista de paneles de información para ciudadanos registrados o no registrados
     @RequestMapping(value="/getInfo")
     public String getInfoPaneles(Model model, HttpSession session){
         // si es null es que no esta registrado

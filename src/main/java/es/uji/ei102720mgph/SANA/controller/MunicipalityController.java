@@ -4,21 +4,19 @@ import es.uji.ei102720mgph.SANA.dao.MunicipalManagerDao;
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.dao.PostalCodeMunicipalityDao;
 import es.uji.ei102720mgph.SANA.model.Municipality;
+import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.PostalCodeMunicipality;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/municipality")
@@ -44,13 +42,20 @@ public class MunicipalityController {
     }
 
     @RequestMapping("/list")
-    public String listMunicipalities(Model model, HttpSession session) {
+    public String listMunicipalities(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron) {
         if(session.getAttribute("environmentalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/municipality/list");
             return "redirect:/inicio/login";
         }
-        model.addAttribute("municipalities", municipalityDao.getMunicipalities());
+        // Aplicar filtro
+        List<Municipality> municipalities;
+        if (patron != null) {
+            municipalities = municipalityDao.getMunicipalitySearch(patron);
+        } else
+            municipalities = municipalityDao.getMunicipalities();
+
+        model.addAttribute("municipalities", municipalities);
         quitarAtributoSeccion(session);
         return "municipality/list";
     }
@@ -130,19 +135,19 @@ public class MunicipalityController {
         return "redirect:list";
     }
 
-    /*@RequestMapping(value="/delete/{name}")
-    public String processDelete(Model model, @PathVariable String name, HttpSession session) {
-        if(session.getAttribute("environmentalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/municipality/delete/" + name);
-            return "redirect:/inicio/login";
-        }
-        municipalityDao.deleteMunicipality(name);
-        return "redirect:../list";
-    }*/
-
     private void quitarAtributoSeccion(HttpSession session) {
         if(session.getAttribute("section") != null)
             session.removeAttribute("section");
+    }
+
+    // Histórico de ocupación de municipios para responsable del medio ambiente
+    @RequestMapping(value="/occupancy")
+    public String getOccupancy(Model model, HttpSession session){
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipality/occupancy");
+            return "redirect:/inicio/login";
+        }
+        return "/municipality/occupancy";
     }
 }

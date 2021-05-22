@@ -53,16 +53,4 @@ public class CommentController {
         commentDao.addComment(comment);
         return "redirect:/naturalArea/get/" + comment.getNaturalArea();
     }
-
-    // Operació esborrar
-    @RequestMapping(value="/delete/{commentId}")
-    public String processDelete(Model model, @PathVariable String commentId, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/comment/update/" + commentId);
-            return "redirect:/inicio/login";
-        }
-        commentDao.deleteComment(commentId);
-        return "redirect:../list";
-    }
 }

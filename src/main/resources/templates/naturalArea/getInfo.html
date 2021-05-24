@@ -12,15 +12,39 @@
 </td>
 
 <div class="container">
-    <h1> POR HACER</h1>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <!-- TODO POR HACER -->
+    <h2> Ocupación actual de las areas naturales </h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Área natural</th>
+            <th scope="col">Acceso</th>
+            <th scope="col">Ocupación actual</th>
+            <th scope="col">Capacidad máxima</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="occupancyData: ${occupancyDataOfNaturalAreas}">
+            <td> <b th:text="${occupancyData.naturalArea.name}"> </b>  </td>
+            <!-- Acceso -->
+            <td> <span th:text="${occupancyData.naturalArea.typeOfAccess.descripcion}"> </span> </td>
+            <!-- Ratio de ocupación -->
+            <td th:switch="${occupancyData.naturalArea.typeOfAccess.descripcion}">
+                <span th:case="'Restringido'" th:text="${occupancyData.occupancyRate}"> % </span>
+                <span th:case="'No restringido'"> - </span>
+                <span th:case="'Cerrado'"> 0.0 % </span>
+            </td>
+            <!-- Ocupacion máxima -->
+            <td th:switch="${occupancyData.naturalArea.typeOfAccess.descripcion}">
+                <span th:case="'Restringido'" th:text="${occupancyData.maxCapacity}"></span>
+                <span th:case="'No restringido'"> - </span>
+                <span th:case="'Cerrado'"> 0 </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>
 
     <br><br>
 </div>

@@ -476,14 +476,15 @@ public class NaturalAreaController {
 
     // Historico de ocupacion de áreas naturales para el gestor municipal
     @RequestMapping(value="/occupancy", method=RequestMethod.GET)
-    public String getOccupancyForm(Model model, HttpSession session) {
+    public String getOccupancy(Model model, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/naturalArea/occupancy");
             return "redirect:/inicio/login";
         }
         List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
-        model.addAttribute("occupancyDataOfNaturalAreas", occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
+        model.addAttribute("occupancyDataOfNaturalAreas",
+                occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
         return "naturalArea/occupancy";
     }
 
@@ -492,7 +493,34 @@ public class NaturalAreaController {
     public String getInfoPaneles(Model model, HttpSession session){
         // si es null es que no esta registrado
         model.addAttribute("registered", session.getAttribute("registeredCitizen"));
-        return "/naturalArea/getInfo";
+        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
+        model.addAttribute("occupancyDataOfNaturalAreas",
+                occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
+        return "naturalArea/getInfo";
+    }
+
+    // Vista de paneles de información para ciudadanos registrados o no registrados
+    @RequestMapping(value="/occupancyPlot")
+    public String occupancyPlotGet(Model model, HttpSession session){
+        // si es null es que no esta registrado
+        model.addAttribute("registered", session.getAttribute("registeredCitizen"));
+
+        OccupancyFormData occupancyFormData = new OccupancyFormData();
+        model.addAttribute("naturalAreas", naturalAreaDao.getRestrictedNaturalAreas());
+        model.addAttribute("occupancyFormData", occupancyFormData);
+        return "naturalArea/occupancyPlotForm";
+    }
+
+    // Vista de paneles de información para ciudadanos registrados o no registrados
+    @RequestMapping(value="/occupancyPlot", method=RequestMethod.POST)
+    public String occupancyPlotPost(Model model, HttpSession session,
+                                    @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData){
+        // si es null es que no esta registrado
+        model.addAttribute("registered", session.getAttribute("registeredCitizen"));
+        model.addAttribute("plot",
+                occupationService.getOccupancyPlotByYear(occupancyFormData.getNaturalArea(),
+                        occupancyFormData.getYear()));
+        return "naturalArea/occupancyPlot";
     }
 
     private void quitarAtributoSeccion(HttpSession session) {

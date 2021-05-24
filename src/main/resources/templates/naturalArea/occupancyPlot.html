@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:replace="fragments/headerManager"></div>
+
+<div class="container">
+
+    <img th:src="${plot}" alt="Grafico"/>
+
+    <br>
+    <br>
+
+    <a  href="/"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+
+    <br><br>
+</div>
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

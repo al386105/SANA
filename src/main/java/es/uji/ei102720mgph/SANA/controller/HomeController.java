@@ -100,36 +100,47 @@ public class HomeController {
 
         SanaUser sanaUser = sanaUserDao.getSanaUser(registrationCitizen.getEmail());
         if (sanaUser == null){
-            //Usuario no registrado antes
+            if (Integer.parseInt(registrationCitizen.getPassword()) == Integer.parseInt(registrationCitizen.getPasswordComprovation())) {
+                //Usuario no registrado antes
+                //Añadimos la dirección a las tablas
+                Address address = new Address();
+                address.setStreet(registrationCitizen.getStreet());
+                address.setNumber(registrationCitizen.getNumber());
+                address.setFloorDoor(registrationCitizen.getFloorDoor());
+                address.setPostalCode(registrationCitizen.getPostalCode());
+                address.setCity(registrationCitizen.getCity());
+                address.setCountry(registrationCitizen.getCountry());
+                addressDao.addAddress(address);
 
-            //Añadimos la dirección a las tablas
-            Address address = new Address();
-            address.setStreet(registrationCitizen.getStreet());
-            address.setNumber( registrationCitizen.getNumber());
-            address.setFloorDoor(registrationCitizen.getFloorDoor());
-            address.setPostalCode(registrationCitizen.getPostalCode());
-            address.setCity(registrationCitizen.getCity());
-            address.setCountry(registrationCitizen.getCountry());
-            addressDao.addAddress(address);
+                //Añadimos el ciudadano a RegisteredCitizen
+                Formatter fmt = new Formatter();
+                RegisteredCitizen registeredCitizen = new RegisteredCitizen();
+                registeredCitizen.setAddressId(addressDao.getAddress("ad" + fmt.format("%07d", Address.getContador() - 1)).getId());
+                registeredCitizen.setName(registrationCitizen.getNombre());
+                registeredCitizen.setPin(Integer.parseInt(registrationCitizen.getPassword()));
+                registeredCitizen.setSurname(registrationCitizen.getApellidos());
+                registeredCitizen.setEmail(registrationCitizen.getEmail());
+                registeredCitizen.setMobilePhoneNumber(registrationCitizen.getTelefono());
+                registeredCitizen.setDateOfBirth(registrationCitizen.getDateOfBirth());
+                registeredCitizen.setTypeOfUser(TypeOfUser.registeredCitizen);
+                registeredCitizen.setIdNumber(registrationCitizen.getDni());
+                registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
 
-            //Añadimos el ciudadano a RegisteredCitizen
-            Formatter fmt = new Formatter();
-            RegisteredCitizen registeredCitizen =  new RegisteredCitizen();
-            registeredCitizen.setAddressId(addressDao.getAddress("ad" + fmt.format("%07d", Address.getContador()-1)).getId());
-            registeredCitizen.setName(registrationCitizen.getNombre());
-            registeredCitizen.setPin(Integer.parseInt(registrationCitizen.getPassword()));
-            registeredCitizen.setSurname(registrationCitizen.getApellidos());
-            registeredCitizen.setEmail(registrationCitizen.getEmail());
-            registeredCitizen.setMobilePhoneNumber(registrationCitizen.getTelefono());
-            registeredCitizen.setDateOfBirth(registrationCitizen.getDateOfBirth());
-            registeredCitizen.setTypeOfUser(TypeOfUser.registeredCitizen);
-            registeredCitizen.setIdNumber(registrationCitizen.getDni());
-            registeredCitizen.setCitizenCode(registrationCitizen.getCitizenCode());
-            registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
+                // Envia correo electrónico
+                Formatter fm = new Formatter();
+                String destinatario = registeredCitizen.getEmail();
+                String asunto = "Bienvenido a SANA";
+                String cuerpo = "Bienvenido a SANA " +registeredCitizen.getName()+"\n su nombre de usuario es: \n " + "ci"+fm.format("%04d", RegisteredCitizen.getCitizenCode()-1);
+                enviarMail(destinatario, asunto, cuerpo);
 
-            // TODO ENVIAR MAIL!!!!
 
-            return "redirect:/inicio/login";
+                return "redirect:/inicio/login";
+
+            }else {
+                //Usuario ya registrado en el sistema
+                bindingResult.rejectValue("passwordComprovation", "badpass", "Contraseñas diferentes");
+                return "redirect:/inicio/login";
+            }
         }else {
             //Usuario ya registrado en el sistema
             bindingResult.rejectValue("email", "bademail", "Usuario ya registrado");
@@ -148,7 +159,7 @@ public class HomeController {
 
         //!!!!!!!!!
         // TODO acceso responsable fatal
-        if(userLogin.getEmail().equals("responsable@gmail.com") && userLogin.getPassword().equals("responsable")) {
+        if(userLogin.getUsername().equals("responsable@gmail.com") && userLogin.getPassword().equals("responsable")) {
             session.setAttribute("environmentalManager", "dentro");
             String nextUrl = (String) session.getAttribute("nextUrl");
             if (nextUrl != null) {
@@ -161,11 +172,12 @@ public class HomeController {
         //!!!!!!!!!
 
 
-        SanaUser sanaUser = sanaUserDao.getSanaUser(userLogin.getEmail().trim());
-        if (sanaUser != null){
-            //El usuario esta registrado en el sistema
+        SanaUser sanaUser = sanaUserDao.getSanaUser(userLogin.getUsername().trim());
+        RegisteredCitizen registeredCitizen = registeredCitizenDao.getRegisteredCitizenCitizenCode(userLogin.getUsername());
 
-            if (sanaUser.getTypeOfUser().equals(TypeOfUser.municipalManager)){
+        if (sanaUser != null || registeredCitizen != null){
+            //El usuario esta registrado en el sistema
+            if ( sanaUser != null && sanaUser.getTypeOfUser().equals(TypeOfUser.municipalManager)){
                 MunicipalManager municipalManager = municipalManagerDao.getMunicipalManager(sanaUser.getEmail());
 
                 // Si está dado de baja, no puede entrar
@@ -194,7 +206,7 @@ public class HomeController {
                 }
             }
 
-            else if (sanaUser.getTypeOfUser().equals(TypeOfUser.controlStaff)){
+            else if (sanaUser != null && sanaUser.getTypeOfUser().equals(TypeOfUser.controlStaff)){
                 ControlStaff controlStaff = controlStaffDao.getControlStaf(sanaUser.getEmail());
                 if (controlStaff.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
@@ -207,8 +219,7 @@ public class HomeController {
                 }
             }
 
-            else if (sanaUser.getTypeOfUser().equals(TypeOfUser.registeredCitizen)){
-                RegisteredCitizen registeredCitizen = registeredCitizenDao.getRegisteredCitizen(sanaUser.getEmail());
+            else if (sanaUser == null ){
                 try {
                     if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
                         //Contraseña Correcta
@@ -235,7 +246,7 @@ public class HomeController {
 
         } else {
             //El usuario no está registrado en el sistema
-            bindingResult.rejectValue("email", "badEmail", "Email no registrado en el sistema");
+            bindingResult.rejectValue("username", "badUsername", "Usuario no registrado en el sistema");
             return "inicio/login";
         }
         return "redirect:/naturalArea/pagedlist"; //Redirigimos a la página de inicio con la sesión iniciada

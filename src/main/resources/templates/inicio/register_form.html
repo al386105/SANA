@@ -100,13 +100,16 @@
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="citizenCode">Nombre de usuario:</label>
-            <div class="col-sm-4">
-                <input style="width: 60%;" maxlength="6" type="text" required class="form-control" id="citizenCode" th:field="*{citizenCode}"/>
-            </div>
+
             <label class="control-label col-sm-2" for="password">Contraseña:</label>
             <div class="col-sm-4">
                 <input style="width: 60%;" type="password" minlength="4" maxlength="4" placeholder="4 números" required class="form-control" id="password" th:field="*{password}" />
+                <!--<div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>-->
+            </div>
+
+            <label class="control-label col-sm-2" for="passwordComprovation">Contraseña:</label>
+            <div class="col-sm-4">
+                <input style="width: 60%;" type="password" minlength="4" maxlength="4" placeholder="4 números" required class="form-control" id="passwordComprovation" th:field="*{passwordComprovation}" />
                 <!--<div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>-->
             </div>
         </div>

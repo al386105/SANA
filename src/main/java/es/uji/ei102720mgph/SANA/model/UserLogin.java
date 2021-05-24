@@ -2,19 +2,19 @@ package es.uji.ei102720mgph.SANA.model;
 
 public class UserLogin {
 
-    String email;
+    String username;
     String password;
 
     public UserLogin(){
         super();
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String username) {
-        this.email = username;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

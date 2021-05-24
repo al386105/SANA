@@ -6,35 +6,70 @@
 
 
 <div class="container">
-  <h2>Realizar nueva reserva en <span th:text="${naturalArea}"></span></h2>
-  <br>
-  <form class="form-horizontal" action="#" th:action="@{/reservation/add}"
-        th:object="${reservation}" method="post">
-
-    <input type="hidden" id="numberOfPeople" th:field="*{numberOfPeople}" />
-    <input type="hidden" id="timeSlotId" th:field="*{timeSlotId}" />
-    <input type="hidden" id="reservationDate" th:field="*{reservationDate}" />
-
-    <div class="form-group row">
-      <label class="control-label col-sm-2">Zonas disponibles:</label>
-      <div class="col-sm-4">
-        <select class="selectReserva" type="text" th:field="*{zoneid}">
-          <option th:each="zon : ${zones}"
-                  th:value="${zon.id}"
-                  th:text="${zon.zoneNumber + ' ' + zon.letter}"></option>
-        </select>
-
-      </div>
+    <h2>Realizar nueva reserva en <span th:text="${naturalArea}"></span></h2>
+    <br>
+    <div th:if="!${puedeReservar}">
+        <br>
+        <br>
+        <br>
+        <h4 style="text-align: center">No admitimos reservas a menos de una hora de su inicio,</h4>
+        <h4 style="text-align: center">lo sentimos</h4>
+        <br>
+        <br>
+        <a th:href="${'/reservation/add/' + naturalArea}">
+            <button type="button" class="btn btn-secondary">Atrás</button>
+        </a>
+        <br>
+        <br>
     </div>
 
-    <div class="form-group row">
-      <div class="col-sm-offset-2 col-sm-4">
-        <a href="/naturalArea/pagedlist"><button type="button" class="btn btn-secondary">Cancelar</button></a>
-        <button type="submit" class="btn btn-primary">Reservar</button>
-      </div>
-    </div>
+    <div th:unless="!${puedeReservar}">
+        <div th:if="${#lists.isEmpty(zones)}">
+            <br>
+            <br>
+            <br>
+            <h4 style="text-align: center">Es estos momentos no disponemos de zonas disponibles que cumplan tus
+                necesidades,</h4>
+            <h4 style="text-align: center">lo sentimos</h4>
+            <br>
+            <br>
+            <a th:href="${'/reservation/add/' + naturalArea}">
+                <button type="button" class="btn btn-secondary">Atrás</button>
+            </a>
+            <br>
+            <br>
+        </div>
+        <div th:unless="${#lists.isEmpty(zones)}">
+            <form class="form-horizontal" action="#" th:action="@{/reservation/add}"
+                  th:object="${reservation}" method="post">
 
-  </form>
+                <input type="hidden" id="numberOfPeople" th:field="*{numberOfPeople}"/>
+                <input type="hidden" id="timeSlotId" th:field="*{timeSlotId}"/>
+                <input type="hidden" id="reservationDate" th:field="*{reservationDate}"/>
+
+                <div class="form-group row">
+                    <label class="control-label col-sm-2">Zonas disponibles:</label>
+                    <div class="col-sm-4">
+                        <select class="selectReserva" type="text" th:field="*{zoneid}">
+                            <option th:each="zon : ${zones}"
+                                    th:value="${zon.id}"
+                                    th:text="${zon.zoneNumber + ' ' + zon.letter}"></option>
+                        </select>
+
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <a href="/naturalArea/pagedlist">
+                            <button type="button" class="btn btn-secondary">Cancelar</button>
+                        </a>
+                        <button type="submit" class="btn btn-primary">Reservar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <div th:replace="fragments/footer"></div>

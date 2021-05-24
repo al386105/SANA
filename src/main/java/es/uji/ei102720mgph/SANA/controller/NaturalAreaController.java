@@ -170,7 +170,8 @@ public class NaturalAreaController {
 
         // las áreas naturales cerradas no pueden ser vistas por los ciudadanos
         naturalAreas.removeIf(naturalArea -> naturalArea.getTypeOfAccess().getDescripcion().equals("Cerrado"));
-
+        // Ordenar por nombre
+        Collections.sort(naturalAreas);
         List<String> pathPictures = naturalAreaService.getImageOfNaturalAreas(naturalAreas);
         ArrayList<ArrayList<NaturalArea>> naturalAreasPaged = new ArrayList<>();
         ArrayList<ArrayList<String>> pathPicturesPaged = new ArrayList<>();
@@ -221,7 +222,6 @@ public class NaturalAreaController {
         if (municipality != null && !municipality.equals("todos"))
             naturalAreas.removeIf(naturalArea -> !naturalArea.getMunicipality().equals(municipality));
 
-        Collections.sort(naturalAreas);
         return naturalAreas;
     }
 
@@ -268,6 +268,7 @@ public class NaturalAreaController {
         } else
             naturalAreas = naturalAreaDao.getNaturalAreas();
 
+        Collections.sort(naturalAreas);
         ArrayList<ArrayList<NaturalArea>> naturalAreasPaged = new ArrayList<>();
         int ini=0;
         int fin=pageLength;

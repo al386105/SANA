@@ -294,14 +294,30 @@ label.star:before {
     border-color: #697f40!important;
 }
 
+.btn-success.focus, .btn-success:focus, .btn-success:hover {
+    background-color: #1B2E0F!important;
+    border-color: #1B2E0F!important;
+}
+
 .delete {
     background-color: #BD2E1B!important;
     border-color: #BD2E1B!important;
 }
 
+.btn-danger.focus, .btn-danger:focus, .btn-danger:hover {
+    background-color: #8F2314!important;
+    border-color: #8F2314!important;
+}
+
 .edit {
-    background-color: #FFCB22!important;
-    border-color: #FFCB22!important;
+    background-color: # !important;
+    border-color: #fcba03!important;
+    color: #FFFFFF!important;
+}
+
+.btn-warning.focus, .btn-warning:focus, .btn-warning:hover {
+    background-color: #FFDD44!important;
+    border-color: #FFDD44!important;
 }
 
 .motivo {

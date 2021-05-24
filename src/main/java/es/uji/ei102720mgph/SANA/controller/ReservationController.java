@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Formatter;
 import java.util.List;
 
@@ -83,11 +84,11 @@ public class ReservationController {
         model.addAttribute("reservation", new NuevaReserva());
         model.addAttribute("naturalArea", naturalArea);
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalAreaActuales(naturalArea));
-        LocalDate[] fechas = new LocalDate[2];
-        //fechas[0] = LocalDate.now(); PARA ESE MISMO DIA SE PUEDE RESERVAR ?? TODO
+        LocalDate[] fechas = new LocalDate[3];
+        fechas[0] = LocalDate.now(); //PARA ESE MISMO DIA SE PUEDE RESERVAR ?? TODO
         // Sip, hasta 1 hora antes del inicio de la franja horaria
-        fechas[0] = LocalDate.now().plusDays(1);
-        fechas[1] = LocalDate.now().plusDays(2);
+        fechas[1] = LocalDate.now().plusDays(1);
+        fechas[2] = LocalDate.now().plusDays(2);
         model.addAttribute("fechas", fechas);
         return "reservation/add";
     }
@@ -96,6 +97,21 @@ public class ReservationController {
     public String addReservation2(@ModelAttribute("reservation") NuevaReserva reservation, @PathVariable String naturalArea, Model model, HttpSession session) {
         model.addAttribute("reservation", reservation);
         model.addAttribute("naturalArea", naturalArea);
+        if (reservation.getReservationDate().isEqual(LocalDate.now())) {
+            TimeSlot timeSlot = timeSlotDao.getTimeSlot(reservation.getTimeSlotId());
+            System.out.println(timeSlot.getBeginningTime());
+            System.out.println(timeSlot.getBeginningTime().minusHours(1));
+            System.out.println(LocalTime.now());
+            System.out.println();
+            if (timeSlot.getBeginningTime().minusHours(1).isAfter(LocalTime.now())) {
+                model.addAttribute("puedeReservar", true);
+            } else {
+                model.addAttribute("puedeReservar", false);
+            }
+        }
+        else {
+            model.addAttribute("puedeReservar", true);
+        }
         List<Zone> zonas = zoneDao.getZoneDisponibles(reservation.getReservationDate(), reservation.getTimeSlotId(), reservation.getNumberOfPeople(), (String) model.getAttribute("naturalArea"));
         model.addAttribute("zones", zonas);
         return "reservation/add2";

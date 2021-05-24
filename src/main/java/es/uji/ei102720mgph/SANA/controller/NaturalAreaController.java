@@ -482,7 +482,8 @@ public class NaturalAreaController {
             return "redirect:/inicio/login";
         }
         List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
-        model.addAttribute("occupancyDataOfNaturalAreas", occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
+        model.addAttribute("occupancyDataOfNaturalAreas",
+                occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
         return "naturalArea/occupancy";
     }
 
@@ -491,7 +492,10 @@ public class NaturalAreaController {
     public String getInfoPaneles(Model model, HttpSession session){
         // si es null es que no esta registrado
         model.addAttribute("registered", session.getAttribute("registeredCitizen"));
-        return "/naturalArea/getInfo";
+        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
+        model.addAttribute("occupancyDataOfNaturalAreas",
+                occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
+        return "naturalArea/getInfo";
     }
 
     private void quitarAtributoSeccion(HttpSession session) {

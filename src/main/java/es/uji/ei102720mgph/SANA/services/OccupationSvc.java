@@ -56,12 +56,12 @@ public class OccupationSvc implements OccupationService{
         return ((float) occupancyOfDay / (float) maxCapacity) * 100;
     }
 
-     public List<OccupancyData> getOccupancyDataOfNaturalAreas(List<NaturalArea> naturalAreas){
+    public List<OccupancyData> getOccupancyDataOfNaturalAreas(List<NaturalArea> naturalAreas){
         List<OccupancyData> occupancyDataOfNaturalAreas = new ArrayList<>(naturalAreas.size());
         for(NaturalArea naturalArea: naturalAreas){
             String naturalAreaName = naturalArea.getName();
             OccupancyData occupancyData = new OccupancyData();
-            occupancyData.setNaturalArea(naturalAreaName);
+            occupancyData.setNaturalArea(naturalArea);
             occupancyData.setMaxCapacity(getMaxCapacityOfNaturalArea(naturalAreaName));
             occupancyData.setTotalOccupancy(getTotalOccupancy(naturalArea.getName()));
             occupancyData.setOccupancyRate(getOccupancyOfDay(naturalAreaName, LocalDate.now()));

@@ -3,7 +3,7 @@ package es.uji.ei102720mgph.SANA.model;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
 
 public class OccupancyData {
-    private String naturalArea;
+    private NaturalArea naturalArea;
     private float occupancyRate;
     private int maxCapacity;
     private int totalOccupancy;
@@ -12,11 +12,11 @@ public class OccupancyData {
 
     }
 
-    public String getNaturalArea() {
+    public NaturalArea getNaturalArea() {
         return naturalArea;
     }
 
-    public void setNaturalArea(String naturalArea) {
+    public void setNaturalArea(NaturalArea naturalArea) {
         this.naturalArea = naturalArea;
     }
 

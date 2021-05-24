@@ -5,7 +5,7 @@
 <div th:replace="fragments/headerManager"></div>
 
 <div class="container">
-    <h2> Ocupación de las areas naturales restringidas </h2>
+    <h2> Ocupación de las areas naturales</h2>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -18,7 +18,7 @@
 
         <tbody>
         <tr th:each="occupancyData: ${occupancyDataOfNaturalAreas}">
-            <td> <b th:text="${occupancyData.naturalArea}"> </b>  </td>
+            <td> <b th:text="${occupancyData.naturalArea.name}"> </b>  </td>
             <td> <span th:text="${occupancyData.occupancyRate}"> </span> % </td>
             <td> <span th:text="${occupancyData.maxCapacity}"> </span> </td>
             <td> <span th:text="${occupancyData.totalOccupancy}"> </span> </td>

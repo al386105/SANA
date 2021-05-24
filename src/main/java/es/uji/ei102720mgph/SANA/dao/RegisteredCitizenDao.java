@@ -2,12 +2,14 @@ package es.uji.ei102720mgph.SANA.dao;
 
 import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
+import es.uji.ei102720mgph.SANA.model.TimeSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.time.LocalDate;
+import java.util.Formatter;
 
 @Repository
 public class RegisteredCitizenDao {
@@ -20,13 +22,17 @@ public class RegisteredCitizenDao {
     }
 
     public void addRegisteredCitizen(RegisteredCitizen registeredCitizen){
+        Formatter fmt = new Formatter();
+
         jdbcTemplate.update("INSERT INTO SanaUser VALUES(?, ?, ?, ?, ?, ?, ?)",
                 registeredCitizen.getEmail(), registeredCitizen.getName(), registeredCitizen.getSurname(),
                 registeredCitizen.getDateOfBirth(), LocalDate.now(), null, TypeOfUser.registeredCitizen.name());
         jdbcTemplate.update("INSERT INTO RegisteredCitizen VALUES(?, ?, ?, ?, ?, ?)",
                 registeredCitizen.getEmail(), registeredCitizen.getIdNumber(),
-                registeredCitizen.getMobilePhoneNumber(), registeredCitizen.getCitizenCode(),
-                registeredCitizen.getPin(), registeredCitizen.getAddressId());
+                registeredCitizen.getMobilePhoneNumber(), "ci"+fmt.format("%04d", RegisteredCitizen.getCitizenCode()),
+                registeredCitizen.getPin(), registeredCitizen.getAddressId()
+        );
+       RegisteredCitizen.incrementaCitizenCode();
     }
 
     public void updateRegisteredCitizen(RegisteredCitizen registeredCitizen){
@@ -72,6 +78,18 @@ public class RegisteredCitizenDao {
                             "JOIN SanaUser ON RegisteredCitizen.email = SanaUser.email " +
                             "WHERE RegisteredCitizen.mobilePhoneNumber = ?",
                     new RegisteredCitizenRowMapper(), telf);
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    public RegisteredCitizen getRegisteredCitizenCitizenCode(String citizenCode){
+        try{
+            return jdbcTemplate.queryForObject("SELECT * FROM RegisteredCitizen " +
+                            "JOIN SanaUser ON RegisteredCitizen.email = SanaUser.email " +
+                            "WHERE RegisteredCitizen.citizenCode = ? ",
+                    new RegisteredCitizenRowMapper(), citizenCode);
         }
         catch (EmptyResultDataAccessException e){
             return null;

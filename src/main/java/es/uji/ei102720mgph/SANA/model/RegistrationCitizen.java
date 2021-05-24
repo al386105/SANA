@@ -20,6 +20,7 @@ public class RegistrationCitizen {
     private String city;
     private String country;
     private String password;
+    private String passwordComprovation;
     private String citizenCode;
 
 
@@ -43,6 +44,14 @@ public class RegistrationCitizen {
     public void setPassword(String password) {
         this.password = password;
     }
+    public String getPasswordComprovation() {
+        return passwordComprovation;
+    }
+
+    public void setPasswordComprovation(String passwordComprovation) {
+        this.passwordComprovation = passwordComprovation;
+    }
+
     public String getEmail() {
         return email;
     }

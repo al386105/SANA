@@ -32,7 +32,7 @@
             <td th:switch="${occupancyData.naturalArea.typeOfAccess.descripcion}">
                 <span th:case="'Restringido'" th:text="${occupancyData.occupancyRate}"> % </span>
                 <span th:case="'No restringido'"> - </span>
-                <span th:case="'Cerrado'"> 0.0% </span>
+                <span th:case="'Cerrado'"> 0.0 % </span>
             </td>
             <!-- Ocupacion máxima -->
             <td th:switch="${occupancyData.naturalArea.typeOfAccess.descripcion}">

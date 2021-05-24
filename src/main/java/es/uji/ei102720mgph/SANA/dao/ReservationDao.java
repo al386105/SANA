@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Formatter;
@@ -125,6 +126,9 @@ public class ReservationDao {
         }
     }
 
+    /**
+     * Devuelve todas las reservas realizadas en el area natural
+     * */
     public List<Reservation> getReservationsOfNaturalArea(String naturalArea) {
         try {
             return jdbcTemplate.query("SELECT * FROM Reservation " +
@@ -139,6 +143,46 @@ public class ReservationDao {
         }
     }
 
+    /**
+     * Devuelve todas las reservas del año recibido (date) del area natural
+     * */
+    public List<Reservation> getReservationsOfNaturalAreaOfYear(String naturalArea, LocalDate date) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Reservation " +
+                            "JOIN ReservationOfZone ON Reservation.reservationNumber = ReservationOfZone.reservationNumber " +
+                            "JOIN Zone ON ReservationOfZone.zoneId = Zone.id " +
+                            "WHERE Zone.naturalArea = ? " +
+                            "AND EXTRACT(year FROM Reservation.reservationDate) = ? ",
+                    new ReservationRowMapper(),
+                    naturalArea, date.getYear());
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Reservation>();
+        }
+    }
+
+    /**
+     * Devuelve todas las reservas del mes recibido (date) del area natural
+     * */
+    public List<Reservation> getReservationsOfNaturalAreaOfMonth(String naturalArea, LocalDate date) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Reservation " +
+                            "JOIN ReservationOfZone ON Reservation.reservationNumber = ReservationOfZone.reservationNumber " +
+                            "JOIN Zone ON ReservationOfZone.zoneId = Zone.id " +
+                            "WHERE Zone.naturalArea = ? " +
+                            "AND EXTRACT(year FROM Reservation.reservationDate) = ? " +
+                            "AND EXTRACT(month FROM Reservation.reservationDate) = ? ",
+                    new ReservationRowMapper(),
+                    naturalArea, date.getYear(), date.getMonthValue());
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Reservation>();
+        }
+    }
+
+    /**
+     * Devuelve todas las reservas de un determinado dia del area natural
+     * */
     public List<Reservation> getReservationsOfNaturalAreaOfDay(String naturalArea, LocalDate date) {
         try {
             return jdbcTemplate.query("SELECT * FROM Reservation " +
@@ -147,6 +191,25 @@ public class ReservationDao {
                             "WHERE Zone.naturalArea = ? AND Reservation.reservationDate = ?",
                     new ReservationRowMapper(),
                     naturalArea, date);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Reservation>();
+        }
+    }
+
+    /**
+     * Devuelve todas las reservas de una hora y dia determinado del area natural
+     * */
+    public List<Reservation> getReservationsOfNaturalAreaOfHour(String naturalArea, LocalDate date, LocalTime time) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Reservation " +
+                            "JOIN ReservationOfZone ON Reservation.reservationNumber = ReservationOfZone.reservationNumber " +
+                            "JOIN Zone ON ReservationOfZone.zoneId = Zone.id " +
+                            "JOIN TimeSlot ON Reservation.timeSlotId = TimeSlot.id " +
+                            "WHERE Zone.naturalArea = ? AND Reservation.reservationDate = ? " +
+                            "AND TimeSlot.beginningTime <= ? AND endTime >= ? ",
+                    new ReservationRowMapper(),
+                    naturalArea, date, time, time);
         }
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<Reservation>();

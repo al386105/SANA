@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:replace="fragments/headerManager"></div>
+
+<div class="container">
+    <h2> Gráfico de ocupacion de la Playa del arenal en el 2021</h2>
+
+    <img th:src="${plot}" alt="Grafico"/>
+
+    <a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+
+    <br><br>
+</div>
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

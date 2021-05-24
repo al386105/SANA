@@ -498,6 +498,16 @@ public class NaturalAreaController {
         return "naturalArea/getInfo";
     }
 
+    // Vista de paneles de información para ciudadanos registrados o no registrados
+    @RequestMapping(value="/occupancyPlot")
+    public String occupancyPlot(Model model, HttpSession session){
+        // si es null es que no esta registrado
+        model.addAttribute("registered", session.getAttribute("registeredCitizen"));
+        model.addAttribute("plot",
+                occupationService.getOccupancyPlotByYear("Playa del Arenal", 2021));
+        return "naturalArea/occupancyPlot";
+    }
+
     private void quitarAtributoSeccion(HttpSession session) {
         if(session.getAttribute("section") != null)
             session.removeAttribute("section");

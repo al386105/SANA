@@ -75,12 +75,14 @@ public class OccupationSvc implements OccupationService{
 
 
     public String getOccupancyPlotByYear(String naturalArea, int year) {
-        //Primero comprobamos que el gráfico no se haya generado previamente
+        String pathPicture = "/assets/img/plots/" +  naturalArea + "_" + year + ".png";
         String path = "src/main/resources/static/assets/img/plots/" + naturalArea + "_" + year + ".png";
         File file = new File(path);
-        if (file.exists()){
-            return path;
-        }
+
+        //comprobamos que el gráfico no se haya generado previamente????
+        //if (file.exists()){
+        //    return pathPicture;
+        //}
 
         //Generamos el dataSet:
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -93,22 +95,25 @@ public class OccupationSvc implements OccupationService{
             dataset.addValue(occupancy, naturalArea, month  + "");
         }
 
+        //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupacion de " + naturalArea + " en " + year,
+                "Ocupacion en  " + naturalArea + " durante " + year,
                 "Mes",
                 "Ocupación",
                 dataset,
-                PlotOrientation.HORIZONTAL,
-                false, false, false);
+                PlotOrientation.VERTICAL,
+                false, true, false);
 
         //Guardamos la imagen
         try {
-            ChartUtilities.saveChartAsPNG(file, chart, 600, 600);
+            ChartUtilities.saveChartAsPNG(file, chart, 400, 400);
         } catch (IOException e){
             System.out.println("ERROR AL GUARDAR LA IMAGEN");
             e.printStackTrace();
         }
-        return "/assets/img/plots/" +naturalArea + "_" + year + ".png";
+        return pathPicture;
     }
+
+
 
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:replace="fragments/headerManager"></div>
+
+<div class="container">
+    <h1> Occupacion </h1>
+
+    <form class="form-horizontal" action="#" th:action="@{/naturalArea/occupancyPlot}"
+          th:object="${occupancyFormData}" method="post">
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
+            <div class="col-sm-4">
+                <select required class="form_control" id="naturalArea" type="text" th:field="*{naturalArea}">
+                    <option value="No seleccionado">Selecciona un área natural</option>
+                    <option th:each="naturalArea : ${naturalAreas}"
+                            th:value="${naturalArea.name}"
+                            th:text="${naturalArea.name}"></option>
+                </select>
+                <td th:if="${#fields.hasErrors('naturalArea')}" th:errors="*{naturalArea}"></td>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="year">Año</label>
+            <div class="col-sm-4">
+                <input type="number" required class="form-control" id="year" th:field="*{year}" value="2020"/>
+            </div>
+        </div>
+
+
+
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-success">Ver ocupación</button>
+            </div>
+        </div>
+
+    </form>
+
+    <a href="/"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+    <br><br>
+</div>
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

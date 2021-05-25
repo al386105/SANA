@@ -17,17 +17,18 @@ public class OccupancyFormValidator implements Validator {
         OccupancyFormData occupancyFormData = (OccupancyFormData) obj;
 
         // Area natural obligatorio
-        if (occupancyFormData.getNaturalArea().trim().equals("") || occupancyFormData.getNaturalArea() == null)
+        if (occupancyFormData.getNaturalArea().trim().equals("") || occupancyFormData.getNaturalArea().equals("No seleccionado"))
             errors.rejectValue("naturalArea", "obligatorio", "Es obligatorio introducir el area natural");
 
         // TypeOfPeriod obligatorio
         if (occupancyFormData.getTypeOfPeriod() == null) {
             errors.rejectValue("typeOfPeriod", "obligatorio", "Es obligatorio introducir el tipo de periodo");
-
         }
+
         // Si busca por año, nos aseguramos que es valido
-        if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por año") && occupancyFormData.getYear() <= 2010)
+        if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por año") && occupancyFormData.getYear() <= 2010){
             errors.rejectValue("year", "obligatorio", "Es obligatorio introducir el año correcto para obtener el gráfico");
+        }
 
         // Si busca por mes, nos aseguramos que es valido el año y el mes
         if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por mes") && occupancyFormData.getYear() <= 2010) {

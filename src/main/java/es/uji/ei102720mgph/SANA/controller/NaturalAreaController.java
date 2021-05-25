@@ -505,31 +505,32 @@ public class NaturalAreaController {
     }
 
     // Vista de paneles de información para ciudadanos registrados o no registrados
-    @RequestMapping(value="/occupancyPlot")
+    @RequestMapping(value="/occupancyPlotForm")
     public String occupancyPlotFormGet(Model model, HttpSession session,
                                    @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData){
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/occupancyPlot");
+            session.setAttribute("nextUrl", "/naturalArea/occupancyPlotForm");
             return "redirect:/inicio/login";
         }
         return "naturalArea/occupancyPlotForm";
     }
 
-    @RequestMapping(value="/occupancyPlot", method=RequestMethod.POST)
+    @RequestMapping(value="/occupancyPlotForm", method=RequestMethod.POST)
     public String occupancyPlotSubmit(Model model, HttpSession session,
                                     @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData,
                                       BindingResult bindingResult){
 
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/occupancyPlot");
+            session.setAttribute("nextUrl", "/naturalArea/occupancyPlotForm");
             return "redirect:/inicio/login";
         }
 
         OccupancyFormValidator occupancyFormValidator = new OccupancyFormValidator();
         occupancyFormValidator.validate(occupancyFormData, bindingResult);
-
+        if (bindingResult.hasErrors())
+            return "naturalArea/occupancyPlotForm";
 
 
         switch (occupancyFormData.getTypeOfPeriod().getDescripcion()) {

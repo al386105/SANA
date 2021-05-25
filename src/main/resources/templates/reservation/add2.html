@@ -50,12 +50,19 @@
                 <div class="form-group row">
                     <label class="control-label col-sm-2">Zonas disponibles:</label>
                     <div class="col-sm-4">
-                        <select class="selectReserva" type="text" th:field="*{zoneid}">
+                        <!--
+                        <select class="form-control"
+                                multiple="multiple" th:field="*{zoneid}">
                             <option th:each="zon : ${zones}"
                                     th:value="${zon.id}"
-                                    th:text="${zon.zoneNumber + ' ' + zon.letter}"></option>
+                                    th:text="${zon.zoneNumber + ' ' + zon.letter + ': ' + zon.maximumCapacity + ' personas'}"></option>
                         </select>
-
+                        -->
+                        <td th:each="zon : ${zones}">
+                            <input type="checkbox" th:name="${zon.id}" th:value="${zon.id}" th:field="*{zoneid}">
+                            <label th:text="${zon.zoneNumber + ' ' + zon.letter + ': ' + zon.maximumCapacity + ' personas'}"></label><br>
+                        </td>
+                        <td th:if="${#fields.hasErrors('zoneid')}" th:errors="*{zoneid}"></td>
                     </div>
                 </div>
 

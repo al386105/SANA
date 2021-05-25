@@ -122,35 +122,47 @@ public class ReservationController {
     public String processAddSubmit(@ModelAttribute("reservation") NuevaReserva reservation,
                                    BindingResult bindingResult, HttpSession session) {
         // TODO VALIDADOR RESERVA
-        //ReservationValidator reservationValidator = new ReservationValidator();
-        //reservationValidator.validate(reservation, bindingResult);
+        /*
+        ReservationValidator reservationValidator = new ReservationValidator();
+        reservationValidator.validate(reservation, bindingResult);
 
-        if (bindingResult.hasErrors())
-            return "reservation/add"; //tornem al formulari per a que el corregisca
+        if (bindingResult.hasErrors()) {
+            return "reservation/add2"; //tornem al formulari per a que el corregisca
+        }
+         */
 
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         reservation.setCitizenEmail(citizen.getEmail());
-        int numRes = reservationDao.addReservationPocosValores(reservation);
-        reservationDao.addReservationOfZone(numRes, reservation.getZoneid());
-        String naturalArea = naturalAreaDao.getNaturalAreaOfZone(reservation.getZoneid()).getName(); //TODO dara problemas
-        String timeSlotId = reservation.getTimeSlotId();
-        TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
+        String zonas = reservation.getZoneid();
+        String[] partes = zonas.split(",");
 
-        // Generar QR
-        Formatter fmt = new Formatter();
-        QRCode qr = new QRCode();
-        File f = new File("qr" + fmt.format("%07d", numRes) + ".png");
-        String text = "Reserva por " + reservation.getCitizenEmail() + " en " + naturalArea + ", de fecha " + reservation.getReservationDate()
-        + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
+        for (String zon : partes) {
+            reservation.setZoneid(zon);
 
-        try {
-            qr.generateQR(f, text, 300, 300);
-            byte[] bytes = Files.readAllBytes(f.toPath());
-            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
-            Files.write(path, bytes);
-        } catch (Exception e) {
-            e.printStackTrace();
+            int numRes = reservationDao.addReservationPocosValores(reservation);
+            reservationDao.addReservationOfZone(numRes, reservation.getZoneid());
+            String naturalArea = naturalAreaDao.getNaturalAreaOfZone(reservation.getZoneid()).getName(); //TODO dara problemas
+            String timeSlotId = reservation.getTimeSlotId();
+            TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
+
+
+            // Generar QR
+            Formatter fmt = new Formatter();
+            QRCode qr = new QRCode();
+            File f = new File("qr" + fmt.format("%07d", numRes) + ".png");
+            String text = "Reserva por " + reservation.getCitizenEmail() + " en " + naturalArea + ", de fecha " + reservation.getReservationDate()
+                    + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
+
+            try {
+                qr.generateQR(f, text, 300, 300);
+                byte[] bytes = Files.readAllBytes(f.toPath());
+                Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
+                Files.write(path, bytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
 
         return "redirect:/inicio/registrado/reservas"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
     }

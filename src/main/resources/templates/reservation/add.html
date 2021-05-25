@@ -14,7 +14,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2">Fecha reserva:</label>
             <div class="col-sm-4">
-                <select class="form_control form-control-lg selectReserva" type="text" th:field="*{reservationDate}">
+                <select class="form-control form-control-lg selectReserva" type="text" th:field="*{reservationDate}">
                     <option th:each="fecha : ${fechas}"
                             th:value="${fecha}"
                             th:text="${#temporals.format(fecha,'dd/MM/yyyy')}"></option>
@@ -32,7 +32,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2">Horario:</label>
             <div class="col-sm-4">
-                <select class="form_control form-control-lg selectReserva" type="text" th:field="*{timeSlotId}">
+                <select class="form-control form-control-lg selectReserva" type="text" th:field="*{timeSlotId}">
                     <option th:each="timeSlot : ${timeSlots}"
                             th:value="${timeSlot.id}"
                             th:text="${timeSlot.beginningTime + ' - ' + timeSlot.endTime}"></option>

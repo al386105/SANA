@@ -73,9 +73,17 @@ public class OccupationSvc implements OccupationService{
         return occupancyDataOfNaturalAreas;
     }
 
+    private void saveChart(File file, JFreeChart chart){
+        //Guardamos la imagen
+        try {
+            ChartUtilities.saveChartAsPNG(file, chart, 500, 500);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     public String getOccupancyPlotByYear(String naturalArea, int year) {
-        String pathPicture = "/assets/img/plots/" +  naturalArea + "_" + year + ".png";
+        String pathPicture = "/assets/img/plots/" +  naturalArea + year + ".png";
         String path = "src/main/resources/static" + pathPicture;
         File file = new File(path);
 
@@ -104,18 +112,13 @@ public class OccupationSvc implements OccupationService{
                 PlotOrientation.VERTICAL,
                 false, true, false);
 
-        //Guardamos la imagen
-        try {
-            ChartUtilities.saveChartAsPNG(file, chart, 400, 400);
-        } catch (IOException e){
-            System.out.println("ERROR AL GUARDAR LA IMAGEN");
-            e.printStackTrace();
-        }
+        saveChart(file, chart);
+
         return pathPicture;
     }
 
     public String getOccupancyPlotByMonth(String naturalArea, int year, int month) {
-        String pathPicture = "/assets/img/plots/" +  naturalArea + "_" + year + "_" + month + ".png";
+        String pathPicture = "/assets/img/plots/" +  naturalArea + year + "-" + month + ".png";
         String path = "src/main/resources/static" + pathPicture;
         File file = new File(path);
 
@@ -145,21 +148,13 @@ public class OccupationSvc implements OccupationService{
                 PlotOrientation.VERTICAL,
                 false, true, false);
 
-        //Guardamos la imagen
-        try {
-            ChartUtilities.saveChartAsPNG(file, chart, 400, 400);
-        } catch (IOException e){
-            System.out.println("ERROR AL GUARDAR LA IMAGEN");
-            e.printStackTrace();
-        }
+        saveChart(file, chart);
+
         return pathPicture;
     }
 
     public String getOccupancyPlotByDay(String naturalArea, LocalDate day) {
-        int year = day.getYear();
-        int month = day.getMonthValue();
-
-        String pathPicture = "/assets/img/plots/" +  naturalArea + "_" + year + "_" + month + "_" + day + ".png";
+        String pathPicture = "/assets/img/plots/" +  naturalArea + day + ".png";
         String path = "src/main/resources/static" + pathPicture;
         File file = new File(path);
 
@@ -173,29 +168,26 @@ public class OccupationSvc implements OccupationService{
         LocalTime time;
         int occupancy;
         int hours = 24;
-        for(int hour = 1; hour <= hours; hour++){
-            time =  LocalTime.of(hour, 0);
+        for(int hour = 0; hour < hours; hour++){
+            time =  LocalTime.of(hour, 1);
             occupancy = getOccupancy(
                     reservationDao.getReservationsOfNaturalAreaOfHour(naturalArea, day, time));
-            dataset.addValue(occupancy, naturalArea, day  + "");
+            dataset.addValue(occupancy, naturalArea, hour  + "");
         }
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupacion en  " + naturalArea + " durante " + month + "/" + year,
-                "Dia",
+                "Ocupacion en  " + naturalArea + " durante el dia " + day.toString(),
+                "Hora",
                 "Ocupación",
                 dataset,
                 PlotOrientation.VERTICAL,
                 false, true, false);
 
-        //Guardamos la imagen
-        try {
-            ChartUtilities.saveChartAsPNG(file, chart, 400, 400);
-        } catch (IOException e){
-            System.out.println("ERROR AL GUARDAR LA IMAGEN");
-            e.printStackTrace();
-        }
+        saveChart(file, chart);
+
         return pathPicture;
     }
+
+
 }

@@ -31,6 +31,7 @@
             <label class="control-label col-sm-2" for="year">Año: </label>
             <div class="col-sm-4">
                 <input type="number" class="form-control" id="year" th:field="*{year}" value="1"/>
+                <td th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></td>
             </div>
         </div>
 
@@ -38,6 +39,7 @@
             <label class="control-label col-sm-2" for="month">Mes: </label>
             <div class="col-sm-4">
                 <input type="number" class="form-control" id="month" th:field="*{month}" value="1"/>
+                <td th:if="${#fields.hasErrors('month')}" th:errors="*{month}"></td>
             </div>
         </div>
 
@@ -45,6 +47,7 @@
             <label class="control-label col-sm-2" for="day">Día: </label>
             <div class="col-sm-4">
                 <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="day" th:field="*{day}"/>
+                <td th:if="${#fields.hasErrors('day')}" th:errors="*{day}"></td>
             </div>
         </div>
 

@@ -506,33 +506,48 @@ public class NaturalAreaController {
 
     // Vista de paneles de información para ciudadanos registrados o no registrados
     @RequestMapping(value="/occupancyPlot")
-    public String occupancyPlotGet(Model model, HttpSession session,
+    public String occupancyPlotFormGet(Model model, HttpSession session,
                                    @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData){
-        // si es null es que no esta registrado
-        model.addAttribute("registered", session.getAttribute("registeredCitizen"));
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/occupancyPlot");
+            return "redirect:/inicio/login";
+        }
         return "naturalArea/occupancyPlotForm";
     }
 
-    // Vista de paneles de información para ciudadanos registrados o no registrados
     @RequestMapping(value="/occupancyPlot", method=RequestMethod.POST)
-    public String occupancyPlotPost(Model model, HttpSession session,
-                                    @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData){
-        // si es null es que no esta registrado
-        model.addAttribute("registered", session.getAttribute("registeredCitizen"));
-        if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por dia")){
-            model.addAttribute("plot",
-                    occupationService.getOccupancyPlotByDay(occupancyFormData.getNaturalArea(),
-                            occupancyFormData.getDay()));
+    public String occupancyPlotSubmit(Model model, HttpSession session,
+                                    @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData,
+                                      BindingResult bindingResult){
+
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/occupancyPlot");
+            return "redirect:/inicio/login";
         }
-        else if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por mes")){
-            model.addAttribute("plot",
-                    occupationService.getOccupancyPlotByMonth(occupancyFormData.getNaturalArea(),
-                            occupancyFormData.getYear(), occupancyFormData.getMonth()));
-        }
-        else if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por año")){
-            model.addAttribute("plot",
-                    occupationService.getOccupancyPlotByYear(occupancyFormData.getNaturalArea(),
-                            occupancyFormData.getYear()));
+
+        OccupancyFormValidator occupancyFormValidator = new OccupancyFormValidator();
+        occupancyFormValidator.validate(occupancyFormData, bindingResult);
+
+
+
+        switch (occupancyFormData.getTypeOfPeriod().getDescripcion()) {
+            case "Por dia":
+                model.addAttribute("plot",
+                        occupationService.getOccupancyPlotByDay(occupancyFormData.getNaturalArea(),
+                                occupancyFormData.getDay()));
+                break;
+            case "Por mes":
+                model.addAttribute("plot",
+                        occupationService.getOccupancyPlotByMonth(occupancyFormData.getNaturalArea(),
+                                occupancyFormData.getYear(), occupancyFormData.getMonth()));
+                break;
+            case "Por año":
+                model.addAttribute("plot",
+                        occupationService.getOccupancyPlotByYear(occupancyFormData.getNaturalArea(),
+                                occupancyFormData.getYear()));
+                break;
         }
 
         return "naturalArea/occupancyPlot";

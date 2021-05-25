@@ -79,7 +79,7 @@
             <tbody>
             <tr th:each="comment: ${#lists.sort(comments)}">
                 <td th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></td>
-                <td th:text="${comment.score}"></td>
+                <td><span th:text="${comment.score}"></span><img style="margin-left:8px" src="/assets/img/star.png" class="fotoBoton" alt="Menú"></td>
                 <td th:text="${comment.commentBody}"></td>
                 <td th:text="${comment.citizenEmail}"></td>
             </tr>
@@ -169,10 +169,11 @@
     <hr class="lineaVerde">
 
     <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
-    <h3>Imágenes</h3>
+    <h3>Imágenes<img style="margin-left:20px; height:30px" src="/assets/img/photo.png" class="fotoBoton" alt="Menú"></h3>
     <div th:if="${#lists.isEmpty(pictures)}">
         <p><b>¡Este área natural no tiene ninguna imagen publicada!</b></p>
     </div>
+    <br>
     <!-- Carousel de imagenes -->
     <div id="miCarrusel" class="carousel slide" data-ride="carousel">
         <!-- activar la imagen 0 -->

@@ -5,7 +5,7 @@
 <body>
 
 <section class="text-white bg-primary mb-0" id="natural_areas">
-<h1>Areas naturales</h1>
+<h1>Áreas naturales</h1>
 
 <table class="table table-striped">
     <tbody>
@@ -77,11 +77,11 @@
                 <td>
                     <!--  NATURAL AREAS INFORMATION  -->
                     <h5 th:text="${naturalArea.name}"> </h5>
-                    <br>
                     <p th:text="${naturalArea.municipality}"></p>
-                    <br><br>
-                    <p th:text="${naturalArea.typeOfAccess.descripcion}"></p>
+                    <br>
+                    <i>Acceso: <span th:text="${naturalArea.typeOfAccess.descripcion}"></span></i>
                 </td>
+
 
                 <td>
                     <!--  BUTTONS  -->

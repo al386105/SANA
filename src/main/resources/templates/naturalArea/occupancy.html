@@ -27,8 +27,39 @@
         </tbody>
     </table>
 
+    <form class="form-horizontal" action="#" th:action="@{/naturalArea/occupancyPlot}"
+          th:object="${occupancyFormData}" method="get">
 
-    <a href="/naturalArea/occupancyPlot"><button type="button" class="btn btn-primary">Ver históricos de ocupación</button></a>
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
+            <div class="col-sm-4">
+                <select required class="form_control" id="naturalArea" type="text" th:field="*{naturalArea}">
+                    <option value="No seleccionado">Selecciona un área natural</option>
+                    <option th:each="naturalArea : ${naturalAreas}"
+                            th:value="${naturalArea.name}"
+                            th:text="${naturalArea.name}"></option>
+                </select>
+                <td th:if="${#fields.hasErrors('naturalArea')}" th:errors="*{naturalArea}"></td>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2" for="typeOfPeriod">Generar gráfico :</label>
+            <div class="col-sm-4">
+                <select class="form_control" required id="typeOfPeriod" type="text" th:field="*{typeOfPeriod}">
+                    <option th:each="typeOfPeriodvalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfPeriod).values()}"
+                            th:value="${typeOfPeriodvalue}" th:text="${typeOfPeriodvalue.descripcion}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-success">Ver histórico de ocupación</button>
+            </div>
+        </div>
+    </form>
+
     <a href="/municipalManager/home"><button type="button" class="btn btn-primary"><img src="/assets/img/home.png" class="fotoBoton" alt="Menú">Volver al menú</button></a>
     <br><br>
 </div>

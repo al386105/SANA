@@ -13,8 +13,6 @@ public class OccupancyFormData {
     private int month;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate day;
-    @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime hour;
 
 
     public OccupancyFormData(){
@@ -61,13 +59,6 @@ public class OccupancyFormData {
         this.day = day;
     }
 
-    public LocalTime getHour() {
-        return hour;
-    }
-
-    public void setHour(LocalTime hour) {
-        this.hour = hour;
-    }
 
     @Override
     public String toString() {
@@ -77,7 +68,6 @@ public class OccupancyFormData {
                 ", year=" + year +
                 ", month=" + month +
                 ", day=" + day +
-                ", hour=" + hour +
                 '}';
     }
 }

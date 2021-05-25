@@ -474,19 +474,6 @@ public class NaturalAreaController {
         return "redirect:/naturalArea/getManagers/" + naturalAreaForm.getName();
     }
 
-    // Historico de ocupacion de áreas naturales para el gestor municipal
-    @RequestMapping(value="/occupancy", method=RequestMethod.GET)
-    public String getOccupancy(Model model, HttpSession session) {
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/occupancy");
-            return "redirect:/inicio/login";
-        }
-        List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
-        model.addAttribute("occupancyDataOfNaturalAreas",
-                occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
-        return "naturalArea/occupancy";
-    }
 
     // Vista de paneles de información para ciudadanos registrados o no registrados
     @RequestMapping(value="/getInfo")
@@ -499,15 +486,30 @@ public class NaturalAreaController {
         return "naturalArea/getInfo";
     }
 
+
+    // Historico de ocupacion de áreas naturales para el gestor municipal
+    @RequestMapping(value="/occupancy", method=RequestMethod.GET)
+    public String getOccupancy(Model model, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/occupancy");
+            return "redirect:/inicio/login";
+        }
+        OccupancyFormData occupancyFormData = new OccupancyFormData();
+        model.addAttribute("occupancyFormData", occupancyFormData);
+        List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
+        model.addAttribute("naturalAreas", naturalAreas);
+        model.addAttribute("occupancyDataOfNaturalAreas",
+                occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
+        return "naturalArea/occupancy";
+    }
+
     // Vista de paneles de información para ciudadanos registrados o no registrados
     @RequestMapping(value="/occupancyPlot")
-    public String occupancyPlotGet(Model model, HttpSession session){
+    public String occupancyPlotGet(Model model, HttpSession session,
+                                   @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData){
         // si es null es que no esta registrado
         model.addAttribute("registered", session.getAttribute("registeredCitizen"));
-
-        OccupancyFormData occupancyFormData = new OccupancyFormData();
-        model.addAttribute("naturalAreas", naturalAreaDao.getRestrictedNaturalAreas());
-        model.addAttribute("occupancyFormData", occupancyFormData);
         return "naturalArea/occupancyPlotForm";
     }
 
@@ -517,9 +519,22 @@ public class NaturalAreaController {
                                     @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData){
         // si es null es que no esta registrado
         model.addAttribute("registered", session.getAttribute("registeredCitizen"));
-        model.addAttribute("plot",
-                occupationService.getOccupancyPlotByYear(occupancyFormData.getNaturalArea(),
-                        occupancyFormData.getYear()));
+        if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por dia")){
+            model.addAttribute("plot",
+                    occupationService.getOccupancyPlotByDay(occupancyFormData.getNaturalArea(),
+                            occupancyFormData.getDay()));
+        }
+        else if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por mes")){
+            model.addAttribute("plot",
+                    occupationService.getOccupancyPlotByMonth(occupancyFormData.getNaturalArea(),
+                            occupancyFormData.getYear(), occupancyFormData.getMonth()));
+        }
+        else if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por año")){
+            model.addAttribute("plot",
+                    occupationService.getOccupancyPlotByYear(occupancyFormData.getNaturalArea(),
+                            occupancyFormData.getYear()));
+        }
+
         return "naturalArea/occupancyPlot";
     }
 

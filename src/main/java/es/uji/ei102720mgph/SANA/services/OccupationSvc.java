@@ -155,6 +155,47 @@ public class OccupationSvc implements OccupationService{
         return pathPicture;
     }
 
+    public String getOccupancyPlotByDay(String naturalArea, LocalDate day) {
+        int year = day.getYear();
+        int month = day.getMonthValue();
 
+        String pathPicture = "/assets/img/plots/" +  naturalArea + "_" + year + "_" + month + "_" + day + ".png";
+        String path = "src/main/resources/static" + pathPicture;
+        File file = new File(path);
 
+        //comprobamos que el gráfico no se haya generado previamente????
+        //if (file.exists()){
+        //    return pathPicture;
+        //}
+
+        //Generamos el dataSet:
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        LocalTime time;
+        int occupancy;
+        int hours = 24;
+        for(int hour = 1; hour <= hours; hour++){
+            time =  LocalTime.of(hour, 0);
+            occupancy = getOccupancy(
+                    reservationDao.getReservationsOfNaturalAreaOfHour(naturalArea, day, time));
+            dataset.addValue(occupancy, naturalArea, day  + "");
+        }
+
+        //Generamos el chart
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Ocupacion en  " + naturalArea + " durante " + month + "/" + year,
+                "Dia",
+                "Ocupación",
+                dataset,
+                PlotOrientation.VERTICAL,
+                false, true, false);
+
+        //Guardamos la imagen
+        try {
+            ChartUtilities.saveChartAsPNG(file, chart, 400, 400);
+        } catch (IOException e){
+            System.out.println("ERROR AL GUARDAR LA IMAGEN");
+            e.printStackTrace();
+        }
+        return pathPicture;
+    }
 }

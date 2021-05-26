@@ -169,6 +169,7 @@ public class InicioRegistradoController {
             return "redirect:/inicio/login";
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+
         model.addAttribute("citizen", citizen);
         return "inicioRegistrado/perfil";
     }

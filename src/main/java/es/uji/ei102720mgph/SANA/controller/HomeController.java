@@ -31,11 +31,16 @@ public class HomeController {
     private ControlStaffDao controlStaffDao;
     private AddressDao addressDao;
     private MunicipalManagerDao municipalManagerDao;
-
+    private EmailDao emailDao;
 
     @Autowired
     public void setMunicipalManagerDao(MunicipalManagerDao municipalManagerDao){
         this.municipalManagerDao = municipalManagerDao;
+    }
+
+    @Autowired
+    public void setEmailDao(EmailDao emailDao){
+        this.emailDao = emailDao;
     }
 
     @Autowired
@@ -52,7 +57,6 @@ public class HomeController {
     public void setAddressDao(AddressDao addressDao){
         this.addressDao = addressDao;
     }
-
 
     @Autowired
     public void setRegisteredCitizenDao(RegisteredCitizenDao registeredCitizenDao){
@@ -97,6 +101,10 @@ public class HomeController {
     @RequestMapping("inicio/register_form/registration")
     public String registrationProcess(@ModelAttribute("registrationCitizen") RegistrationCitizen registrationCitizen,BindingResult bindingResult, HttpSession session ){
 
+        // TODO el validador no va, hay que ver por qué
+        //RegistrationValidator registrationValidator = new RegistrationValidator();
+        //registrationValidator.validate(registrationCitizen, bindingResult);
+
         if (bindingResult.hasErrors())
             return "inicio/login"; //tornem al formulari d'inici de sessió
 
@@ -126,15 +134,16 @@ public class HomeController {
                 registeredCitizen.setDateOfBirth(registrationCitizen.getDateOfBirth());
                 registeredCitizen.setTypeOfUser(TypeOfUser.registeredCitizen);
                 registeredCitizen.setIdNumber(registrationCitizen.getDni());
-                registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
+                int citizenCode = registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
 
+                fmt = new Formatter();
                 // Envia correo electrónico
-                Formatter fm = new Formatter();
                 String destinatario = registeredCitizen.getEmail();
                 String asunto = "Bienvenido a SANA";
-                String cuerpo = "Bienvenido a SANA " +registeredCitizen.getName()+"\n su nombre de usuario es: \n " + "ci"+fm.format("%04d", RegisteredCitizen.getCitizenCode()-1);
+                String cuerpo = "Registro completado con éxito en SANA, " + registeredCitizen.getName()+
+                        ".\nSu código de usuario es: " + fmt.format("%06d", citizenCode) +
+                        ".\n\nUn cordial saludo del equipo de SANA.";
                 enviarMail(destinatario, asunto, cuerpo);
-
 
                 return "redirect:/inicio/login";
 
@@ -154,10 +163,8 @@ public class HomeController {
     public String autenticationProcess(@ModelAttribute("userLogin") UserLogin userLogin, BindingResult bindingResult, HttpSession session){
         UserValidator userValidator = new UserValidator();
         userValidator.validate(userLogin, bindingResult);
-
         if (bindingResult.hasErrors())
             return "inicio/login"; //tornem al formulari d'inici de sessió
-
 
         //Acceso del responsable
         try{
@@ -179,27 +186,25 @@ public class HomeController {
                 }
                 return "redirect:/environmentalManager/home";
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
+        // usuarios con ese email o citizen code
         SanaUser sanaUser = sanaUserDao.getSanaUser(userLogin.getUsername().trim());
         RegisteredCitizen registeredCitizen = registeredCitizenDao.getRegisteredCitizenCitizenCode(userLogin.getUsername());
 
+        //El usuario esta registrado en el sistema
         if (sanaUser != null || registeredCitizen != null){
-            //El usuario esta registrado en el sistema
-            if ( sanaUser != null && sanaUser.getTypeOfUser().equals(TypeOfUser.municipalManager)){
+            // ACCESO GESTOR MUNICIPAL
+            if (sanaUser != null && sanaUser.getTypeOfUser().equals(TypeOfUser.municipalManager)){
                 MunicipalManager municipalManager = municipalManagerDao.getMunicipalManager(sanaUser.getEmail());
-
                 // Si está dado de baja, no puede entrar
                 if(municipalManager.getLeavingDate() != null) {
                     //El usuario no está registrado en el sistema
                     bindingResult.rejectValue("email", "dadoDeBaja", "Ha sido dado de baja como gestor");
                     return "inicio/login";
                 }
-
                 // Gestor municipal dado de alta
                 if (municipalManager.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
@@ -219,7 +224,8 @@ public class HomeController {
                 }
             }
 
-            else if (sanaUser != null && sanaUser.getTypeOfUser().equals(TypeOfUser.controlStaff)){
+            // ACCESO PERSONAL DE CONTROL
+            /*else if (sanaUser != null && sanaUser.getTypeOfUser().equals(TypeOfUser.controlStaff)){
                 ControlStaff controlStaff = controlStaffDao.getControlStaf(sanaUser.getEmail());
                 if (controlStaff.getPassword().equals(userLogin.getPassword())){
                     //Contraseña correcta
@@ -230,9 +236,10 @@ public class HomeController {
                     bindingResult.rejectValue("password", "badpw", "Contraseña incorrecta");
                     return "inicio/login";
                 }
-            }
+            }*/
 
-            else if (sanaUser == null ){
+            // CIUDADANO AUTENTICADO CON SU CITIZEN CODE
+            else if (sanaUser == null) {
                 try {
                     if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
                         //Contraseña Correcta
@@ -257,12 +264,17 @@ public class HomeController {
                 }
             }
 
+            // CIUDADANO INTENTANDO ACCEDER CON SU CORREO
+            else {
+                bindingResult.rejectValue("username", "badUsername", "Inicie sesión con su código de usuario");
+                return "inicio/login";
+            }
+
         } else {
             //El usuario no está registrado en el sistema
             bindingResult.rejectValue("username", "badUsername", "Usuario no registrado en el sistema");
             return "inicio/login";
         }
-        return "redirect:/naturalArea/pagedlist"; //Redirigimos a la página de inicio con la sesión iniciada
     }
 
     @RequestMapping(value="inicio/contactanos/enviarCorreo", method=RequestMethod.POST)
@@ -314,6 +326,7 @@ public class HomeController {
             transport.connect("smtp.gmail.com", remitente, "barrachina");
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
+            // TODO ANYADIR EMAIL A LA BASE DE DATOS!!!!!
         }
         catch (MessagingException me) {
             me.printStackTrace();   //Si se produce un error

@@ -56,7 +56,6 @@ public class PictureController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        session.setAttribute("section", "#pictures");
         return "redirect:/naturalArea/getManagers/" + naturalArea;
     }
 
@@ -68,11 +67,9 @@ public class PictureController {
             session.setAttribute("nextUrl", "/picture/delete/assets/img/naturalAreas/" + pictureName);
             return "redirect:/inicio/login";
         }
-        System.out.println(pictureName);
         Picture picture = pictureDao.getPicture("/assets/img/naturalAreas/" + pictureName);
         String naturalAreaName = picture.getNaturalArea();
         pictureDao.deletePicture("/assets/img/naturalAreas/" + pictureName);
-        session.setAttribute("section", "#pictures");
         return "redirect:/naturalArea/getManagers/" + naturalAreaName;
     }
 }

@@ -4,6 +4,7 @@ import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
 import es.uji.ei102720mgph.SANA.model.TimeSlot;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,18 +22,29 @@ public class RegisteredCitizenDao {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public void addRegisteredCitizen(RegisteredCitizen registeredCitizen){
-        Formatter fmt = new Formatter();
-
+    public int addRegisteredCitizen(RegisteredCitizen registeredCitizen){
         jdbcTemplate.update("INSERT INTO SanaUser VALUES(?, ?, ?, ?, ?, ?, ?)",
                 registeredCitizen.getEmail(), registeredCitizen.getName(), registeredCitizen.getSurname(),
                 registeredCitizen.getDateOfBirth(), LocalDate.now(), null, TypeOfUser.registeredCitizen.name());
-        jdbcTemplate.update("INSERT INTO RegisteredCitizen VALUES(?, ?, ?, ?, ?, ?)",
-                registeredCitizen.getEmail(), registeredCitizen.getIdNumber(),
-                registeredCitizen.getMobilePhoneNumber(), "ci"+fmt.format("%04d", RegisteredCitizen.getCitizenCode()),
-                registeredCitizen.getPin(), registeredCitizen.getAddressId()
-        );
-       RegisteredCitizen.incrementaCitizenCode();
+
+        boolean excepcion;
+        Formatter fmt;
+        do {
+            try {
+                fmt = new Formatter();
+                jdbcTemplate.update("INSERT INTO RegisteredCitizen VALUES(?, ?, ?, ?, ?, ?)",
+                        registeredCitizen.getEmail(), registeredCitizen.getIdNumber(),
+                        registeredCitizen.getMobilePhoneNumber(), "" + fmt.format("%06d", RegisteredCitizen.getContador()),
+                        registeredCitizen.getPin(), registeredCitizen.getAddressId()
+                );
+                excepcion = false;
+            } catch (DuplicateKeyException e) {
+                excepcion = true;
+            } finally {
+                RegisteredCitizen.incrementaContador();
+            }
+        } while (excepcion);
+        return RegisteredCitizen.getContador()-1;
     }
 
     public void updateRegisteredCitizen(RegisteredCitizen registeredCitizen){

@@ -6,6 +6,7 @@ import org.springframework.validation.Validator;
 
 import java.time.LocalDate;
 
+// TODO USAR!
 public class RegistrationValidator implements Validator {
 
     @Override
@@ -101,6 +102,15 @@ public class RegistrationValidator implements Validator {
         // Contraseña de 4 dígitos
         if(registrationCitizen.getPassword().trim().length() != 4)
             errors.rejectValue("password", "incorrecto", "La contraseña debe tener 4 dígitos");
+
+        // Repetir contraseña obligatorio
+        if (registrationCitizen.getPasswordComprovation().trim().equals(""))
+            errors.rejectValue("passwordComprovation", "obligatorio", "Por favor, repita la contraseña");
+
+        // Contrasenya mal escrita
+        if (!registrationCitizen.getPassword().trim().equals(registrationCitizen.getPasswordComprovation().trim()))
+            errors.rejectValue("passwordComprovation", "incorrecto", "Las contraseñas no coinciden");
+
     }
 
     // devuelve true si la cadena es numérica

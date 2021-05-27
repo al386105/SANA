@@ -31,7 +31,7 @@ public class MunicipalManagerValidator implements Validator {
 
         // Contrasenya mal escrita
         if (!municipalManager.getPassword().trim().equals(municipalManager.getPassword2().trim()))
-            errors.rejectValue("password2", "obligatorio", "Las contraseñas no coinciden");
+            errors.rejectValue("password2", "incorrecto", "Las contraseñas no coinciden");
 
         // Email obligatorio
         if (municipalManager.getEmail().trim().equals(""))

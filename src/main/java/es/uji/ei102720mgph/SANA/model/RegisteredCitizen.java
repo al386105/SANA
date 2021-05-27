@@ -3,17 +3,14 @@ package es.uji.ei102720mgph.SANA.model;
 public class RegisteredCitizen extends SanaUser {
     private String idNumber;
     private String mobilePhoneNumber;
-    private  String username;
-    private static int  citizenCode = 00001;
+    private String username;
+    private String citizenCode;
     private int pin;
     private String addressId;
+    private static int contador = 1;
 
     public RegisteredCitizen(){
         super();
-    }
-
-    public static void incrementaCitizenCode() {
-        RegisteredCitizen.citizenCode++;
     }
 
     public String getIdNumber() {
@@ -32,12 +29,12 @@ public class RegisteredCitizen extends SanaUser {
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
 
-    public static int getCitizenCode() {
+    public String getCitizenCode() {
         return citizenCode;
     }
 
-    public void setCitizenCode(int citizenCode) {
-        RegisteredCitizen.citizenCode = citizenCode;
+    public void setCitizenCode(String citizenCode) {
+        this.citizenCode = citizenCode;
     }
 
     public int getPin() {
@@ -64,6 +61,17 @@ public class RegisteredCitizen extends SanaUser {
         this.username = username;
     }
 
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        RegisteredCitizen.contador = contador;
+    }
+
+    public static void incrementaContador() {
+        RegisteredCitizen.contador++;
+    }
 
     @Override
     public String toString(){

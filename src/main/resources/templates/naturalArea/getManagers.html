@@ -261,54 +261,52 @@
     </div>
 
     <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
-    <section id="pictures">
-        <hr class="lineaVerde">
-        <h3>Imágenes</h3>
-        <div th:if="${#lists.isEmpty(pictures)}">
-            <p><b>¡Todavía no ha publicado ninguna imagen de este área natural!</b></p>
-        </div>
-        <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
-            <tr th:each="picture,iterador : ${pictures}">
-                <td scope="row"><img class="fotoListado" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
-                <td style="vertical-align:middle;"><button type="button" class="btn btn-danger delete" data-toggle="modal" th:data-target="${'#miModal' + iterador.index}">
-                    Elimina</button></td>
-                <!-- VENTANA EMERGENTE -->
-                <div class="modal" th:id="${'miModal' + iterador.index}">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Eliminar imagen</h5>
-                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <p>¿Seguro que desea borrar esta imagen?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}">
-                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                            </div>
+    <hr class="lineaVerde">
+    <h3>Imágenes</h3>
+    <div th:if="${#lists.isEmpty(pictures)}">
+        <p><b>¡Todavía no ha publicado ninguna imagen de este área natural!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
+        <tr th:each="picture,iterador : ${pictures}">
+            <td scope="row"><img class="fotoListado" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
+            <td style="vertical-align:middle;"><button type="button" class="btn btn-danger delete" data-toggle="modal" th:data-target="${'#miModal' + iterador.index}">
+                Elimina</button></td>
+            <!-- VENTANA EMERGENTE -->
+            <div class="modal" th:id="${'miModal' + iterador.index}">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Eliminar imagen</h5>
+                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Seguro que desea borrar esta imagen?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}">
+                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
                         </div>
                     </div>
                 </div>
-            </tr>
-            </tbody>
-        </table>
-        <!-- TODO gestionar error si la foto es demasiado grande -->
-        <!-- selector de imagenes -->
-        <div class="container">
-            <form class="form-horizontal" action="#" th:action="@{/picture/add/{naturalArea}(naturalArea=${naturalArea.name})}"
-                  enctype="multipart/form-data" th:object="${picture}" method="post">
-                <input required type="file" name="file" id="file" /> <br/><br/>
-                <div class="form-group row">
-                    <div class="col-sm-offset-2 col-sm-4">
-                        <button type="submit" class="btn btn-success okey"><img src="/assets/img/photo.png" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
-                    </div>
+            </div>
+        </tr>
+        </tbody>
+    </table>
+    <!-- TODO gestionar error si la foto es demasiado grande -->
+    <!-- selector de imagenes -->
+    <div class="container">
+        <form class="form-horizontal" action="#" th:action="@{/picture/add/{naturalArea}(naturalArea=${naturalArea.name})}"
+              enctype="multipart/form-data" th:object="${picture}" method="post">
+            <input required type="file" name="file" id="file" /> <br/><br/>
+            <div class="form-group row">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-success okey"><img src="/assets/img/photo.png" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
                 </div>
-                <br><br>
-            </form>
-        </div>
-    </section>
+            </div>
+            <br><br>
+        </form>
+    </div>
 </div>
 
 <div th:replace="fragments/footer"></div>

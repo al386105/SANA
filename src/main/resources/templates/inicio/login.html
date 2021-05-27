@@ -17,7 +17,7 @@
         <form th:action="@{/inicio/login}"  th:object="${userLogin}" method="post"  class="border p-3 form" style=" background-color: #e8e6e8!important; ;position: relative;
                     z-index: 1; background: #FFFFFF; max-width: 360px; margin: 0 auto 100px; padding: 40px; text-align: center;">
           <div class="form-group">
-            <label for="username">User Code</label>
+            <label for="username">User Code / Email</label>
             <input type="text" maxlength="30" name="username" id="username" class="form-control" th:field="*{username}">
             <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
           </div>

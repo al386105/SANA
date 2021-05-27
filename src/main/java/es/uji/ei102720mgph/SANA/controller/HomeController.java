@@ -3,6 +3,7 @@ package es.uji.ei102720mgph.SANA.controller;
 import es.uji.ei102720mgph.SANA.dao.*;
 import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import es.uji.ei102720mgph.SANA.model.*;
+import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
+import java.io.*;
 import java.util.Formatter;
 import java.util.Properties;
 
@@ -157,19 +159,30 @@ public class HomeController {
             return "inicio/login"; //tornem al formulari d'inici de sessió
 
 
-        //!!!!!!!!!
-        // TODO acceso responsable fatal
-        if(userLogin.getUsername().equals("responsable@gmail.com") && userLogin.getPassword().equals("responsable")) {
-            session.setAttribute("environmentalManager", "dentro");
-            String nextUrl = (String) session.getAttribute("nextUrl");
-            if (nextUrl != null) {
-                // Eliminar atribut de la sessio
-                session.removeAttribute("nextUrl");
-                return "redirect:" + nextUrl;
+        //Acceso del responsable
+        try{
+            String archivo = "responsableMedioambiental.txt";
+            BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
+            FileReader fileReader = new FileReader(archivo);
+            BufferedReader b = new BufferedReader(fileReader);
+            String r_email = b.readLine().trim();
+            String r_pass = b.readLine().trim();
+            b.close();
+
+            if(userLogin.getUsername().equals(r_email) && passwordEncryptor.checkPassword(userLogin.getPassword(), r_pass)) {
+                session.setAttribute("environmentalManager", "dentro");
+                String nextUrl = (String) session.getAttribute("nextUrl");
+                if (nextUrl != null) {
+                    // Eliminar atribut de la sessio
+                    session.removeAttribute("nextUrl");
+                    return "redirect:" + nextUrl;
+                }
+                return "redirect:/environmentalManager/home";
             }
-            return "redirect:/environmentalManager/home";
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //!!!!!!!!!
 
 
         SanaUser sanaUser = sanaUserDao.getSanaUser(userLogin.getUsername().trim());

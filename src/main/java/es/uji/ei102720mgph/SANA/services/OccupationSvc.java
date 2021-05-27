@@ -73,10 +73,18 @@ public class OccupationSvc implements OccupationService{
         return occupancyDataOfNaturalAreas;
     }
 
+    private void saveChart(File file, JFreeChart chart){
+        //Guardamos la imagen
+        try {
+            ChartUtilities.saveChartAsPNG(file, chart, 500, 500);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     public String getOccupancyPlotByYear(String naturalArea, int year) {
-        String pathPicture = "/assets/img/plots/" +  naturalArea + "_" + year + ".png";
-        String path = "src/main/resources/static/assets/img/plots/" + naturalArea + "_" + year + ".png";
+        String pathPicture = "/assets/img/plots/" +  naturalArea + year + ".png";
+        String path = "src/main/resources/static" + pathPicture;
         File file = new File(path);
 
         //comprobamos que el gráfico no se haya generado previamente????
@@ -104,16 +112,82 @@ public class OccupationSvc implements OccupationService{
                 PlotOrientation.VERTICAL,
                 false, true, false);
 
-        //Guardamos la imagen
-        try {
-            ChartUtilities.saveChartAsPNG(file, chart, 400, 400);
-        } catch (IOException e){
-            System.out.println("ERROR AL GUARDAR LA IMAGEN");
-            e.printStackTrace();
-        }
+        saveChart(file, chart);
+
         return pathPicture;
     }
 
+    public String getOccupancyPlotByMonth(String naturalArea, int year, int month) {
+        String pathPicture = "/assets/img/plots/" +  naturalArea + year + "-" + month + ".png";
+        String path = "src/main/resources/static" + pathPicture;
+        File file = new File(path);
+
+        //comprobamos que el gráfico no se haya generado previamente????
+        //if (file.exists()){
+        //    return pathPicture;
+        //}
+
+        //Generamos el dataSet:
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        LocalDate date = LocalDate.of(year, month, 1);
+        int occupancy;
+        int days = date.lengthOfMonth();
+        for(int day = 1; day <= days; day++){
+            date = LocalDate.of(year, month, day);
+            occupancy = getOccupancy(
+                    reservationDao.getReservationsOfNaturalAreaOfDay(naturalArea, date));
+            dataset.addValue(occupancy, naturalArea, day  + "");
+        }
+
+        //Generamos el chart
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Ocupacion en  " + naturalArea + " durante " + month + "/" + year,
+                "Dia",
+                "Ocupación",
+                dataset,
+                PlotOrientation.VERTICAL,
+                false, true, false);
+
+        saveChart(file, chart);
+
+        return pathPicture;
+    }
+
+    public String getOccupancyPlotByDay(String naturalArea, LocalDate day) {
+        String pathPicture = "/assets/img/plots/" +  naturalArea + day + ".png";
+        String path = "src/main/resources/static" + pathPicture;
+        File file = new File(path);
+
+        //comprobamos que el gráfico no se haya generado previamente????
+        //if (file.exists()){
+        //    return pathPicture;
+        //}
+
+        //Generamos el dataSet:
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        LocalTime time;
+        int occupancy;
+        int hours = 24;
+        for(int hour = 0; hour < hours; hour++){
+            time =  LocalTime.of(hour, 1);
+            occupancy = getOccupancy(
+                    reservationDao.getReservationsOfNaturalAreaOfHour(naturalArea, day, time));
+            dataset.addValue(occupancy, naturalArea, hour  + "");
+        }
+
+        //Generamos el chart
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Ocupacion en  " + naturalArea + " durante el dia " + day.toString(),
+                "Hora",
+                "Ocupación",
+                dataset,
+                PlotOrientation.VERTICAL,
+                false, true, false);
+
+        saveChart(file, chart);
+
+        return pathPicture;
+    }
 
 
 }

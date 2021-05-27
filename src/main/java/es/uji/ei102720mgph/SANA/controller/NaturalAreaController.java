@@ -200,7 +200,8 @@ public class NaturalAreaController {
         int currentPage = page.orElse(0);
         model.addAttribute("selectedPage", currentPage);
 
-        if (session.getAttribute("registeredCitizen") == null) return "inicio/areasNaturales";
+        if (session.getAttribute("registeredCitizen") == null)
+            return "inicio/areasNaturales";
         return "inicioRegistrado/areasNaturales";
     }
 

@@ -70,7 +70,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="municipality">Municipio:</label>
             <div class="col-sm-4">
-                <select class="form_control" required id="municipality" type="text" th:field="*{municipality}">
+                <select class="form-control" required id="municipality" type="text" th:field="*{municipality}">
                     <<option value="No seleccionado">Seleccione un municipio</option>
                     <option th:each="municipalityvalue : ${municipalityList}"
                             th:value="${municipalityvalue}"

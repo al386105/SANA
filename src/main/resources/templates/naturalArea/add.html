@@ -55,7 +55,7 @@
                     <p style="font-size:x-large">″</p>
                 </div>
                 <div class="col-auto">
-                    <select class="form_control" type="text" th:field="*{latitudLetra}">
+                    <select class="form-control" type="text" th:field="*{latitudLetra}">
                         <option value="N">Norte (N)</option>
                         <option value="S">Sur (S)</option>
                     </select>
@@ -86,7 +86,7 @@
                     <p style="font-size:x-large">″</p>
                 </div>
                 <div class="col-md-auto">
-                    <select class="form_control" type="text" th:field="*{longitudLetra}">
+                    <select class="form-control" type="text" th:field="*{longitudLetra}">
                         <option value="E">Este (E)</option>
                         <option value="W">Oeste (W)</option>
                     </select>
@@ -101,7 +101,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="typeOfArea">Tipo de área:</label>
             <div class="col-sm-4">
-                <select class="form_control" required id="typeOfArea" type="text" th:field="*{typeOfArea}">
+                <select class="form-control" required id="typeOfArea" type="text" th:field="*{typeOfArea}">
                     <option th:each="typeOfAreavalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfArea).values()}"
                             th:value="${typeOfAreavalue}" th:text="${typeOfAreavalue.descripcion}"></option>
                 </select>
@@ -154,7 +154,7 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="municipality">Municipio:</label>
             <div class="col-sm-4">
-                <select required class="form_control" id="municipality" type="text" th:field="*{municipality}">
+                <select required class="form-control" id="municipality" type="text" th:field="*{municipality}">
                     <option value="No seleccionado">Seleccione un municipio</option>
                     <option th:each="municipalityvalue : ${municipalityList}"
                             th:value="${municipalityvalue}"

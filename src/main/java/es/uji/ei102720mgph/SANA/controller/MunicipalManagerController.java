@@ -10,10 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
@@ -56,13 +53,20 @@ public class MunicipalManagerController {
     }
 
     @RequestMapping("/list")
-    public String listMunicipalManager(Model model, HttpSession session) {
+    public String listMunicipalManager(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron) {
         if(session.getAttribute("environmentalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/municipalManager/list");
             return "redirect:/inicio/login";
         }
-        model.addAttribute("municipalManagers", municipalManagerDao.getMunicipalManagers());
+        // Aplicar filtro
+        List<MunicipalManager> managers;
+        if (patron != null)
+            managers = municipalManagerDao.getMunicipalManagersSearch(patron);
+        else
+            managers = municipalManagerDao.getMunicipalManagers();
+
+        model.addAttribute("municipalManagers", managers);
         quitarAtributoSeccion(session);
         return "municipalManager/list";
     }
@@ -94,7 +98,7 @@ public class MunicipalManagerController {
         MunicipalManagerValidator municipalManagerValidator = new MunicipalManagerValidator();
         municipalManagerValidator.validate(managerForm, bindingResult);
 
-        // si ha saltaado la excepción, quitar su atributo
+        // si ha saltado la excepción, quitar su atributo
         if(model.getAttribute("emailRepetido") != null)
             model.addAttribute("emailRepetido", null);
         if(model.getAttribute("usernameRepetido") != null)

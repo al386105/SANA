@@ -50,9 +50,9 @@ public class MunicipalityController {
         }
         // Aplicar filtro
         List<Municipality> municipalities;
-        if (patron != null) {
+        if (patron != null)
             municipalities = municipalityDao.getMunicipalitySearch(patron);
-        } else
+        else
             municipalities = municipalityDao.getMunicipalities();
 
         model.addAttribute("municipalities", municipalities);

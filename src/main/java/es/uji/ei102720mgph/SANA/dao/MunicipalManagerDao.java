@@ -2,6 +2,7 @@ package es.uji.ei102720mgph.SANA.dao;
 
 import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import es.uji.ei102720mgph.SANA.model.MunicipalManager;
+import es.uji.ei102720mgph.SANA.model.Municipality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -89,6 +90,17 @@ public class MunicipalManagerDao {
                             "JOIN SanaUser ON MunicipalManager.email = SanaUser.email",
                     new MunicipalManagerRowMapper());
 
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<MunicipalManager>();
+        }
+    }
+
+    public  List<MunicipalManager> getMunicipalManagersSearch(String patron) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM MunicipalManager " +
+                            "JOIN SanaUser ON MunicipalManager.email = SanaUser.email WHERE name LIKE '%"+patron+"%'",
+                    new MunicipalManagerRowMapper());
         }
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<MunicipalManager>();

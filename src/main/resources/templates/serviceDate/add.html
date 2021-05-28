@@ -20,7 +20,7 @@
             <label class="control-label col-sm-2" for="service">Servicio fijo:</label>
             <div class="col-sm-4">
                 <select class="form-control" required id="service" type="text" th:field="*{service}">
-                    <option value="No seleccionado">Selecciona un servicio</option>
+                    <option value="No seleccionado">Seleccione un servicio</option>
                     <option th:each="servicevalue : ${serviceList}"
                             th:value="${servicevalue}"
                             th:text="${servicevalue}"></option>

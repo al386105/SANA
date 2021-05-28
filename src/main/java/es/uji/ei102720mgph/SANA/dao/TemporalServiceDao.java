@@ -27,7 +27,6 @@ public class TemporalServiceDao {
         do {
             try {
                 fmt = new Formatter();
-                System.out.println(TemporalService.getContador());
                 jdbcTemplate.update(
                         "INSERT INTO TemporalService VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
                         "" + fmt.format("%06d", TemporalService.getContador()), temporalService.getOpeningDays(),

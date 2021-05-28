@@ -40,9 +40,9 @@ public class ServiceController {
 
         // Aplicar filtro
         List<Service> services;
-        if (patron != null) {
+        if (patron != null)
             services = serviceDao.getServiceSearch(patron);
-        } else
+        else
             services = serviceDao.getServices();
 
         model.addAttribute("services", services);

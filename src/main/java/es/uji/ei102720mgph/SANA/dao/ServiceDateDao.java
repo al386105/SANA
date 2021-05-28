@@ -58,6 +58,30 @@ public class ServiceDateDao {
         }
     }
 
+    public List<ServiceDate> getServiceDatesOfNaturalAreaSearch(String patron, String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM ServiceDate WHERE naturalArea = ? " +
+                            "AND service LIKE '%"+patron+"%'",
+                    new ServiceDateRowMapper(),
+                    naturalArea);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<ServiceDate>();
+        }
+    }
+
+    public List<ServiceDate> getServiceDatesOfNaturalAreaOperativos(String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM ServiceDate WHERE naturalArea = ? " +
+                            "AND endDate IS NULL",
+                    new ServiceDateRowMapper(),
+                    naturalArea);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<ServiceDate>();
+        }
+    }
+
     public ServiceDate getServiceDate(String id) {
         try {
             return jdbcTemplate.queryForObject(

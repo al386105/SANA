@@ -4,8 +4,11 @@
 <body>
 <div th:replace="fragments/headerManager"></div>
 
+<section id="perfil">
 <div class="container">
-    <h2> Ocupación de las areas naturales</h2>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0">Ocupación</h2>
+    <br><hr class="barra-normal"><br>
 
     <table class="table table-striped">
         <thead>
@@ -30,7 +33,7 @@
     <br>
 
     <!-- Apartado del form para ver histórico de ocupación    -->
-    <h3>Ver gráficos de históricos de ocupación </h3>
+    <h3>Ver gráficos de históricos de ocupación</h3><br>
     <form class="form-horizontal" action="#" th:action="@{/naturalArea/occupancyPlotForm}"
           th:object="${occupancyFormData}" method="get">
 
@@ -48,7 +51,7 @@
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-sm-2" for="typeOfPeriod">Generar gráfico :</label>
+            <label class="control-label col-sm-2" for="typeOfPeriod">Generar gráfico:</label>
             <div class="col-sm-4">
                 <select class="form-control" required id="typeOfPeriod" type="text" th:field="*{typeOfPeriod}">
                     <option th:each="typeOfPeriodvalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfPeriod).values()}"
@@ -59,7 +62,7 @@
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-success">Ver histórico de ocupación</button>
+                <button type="submit" class="btn btn-success ok">Ver histórico de ocupación</button>
             </div>
         </div>
     </form>
@@ -68,6 +71,7 @@
 
     <br><br>
 </div>
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

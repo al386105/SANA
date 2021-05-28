@@ -4,9 +4,12 @@
 <body>
 <div th:replace="fragments/headerManager"></div>
 
+<section id="perfil">
 <div class="container">
-    <h1><span th:text="${naturalArea.name}"> </span></h1>
-    <br>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0"><span th:text="${naturalArea.name}"></span></h2>
+    <br><hr class="barra-normal"><br>
+
     <ul>
         <li><b>Municipio:</b> <span th:text="${naturalArea.municipality}"></span></li>
         <li><b>Acceso:</b> <span th:text="${naturalArea.typeOfAccess.descripcion}"></span></li>
@@ -74,7 +77,7 @@
             <table th:unless="${#lists.isEmpty(timeSlots)}" class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">Identificador franja horaria</th>
+                    <th scope="col">Núm. franja horaria</th>
                     <th scope="col">Fecha de inicio</th>
                     <th scope="col">Fecha de fin</th>
                     <th scope="col">Hora de inicio</th>
@@ -122,7 +125,7 @@
         <tbody>
         <tr th:each="comment: ${#lists.sort(comments)}">
             <td th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></td>
-            <td th:text="${comment.score}"></td>
+            <td><span th:text="${comment.score}"></span><img style="margin-left:8px" src="/assets/img/star.png" class="fotoBoton" alt="Menú"></td>
             <td th:text="${comment.commentBody}"></td>
             <td th:text="${comment.citizenEmail}"></td>
         </tr>
@@ -140,54 +143,40 @@
             <thead>
             <tr>
                 <th scope="col">Servicio</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Sitio de contratación</th>
                 <th scope="col">Fecha de inicio</th>
-                <th scope="col">Fecha de fin</th>
-                <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
-                <td th:text="${serviceDate.service}"></td>
-                <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
-                <div th:if="${serviceDate.endDate != null}">
-                    <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
-                </div>
-                <div th:if="${serviceDate.endDate == null}">
-                    <td> - </td>
-                </div>
-                <td><a th:href="@{/serviceDate/get/{id}(id=${serviceDate.id})}">
-                    <button type="button" class="btn btn-primary">Más información</button>
+                <td th:text="${serviceDate.nameOfService}"></td>
+                <td th:text="${serviceDate.description}"></td>
+                <td th:text="${serviceDate.hiringPlace}"></td>
+                <td th:text="${serviceDate.beginningDate}"></td>
+                <td><a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
+                    <button type="button" class="btn btn-warning edit">Edita</button>
                 </a>
                 </td>
-                <div th:if="${serviceDate.endDate != null}">
-                    <td></td>
-                    <td></td>
-                </div>
-                <div th:if="${serviceDate.endDate == null}">
-                    <td><a th:href="@{/serviceDate/update/{id}(id=${serviceDate.id})}">
-                        <button type="button" class="btn btn-warning edit">Edita</button>
-                    </a>
-                    </td>
-                    <td><button type="button" class="btn btn-danger delete" data-toggle="modal" th:data-target="${'#miModal' + serviceDate.id}">Dar de baja</button></td>
-                    <!-- VENTANA EMERGENTE -->
-                    <div class="modal" th:id="${'miModal' + serviceDate.id}">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Dar de baja servicio fijo</h5>
-                                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>¿Seguro que desea dar de baja el servicio fijo <span th:text="${serviceDate.service}"></span>
-                                         de <span th:text="${naturalArea.name}"></span>?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <a th:href="@{/serviceDate/darDeBaja/{id}(id=${serviceDate.id})}">
-                                        <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                                </div>
+                <td><button type="button" class="btn btn-danger delete" data-toggle="modal" th:data-target="${'#miModal' + serviceDate.id}">Dar de baja</button></td>
+                <!-- VENTANA EMERGENTE -->
+                <div class="modal" th:id="${'miModal' + serviceDate.id}">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Dar de baja servicio fijo</h5>
+                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Seguro que desea dar de baja el servicio fijo <span th:text="${serviceDate.nameOfService}"></span>
+                                     de <span th:text="${naturalArea.name}"></span>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a th:href="@{/serviceDate/darDeBaja/{id}(id=${serviceDate.id})}">
+                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
                             </div>
                         </div>
                     </div>
@@ -202,7 +191,10 @@
             <td><a th:href="@{/serviceDate/add/{naturalArea}(naturalArea=${naturalArea.name})}">
                 <button type="button" class="btn btn-success okey">Asignar servicio fijo</button>
             </a></td>
-        </div>
+        </div><br>
+        <td><a th:href="@{/serviceDate/list/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-primary">Mostrar todos</button>
+        </a></td>
     </section>
 
     <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
@@ -310,6 +302,7 @@
 
     <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
 </div>
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

@@ -13,32 +13,34 @@
 <div class="container">
     <h1><span th:text="${service.nameOfService}"></span> en <span th:text="${temporalService.naturalArea}"></span></h1>
     <ul>
-        <li><b>Nombre del servicio:</b> <span th:text="${service.nameOfService}"></span></li>
-        <li><b>Temporalidad:</b> <span th:text="${service.temporality.descripcion}"></span></li>
         <li><b>Descripción:</b> <span th:text="${service.description}"></span></li>
         <li><b>Sitio de contratación:</b> <span th:text="${service.hiringPlace}"></span></li>
     </ul>
 
-    <h3>Información del servicio temporal</h3>
-    <ul>
-        <li><b>Días de apertura:</b>
-            <ul>
-                <td th:each="dia: ${dias}">
-                    <li><span th:text="${dia}"></span></li>
-                </td>
-            </ul>
-        <li><b>Hora de inicio:</b> <span th:text="${temporalService.beginningTime}"></span></li>
-        <li><b>Hora de fin:</b> <span th:text="${temporalService.endTime}"></span></li>
-        <li><b>Fecha de inicio:</b> <span th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></span></li>
-        <li><b>Fecha de fin:</b>
-            <td th:if="${temporalService.endDate != null}">
-                <span th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></span>
-            </td>
-            <td th:if="${temporalService.endDate == null}">
-                <span>El servicio continúa operativo</span>
-            </td>
-        </li>
-    </ul>
+    <div class="card-horizontal">
+        <div class="card-body">
+            <h4 class="card-title">Información del servicio temporal</h4>
+
+            <h6 class="card-subtitle mb-2 text-muted">
+                <span th:text="${temporalService.beginningTime}"></span> / <span th:text="${temporalService.endTime}"></span>
+            </h6>
+
+            <p class="card-text">
+                <b>Días de apertura: </b>
+                    <ul>
+                        <td th:each="dia: ${dias}">
+                            <li><span th:text="${dia}"></span></li>
+                        </td>
+                    </ul>
+            </p>
+
+            <p class="card-text">
+                <b>Desde el <span th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></span>
+                al <span th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></span></b>
+            </p>
+        </div>
+    </div>
+    <br>
 
     <!-- dependiendo del usuario que sea, querrá volver a un sitio o a otro -->
     <div th:switch="${typeUser}">

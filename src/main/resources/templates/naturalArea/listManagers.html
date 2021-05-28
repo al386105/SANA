@@ -4,8 +4,12 @@
 <body>
 <div th:replace="fragments/headerManager"></div>
 
+<section id="perfil">
 <div class="container">
-    <h1>Lista de áreas naturales</h1>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0">Áreas Naturales</h2>
+    <br><hr class="barra-normal">
+
     <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">
         <!-- filtro buscador -->
         <div class="box" style="padding-bottom: 20px; padding-top: 20px">
@@ -81,10 +85,10 @@
                     <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
                     <td th:text="${naturalArea.municipality}"></td>
                     <td><a th:href="@{getManagers/{naturalArea}(naturalArea=${naturalArea.name})}">
-                        <button type="button" class="btn btn-primary">Más opciones</button> </a>
+                        <button type="button" class="btn btn-primary">Gestionar</button> </a>
                     </td>
                     <td><a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
-                        <button type="button" class="btn btn-secondary">Gestión reservas</button> </a>
+                        <button type="button" class="btn btn-secondary">Reservas</button> </a>
                     </td>
                 </tr>
                 </tbody>
@@ -108,6 +112,7 @@
     <a href="/"><button type="button" class="btn btn-primary"><img src="/assets/img/home.png" class="fotoBoton" alt="Menú">Volver al menú</button></a>
 </div>
 <br><br>
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

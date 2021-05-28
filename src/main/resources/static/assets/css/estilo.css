@@ -325,19 +325,3 @@ label.star:before {
     width: 70%;
     margin:0px auto;
 }
-
-/* TODO imposible
-.carousel {
-  height: 200px;
-}
-
-.carousel-item,
-.carousel-inner,
-.carousel-inner img {
-  height: 100%;
-  width: auto;
-}
-
-.carousel-item {
-  text-align: center;
-}*/

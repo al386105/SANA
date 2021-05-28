@@ -11,8 +11,12 @@
     <div th:replace="fragments/header"></div>
 </td>
 
+<section id="perfil">
 <div class="container">
-    <h2> Ocupación actual de las areas naturales </h2>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0">Ocupación Actual</h2>
+    <br><hr class="barra-normal"><br>
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -43,11 +47,9 @@
         </tr>
         </tbody>
     </table>
-
-    <a href="/section/managers"><button type="button" class="btn btn-primary">Volver al menú</button></a>
-
     <br><br>
 </div>
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

@@ -4,8 +4,12 @@
 <body>
 <div th:replace="fragments/headerManager"></div>
 
+<section id="perfil">
 <div class="container">
-    <h1>Añadir los datos del área restringida</h1>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0">Nuevo área natural</h2>
+    <br><hr class="barra-normal"><br>
+
     <h4>Introduce la fecha de restricción</h4>
     <form class="form-horizontal" action="#" th:action="@{/naturalArea/addRestricted}"
           th:object="${naturalArea}" method="post">
@@ -52,6 +56,7 @@
     </form>
     <a href="/section/managers"><button type="button" class="btn btn-primary">Cancelar</button></a><br><br>
 </div>
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

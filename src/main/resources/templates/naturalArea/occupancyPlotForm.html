@@ -4,64 +4,68 @@
 <body>
 <div th:replace="fragments/headerManager"></div>
 
-<div class="container">
-    <h1> Histórico de ocupación </h1>
+<section id="perfil">
+    <div class="container">
 
-    <form class="form-horizontal" action="#" th:action="@{/naturalArea/occupancyPlotForm}"
-          th:object="${occupancyFormData}" method="post">
+        <h2 class="text-uppercase text-center text-secondary mb-0">Histórico de ocupación</h2>
+        <br><hr class="barra-normal"><br>
 
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
-            <div class="col-sm-4">
-                <input type="text" required maxlength="30" readonly="readonly" class="form-control" id="naturalArea" th:field="*{naturalArea}" />
-                <td th:if="${#fields.hasErrors('naturalArea')}" th:errors="*{naturalArea}"></td>
+        <form class="form-horizontal" action="#" th:action="@{/naturalArea/occupancyPlotForm}"
+              th:object="${occupancyFormData}" method="post">
+
+            <div class="form-group row">
+                <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
+                <div class="col-sm-4">
+                    <input type="text" required maxlength="30" readonly="readonly" class="form-control" id="naturalArea" th:field="*{naturalArea}" />
+                    <td th:if="${#fields.hasErrors('naturalArea')}" th:errors="*{naturalArea}"></td>
+                </div>
             </div>
-        </div>
 
 
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="typeOfPeriod">Gráfico por: </label>
-            <div class="col-sm-4">
-                <input type="text" readonly="readonly" required class="form-control" id="typeOfPeriod" th:field="*{typeOfPeriod}" />
-                <td th:if="${#fields.hasErrors('typeOfPeriod')}" th:errors="*{typeOfPeriod}"></td>
+            <div class="form-group row">
+                <label class="control-label col-sm-2" for="typeOfPeriod">Gráfico por: </label>
+                <div class="col-sm-4">
+                    <input type="text" readonly="readonly" required class="form-control" id="typeOfPeriod" th:field="*{typeOfPeriod}" />
+                    <td th:if="${#fields.hasErrors('typeOfPeriod')}" th:errors="*{typeOfPeriod}"></td>
+                </div>
             </div>
-        </div>
 
-        <div th:if="${occupancyFormData.typeOfPeriod.descripcion == 'Por año' or occupancyFormData.typeOfPeriod.descripcion == 'Por mes'}" class="form-group row">
-            <label class="control-label col-sm-2" for="year">Año: </label>
-            <div class="col-sm-4">
-                <input type="number" class="form-control" id="year" th:field="*{year}" value="1"/>
-                <td th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></td>
+            <div th:if="${occupancyFormData.typeOfPeriod.descripcion == 'Por año' or occupancyFormData.typeOfPeriod.descripcion == 'Por mes'}" class="form-group row">
+                <label class="control-label col-sm-2" for="year">Año: </label>
+                <div class="col-sm-4">
+                    <input type="number" min="2010" class="form-control" id="year" th:field="*{year}" value="1"/>
+                    <td th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></td>
+                </div>
             </div>
-        </div>
 
-        <div th:if="${occupancyFormData.typeOfPeriod.descripcion == 'Por mes'}" class="form-group row">
-            <label class="control-label col-sm-2" for="month">Mes: </label>
-            <div class="col-sm-4">
-                <input type="number" class="form-control" id="month" th:field="*{month}" value="1"/>
-                <td th:if="${#fields.hasErrors('month')}" th:errors="*{month}"></td>
+            <div th:if="${occupancyFormData.typeOfPeriod.descripcion == 'Por mes'}" class="form-group row">
+                <label class="control-label col-sm-2" for="month">Mes: </label>
+                <div class="col-sm-4">
+                    <input type="number" min="1" max="12" class="form-control" id="month" th:field="*{month}" value="1"/>
+                    <td th:if="${#fields.hasErrors('month')}" th:errors="*{month}"></td>
+                </div>
             </div>
-        </div>
 
-        <div th:if="${occupancyFormData.typeOfPeriod.descripcion == 'Por dia'}" class="form-group row">
-            <label class="control-label col-sm-2" for="day">Día: </label>
-            <div class="col-sm-4">
-                <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="day" th:field="*{day}"/>
-                <td th:if="${#fields.hasErrors('day')}" th:errors="*{day}"></td>
+            <div th:if="${occupancyFormData.typeOfPeriod.descripcion == 'Por dia'}" class="form-group row">
+                <label class="control-label col-sm-2" for="day">Día: </label>
+                <div class="col-sm-4">
+                    <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="day" th:field="*{day}"/>
+                    <td th:if="${#fields.hasErrors('day')}" th:errors="*{day}"></td>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group row">
-            <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-success">Ver histórico de ocupación</button>
+            <div class="form-group row">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-success ok">Ver histórico de ocupación</button>
+                </div>
             </div>
-        </div>
 
-    </form>
+        </form>
 
-    <a href="/"><button type="button" class="btn btn-primary">Volver al menú</button></a>
-    <br><br>
-</div>
+        <a href="/"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+        <br><br>
+    </div>
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

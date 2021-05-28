@@ -56,7 +56,8 @@ public class MunicipalityController {
             municipalities = municipalityDao.getMunicipalities();
 
         model.addAttribute("municipalities", municipalities);
-        quitarAtributoSeccion(session);
+        if(session.getAttribute("section") != null)
+            session.removeAttribute("section");
         return "municipality/list";
     }
 
@@ -73,11 +74,6 @@ public class MunicipalityController {
         PostalCodeMunicipality postalCode = new PostalCodeMunicipality();
         postalCode.setMunicipality(name);
         model.addAttribute("postalCode", postalCode);
-        if(session.getAttribute("section") != null) {
-            String section = (String) session.getAttribute("section");
-            session.removeAttribute("section");
-            return "redirect:/municipality/get/" + name + section;
-        }
         return "/municipality/get";
     }
 
@@ -119,7 +115,6 @@ public class MunicipalityController {
             return "redirect:/inicio/login";
         }
         model.addAttribute("municipality", municipalityDao.getMunicipality(name));
-        quitarAtributoSeccion(session);
         return "municipality/update";
     }
 
@@ -133,11 +128,6 @@ public class MunicipalityController {
             return "municipality/update";
         municipalityDao.updateMunicipality(municipality);
         return "redirect:/municipality/get/" + municipality.getName();
-    }
-
-    private void quitarAtributoSeccion(HttpSession session) {
-        if(session.getAttribute("section") != null)
-            session.removeAttribute("section");
     }
 
     // Histórico de ocupación de municipios para responsable del medio ambiente

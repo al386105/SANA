@@ -6,7 +6,6 @@ import org.springframework.validation.Validator;
 
 import java.time.LocalDate;
 
-// TODO USAR!
 public class RegistrationValidator implements Validator {
 
     @Override

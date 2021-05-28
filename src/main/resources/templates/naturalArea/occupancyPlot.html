@@ -4,19 +4,19 @@
 <body>
 <div th:replace="fragments/headerManager"></div>
 
-<div class="container">
-    <h1>Histórico de ocupación</h1>
-    <br>
+<section id="perfil">
+    <div class="container">
 
-    <img th:src="@{plot}" alt="Grafico"/>
+        <h2 class="text-uppercase text-center text-secondary mb-0">Histórico de ocupación</h2>
+        <br><hr class="barra-normal"><br>
 
-    <br>
-    <br>
+        <img th:src="@{plot}" alt="Grafico"/>
+        <br><br>
 
-    <a  href="/"><button type="button" class="btn btn-primary">Volver al menú</button></a>
-
-    <br><br>
-</div>
+        <a href="/"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+        <br><br>
+    </div>
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

@@ -14,8 +14,12 @@
     <td th:case="*"><div th:case="notRegistered" th:replace="fragments/header"></div></td>
 </div>
 
+<section id="perfil">
 <div class="container">
-    <h1><span th:text="${naturalArea.name}"> </span></h1>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0"><span th:text="${naturalArea.name}"></span></h2>
+    <br><hr class="barra-normal"><br>
+
     <ul>
         <li><b>Municipio:</b> <span th:text="${naturalArea.municipality}"></span></li>
         <li><b>Acceso:</b> <span th:text="${naturalArea.typeOfAccess.descripcion}"></span></li>
@@ -31,7 +35,7 @@
         </td>
     </ul>
 
-    <br><br>
+    <br>
 
     <!-- SECCION DE ZONAS DEL AREA NATURAL -->
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
@@ -97,39 +101,27 @@
     </section>
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
-    <section id="serviceDates">
-        <hr class="lineaVerde">
-        <h3>Servicios fijos</h3>
-        <div th:if="${#lists.isEmpty(serviceDates)}">
-            <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
-        </div>
-        <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Servicio</th>
-                <th scope="col">Fecha de inicio</th>
-                <th scope="col">Fecha de fin</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
-                <td th:text="${serviceDate.service}"></td>
-                <td th:text="${#temporals.format(serviceDate.beginningDate,'dd/MM/yyyy')}"></td>
-                <div th:if="${serviceDate.endDate != null}">
-                    <td th:text="${#temporals.format(serviceDate.endDate,'dd/MM/yyyy')}"></td>
-                </div>
-                <div th:if="${serviceDate.endDate == null}">
-                    <td> - </td>
-                </div>
-                <td><a th:href="@{/serviceDate/get/{id}(id=${serviceDate.id})}">
-                    <button type="button" class="btn btn-primary">Más información</button>
-                </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
+    <hr class="lineaVerde">
+    <h3>Servicios fijos</h3>
+    <div th:if="${#lists.isEmpty(serviceDates)}">
+        <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Servicio</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Sitio de contratación</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
+            <td th:text="${serviceDate.nameOfService}"></td>
+            <td th:text="${serviceDate.description}"></td>
+            <td th:text="${serviceDate.hiringPlace}"></td>
+        </tr>
+        </tbody>
+    </table>
 
     <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
     <section id="temporalServices">
@@ -142,7 +134,6 @@
             <thead>
             <tr>
                 <th scope="col">Servicio</th>
-                <th scope="col">Días de apertura</th>
                 <th scope="col">Hora de inicio</th>
                 <th scope="col">Hora de fin</th>
                 <th scope="col">Fecha de inicio</th>
@@ -153,7 +144,6 @@
             <tbody>
             <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
                 <td th:text="${temporalService.service}"></td>
-                <td th:text="${temporalService.openingDays}"></td>
                 <td th:text="${temporalService.beginningTime}"></td>
                 <td th:text="${temporalService.endTime}"></td>
                 <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
@@ -201,10 +191,11 @@
         </a>
     </div>
     <br><br>
+    <a href="/naturalArea/pagedlist"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
 </div>
+</section>
 
 <div th:replace="fragments/footer"></div>
-
 </body>
 </html>
 

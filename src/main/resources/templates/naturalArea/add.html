@@ -4,8 +4,12 @@
 <body>
 <div th:replace="fragments/headerManager"></div>
 
+<section id="perfil">
 <div class="container">
-    <h2>Nuevo área natural</h2><br>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0">Nuevo área natural</h2>
+    <br><hr class="barra-normal"><br>
+
     <form class="form-horizontal" action="#" th:action="@{/naturalArea/add}"
           th:object="${naturalArea}" method="post">
 
@@ -174,6 +178,7 @@
     <a href="/municipalManager/home"><button type="button" class="btn btn-primary"><img src="/assets/img/home.png" class="fotoBoton" alt="Menú">Volver al menú</button></a>
     <br><br>
 </div>
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

@@ -2,21 +2,17 @@ package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.dao.ServiceDateDao;
-import es.uji.ei102720mgph.SANA.model.Service;
-import es.uji.ei102720mgph.SANA.model.ServiceDate;
-import es.uji.ei102720mgph.SANA.model.UserLogin;
+import es.uji.ei102720mgph.SANA.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -137,21 +133,44 @@ public class ServiceDateController {
     }
 
     // información de un servicio dijo
-    @RequestMapping(value="/get/{id}")
-    public String getServiceDateNaturalArea(Model model, @PathVariable String id, HttpSession session){
+    @RequestMapping(value="/list/{naturalArea}")
+    public String getServiceDateNaturalArea(Model model, @PathVariable String naturalArea, HttpSession session,
+                                            @RequestParam(value="patron",required=false) String patron){
+        if(session.getAttribute("municipalManager") ==  null && session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/serviceDate/list");
+            return "redirect:/inicio/login";
+        }
         // Pasar qué tipo de usuario es para mostrar unos botones u otros en la misma vista
         if(session.getAttribute("municipalManager") != null)
             model.addAttribute("typeUser", "manager");
-        else if(session.getAttribute("registeredCitizen") != null)
-            model.addAttribute("typeUser", "registered");
         else if(session.getAttribute("environmentalManager") != null)
             model.addAttribute("typeUser", "environmental");
 
         session.setAttribute("section", "#serviceDates");
-        ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
-        model.addAttribute("serviceDate", serviceDateDao.getServiceDate(id));
-        model.addAttribute("service", serviceDao.getService(serviceDate.getService()));
-        return "/serviceDate/get";
+        model.addAttribute("areaNatural", naturalArea);
+
+        // Aplicar filtro
+        List<ServiceDate> serviceDates;
+        if (patron != null && !patron.equals(""))
+            serviceDates = serviceDateDao.getServiceDatesOfNaturalAreaSearch(patron, naturalArea);
+        else
+            serviceDates = serviceDateDao.getServiceDatesOfNaturalArea(naturalArea);
+
+        //transformarlos a ServiceDateList para que tengan más atributos
+        List<ServiceDateList> services = new ArrayList<>();
+        for(ServiceDate serviceDate : serviceDates) {
+            Service servicio = serviceDao.getService(serviceDate.getService());
+            ServiceDateList s = new ServiceDateList();
+            s.setNameOfService(serviceDate.getService());
+            s.setBeginningDate(serviceDate.getBeginningDate());
+            s.setEndDate(serviceDate.getEndDate());
+            s.setDescription(servicio.getDescription());
+            s.setHiringPlace(servicio.getHiringPlace());
+            services.add(s);
+        }
+        model.addAttribute("services", services);
+        return "/serviceDate/list";
     }
 
     // Dar de baja servicio fijo

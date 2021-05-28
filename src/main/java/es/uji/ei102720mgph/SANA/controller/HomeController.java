@@ -99,11 +99,6 @@ public class HomeController {
         return "inicio/register_form";
     }
 
-    @RequestMapping("inicio/tipografia")
-    public String muestraTipografia(Model model) {
-        return "inicio/tipografia";
-    }
-
     @RequestMapping("inicio/register_form/registration")
     public String registrationProcess(@ModelAttribute("registrationCitizen") RegistrationCitizen registrationCitizen,BindingResult bindingResult, HttpSession session ){
 

@@ -80,10 +80,14 @@ public class PostalCodeMunicipalityController {
         return "redirect:/municipality/get/" + municipality;
     }
 
+    // en realidad no entiendo por q habría que hacerlo
     public void recargaGet(Model model, String name) {
         model.addAttribute("municipality", municipalityDao.getMunicipality(name));
         model.addAttribute("municipalManagers", municipalManagerDao.getManagersOfMunicipality(name));
         model.addAttribute("postalCodes", postalCodeMunicipalityDao.getPostalCodeOfMuni(name));
+        PostalCodeMunicipality postalCode = new PostalCodeMunicipality();
+        postalCode.setMunicipality(name);
+        model.addAttribute("postalCode", postalCode);
     }
 
     @RequestMapping(value="/delete/{municipality}/{postalCode}")

@@ -164,6 +164,14 @@ h4.colorMarron {
     color: #634133;
 }
 
+h5.colorTierra {
+    color: #b86f52;
+}
+
+h5.colorMarron {
+    color: #634133;
+}
+
 .card-horizontal {
     display: flex;
     flex: 1 1 auto;
@@ -227,8 +235,7 @@ h4.colorMarron {
 }
 
 .fotoBoton {
-    height:25px;
-    padding-right:10px;
+    height:20px;
 }
 
 .form-control-corto {

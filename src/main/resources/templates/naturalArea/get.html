@@ -179,34 +179,6 @@
             </div>
         </section>
 
-        <!-- SECCION DE ZONAS DEL AREA NATURAL -->
-        <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
-            <hr class="lineaVerde">
-            <h3>Lista de Zonas</h3>
-            <div th:if="${#lists.isEmpty(zones)}">
-                <p><b>¡Este área natural no es restringida y por tanto no tiene zonas!</b></p>
-            </div>
-            <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">Número zona</th>
-                    <th scope="col">Letra</th>
-                    <th scope="col">Capacidad máx.</th>
-                    <th scope="col">Fecha creación</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="zone: ${#lists.sort(zones)}">
-                    <td th:text="${zone.zoneNumber}"></td>
-                    <td th:text="${zone.letter}"></td>
-                    <td th:text="${zone.maximumCapacity}"></td>
-                    <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-
         <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
         <hr class="lineaVerde">
         <h3>Servicios fijos</h3>
@@ -263,7 +235,6 @@
                 </tbody>
             </table>
         </section>
-        <hr class="lineaVerde">
 
     <br><br>
     <a href="/naturalArea/pagedlist"><button type="button" class="btn btn-primary">Volver</button></a><br><br>

@@ -5,7 +5,10 @@
 <div th:replace="fragments/headerManager"></div>
 
 <div class="container">
-    <h2>Nueva zona</h2><br>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0" > Añadir nueva zona </h2>
+    <br><hr class="barra-normal"><br>
+
     <form class="form-horizontal" action="#" th:action="@{/zone/add}"
           th:object="${zone}" method="post">
 

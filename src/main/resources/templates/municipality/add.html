@@ -4,40 +4,43 @@
 <body>
 <div th:replace="fragments/headerEnvironmental"></div>
 
-<div class="container">
-    <h2>Nuevo municipio</h2><br>
-    <form class="form-horizontal" action="#" th:action="@{/municipality/add}"
-          th:object="${municipality}" method="post">
+<section id="addMunicipio">
+    <div class="container">
+        <h2 class="text-uppercase text-center text-secondary mb-0">Añadir municipio</h2><br>
+        <hr class="barra-normal"><br>
 
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="name">Nombre:</label>
-            <div class="col-sm-4">
-                <input type="text" maxlength="30" required class="form-control" id="name" th:field="*{name}"
-                placeholder="Nombre del municipio"/>
-                <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
-                <td th:if="${#strings.equals(claveRepetida, 'repetida')}">El nombre del municipio ya está en uso</td>
+        <form class="form-horizontal" action="#" th:action="@{/municipality/add}"
+              th:object="${municipality}" method="post">
+
+            <div class="form-group row">
+                <label class="control-label col-sm-2" for="name">Nombre:</label>
+                <div class="col-sm-4">
+                    <input type="text" maxlength="30" required class="form-control" id="name" th:field="*{name}"
+                    placeholder="Nombre del municipio"/>
+                    <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+                    <td th:if="${#strings.equals(claveRepetida, 'repetida')}">El nombre del municipio ya está en uso</td>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="description">Descripción:</label>
-            <div class="col-sm-4">
-                <textarea rows="3" required maxlength="100" class="form-control" placeholder="Es la capital de la provincia de..."
-                          id="description" th:field="*{description}"></textarea>
-                <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
+            <div class="form-group row">
+                <label class="control-label col-sm-2" for="description">Descripción:</label>
+                <div class="col-sm-4">
+                    <textarea rows="3" required maxlength="100" class="form-control" placeholder="Es la capital de la provincia de..."
+                              id="description" th:field="*{description}"></textarea>
+                    <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group row">
-            <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-success okey">Añadir municipio</button>
+            <div class="form-group row">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-success okey">Añadir municipio</button>
+                </div>
             </div>
-        </div>
-    </form>
-    <a href="/municipality/list"><button type="submit" class="btn btn-primary">Volver</button></a>
-    <br><br>
-</div>
-
+        </form>
+        <a href="/municipality/list"><button type="submit" class="btn btn-primary">Volver</button></a>
+        <br><br>
+    </div>
+</section>
 <div th:replace="fragments/footer"></div>
 </body>
 </html>

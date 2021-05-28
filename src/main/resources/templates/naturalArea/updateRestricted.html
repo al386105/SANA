@@ -5,7 +5,10 @@
 <div th:replace="fragments/headerManager"></div>
 
 <div class="container">
-    <h1>Modificar los datos del área restringida</h1>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0" > Modificar área natural restringida</h2>
+    <br><hr class="barra-normal"><br>
+
     <form class="form-horizontal" action="#" th:action="@{/naturalArea/updateRestricted}"
           th:object="${naturalArea}" method="post">
 

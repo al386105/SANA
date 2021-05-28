@@ -5,7 +5,9 @@
 <div th:replace="fragments/headerEnvironmental"></div>
 
 <div class="container">
-    <h2>Modificar gestor municipal</h2><br>
+    <h2 class="text-uppercase text-center text-secondary mb-0">Modificar gestor municipal</h2>
+    <br><hr class="barra-normal"><br>
+
     <form class="form-horizontal" action="#" th:action="@{/municipalManager/update}"
           th:object="${municipalManager}" method="post">
 

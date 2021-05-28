@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+
+<!-- dependiendo de si esta registrado o no tiene un header u otro -->
+<td th:if="${registered != null}">
+    <div th:replace="fragments/headerRegistered"></div>
+</td>
+<td th:if="${registered == null}">
+    <div th:replace="fragments/header"></div>
+</td>
+
+<section id="panel">
+    <div class="container">
+        <h2 class="text-uppercase text-center text-secondary mb-0">Ocupación</h2><br>
+        <hr class="barra-normal"><br>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Área natural</th>
+                <th scope="col">Acceso</th>
+                <th scope="col">Ocupación actual</th>
+                <th scope="col">Capacidad máxima</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="occupancyData: ${occupancyDataOfNaturalAreas}">
+                <td> <b th:text="${occupancyData.naturalArea.name}"> </b>  </td>
+                <!-- Acceso -->
+                <td> <span th:text="${occupancyData.naturalArea.typeOfAccess.descripcion}"> </span> </td>
+                <!-- Ratio de ocupación -->
+                <td th:switch="${occupancyData.naturalArea.typeOfAccess.descripcion}">
+                    <span th:case="'Restringido'" th:text="${occupancyData.occupancyRate} + ' %'"></span>
+                    <span th:case="'No restringido'"> </span>
+                    <span th:case="'Cerrado'"> 0.0 % </span>
+                </td>
+                <!-- Ocupacion máxima -->
+                <td th:switch="${occupancyData.naturalArea.typeOfAccess.descripcion}">
+                    <span th:case="'Restringido'" th:text="${occupancyData.maxCapacity}"></span>
+                    <span th:case="'No restringido'"> - </span>
+                    <span th:case="'Cerrado'"> 0 </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a href="/"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+
+        <br><br>
+    </div>
+</section>
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

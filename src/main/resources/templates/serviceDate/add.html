@@ -5,7 +5,11 @@
 <div th:replace="fragments/headerManager"></div>
 
 <div class="container">
-    <h2>Asignar un servicio fijo</h2><br>
+
+
+    <h2 class="text-uppercase text-center text-secondary mb-0" > Asignar servicio fijo </h2>
+    <br><hr class="barra-normal"><br>
+
     <form class="form-horizontal" action="#" th:action="@{/serviceDate/add}"
           th:object="${serviceDate}" method="post">
 

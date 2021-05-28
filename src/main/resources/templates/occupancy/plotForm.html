@@ -7,11 +7,11 @@
 <section id="perfil">
     <div class="container">
 
-        <h2 class="text-uppercase text-center text-secondary mb-0">Histórico de ocupación</h2>
+        <h2 class="text-uppercase text-center text-secondary mb-0">Gráfico de ocupación</h2>
         <br><hr class="barra-normal"><br>
 
-        <form class="form-horizontal" action="#" th:action="@{/naturalArea/occupancyPlotForm}"
-              th:object="${occupancyFormData}" method="post">
+    <form class="form-horizontal" action="#" th:action="@{/occupancy/plotForm}"
+          th:object="${occupancyFormData}" method="post">
 
             <div class="form-group row">
                 <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
@@ -21,9 +21,8 @@
                 </div>
             </div>
 
-
             <div class="form-group row">
-                <label class="control-label col-sm-2" for="typeOfPeriod">Gráfico por: </label>
+                <label class="control-label col-sm-2" for="typeOfPeriod">Gráfico por:</label>
                 <div class="col-sm-4">
                     <input type="text" readonly="readonly" required class="form-control" id="typeOfPeriod" th:field="*{typeOfPeriod}" />
                     <td th:if="${#fields.hasErrors('typeOfPeriod')}" th:errors="*{typeOfPeriod}"></td>
@@ -31,7 +30,7 @@
             </div>
 
             <div th:if="${occupancyFormData.typeOfPeriod.descripcion == 'Por año' or occupancyFormData.typeOfPeriod.descripcion == 'Por mes'}" class="form-group row">
-                <label class="control-label col-sm-2" for="year">Año: </label>
+                <label class="control-label col-sm-2" for="year">Año:</label>
                 <div class="col-sm-4">
                     <input type="number" min="2010" class="form-control" id="year" th:field="*{year}" value="1"/>
                     <td th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></td>
@@ -39,7 +38,7 @@
             </div>
 
             <div th:if="${occupancyFormData.typeOfPeriod.descripcion == 'Por mes'}" class="form-group row">
-                <label class="control-label col-sm-2" for="month">Mes: </label>
+                <label class="control-label col-sm-2" for="month">Mes:</label>
                 <div class="col-sm-4">
                     <input type="number" min="1" max="12" class="form-control" id="month" th:field="*{month}" value="1"/>
                     <td th:if="${#fields.hasErrors('month')}" th:errors="*{month}"></td>
@@ -47,7 +46,7 @@
             </div>
 
             <div th:if="${occupancyFormData.typeOfPeriod.descripcion == 'Por dia'}" class="form-group row">
-                <label class="control-label col-sm-2" for="day">Día: </label>
+                <label class="control-label col-sm-2" for="day">Día:</label>
                 <div class="col-sm-4">
                     <input type="date" placeholder="yyyy-MM-dd" class="form-control" id="day" th:field="*{day}"/>
                     <td th:if="${#fields.hasErrors('day')}" th:errors="*{day}"></td>

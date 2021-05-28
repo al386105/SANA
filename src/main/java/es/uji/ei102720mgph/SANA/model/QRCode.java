@@ -1,4 +1,4 @@
-package es.uji.ei102720mgph.SANA.controller;
+package es.uji.ei102720mgph.SANA.model;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;

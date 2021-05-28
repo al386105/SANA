@@ -82,6 +82,7 @@ public class TimeSlot implements Comparable<TimeSlot> {
         TimeSlot.contador++;
     }
 
+    @Override
     public int compareTo(TimeSlot altre) {
         return this.getId().compareTo(altre.getId());
     }

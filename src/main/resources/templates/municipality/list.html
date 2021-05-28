@@ -4,7 +4,13 @@
 <body>
 <div th:replace="fragments/headerEnvironmental"></div>
 
-<div class="container">
+
+<section id="perfil">
+    <div class="container">
+
+        <h2 class="text-uppercase text-center text-secondary mb-0">Municipios</h2>
+        <br><hr class="barra-normal">
+
     <!-- filtro buscador y botón ocupación por municipios -->
     <div class="box" style="padding-bottom: 20px; padding-top: 20px">
         <form>
@@ -17,13 +23,6 @@
                 </a>
             </div><br>
         </form>
-    </div>
-
-    <div>
-        <h1>Lista de municipios</h1>
-        <div style="float: right;">
-            <a href="/municipality/occupancy"><button type="button" class="btn btn-primary">Histórico de ocupación</button></a>
-        </div>
     </div>
 
     <div th:if="${#lists.isEmpty(municipalities)}">
@@ -53,10 +52,13 @@
         </tr>
         </tbody>
     </table>
+
     <a href="add"><button type="button" class="btn btn-success okey">Añadir municipio</button></a>
-    <a href="/environmentalManager/home"><button type="button" class="btn btn-primary"><img src="/assets/img/home.png" class="fotoBoton" alt="Menú">Volver al menú</button></a>
+    <a href="/municipality/occupancy"><button type="button" class="btn btn-primary">Histórico de ocupación</button></a>
+    <a href="/"><button type="button" class="btn btn-primary"><img src="/assets/img/home.png" class="fotoBoton" alt="Menú">Volver al menú</button></a>
     <br><br>
 </div>
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

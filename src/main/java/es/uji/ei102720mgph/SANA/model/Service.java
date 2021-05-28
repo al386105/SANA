@@ -44,6 +44,7 @@ public class Service implements Comparable<Service> {
         this.hiringPlace = hiringPlace;
     }
 
+    @Override
     public int compareTo(Service altre) {
         return this.getNameOfService().compareTo(altre.getNameOfService());
     }

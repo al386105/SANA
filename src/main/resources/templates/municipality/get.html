@@ -7,87 +7,11 @@
 <div class="container">
     <h1><span th:text="${municipality.name}"> </span></h1>
     <br>
-    <ul>
-        <li><b>Descripción:</b> <span th:text="${municipality.description}"></span></li>
-        <li><b>Fecha de registro:</b> <span th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></span></li>
-    </ul><br>
-    <td><a th:href="@{/municipality/update/{name}(name=${municipality.name})}">
-        <button type="button" class="btn btn-warning edit">Editar datos</button> </a>
-    </td>
-    <hr class="lineaVerde">
-
-    <!-- SECCION DE GESTORES MUNICIPALES DEL MUNICIPIO -->
-    <h3>Gestores municipales</h3>
-    <div th:if="${#lists.isEmpty(municipalManagers)}">
-        <p><b>¡Este municipio todavía no tiene ningún gestor municipal asignado!</b></p>
-    </div>
-    <table th:unless="${#lists.isEmpty(municipalManagers)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellidos</th>
-            <th scope="col">Municipio</th>
-            <th scope="col">Fecha de baja</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="municipalManager: ${#lists.sort(municipalManagers)}">
-            <td scope="row" th:text="${municipalManager.name}"></td>
-            <td th:text="${municipalManager.surname}"></td>
-            <td th:text="${municipalManager.municipality}"></td>
-            <div th:if="${municipalManager.leavingDate != null}">
-                <td th:text="${#temporals.format(municipalManager.leavingDate,'dd/MM/yyyy')}"></td>
-            </div>
-            <div th:if="${municipalManager.leavingDate == null}">
-                <td> - </td>
-            </div>
-
-            <!-- Botones -->
-            <td><a th:href="@{/municipalManager/get/{email}(email=${municipalManager.email})}">
-                <button type="button" class="btn btn-primary">Más información</button> </a>
-            </td>
-            <td><a th:href="@{/municipalManager/update/{email}(email=${municipalManager.email})}">
-                <button type="button" class="btn btn-warning edit">Edita</button>
-            </a>
-            </td>
-            <!-- opcion para dar de baja, si no lo está ya -->
-            <div th:if="${municipalManager.leavingDate != null}">
-                <td></td>
-            </div>
-            <div th:if="${municipalManager.leavingDate == null}">
-                <td><button type="button" class="btn btn-danger delete" data-toggle="modal" th:data-target="${'#miModal' + municipalManager.username}">Dar de baja</button></td>
-                <!-- VENTANA EMERGENTE -->
-                <div class="modal" th:id="${'miModal' + municipalManager.username}">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Dar de baja un gestor municipal</h5>
-                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <p>¿Seguro que desea dar de baja al gestor municipal <span th:text="${municipalManager.name}"></span>
-                                    <span th:text="${municipalManager.surname}"></span>?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a th:href="@{/municipalManager/darDeBaja/{email}(email=${municipalManager.email})}">
-                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </tr>
-        </tbody>
-    </table>
+    <h6>Registrado el <span th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></span></h6><br>
+    <h5 class="text-center text-secondary mb-0"><i>"<span th:text="${municipality.description}"></span>"</i></h5><br>
 
     <!-- SECCION DE CODIGOS POSTALES DEL MUNICIPIO -->
     <section id="postalCodes">
-        <hr class="lineaVerde">
-        <h3>Códigos postales</h3>
         <div th:if="${#lists.isEmpty(postalCodes)}">
             <p><b>¡Este municipio no tiene ningún código postal asignado!</b></p>
         </div>
@@ -151,6 +75,8 @@
             </form>
         </div>
     </section>
+
+    <a href="/municipality/list"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
 </div>
 
 <div th:replace="fragments/footer"></div>

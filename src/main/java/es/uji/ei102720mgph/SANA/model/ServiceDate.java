@@ -70,6 +70,7 @@ public class ServiceDate implements Comparable<ServiceDate> {
         ServiceDate.contador++;
     }
 
+    @Override
     public int compareTo(ServiceDate altre) {
         return this.getService().compareTo(altre.getService());
     }

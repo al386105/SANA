@@ -61,14 +61,32 @@ public class MunicipalManagerController {
         }
         // Aplicar filtro
         List<MunicipalManager> managers;
-        if (patron != null)
+        if (patron != null && !patron.equals(""))
+            managers = municipalManagerDao.getMunicipalManagersOperativosSearch(patron);
+        else
+            managers = municipalManagerDao.getMunicipalManagersOperativos();
+
+        model.addAttribute("municipalManagers", managers);
+        quitarAtributoSeccion(session);
+        return "municipalManager/list";
+    }
+
+    @RequestMapping("/listTodos")
+    public String listTodosMunicipalManager(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron) {
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/municipalManager/listTodos");
+            return "redirect:/inicio/login";
+        }
+        // Aplicar filtro
+        List<MunicipalManager> managers;
+        if (patron != null && !patron.equals(""))
             managers = municipalManagerDao.getMunicipalManagersSearch(patron);
         else
             managers = municipalManagerDao.getMunicipalManagers();
 
         model.addAttribute("municipalManagers", managers);
-        quitarAtributoSeccion(session);
-        return "municipalManager/list";
+        return "municipalManager/listTodos";
     }
 
     // metodo para anyadir al modelo los datos del selector
@@ -189,7 +207,7 @@ public class MunicipalManagerController {
         if (bindingResult.hasErrors())
             return "municipalManager/update";
         municipalManagerDao.updateMunicipalManager(pasoAMunicipalManager(managerForm));
-        return "redirect:/municipalManager/list";
+        return "redirect:/municipalManager/get/" + managerForm.getEmail();
     }
 
     @RequestMapping(value="/darDeBaja/{email}", method = RequestMethod.GET)

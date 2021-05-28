@@ -4,7 +4,12 @@
 <body>
 <div th:replace="fragments/headerEnvironmental"></div>
 
+<section id="perfil">
 <div class="container">
+
+    <h2 class="text-uppercase text-center text-secondary mb-0">Áreas Naturales</h2>
+    <br><hr class="barra-normal">
+
     <!-- filtro buscador -->
     <div class="box" style="padding-bottom: 20px; padding-top: 20px">
         <form>
@@ -50,15 +55,11 @@
                             </a>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
         </form>
     </div>
 
-    <h1>Lista de áreas naturales</h1>
     <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">
         <div th:if="${#lists.isEmpty(naturalAreas)}">
             <p><b>¡No se han añadido todavía áreas naturales de este tipo!</b></p>
@@ -106,9 +107,10 @@
             </li>
         </ul>
     </nav>
-    <a href="/environmentalManager/home"><button type="button" class="btn btn-primary"><img src="/assets/img/home.png" class="fotoBoton" alt="Menú">Volver al menú</button></a>
+    <a href="/"><button type="button" class="btn btn-primary"><img src="/assets/img/home.png" class="fotoBoton" alt="Menú">Volver al menú</button></a>
     <br><br>
 </div>
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

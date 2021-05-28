@@ -185,6 +185,7 @@ public class NaturalAreaForm implements Comparable<NaturalAreaForm> {
         this.municipality = municipality;
     }
 
+    @Override
     public int compareTo(NaturalAreaForm altre) {
         return this.getName().compareTo(altre.getName());
     }

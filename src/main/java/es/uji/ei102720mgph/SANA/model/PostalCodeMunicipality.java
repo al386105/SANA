@@ -24,6 +24,7 @@ public class PostalCodeMunicipality implements Comparable<PostalCodeMunicipality
         this.postalCode = postalCode;
     }
 
+    @Override
     public int compareTo(PostalCodeMunicipality altre) {
         return this.getPostalCode().compareTo(altre.getPostalCode());
     }

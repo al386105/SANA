@@ -33,6 +33,7 @@ public class MunicipalManager extends SanaUser implements Comparable<MunicipalMa
         this.password = password;
     }
 
+    @Override
     public int compareTo(MunicipalManager altre) {
         return this.getName().compareTo(altre.getName());
     }

@@ -445,7 +445,6 @@ public class NaturalAreaController {
                                       BindingResult bindingResult) {
         NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
         naturalAreaValidator.validate(naturalAreaForm, bindingResult);
-
         if (bindingResult.hasErrors())
             return "naturalArea/update";
 

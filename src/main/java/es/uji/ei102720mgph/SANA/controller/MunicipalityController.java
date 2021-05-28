@@ -50,7 +50,7 @@ public class MunicipalityController {
         }
         // Aplicar filtro
         List<Municipality> municipalities;
-        if (patron != null)
+        if (patron != null && !patron.equals(""))
             municipalities = municipalityDao.getMunicipalitySearch(patron);
         else
             municipalities = municipalityDao.getMunicipalities();
@@ -132,7 +132,7 @@ public class MunicipalityController {
         if (bindingResult.hasErrors())
             return "municipality/update";
         municipalityDao.updateMunicipality(municipality);
-        return "redirect:list";
+        return "redirect:/municipality/get/" + municipality.getName();
     }
 
     private void quitarAtributoSeccion(HttpSession session) {

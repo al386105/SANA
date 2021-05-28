@@ -123,6 +123,7 @@ public class NaturalArea implements Comparable<NaturalArea> {
         this.municipality = municipality;
     }
 
+    @Override
     public int compareTo(NaturalArea altre) {
         return this.getName().compareTo(altre.getName());
     }

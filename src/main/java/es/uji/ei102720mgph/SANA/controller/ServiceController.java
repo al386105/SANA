@@ -1,6 +1,8 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
+import es.uji.ei102720mgph.SANA.enums.Temporality;
+import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.Municipality;
 import es.uji.ei102720mgph.SANA.model.Service;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
@@ -29,7 +31,8 @@ public class ServiceController {
 
     // Operació llistar
     @RequestMapping("/list")
-    public String listServices(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron) {
+    public String listServices(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron,
+                               @RequestParam(value="temporalidad",required=false) String temporalidad) {
         if(session.getAttribute("environmentalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/service/list");
@@ -40,10 +43,14 @@ public class ServiceController {
 
         // Aplicar filtro
         List<Service> services;
-        if (patron != null)
+        if (patron != null && !patron.equals(""))
             services = serviceDao.getServiceSearch(patron);
         else
             services = serviceDao.getServices();
+
+        // filtro por temporalidad
+        if (temporalidad != null && !temporalidad.equals("todas"))
+            services.removeIf(service -> service.getTemporality() != Temporality.valueOf(temporalidad));
 
         model.addAttribute("services", services);
         return "service/list";

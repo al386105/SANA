@@ -127,6 +127,7 @@ public class Reservation implements Comparable<Reservation> {
         Reservation.contador++;
     }
 
+    @Override
     public int compareTo(Reservation altre) {
             return -this.getReservationDate().compareTo(altre.getReservationDate());
         }

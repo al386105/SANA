@@ -78,6 +78,7 @@ public class Zone implements Comparable<Zone> {
         Zone.contador++;
     }
 
+    @Override
     public int compareTo(Zone altre) {
         return this.getZoneNumber() - altre.getZoneNumber();
     }

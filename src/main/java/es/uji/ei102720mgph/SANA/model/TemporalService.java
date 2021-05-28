@@ -100,6 +100,7 @@ public class TemporalService implements Comparable<TemporalService>  {
         TemporalService.contador++;
     }
 
+    @Override
     public int compareTo(TemporalService altre) {
         return this.getService().compareTo(altre.getService());
     }

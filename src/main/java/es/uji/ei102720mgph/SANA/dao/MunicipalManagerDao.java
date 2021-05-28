@@ -89,7 +89,17 @@ public class MunicipalManagerDao {
             return jdbcTemplate.query("SELECT * FROM MunicipalManager " +
                             "JOIN SanaUser ON MunicipalManager.email = SanaUser.email",
                     new MunicipalManagerRowMapper());
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<MunicipalManager>();
+        }
+    }
 
+    public List<MunicipalManager> getMunicipalManagersOperativos() {
+        try {
+            return jdbcTemplate.query("SELECT * FROM MunicipalManager " +
+                            "JOIN SanaUser ON MunicipalManager.email = SanaUser.email WHERE leavingDate IS NULL",
+                    new MunicipalManagerRowMapper());
         }
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<MunicipalManager>();
@@ -100,6 +110,18 @@ public class MunicipalManagerDao {
         try {
             return jdbcTemplate.query("SELECT * FROM MunicipalManager " +
                             "JOIN SanaUser ON MunicipalManager.email = SanaUser.email WHERE name LIKE '%"+patron+"%'",
+                    new MunicipalManagerRowMapper());
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<MunicipalManager>();
+        }
+    }
+
+    public  List<MunicipalManager> getMunicipalManagersOperativosSearch(String patron) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM MunicipalManager " +
+                            "JOIN SanaUser ON MunicipalManager.email = SanaUser.email " +
+                            "WHERE name LIKE '%"+patron+"%' AND leavingDate IS NULL",
                     new MunicipalManagerRowMapper());
         }
         catch(EmptyResultDataAccessException e) {

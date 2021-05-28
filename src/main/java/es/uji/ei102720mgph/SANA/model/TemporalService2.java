@@ -89,6 +89,7 @@ public class TemporalService2 implements Comparable<TemporalService2>  {
         this.naturalArea = naturalArea;
     }
 
+    @Override
     public int compareTo(TemporalService2 altre) {
         return this.getService().compareTo(altre.getService());
     }

@@ -78,6 +78,7 @@ public class Comment implements Comparable<Comment> {
         Comment.contador++;
     }
 
+    @Override
     public int compareTo(Comment altre) {
         return -this.getDate().compareTo(altre.getDate());
     }

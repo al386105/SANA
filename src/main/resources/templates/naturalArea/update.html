@@ -28,45 +28,74 @@
             </div>
         </div>
 
-        <!-- coordenadas geográficas -->
         <h6>Coordenadas geográficas</h6>
-        <ul>
-            <div class="form-group row">
-                <li><label class="control-label col-sm-2" for="latitudGrados">Latitud:</label></li>
-                <table>
-                    <tr>
-                        <td><input required style="width: 70%" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudGrados" th:field="*{latitudGrados}" />
-                            <p style="font-size:x-large">°</p></td>
-                        <td><input required style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudMin" th:field="*{latitudMin}" />
-                            <p style="font-size:x-large">′</p></td>
-                        <td><input required style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudSeg" th:field="*{latitudSeg}" />
-                            <p style="font-size:x-large">″</p></td>
-                        <td><select class="form-control" type="text" th:field="*{latitudLetra}">
-                            <option value="N">Norte (N)</option>
-                            <option value="S">Sur (S)</option>
-                        </select></td><br>
-                    </tr>
-                </table>
-            </div>
 
-            <div class="form-group row">
-                <li><label class="control-label col-sm-2" for="longitudGrados">Longitud:</label></li>
-                <table style="align:top">
-                    <tr>
-                        <td><input style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudGrados" th:field="*{longitudGrados}" />
-                            <p style="font-size:x-large">°</p></td>
-                        <td><input style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudMin" th:field="*{longitudMin}" />
-                            <p style="font-size:x-large">′</p></td>
-                        <td><input style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudSeg" th:field="*{longitudSeg}" />
-                            <p style="font-size:x-large">″</p></td>
-                        <td><select class="form-control" type="text" th:field="*{longitudLetra}">
-                            <option value="E">Este (E)</option>
-                            <option value="W">Oeste (W)</option>
-                        </select></td><br>
-                    </tr>
-                </table>
+        <div class="container">
+            <div class="row justify-content-md-left">
+                <div class="col-sm-2">
+                    Latitud:
+                </div>
+                <div class="col-auto text-right">
+                    <input required style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudGrados" th:field="*{latitudGrados}"/>
+                </div>
+                <div class="col-auto text-left" >
+                    <p style="font-size:x-large;margin-left:auto">º</p>
+                </div>
+                <div class="col-auto">
+                    <input required style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudMin" th:field="*{latitudMin}" />
+                </div>
+                <div class="col-auto">
+                    <p style="font-size:x-large">′</p>
+                </div>
+                <div class="col-auto">
+                    <input required style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" class="form-control" id="latitudSeg" th:field="*{latitudSeg}" />
+                </div>
+                <div class="col-auto">
+                    <p style="font-size:x-large">″</p>
+                </div>
+                <div class="col-auto">
+                    <select class="form-control" type="text" th:field="*{latitudLetra}">
+                        <option value="N">Norte (N)</option>
+                        <option value="S">Sur (S)</option>
+                    </select>
+                </div>
             </div>
-        </ul>
+            <td th:if="${#fields.hasErrors('latitudGrados')}" th:errors="*{latitudGrados}"></td>
+            <td th:if="${#fields.hasErrors('latitudMin')}" th:errors="*{latitudMin}"></td>
+            <td th:if="${#fields.hasErrors('latitudSeg')}" th:errors="*{latitudSeg}"></td>
+            <td th:if="${#fields.hasErrors('latitudLetra')}" th:errors="*{latitudLetra}"></td>
+
+            <div class="row justify-content-md-left">
+                <div class="col-sm-2">
+                    Longitud:
+                </div>
+                <div class="col-md-auto">
+                    <input style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudGrados" th:field="*{longitudGrados}" />                </div>
+                <div class="col-md-auto" >
+                    <p style="font-size:x-large;">º</p>
+                </div>
+                <div class="col-md-auto">
+                    <input style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudMin" th:field="*{longitudMin}" />                </div>
+                <div class="col-md-auto">
+                    <p style="font-size:x-large">′</p>
+                </div>
+                <div class="col-md-auto">
+                    <input style="width: 70%;" type="number" min="0.0" max="180.0" step="0.1" required class="form-control" id="longitudSeg" th:field="*{longitudSeg}" />                </div>
+                <div class="col-md-auto">
+                    <p style="font-size:x-large">″</p>
+                </div>
+                <div class="col-md-auto">
+                    <select class="form-control" type="text" th:field="*{longitudLetra}">
+                        <option value="E">Este (E)</option>
+                        <option value="W">Oeste (W)</option>
+                    </select>
+                </div>
+            </div>
+            <td th:if="${#fields.hasErrors('longitudGrados')}" th:errors="*{longitudGrados}"></td>
+            <td th:if="${#fields.hasErrors('longitudMin')}" th:errors="*{longitudMin}"></td>
+            <td th:if="${#fields.hasErrors('longitudSeg')}" th:errors="*{longitudSeg}"></td>
+            <td th:if="${#fields.hasErrors('longitudLetra')}" th:errors="*{longitudLetra}"></td>
+        </div><br>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="typeOfArea">Tipo de área:</label>

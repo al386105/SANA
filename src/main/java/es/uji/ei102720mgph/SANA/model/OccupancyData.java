@@ -9,7 +9,6 @@ public class OccupancyData {
     private int totalOccupancy;
 
     public OccupancyData(){
-
     }
 
     public NaturalArea getNaturalArea() {

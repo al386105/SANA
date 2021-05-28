@@ -38,6 +38,7 @@ public class Municipality implements Comparable<Municipality> {
         this.registrationDate = registrationDate;
     }
 
+    @Override
     public int compareTo(Municipality altre) {
         return this.getName().compareTo(altre.getName());
     }

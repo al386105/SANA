@@ -14,9 +14,7 @@ public class OccupancyFormData {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate day;
 
-
     public OccupancyFormData(){
-
     }
 
     public TypeOfPeriod getTypeOfPeriod() {
@@ -58,7 +56,6 @@ public class OccupancyFormData {
     public void setDay(LocalDate day) {
         this.day = day;
     }
-
 
     @Override
     public String toString() {

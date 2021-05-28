@@ -23,8 +23,6 @@ public class RegistrationCitizen {
     private String passwordComprovation;
     private String citizenCode;
 
-
-
     public RegistrationCitizen(){
         super();
     }

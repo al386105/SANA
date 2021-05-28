@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:replace="fragments/headerEnvironmental"></div>
+
+<section id="perfil">
+    <div class="container">
+
+        <h2 class="text-uppercase text-center text-secondary mb-0">Todos Los Gestores Municipales</h2>
+        <br><hr class="barra-normal">
+
+        <!-- filtro buscador -->
+        <div class="box" style="padding-bottom: 20px; padding-top: 20px">
+            <form>
+                <div style="float: right;">
+                    <span class="icon"><i class="fa fa-search"></i></span>
+                    <input th:name="patron" style="border-radius: 25px; background-color: #e8e6e8" type="search" id="search" placeholder=" Buscar..." />
+                    <button style="border-radius: 25px;" type="submit" class="btn btn-primary">Buscar por nombre</button>
+                    <a th:href="@{/municipalManager/list}">
+                        <button style="border-radius: 25px; text-color:white" type="submit" class="btn btn-secondary">Resetear</button>
+                    </a>
+                </div><br>
+            </form>
+        </div>
+
+        <div th:if="${#lists.isEmpty(municipalManagers)}">
+            ¡No ha añadido todavía ningún gestor municipal!
+        </div>
+        <table th:unless="${#lists.isEmpty(municipalManagers)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col">Municipio</th>
+                <th scope="col">Fecha de baja</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="municipalManager: ${#lists.sort(municipalManagers)}">
+                <td scope="row" th:text="${municipalManager.name}"></td>
+                <td th:text="${municipalManager.surname}"></td>
+                <td th:text="${municipalManager.municipality}"></td>
+                <div th:if="${municipalManager.leavingDate != null}">
+                    <td th:text="${municipalManager.leavingDate}"></td>
+                </div>
+                <div th:if="${municipalManager.leavingDate == null}">
+                    <td> - </td>
+                </div>
+            </tr>
+            </tbody>
+        </table>
+        <a href="/municipalManager/list"><button type="button" class="btn btn-primary">Volver</button></a>
+        <a href="/"><button type="button" class="btn btn-primary"><img src="/assets/img/home.png" class="fotoBoton" alt="Menú">Volver al menú</button></a>
+        <br><br>
+    </div>
+</section>
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

@@ -15,7 +15,9 @@
 </div>
 
 <div class="container">
-    <h1><span th:text="${naturalArea.name}"> </span></h1>
+    <h2 class="text-uppercase text-center text-secondary mb-0" th:text="${naturalArea.name}"></h2>
+    <br><hr class="barra-normal"><br>
+
     <ul>
         <li><b>Municipio:</b> <span th:text="${naturalArea.municipality}"></span></li>
         <li><b>Acceso:</b> <span th:text="${naturalArea.typeOfAccess.descripcion}"></span></li>

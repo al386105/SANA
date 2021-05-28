@@ -8,7 +8,10 @@
 </head>
 <body>
 <div class="container">
-    <h2>Cancelar reserva</h2>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0" > Cancelar reserva </h2>
+    <br><hr class="barra-normal"><br>
+
     <form class="form-horizontal" action="#" th:action="@{/reservation/cancelManagers}"
           th:object="${reservation}" method="post">
 

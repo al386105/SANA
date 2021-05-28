@@ -7,9 +7,9 @@
 <div class="container">
 
     <!-- TODO VISTA POR HACER -->
+    <h2 class="text-uppercase text-center text-secondary mb-0"> Lista de reservas </h2>
+    <br><hr class="barra-normal"><br>
 
-    <h1><span th:text="${naturalArea.name}"> </span></h1>
-    <h3>Lista de reservas</h3>
     <h3>POR HACER!!!</h3>
     <div th:if="${#lists.isEmpty(reservations)}">
         <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'nonRestricted')}">

@@ -5,7 +5,10 @@
 <div th:replace="fragments/headerManager"></div>
 
 <div class="container">
-    <h2>Asignar un servicio temporal</h2><br>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0" > Asignar servicio temporal </h2>
+    <br><hr class="barra-normal"><br>
+
     <form class="form-horizontal" action="#" th:action="@{/temporalService/add}"
           th:object="${temporalService}" method="post">
 

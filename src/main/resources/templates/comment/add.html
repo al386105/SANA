@@ -5,7 +5,8 @@
 <div th:replace="fragments/headerRegistered"></div>
 
 <div class="container">
-    <h2>Nuevo comentario</h2>
+    <h2 class="text-uppercase text-center text-secondary mb-0">Añadir comentario</h2><br>
+    <hr class="barra-normal"><br>
     <form class="form-horizontal" action="#" th:action="@{/comment/add}"
           th:object="${comment}" method="post">
 

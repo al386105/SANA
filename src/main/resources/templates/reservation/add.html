@@ -6,7 +6,10 @@
 
 
 <div class="container">
-    <h2>Realizar nueva reserva en <span th:text="${naturalArea}"></span></h2>
+    <h2 class="text-uppercase text-center text-secondary mb-0" >
+        Realizar nueva reserva en <span th:text="${naturalArea}"></span>
+    </h2>
+    <br><hr class="barra-normal">
     <br>
     <form class="form-horizontal" action="#" th:action="${'/reservation/add2/' + naturalArea}"
           th:object="${reservation}">

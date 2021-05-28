@@ -5,7 +5,10 @@
 <div th:replace="fragments/headerManager"></div>
 
 <div class="container">
-    <h2>Modificar franja horaria</h2><br>
+
+    <h2 class="text-uppercase text-center text-secondary mb-0" > Modificar franja horaria </h2>
+    <br><hr class="barra-normal"><br>
+
     <form class="form-horizontal" action="#" th:action="@{/timeSlot/update}"
           th:object="${timeSlot}" method="post">
 

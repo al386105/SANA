@@ -5,8 +5,9 @@
 <div th:replace="fragments/headerEnvironmental"></div>
 
 <div class="container">
-    <h1><span th:text="${municipality.name}"> </span></h1>
-    <br>
+    <h2 th:text="${municipality.name}" class="text-uppercase text-center text-secondary mb-0">Ocupación</h2><br>
+    <hr class="barra-normal"><br>
+
     <h6>Registrado el <span th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></span></h6><br>
     <h5 class="text-center text-secondary mb-0"><i>"<span th:text="${municipality.description}"></span>"</i></h5><br>
 

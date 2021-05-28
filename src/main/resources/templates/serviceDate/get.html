@@ -10,7 +10,13 @@
 </div>
 
 <div class="container">
-    <h1><span th:text="${service.nameOfService}"></span> en <span th:text="${serviceDate.naturalArea}"></span></h1>
+
+
+    <h2 class="text-uppercase text-center text-secondary mb-0" >
+        <span th:text="${service.nameOfService}"></span> en <span th:text="${serviceDate.naturalArea}"></span>
+    </h2>
+    <br><hr class="barra-normal"><br>
+
     <ul>
         <li><b>Nombre del servicio:</b> <span th:text="${service.nameOfService}"></span></li>
         <li><b>Temporalidad:</b> <span th:text="${service.temporality.descripcion}"></span></li>

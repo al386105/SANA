@@ -4,111 +4,113 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
 
+<h2 class="text-uppercase text-center text-secondary mb-0" > Áreas naturales</h2>
+<br><hr class="barra-normal">
+
 <section class="text-white bg-primary mb-0" id="natural_areas">
-<h1>Áreas naturales</h1>
 
-<table class="table table-striped">
-    <tbody>
-    <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">
-        <!-- filtro buscador -->
-        <div class="box" style="padding-bottom: 20px; padding-top: 20px">
-            <form>
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <!-- por tipo de acceso -->
-                            <select class="form-control mx-sm-3 mb-2" style="width:90%;" id="typeOfAccess" type="text" th:name="typeOfAccess">
-                                <option value="todas">Tipo de acceso</option>
-                                <option th:each="typeOfAccessvalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfAccess).values()}"
-                                        th:value="${typeOfAccessvalue}" th:text="${typeOfAccessvalue.descripcion}"
-                                        th:unless="${#strings.equals(typeOfAccessvalue.name(), 'closed')}"></option>
-                            </select>
-                        </div>
+    <table class="table table-striped">
+        <tbody>
+        <div th:with="naturalAreas=${naturalAreasPaged[__${selectedPage}__]}">
+            <!-- filtro buscador -->
+            <div class="box" style="padding-bottom: 20px; padding-top: 20px">
+                <form>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <!-- por tipo de acceso -->
+                                <select class="form-control mx-sm-3 mb-2" style="width:90%;" id="typeOfAccess" type="text" th:name="typeOfAccess">
+                                    <option value="todas">Tipo de acceso</option>
+                                    <option th:each="typeOfAccessvalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfAccess).values()}"
+                                            th:value="${typeOfAccessvalue}" th:text="${typeOfAccessvalue.descripcion}"
+                                            th:unless="${#strings.equals(typeOfAccessvalue.name(), 'closed')}"></option>
+                                </select>
+                            </div>
 
-                        <div class="col">
-                            <!-- por tipo de area -->
-                            <select class="form-control mx-sm-3 mb-2" style="width:90%;" id="typeOfArea" type="text" th:name="typeOfArea">
-                                <option value="todas">Tipo de área</option>
-                                <option th:each="typeOfAreavalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfArea).values()}"
-                                        th:value="${typeOfAreavalue}" th:text="${typeOfAreavalue.descripcion}"></option>
-                            </select>
-                        </div>
+                            <div class="col">
+                                <!-- por tipo de area -->
+                                <select class="form-control mx-sm-3 mb-2" style="width:90%;" id="typeOfArea" type="text" th:name="typeOfArea">
+                                    <option value="todas">Tipo de área</option>
+                                    <option th:each="typeOfAreavalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfArea).values()}"
+                                            th:value="${typeOfAreavalue}" th:text="${typeOfAreavalue.descripcion}"></option>
+                                </select>
+                            </div>
 
-                        <div class="col">
-                            <!-- por municipio -->
-                            <select class="form-control mx-sm-3 mb-2" style="width:90%;" id="municipality" type="text"  th:name="municipality">
-                                <option value="todos">Municipio</option>
-                                <option th:each="municipalityvalue : ${municipalityList}"
-                                        th:value="${municipalityvalue}"
-                                        th:text="${municipalityvalue}"></option>
-                            </select>
-                        </div>
+                            <div class="col">
+                                <!-- por municipio -->
+                                <select class="form-control mx-sm-3 mb-2" style="width:90%;" id="municipality" type="text"  th:name="municipality">
+                                    <option value="todos">Municipio</option>
+                                    <option th:each="municipalityvalue : ${municipalityList}"
+                                            th:value="${municipalityvalue}"
+                                            th:text="${municipalityvalue}"></option>
+                                </select>
+                            </div>
 
-                        <div class="col-5">
-                            <!-- por nombre -->
-                            <div style="float: right;">
-                                <span class="icon"><i class="fa fa-search"></i></span>
-                                <input th:name="patron" style="border-radius: 25px; background-color: #e8e6e8" type="search" id="search" placeholder=" Buscar..." />
-                                <button style="border-radius: 25px;" type="submit" class="btn btn-primary">Buscar</button>
-                                <a th:href="@{/naturalArea/pagedList}">
-                                    <button style="border-radius: 25px; text-color:white" type="submit" class="btn btn-secondary">Resetear</button>
-                                </a>
+                            <div class="col-5">
+                                <!-- por nombre -->
+                                <div style="float: right;">
+                                    <span class="icon"><i class="fa fa-search"></i></span>
+                                    <input th:name="patron" style="border-radius: 25px; background-color: #e8e6e8" type="search" id="search" placeholder=" Buscar..." />
+                                    <button style="border-radius: 25px;" type="submit" class="btn btn-primary">Buscar</button>
+                                    <a th:href="@{/naturalArea/pagedList}">
+                                        <button style="border-radius: 25px; text-color:white" type="submit" class="btn btn-secondary">Resetear</button>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
 
-        <div th:if="${#lists.isEmpty(naturalAreas)}">
-            <p><b>En este momento no se encuentra ningún área natural de este tipo accesible.</b></p>
-        </div>
-        <div th:unless="${#lists.isEmpty(naturalAreas)}">
+            <div th:if="${#lists.isEmpty(naturalAreas)}">
+                <p><b>En este momento no se encuentra ningún área natural de este tipo accesible.</b></p>
+            </div>
+            <div th:unless="${#lists.isEmpty(naturalAreas)}">
 
-            <tr th:each="naturalArea, iterator : ${naturalAreas}">
-                <td>
-                    <!--  NATURAL AREAS PICTURE  -->
-                    <img th:src="${pathPicturesPaged.get(selectedPage).get(iterator.index)}" alt="Foto del area natural" class="fotoListado"/>
-                </td>
+                <tr th:each="naturalArea, iterator : ${naturalAreas}">
+                    <td>
+                        <!--  NATURAL AREAS PICTURE  -->
+                        <img th:src="${pathPicturesPaged.get(selectedPage).get(iterator.index)}" alt="Foto del area natural" class="fotoListado"/>
+                    </td>
 
-                <td>
-                    <!--  NATURAL AREAS INFORMATION  -->
-                    <h5 th:text="${naturalArea.name}"> </h5>
-                    <p th:text="${naturalArea.municipality}"></p>
-                    <br>
-                    <i>Acceso: <span th:text="${naturalArea.typeOfAccess.descripcion}"></span></i>
-                </td>
-
-
-                <td>
-                    <!--  BUTTONS  -->
-                    <a th:href="@{/naturalArea/get/{naturalArea}(naturalArea=${naturalArea.name})}">
-                    <button type="button" class="btn btn-primary">Más Información</button> </a>
-                    <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
+                    <td>
+                        <!--  NATURAL AREAS INFORMATION  -->
+                        <h5 th:text="${naturalArea.name}"> </h5>
+                        <p th:text="${naturalArea.municipality}"></p>
                         <br>
-                        <a th:href="${'/reservation/add/' + naturalArea.name}">
-                            <button type="button" class="btn btn-primary"> Realizar reserva</button> </a>
-                    </div>
-                </td>
-            </tr>
-        </div>
-    </div>
-    </tbody>
-</table>
+                        <i>Acceso: <span th:text="${naturalArea.typeOfAccess.descripcion}"></span></i>
+                    </td>
 
-<!--  PAGINATION BUTTONS  -->
-<nav aria-label="seleccion de pagina de naturalAreas">
-    <ul class="pagination justify-content-center">
-        <li th:class="page-item" th:if="${#lists.size(naturalAreasPaged) > 0}"
-            th:each="pageNumber : ${pageNumbers}"
-            th:classappend="${pageNumber==selectedPage+1} ? active">
-            <a th:href="@{/naturalArea/pagedlist?page={sele}(sele=${pageNumber-1})}"
-               th:text=${pageNumber}
-               th:class="page-link">
-            </a>
-        </li>
-    </ul>
-</nav>
+
+                    <td>
+                        <!--  BUTTONS  -->
+                        <a th:href="@{/naturalArea/get/{naturalArea}(naturalArea=${naturalArea.name})}">
+                        <button type="button" class="btn btn-primary">Más Información</button> </a>
+                        <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
+                            <br>
+                            <a th:href="${'/reservation/add/' + naturalArea.name}">
+                                <button type="button" class="btn btn-primary"> Realizar reserva</button> </a>
+                        </div>
+                    </td>
+                </tr>
+            </div>
+        </div>
+        </tbody>
+    </table>
+
+    <!--  PAGINATION BUTTONS  -->
+    <nav aria-label="seleccion de pagina de naturalAreas">
+        <ul class="pagination justify-content-center">
+            <li th:class="page-item" th:if="${#lists.size(naturalAreasPaged) > 0}"
+                th:each="pageNumber : ${pageNumbers}"
+                th:classappend="${pageNumber==selectedPage+1} ? active">
+                <a th:href="@{/naturalArea/pagedlist?page={sele}(sele=${pageNumber-1})}"
+                   th:text=${pageNumber}
+                   th:class="page-link">
+                </a>
+            </li>
+        </ul>
+    </nav>
 
 </section>
 

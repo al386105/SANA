@@ -12,7 +12,9 @@
 </td>
 
 <div class="container">
-    <h2> Ocupación actual de las areas naturales </h2>
+    <h2 class="text-uppercase text-center text-secondary mb-0">Ocupación</h2><br>
+    <hr class="barra-normal"><br>
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -30,8 +32,8 @@
             <td> <span th:text="${occupancyData.naturalArea.typeOfAccess.descripcion}"> </span> </td>
             <!-- Ratio de ocupación -->
             <td th:switch="${occupancyData.naturalArea.typeOfAccess.descripcion}">
-                <span th:case="'Restringido'" th:text="${occupancyData.occupancyRate}"> % </span>
-                <span th:case="'No restringido'"> - </span>
+                <span th:case="'Restringido'" th:text="${occupancyData.occupancyRate} + ' %'"></span>
+                <span th:case="'No restringido'"> </span>
                 <span th:case="'Cerrado'"> 0.0 % </span>
             </td>
             <!-- Ocupacion máxima -->

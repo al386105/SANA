@@ -113,15 +113,7 @@ public class MunicipalManagerController {
             String cuerpo = "¡Ha sido dado de alta en SANA como gestor municipal en " + managerForm.getMunicipality() + "! \n" +
                     "Su usuario es " + managerForm.getUsername() + " y su contraseña es " + managerForm.getPassword() + ". \n\n" +
                     "Un cordial saludo del equipo de SANA.";
-            HomeController.enviarMail(destinatario, asunto, cuerpo);
-
-            // Anyadir a la tabla de email
-            Email email = new Email();
-            email.setSanaUser(destinatario);
-            email.setSubject(asunto);
-            email.setTextBody(cuerpo);
-            email.setSender("sana.espais.naturals@gmail.com");
-            email.setDate(LocalDate.now());
+            Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
             emailDao.addEmail(email);
 
         } catch (DataIntegrityViolationException e) {

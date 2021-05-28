@@ -145,7 +145,6 @@ public class ReservationController {
             String timeSlotId = reservation.getTimeSlotId();
             TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
 
-
             // Generar QR
             Formatter fmt = new Formatter();
             QRCode qr = new QRCode();
@@ -162,8 +161,6 @@ public class ReservationController {
                 e.printStackTrace();
             }
         }
-
-
         return "redirect:/inicio/registrado/reservas"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
     }
 

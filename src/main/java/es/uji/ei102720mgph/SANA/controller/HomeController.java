@@ -20,6 +20,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.time.LocalDate;
 import java.util.Formatter;
 import java.util.Properties;
 
@@ -143,7 +144,8 @@ public class HomeController {
                 String cuerpo = "Registro completado con éxito en SANA, " + registeredCitizen.getName()+
                         ".\nSu código de usuario es: " + fmt.format("%06d", citizenCode) +
                         ".\n\nUn cordial saludo del equipo de SANA.";
-                enviarMail(destinatario, asunto, cuerpo);
+                Email emailObjeto = enviarMail(destinatario, asunto, cuerpo);
+                emailDao.addEmail(emailObjeto);
 
                 return "redirect:/inicio/login";
 
@@ -296,13 +298,16 @@ public class HomeController {
                 "Cuerpo: " + email.getTextBody();
 
         // Envia correo electrónico
-        enviarMail(destinatario1, asunto1, cuerpo1);
-        enviarMail(destinatario2, asunto2, cuerpo2);
+        Email emailObjeto = enviarMail(destinatario1, asunto1, cuerpo1);
+        // Anyadir a la tabla de email
+        emailDao.addEmail(emailObjeto);
+        emailObjeto = enviarMail(destinatario2, asunto2, cuerpo2);
+        emailDao.addEmail(emailObjeto);
 
         return "redirect:/naturalArea/pagedlist"; //redirigim a la lista per a veure el email afegit, post/redirect/get
     }
 
-    public static void enviarMail(String destinatario, String asunto, String cuerpo) {
+    public static Email enviarMail(String destinatario, String asunto, String cuerpo) {
         String remitente = "sana.espais.naturals";  //Para la dirección nomcuenta@gmail.com
 
         Properties props = System.getProperties();
@@ -315,6 +320,7 @@ public class HomeController {
 
         Session session = Session.getDefaultInstance(props);
         MimeMessage message = new MimeMessage(session);
+        Email email = new Email();
 
         try {
             message.setFrom(new InternetAddress(remitente));
@@ -326,11 +332,18 @@ public class HomeController {
             transport.connect("smtp.gmail.com", remitente, "barrachina");
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
-            // TODO ANYADIR EMAIL A LA BASE DE DATOS!!!!!
+            // crear email
+
+            email.setSanaUser(destinatario);
+            email.setSubject(asunto);
+            email.setTextBody(cuerpo);
+            email.setSender("sana.espais.naturals@gmail.com");
+            email.setDate(LocalDate.now());
+            return email;
         }
         catch (MessagingException me) {
             me.printStackTrace();   //Si se produce un error
         }
+        return email;
     }
-
 }

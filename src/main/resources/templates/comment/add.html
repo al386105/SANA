@@ -4,57 +4,60 @@
 <body>
 <div th:replace="fragments/headerRegistered"></div>
 
-<div class="container">
-    <h2 class="text-uppercase text-center text-secondary mb-0">Añadir comentario</h2><br>
-    <hr class="barra-normal"><br>
-    <form class="form-horizontal" action="#" th:action="@{/comment/add}"
-          th:object="${comment}" method="post">
+<section id="addComment">
+    <div class="container">
+        <h2 class="text-uppercase text-center text-secondary mb-0">Añadir comentario</h2><br>
+        <hr class="barra-normal"><br>
+        <form class="form-horizontal" action="#" th:action="@{/comment/add}"
+              th:object="${comment}" method="post">
 
-        <input required type="hidden" th:field ="*{naturalArea}"/>
-        <input required type="hidden" th:field ="*{citizenEmail}"/>
+            <input required type="hidden" th:field ="*{naturalArea}"/>
+            <input required type="hidden" th:field ="*{citizenEmail}"/>
 
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="commentBody">Nuevo comentario: </label>
-            <div class="col-sm-4">
-                <textarea rows="3" required maxlength="120" class="form-control" placeholder="Cuerpo del comentario..."
-                          id="commentBody" th:field="*{commentBody}"></textarea>
-                <td th:if="${#fields.hasErrors('commentBody')}" th:errors="*{commentBody}"></td>
-            </div>
-        </div>
-
-        <!-- Stars rating -->
-        <div class="form-group row">
-            <div class="col-md-12">
-                <div class="stars">
-                    <input class="star star-5" id="star-5" type="radio" name="star" value="5" th:field ="*{score}" />
-                    <label class="star star-5" for="star-5"></label>
-                    <input class="star star-4" id="star-4" type="radio" name="star" value="4" th:field ="*{score}"/>
-                    <label class="star star-4" for="star-4"></label>
-                    <input class="star star-3" id="star-3" type="radio" name="star" value="3" th:field ="*{score}"/>
-                    <label class="star star-3" for="star-3"></label>
-                    <input class="star star-2" id="star-2" type="radio" name="star" value="2" th:field ="*{score}"/>
-                    <label class="star star-2" for="star-2"></label>
-                    <input class="star star-1" id="star-1" type="radio" name="star" value="1" th:field ="*{score}"/>
-                    <label class="star star-1" for="star-1"></label>
-                    <td th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></td>
+            <div class="form-group row">
+                <label class="control-label col-sm-2" for="commentBody">Nuevo comentario: </label>
+                <div class="col-sm-4">
+                    <textarea rows="3" required maxlength="120" class="form-control" placeholder="Cuerpo del comentario..."
+                              id="commentBody" th:field="*{commentBody}"></textarea>
+                    <td th:if="${#fields.hasErrors('commentBody')}" th:errors="*{commentBody}"></td>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group row">
-            <div class="col-sm-offset-2 col-sm-4">
-                <button type="submit" class="btn btn-success okey">Añadir valoración</button>
+            <!-- Stars rating -->
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="stars">
+                        <input class="star star-5" id="star-5" type="radio" name="star" value="5" th:field ="*{score}" />
+                        <label class="star star-5" for="star-5"></label>
+                        <input class="star star-4" id="star-4" type="radio" name="star" value="4" th:field ="*{score}"/>
+                        <label class="star star-4" for="star-4"></label>
+                        <input class="star star-3" id="star-3" type="radio" name="star" value="3" th:field ="*{score}"/>
+                        <label class="star star-3" for="star-3"></label>
+                        <input class="star star-2" id="star-2" type="radio" name="star" value="2" th:field ="*{score}"/>
+                        <label class="star star-2" for="star-2"></label>
+                        <input class="star star-1" id="star-1" type="radio" name="star" value="1" th:field ="*{score}"/>
+                        <label class="star star-1" for="star-1"></label>
+                        <td th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></td>
+                    </div>
+                </div>
             </div>
-        </div>
 
-    </form>
+            <div class="form-group row">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-success okey">Añadir valoración</button>
+                </div>
+            </div>
 
-    <a th:href="@{/naturalArea/get/{naturalAreaName}(naturalAreaName=${comment.naturalArea})}">
-        <button type="submit" class="btn btn-primary">Volver al área natural</button>
-    </a>
-    <br><br>
+        </form>
 
-</div>
+        <a th:href="@{/naturalArea/get/{naturalAreaName}(naturalAreaName=${comment.naturalArea})}">
+            <button type="submit" class="btn btn-primary">Volver al área natural</button>
+        </a>
+        <br><br>
+
+    </div>
+
+</section>
 
 <div th:replace="fragments/footer"></div>
 </body>

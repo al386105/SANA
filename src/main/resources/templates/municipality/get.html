@@ -4,82 +4,83 @@
 <body>
 <div th:replace="fragments/headerEnvironmental"></div>
 
-<div class="container">
-    <h2 th:text="${municipality.name}" class="text-uppercase text-center text-secondary mb-0">Ocupación</h2><br>
-    <hr class="barra-normal"><br>
+<section id="getMunicipality">
+    <div class="container">
+        <h2 th:text="${municipality.name}" class="text-uppercase text-center text-secondary mb-0">Ocupación</h2><br>
+        <hr class="barra-normal"><br>
 
-    <h6>Registrado el <span th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></span></h6><br>
-    <h5 class="text-center text-secondary mb-0"><i>"<span th:text="${municipality.description}"></span>"</i></h5><br>
+        <h6>Registrado el <span th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></span></h6><br>
+        <h5 class="text-center text-secondary mb-0"><i>"<span th:text="${municipality.description}"></span>"</i></h5><br>
 
-    <!-- SECCION DE CODIGOS POSTALES DEL MUNICIPIO -->
-    <section id="postalCodes">
-        <div th:if="${#lists.isEmpty(postalCodes)}">
-            <p><b>¡Este municipio no tiene ningún código postal asignado!</b></p>
-        </div>
-        <div class="scroll">
-        <table th:unless="${#lists.isEmpty(postalCodes)}" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Código Postal</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="postalCodeMunicipality: ${#lists.sort(postalCodes)}">
-                <td scope="row" th:text="${postalCodeMunicipality.postalCode}"></td>
-                <td><button type="button" class="btn btn-danger delete" data-toggle="modal"
-                            th:data-target="${'#miModal' + postalCodeMunicipality.postalCode}">Elimina</button></td>
-                <!-- VENTANA EMERGENTE -->
-                <div class="modal" th:id="${'miModal' + postalCodeMunicipality.postalCode}">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Eliminar el código postal</h5>
-                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <p>¿Seguro que desea eliminar el código postal <span th:text="${postalCodeMunicipality.postalCode}"></span> del municipio <span th:text="${postalCodeMunicipality.municipality}"></span>?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a th:href="@{/postalCode/delete/{municipality}/{postalCode}(municipality=${postalCodeMunicipality.municipality}, postalCode=${postalCodeMunicipality.postalCode})}">
-                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+        <!-- SECCION DE CODIGOS POSTALES DEL MUNICIPIO -->
+        <section id="postalCodes">
+            <div th:if="${#lists.isEmpty(postalCodes)}">
+                <p><b>¡Este municipio no tiene ningún código postal asignado!</b></p>
+            </div>
+            <div class="scroll">
+            <table th:unless="${#lists.isEmpty(postalCodes)}" class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Código Postal</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="postalCodeMunicipality: ${#lists.sort(postalCodes)}">
+                    <td scope="row" th:text="${postalCodeMunicipality.postalCode}"></td>
+                    <td><button type="button" class="btn btn-danger delete" data-toggle="modal"
+                                th:data-target="${'#miModal' + postalCodeMunicipality.postalCode}">Elimina</button></td>
+                    <!-- VENTANA EMERGENTE -->
+                    <div class="modal" th:id="${'miModal' + postalCodeMunicipality.postalCode}">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Eliminar el código postal</h5>
+                                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>¿Seguro que desea eliminar el código postal <span th:text="${postalCodeMunicipality.postalCode}"></span> del municipio <span th:text="${postalCodeMunicipality.municipality}"></span>?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a th:href="@{/postalCode/delete/{municipality}/{postalCode}(municipality=${postalCodeMunicipality.municipality}, postalCode=${postalCodeMunicipality.postalCode})}">
+                                        <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </tr>
-            </tbody>
-        </table>
-        </div>
-        <br>
-        <!-- añadir un nuevo codigo postal -->
-        <h5>Añadir código postal</h5>
-        <div class="container">
-            <form class="form-horizontal" action="#" th:action="@{/postalCode/add}" th:object="${postalCode}" method="post">
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            <br>
+            <!-- añadir un nuevo codigo postal -->
+            <h5>Añadir código postal</h5>
+            <div class="container">
+                <form class="form-horizontal" action="#" th:action="@{/postalCode/add}" th:object="${postalCode}" method="post">
 
-                <input type="hidden" required th:field="*{municipality}"/>
-                <div class="form-group row">
-                    <label class="control-label col-sm-2" for="cp">Código postal:</label>
-                    <div class="col-sm-4">
-                        <input type="text" minlength="5" maxlength="5" class="form-control" id="cp" th:field="*{postalCode}"/>
-                        <td th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></td>
-                        <td th:if="${#strings.equals(claveRepetida, 'repetida')}">Este código postal ya pertenece a un municipio</td>
+                    <input type="hidden" required th:field="*{municipality}"/>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-2" for="cp">Código postal:</label>
+                        <div class="col-sm-4">
+                            <input type="text" minlength="5" maxlength="5" class="form-control" id="cp" th:field="*{postalCode}"/>
+                            <td th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></td>
+                            <td th:if="${#strings.equals(claveRepetida, 'repetida')}">Este código postal ya pertenece a un municipio</td>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group row">
-                    <div class="col-sm-offset-2 col-sm-4">
-                        <button type="submit" class="btn btn-success okey">Añadir código postal</button>
+                    <div class="form-group row">
+                        <div class="col-sm-offset-2 col-sm-4">
+                            <button type="submit" class="btn btn-success okey">Añadir código postal</button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
-    </section>
+                </form>
+            </div>
+        </section>
 
-    <a href="/municipality/list"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
-</div>
-
+        <a href="/municipality/list"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
+    </div>
+</section>
 <div th:replace="fragments/footer"></div>
 </body>
 </html>

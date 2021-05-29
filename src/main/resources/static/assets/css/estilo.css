@@ -332,3 +332,7 @@ label.star:before {
     width: 70%;
     margin:0px auto;
 }
+
+.carousel-inner img {
+  margin: auto;
+}

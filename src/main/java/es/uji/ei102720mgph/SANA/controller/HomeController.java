@@ -241,9 +241,12 @@ public class HomeController {
             }*/
 
             // CIUDADANO AUTENTICADO CON SU CITIZEN CODE
-            else if (sanaUser == null) {
+            else if (sanaUser == null || sanaUser.getTypeOfUser().equals(TypeOfUser.registeredCitizen)) {
                 try {
-                    if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
+                    if (registeredCitizen == null)
+                        registeredCitizen = registeredCitizenDao.getRegisteredCitizen(sanaUser.getEmail());
+
+                    if (registeredCitizen.getPin()  == Integer.parseInt(userLogin.getPassword())) {
                         //Contraseña Correcta
                         session.setAttribute("registeredCitizen", registeredCitizen);
                         // Comprova si l'usuari volia accedir a una altra pagina

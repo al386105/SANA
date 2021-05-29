@@ -109,7 +109,7 @@ public class MunicipalManagerDao {
     public  List<MunicipalManager> getMunicipalManagersSearch(String patron) {
         try {
             return jdbcTemplate.query("SELECT * FROM MunicipalManager " +
-                            "JOIN SanaUser ON MunicipalManager.email = SanaUser.email WHERE name LIKE '%"+patron+"%'",
+                            "JOIN SanaUser ON MunicipalManager.email = SanaUser.email WHERE UPPER(name) LIKE '%"+patron.toUpperCase()+"%'",
                     new MunicipalManagerRowMapper());
         }
         catch(EmptyResultDataAccessException e) {

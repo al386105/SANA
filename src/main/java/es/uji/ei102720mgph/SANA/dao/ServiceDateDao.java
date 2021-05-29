@@ -61,7 +61,7 @@ public class ServiceDateDao {
     public List<ServiceDate> getServiceDatesOfNaturalAreaSearch(String patron, String naturalArea) {
         try {
             return jdbcTemplate.query("SELECT * FROM ServiceDate WHERE naturalArea = ? " +
-                            "AND service LIKE '%"+patron+"%'",
+                            "AND UPPER(service) LIKE '%"+patron.toUpperCase()+"%'",
                     new ServiceDateRowMapper(),
                     naturalArea);
         }

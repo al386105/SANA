@@ -53,7 +53,7 @@ public class MunicipalityDao {
 
     public  List<Municipality> getMunicipalitySearch(String patron) {
         try {
-            return jdbcTemplate.query("SELECT * FROM Municipality WHERE name LIKE '%"+patron+"%'",
+            return jdbcTemplate.query("SELECT * FROM Municipality WHERE UPPER(name) LIKE '%"+patron.toUpperCase()+"%'",
                     new MunicipalityRowMapper());
         }
         catch(EmptyResultDataAccessException e) {

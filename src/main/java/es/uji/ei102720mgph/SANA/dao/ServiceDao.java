@@ -88,7 +88,7 @@ public class ServiceDao {
 
     public  List<Service> getServiceSearch(String patron) {
         try {
-            return jdbcTemplate.query("SELECT * FROM Service WHERE nameOfService LIKE '%"+patron+"%'",
+            return jdbcTemplate.query("SELECT * FROM Service WHERE UPPER(nameOfService) LIKE '%"+patron.toUpperCase()+"%'",
                     new ServiceRowMapper());
         }
         catch(EmptyResultDataAccessException e) {

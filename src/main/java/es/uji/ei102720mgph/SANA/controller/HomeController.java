@@ -142,7 +142,7 @@ public class HomeController {
                 String destinatario = registeredCitizen.getEmail();
                 String asunto = "Bienvenido a SANA";
                 String cuerpo = "Registro completado con éxito en SANA, " + registeredCitizen.getName()+
-                        ".\nSu código de usuario es: " + fmt.format("%06d", citizenCode) +
+                        ".\nSu código de usuario es: ci" + fmt.format("%04d", citizenCode) +
                         ".\n\nUn cordial saludo del equipo de SANA.";
                 Email emailObjeto = enviarMail(destinatario, asunto, cuerpo);
                 emailDao.addEmail(emailObjeto);
@@ -241,9 +241,12 @@ public class HomeController {
             }*/
 
             // CIUDADANO AUTENTICADO CON SU CITIZEN CODE
-            else if (sanaUser == null) {
+            else if (sanaUser == null || sanaUser.getTypeOfUser().equals(TypeOfUser.registeredCitizen)) {
                 try {
-                    if (registeredCitizen.getPin() == Integer.parseInt(userLogin.getPassword())) {
+                    if (registeredCitizen == null)
+                        registeredCitizen = registeredCitizenDao.getRegisteredCitizen(sanaUser.getEmail());
+
+                    if (registeredCitizen.getPin()  == Integer.parseInt(userLogin.getPassword())) {
                         //Contraseña Correcta
                         session.setAttribute("registeredCitizen", registeredCitizen);
                         // Comprova si l'usuari volia accedir a una altra pagina

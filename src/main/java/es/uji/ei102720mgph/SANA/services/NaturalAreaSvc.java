@@ -1,6 +1,5 @@
 package es.uji.ei102720mgph.SANA.services;
 
-import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.PictureDao;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
@@ -16,10 +15,6 @@ public class NaturalAreaSvc implements NaturalAreaService  {
 
     @Autowired
     PictureDao pictureDao;
-
-    @Autowired
-    MunicipalityDao municipalityDao;
-
 
     // Este metodo obtiene todas las areas naturales con una sola imagen
     @Override

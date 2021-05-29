@@ -43,7 +43,9 @@ public class CommentDao {
 
     public List<Comment> getCommentsOfNaturalArea(String naturalArea) {
         try {
-            return jdbcTemplate.query("SELECT * FROM Comment WHERE naturalArea = ?",
+            return jdbcTemplate.query("SELECT * FROM Comment " +
+                            "JOIN SanaUser ON Comment.citizenEmail = SanaUser.email " +
+                            "WHERE Comment.naturalArea = ?",
                     new CommentRowMapper(),
                     naturalArea);
         }
@@ -51,4 +53,6 @@ public class CommentDao {
             return new ArrayList<Comment>();
         }
     }
+
+
 }

@@ -19,130 +19,143 @@
         <h2 class="text-uppercase text-center text-secondary mb-0" th:text="${naturalArea.name}"></h2>
         <br><hr class="barra-normal"><br>
 
-        <div class="row">
-            <div class="col-3">
-                <h5 class="colorMarron">Municipio:</h5>
+        <!--INFORMACIÓN DEL AREA NATURAL  -->
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <h5 class="colorMarron">Municipio:</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="colorTierra" th:text="*{naturalArea.municipality}"></h5>
+                </div>
             </div>
-            <div class="col-6">
-                <h5 class="colorTierra" th:text="*{naturalArea.municipality}"></h5>
+
+            <div class="row">
+                <div class="col-3">
+                    <h5 class="colorMarron">Acceso:</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="colorTierra" th:text="*{naturalArea.typeOfAccess.descripcion}"></h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <h5 class="colorMarron">Área:</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="colorTierra" th:text="*{naturalArea.typeOfArea.descripcion}"></h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <h5 class="colorMarron">Localización:</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="colorTierra" th:text="*{naturalArea.geographicalLocation}"></h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <h5 class="colorMarron">Largo:</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="colorTierra" th:text="*{naturalArea.length}"></h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <h5 class="colorMarron">Ancho:</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="colorTierra" th:text="*{naturalArea.width}"></h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <h5 class="colorMarron">Características físicas:</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="colorTierra" th:text="*{naturalArea.physicalCharacteristics}"></h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <h5 class="colorMarron">Descripción:</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="colorTierra" th:text="*{naturalArea.description}"></h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <h5 class="colorMarron">Orientación:</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="colorTierra" th:text="*{naturalArea.orientation.descripcion}"></h5>
+                </div>
+            </div>
+
+            <div class="row" th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
+                <div class="col-3">
+                    <h5 class="colorMarron">Restringido hasta:</h5>
+                </div>
+                <div class="col-6">
+                    <h5 class="colorTierra" th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></h5>
+                </div>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-3">
-                <h5 class="colorMarron">Acceso:</h5>
-            </div>
-            <div class="col-6">
-                <h5 class="colorTierra" th:text="*{naturalArea.typeOfAccess.descripcion}"></h5>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-3">
-                <h5 class="colorMarron">Área:</h5>
-            </div>
-            <div class="col-6">
-                <h5 class="colorTierra" th:text="*{naturalArea.typeOfArea.descripcion}"></h5>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-3">
-                <h5 class="colorMarron">Localización:</h5>
-            </div>
-            <div class="col-6">
-                <h5 class="colorTierra" th:text="*{naturalArea.geographicalLocation}"></h5>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-3">
-                <h5 class="colorMarron">Largo:</h5>
-            </div>
-            <div class="col-6">
-                <h5 class="colorTierra" th:text="*{naturalArea.length}"></h5>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-3">
-                <h5 class="colorMarron">Ancho:</h5>
-            </div>
-            <div class="col-6">
-                <h5 class="colorTierra" th:text="*{naturalArea.width}"></h5>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-3">
-                <h5 class="colorMarron">Características físicas:</h5>
-            </div>
-            <div class="col-6">
-                <h5 class="colorTierra" th:text="*{naturalArea.physicalCharacteristics}"></h5>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-3">
-                <h5 class="colorMarron">Descripción:</h5>
-            </div>
-            <div class="col-6">
-                <h5 class="colorTierra" th:text="*{naturalArea.description}"></h5>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-3">
-                <h5 class="colorMarron">Orientación:</h5>
-            </div>
-            <div class="col-6">
-                <h5 class="colorTierra" th:text="*{naturalArea.orientation.descripcion}"></h5>
-            </div>
-        </div>
-
-        <div class="row" th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
-            <div class="col-3">
-                <h5 class="colorMarron">Restringido hasta:</h5>
-            </div>
-            <div class="col-6">
-                <h5 class="colorTierra" th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></h5>
-            </div>
-        </div>
-
         <br><br>
 
         <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
-        <h3>Imágenes<img style="margin-left:20px; height:30px" src="/assets/img/photo.png" class="fotoBoton" alt="Menú"></h3>
-        <div th:if="${#lists.isEmpty(pictures)}">
-            <p><b>¡Este área natural no tiene ninguna imagen publicada!</b></p>
-        </div>
-        <br>
-        <!-- Carousel de imagenes -->
-        <div id="miCarrusel" class="carousel slide w-50" data-ride="carousel">
-            <!-- activar la imagen 0 -->
-            <ol  class="carousel-indicators">
-                <li  th:each="picture,iterstat: ${pictures}"
-                     data-target="#miCarrusel"
-                     th:attr="data-slide-to=${iterstat.index}"
-                     th:class="${iterstat.index}== 0 ? 'active':''"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div th:each="picture,iterstat: ${pictures}"
-                     th:class="${iterstat.index}==0 ? 'carousel-item active':'carousel-item'">
-                    <img th:src="@{${picture.picturePath}}" class="d-block w-100" alt="Foto del espacio natural">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <h3>Imágenes <img src="/assets/img/photo.png" class="fotoBoton" alt="Menú"></h3>
                 </div>
             </div>
-            <a class="carousel-control-prev" href="#miCarrusel"
-               role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#miCarrusel"
-               role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+            <div class="row align-center">
+                <div class="col">
+                    <div th:if="${#lists.isEmpty(pictures)}">
+                        <p><b>¡Este área natural no tiene ninguna imagen publicada!</b></p>
+                    </div>
+                    <br>
+                    <!-- Carousel de imagenes -->
+                    <div id="miCarrusel" class="carousel slide w-50" data-ride="carousel">
+                        <!-- activar la imagen 0 -->
+                        <ol  class="carousel-indicators">
+                            <li  th:each="picture,iterstat: ${pictures}"
+                                 data-target="#miCarrusel"
+                                 th:attr="data-slide-to=${iterstat.index}"
+                                 th:class="${iterstat.index}== 0 ? 'active':''"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div th:each="picture,iterstat: ${pictures}"
+                                 th:class="${iterstat.index}==0 ? 'carousel-item active':'carousel-item'">
+                                <img th:src="@{${picture.picturePath}}" class="d-block w-100" alt="Foto del espacio natural">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#miCarrusel"
+                           role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#miCarrusel"
+                           role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         <br/><br/>
 
@@ -153,21 +166,26 @@
             <div th:if="${#lists.isEmpty(comments)}">
                 <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
             </div>
-            <table th:unless="${#lists.isEmpty(comments)}" class="table table-striped">
-                <tbody>
-                <tr th:each="comment: ${#lists.sort(comments)}">
-                    <td><th:block th:each="i: ${#numbers.sequence(1, 5)}">
-                        <img th:if="${comment.score >= i}"  style="margin-left:8px" src="/assets/img/starBlack.png" class="fotoBoton" alt="Menú">
-                        <img th:unless="${comment.score >= i}"  style="margin-left:8px" src="/assets/img/star.png" class="fotoBoton" alt="Menú">
+            <div th:unless="${#lists.isEmpty(comments)}" class="container">
+                <div th:each="comment: ${#lists.sort(comments)}" class="row" >
+                    <div class="col-sm-2">
+                        <th:block th:each="i: ${#numbers.sequence(1, 5)}">
+                            <img th:if="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/starBlack.png" class="fotoBoton" alt="X">
+                            <img th:unless="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/star.png" class="fotoBoton" alt="O">
+                        </th:block>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row" th:text="${comment.commentBody}"></div>
+                        <div class="row"><br/></div>
+                    </div>
 
-                    </th:block>
-                    </td>
-                    <td th:text="${comment.commentBody}"></td>
-                    <td th:text="${comment.citizenEmail}"></td>
-                    <td th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></td>
-                </tr>
-                </tbody>
-            </table>
+                    <div class="col-sm-3">
+                        <div class="row" th:text="${comment.citizenName}"></div>
+                        <div class="row" th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></div>
+                    </div>
+
+                </div>
+            </div>
             <br/>
             <!-- solo los ciudadanos registrados pueden hacer comentarios -->
             <div th:if="${#strings.equals(typeUser, 'registered')}">

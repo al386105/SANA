@@ -9,20 +9,98 @@
     <h2 class="text-uppercase text-center text-secondary mb-0"><span th:text="${naturalArea.name}"></span></h2>
     <br><hr class="barra-normal"><br>
 
-    <ul>
-        <li><b>Municipio:</b> <span th:text="${naturalArea.municipality}"></span></li>
-        <li><b>Acceso:</b> <span th:text="${naturalArea.typeOfAccess.descripcion}"></span></li>
-        <li><b>Tipo de área:</b> <span th:text="${naturalArea.typeOfArea.descripcion}"></span></li>
-        <li><b>Localización:</b> <span th:text="${naturalArea.geographicalLocation}"></span></li>
-        <li><b>Largo:</b> <span th:text="${naturalArea.length}"></span></li>
-        <li><b>Ancho:</b> <span th:text="${naturalArea.width}"></span></li>
-        <li><b>Características físicas:</b> <span th:text="${naturalArea.physicalCharacteristics}"></span></li>
-        <li><b>Descripción:</b> <span th:text="${naturalArea.description}"></span></li>
-        <li><b>Orientación:</b> <span th:text="${naturalArea.orientation.descripcion}"></span></li>
-        <td th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
-            <li><b>Restringido hasta:</b> <span th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></span></li>
-        </td>
-    </ul><br>
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Municipio:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.municipality}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Acceso:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.typeOfAccess.descripcion}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Área:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.typeOfArea.descripcion}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Localización:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.geographicalLocation}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Largo:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.length}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Ancho:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.width}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Características físicas:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.physicalCharacteristics}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Descripción:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.description}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Orientación:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.orientation.descripcion}"></h5>
+        </div>
+    </div>
+
+    <div class="row" th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
+        <div class="col-3">
+            <h5 class="colorMarron">Restringido hasta:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></h5>
+        </div>
+    </div>
+
+    <br>
+
     <!-- Botones -->
     <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
         <button type="button" class="btn btn-warning edit">Editar datos</button> </a>
@@ -105,31 +183,35 @@
         </section>
     </div>
 
-    <hr class="lineaVerde">
     <!-- SECCION DE COMENTARIOS DEL AREA NATURAL -->
-    <h3>Comentarios</h3>
-    <div th:if="${#lists.isEmpty(comments)}">
-        <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
-    </div>
-    <!--<div class="scroll">-->
-    <table th:unless="${#lists.isEmpty(comments)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Fecha</th>
-            <th scope="col">Puntuacion</th>
-            <th scope="col">Comentario</th>
-            <th scope="col">Usuario</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="comment: ${#lists.sort(comments)}">
-            <td th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></td>
-            <td><span th:text="${comment.score}"></span><img style="margin-left:8px" src="/assets/img/star.png" class="fotoBoton" alt="Menú"></td>
-            <td th:text="${comment.commentBody}"></td>
-            <td th:text="${comment.citizenEmail}"></td>
-        </tr>
-        </tbody>
-    </table><br><br>
+    <section id="comments">
+        <hr class="lineaVerde">
+        <h3>Comentarios</h3>
+        <div th:if="${#lists.isEmpty(comments)}">
+            <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
+        </div>
+        <div th:unless="${#lists.isEmpty(comments)}" class="container">
+            <div th:each="comment: ${#lists.sort(comments)}" class="row" >
+                <div class="col-sm-2">
+                    <th:block th:each="i: ${#numbers.sequence(1, 5)}">
+                        <img th:if="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/starBlack.png" class="fotoBoton" alt="X">
+                        <img th:unless="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/star.png" class="fotoBoton" alt="O">
+                    </th:block>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row" th:text="${comment.commentBody}"></div>
+                    <div class="row"><br/></div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="row" th:text="${comment.citizenEmail}"></div>
+                    <div class="row" th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></div>
+                </div>
+
+            </div>
+        </div>
+        <br/>
+    </section>
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
     <section id="serviceDates">

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<div th:replace="fragments/headerManager"></div>
+
+<section id="reservas">
+  <div class="container">
+    <h2 class="text-uppercase text-center text-secondary mb-0">Mis Reservas</h2>
+    <br>
+    <hr class="barra-normal">
+    <br>
+    <div th:if="${#lists.isEmpty(reservas)}">
+      <h4 style="text-align: center"> No existen reservas antiguas </h4>
+    </div>
+    <div th:unless="${#lists.isEmpty(reservas)}">
+      <div th:each="reserva: ${#lists.sort(reservas)}">
+        <div class="card-horizontal">
+          <div class="img-square-wrapper">
+            <img style="height: 240px" class="" th:src="${'/' + reserva.QRcode + '.png'}" alt="Card image cap">
+          </div>
+          <div class="card-body">
+            <h4 class="card-title" th:text="${reserva.naturalArea}"></h4>
+            <h6 class="card-subtitle mb-2 text-muted">
+              <span th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></span>
+            </h6>
+            <p style="font-weight: bold" class="card-text">
+              <span style="font-weight: bold" th:text="${#temporals.format(reserva.beginningTime, 'HH:mm')}"></span>
+              <span>/</span>
+              <span style="font-weight: bold" th:text="${#temporals.format(reserva.endTime, 'HH:mm')}"></span>
+            </p>
+            <p class="card-text"> <span th:text="${reserva.numberOfPeople}"></span> personas</p>
+            <p class="card-text" style="float: left">Zona:
+              <span th:text="${reserva.zoneNumber}"></span>
+              <span th:text="${reserva.letter}"></span>
+            </p>
+            <h6 style="float: right; color: #b86f52" class="card-subtitle mb-2 text-muted">
+              <span th:text="${reserva.state.descripcion}"></span>
+            </h6>
+          </div>
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

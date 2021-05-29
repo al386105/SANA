@@ -597,4 +597,17 @@ public class NaturalAreaController {
 
         return "redirect:/naturalArea/getReservations/" + naturalArea;
     }
+
+    @RequestMapping(value="/reservasTodas/{naturalArea}")
+    public String todasReservasnaturalArea(Model model, @PathVariable String naturalArea, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/getReservations/" + naturalArea);
+            return "redirect:/inicio/login";
+        }
+
+        List<ReservaDatos> listaReservas = reservaDatosDao.getReservasTodasNaturalArea(naturalArea);
+        model.addAttribute("reservas", listaReservas);
+        return "naturalArea/reservasTodas";
+    }
 }

@@ -90,4 +90,19 @@ public class ReservaDatosDao {
             return new ArrayList<ReservaDatos>();
         }
     }
+
+    public List<ReservaDatos> getReservasTodasNaturalArea(String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea, slot.beginningtime, slot.endtime " +
+                            "FROM reservation AS res " +
+                            "JOIN reservationofzone AS ro ON res.reservationnumber = ro.reservationnumber " +
+                            "JOIN zone AS zone ON ro.zoneid = zone.id " +
+                            "JOIN timeslot AS slot ON res.timeslotid = slot.id " +
+                            "WHERE zone.naturalarea = ?",
+                    new ReservaDatosRowMapper(), naturalArea);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<ReservaDatos>();
+        }
+    }
 }

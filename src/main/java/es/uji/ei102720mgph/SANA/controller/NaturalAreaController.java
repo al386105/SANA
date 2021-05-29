@@ -14,6 +14,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,12 +37,18 @@ public class NaturalAreaController {
     private ServiceDateDao serviceDateDao;
     private TemporalServiceDao temporalServiceDao;
     private ServiceDao serviceDao;
+    private ReservaDatosDao reservaDatosDao;
 
     private final int pageLength = 5;
 
     @Autowired
     public void setOccupationService(OccupationService occupationService){
         this.occupationService = occupationService;
+    }
+
+    @Autowired
+    public void setReservaDatosDao(ReservaDatosDao reservaDatosDao) {
+        this.reservaDatosDao = reservaDatosDao;
     }
 
     @Autowired
@@ -81,21 +91,8 @@ public class NaturalAreaController {
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
-
-        // Mostrar sólo los servicios fijos operativos (fecha de inicio anterior a fecha actual)
-        List<ServiceDate> serviceDates = serviceDateDao.getServiceDatesOfNaturalAreaOperativos(naturalArea);
-        serviceDates.removeIf(service -> service.getBeginningDate().isAfter(LocalDate.now()));
-
-        // No nos interesa la fecha de inicio, asiq le pasamos directamente el servicio para la tabla y punto
-        List<Service> servicios = new ArrayList<>();
-        for(ServiceDate serviceDate : serviceDates)
-            servicios.add(serviceDao.getService(serviceDate.getService()));
-        model.addAttribute("serviceDates", servicios);
-
-        // Mostrar sólo los servicios temporales operativos (fecha actual entre inicio y fin)
-        List<TemporalService> temporalServices = temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea);
-        temporalServices.removeIf(service -> service.getBeginningDate().isAfter(LocalDate.now()) || service.getEndDate().isBefore(LocalDate.now()));
-        model.addAttribute("temporalServices", temporalServices);
+        model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
+        model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
 
         if(session.getAttribute("section") != null) {
             String section = (String) session.getAttribute("section");
@@ -117,7 +114,7 @@ public class NaturalAreaController {
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
-        serviceDateLista(model, naturalArea);
+        model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
         model.addAttribute("serviceDatesFaltan", serviceDao.getServiceDatesNotInNaturalArea(naturalArea));
@@ -143,8 +140,8 @@ public class NaturalAreaController {
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
+        model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
-        serviceDateLista(model, naturalArea);
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
 
         if(session.getAttribute("section") != null) {
@@ -154,23 +151,6 @@ public class NaturalAreaController {
             return "redirect:/naturalArea/getEnvironmental/" + naturalArea + section;
         }
         return "/naturalArea/getEnvironmental";
-    }
-
-    private void serviceDateLista(Model model, String naturalArea) {
-        //transformar los serviceDates a ServiceDateList para que tengan más atributos (los de las tablas)
-        List<ServiceDate> serviceDates = serviceDateDao.getServiceDatesOfNaturalAreaOperativos(naturalArea);
-        List<ServiceDateList> services = new ArrayList<>();
-        for(ServiceDate serviceDate : serviceDates) {
-            Service servicio = serviceDao.getService(serviceDate.getService());
-            ServiceDateList s = new ServiceDateList();
-            s.setNameOfService(serviceDate.getService());
-            s.setBeginningDate(serviceDate.getBeginningDate());
-            s.setDescription(servicio.getDescription());
-            s.setHiringPlace(servicio.getHiringPlace());
-            s.setId(serviceDate.getId());
-            services.add(s);
-        }
-        model.addAttribute("serviceDates", services);
     }
 
     // metodo para anyadir al modelo los datos del selector de municipio
@@ -476,6 +456,7 @@ public class NaturalAreaController {
                                       BindingResult bindingResult) {
         NaturalAreaValidator naturalAreaValidator = new NaturalAreaValidator();
         naturalAreaValidator.validate(naturalAreaForm, bindingResult);
+
         if (bindingResult.hasErrors())
             return "naturalArea/update";
 
@@ -505,8 +486,115 @@ public class NaturalAreaController {
         return "redirect:/naturalArea/getManagers/" + naturalAreaForm.getName();
     }
 
+
+    // Vista de paneles de información para ciudadanos registrados o no registrados
+    @RequestMapping(value="/getInfo")
+    public String getInfoPaneles(Model model, HttpSession session){
+        // si es null es que no esta registrado
+        model.addAttribute("registered", session.getAttribute("registeredCitizen"));
+        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
+        model.addAttribute("occupancyDataOfNaturalAreas",
+                occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
+        return "naturalArea/getInfo";
+    }
+
+
+    // Historico de ocupacion de áreas naturales para el gestor municipal
+    @RequestMapping(value="/occupancy", method=RequestMethod.GET)
+    public String getOccupancy(Model model, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/occupancy");
+            return "redirect:/inicio/login";
+        }
+        OccupancyFormData occupancyFormData = new OccupancyFormData();
+        model.addAttribute("occupancyFormData", occupancyFormData);
+        List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
+        model.addAttribute("naturalAreas", naturalAreas);
+        model.addAttribute("occupancyDataOfNaturalAreas",
+                occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
+        return "naturalArea/occupancy";
+    }
+
+    // Vista de paneles de información para ciudadanos registrados o no registrados
+    @RequestMapping(value="/occupancyPlotForm")
+    public String occupancyPlotFormGet(Model model, HttpSession session,
+                                   @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData){
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/occupancyPlotForm");
+            return "redirect:/inicio/login";
+        }
+        return "naturalArea/occupancyPlotForm";
+    }
+
+    @RequestMapping(value="/occupancyPlotForm", method=RequestMethod.POST)
+    public String occupancyPlotSubmit(Model model, HttpSession session,
+                                    @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData,
+                                      BindingResult bindingResult){
+
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/occupancyPlotForm");
+            return "redirect:/inicio/login";
+        }
+
+        OccupancyFormValidator occupancyFormValidator = new OccupancyFormValidator();
+        occupancyFormValidator.validate(occupancyFormData, bindingResult);
+        if (bindingResult.hasErrors())
+            return "naturalArea/occupancyPlotForm";
+
+
+        switch (occupancyFormData.getTypeOfPeriod().getDescripcion()) {
+            case "Por dia":
+                model.addAttribute("plot",
+                        occupationService.getOccupancyPlotByDay(occupancyFormData.getNaturalArea(),
+                                occupancyFormData.getDay()));
+                break;
+            case "Por mes":
+                model.addAttribute("plot",
+                        occupationService.getOccupancyPlotByMonth(occupancyFormData.getNaturalArea(),
+                                occupancyFormData.getYear(), occupancyFormData.getMonth()));
+                break;
+            case "Por año":
+                model.addAttribute("plot",
+                        occupationService.getOccupancyPlotByYear(occupancyFormData.getNaturalArea(),
+                                occupancyFormData.getYear()));
+                break;
+        }
+
+        return "naturalArea/occupancyPlot";
+    }
+
     private void quitarAtributoSeccion(HttpSession session) {
         if(session.getAttribute("section") != null)
             session.removeAttribute("section");
+    }
+
+    @RequestMapping(value="/getReservations/{naturalArea}")
+    public String getReservations(Model model, @PathVariable String naturalArea, HttpSession session) {
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/getReservations/" + naturalArea);
+            return "redirect:/inicio/login";
+        }
+        model.addAttribute("reservas", reservaDatosDao.getReservasNaturalArea(naturalArea));
+        model.addAttribute("motivo", new MotivoCancelancion());
+        model.addAttribute("naturalArea", naturalArea);
+        return "naturalArea/reservas";
+    }
+
+    @RequestMapping("/cancelarReservaMunicipal/{naturalArea}/{id}")
+    public String cancelarReserva(@ModelAttribute("motivo") MotivoCancelancion motivo, @PathVariable String naturalArea, @PathVariable String id, Model model, HttpSession session) {
+        if (session.getAttribute("municipalManager") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/getReservations/" + naturalArea);
+            return "redirect:/inicio/login";
+        }
+        String mot = motivo.getMot();
+        mot = mot.substring(0, mot.length()-1);
+        reservaDatosDao.cancelaReservaPorMunicipal(id, mot);
+
+        return "redirect:/naturalArea/getReservations/" + naturalArea;
     }
 }

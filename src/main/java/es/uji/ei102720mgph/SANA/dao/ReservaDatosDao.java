@@ -71,4 +71,23 @@ public class ReservaDatosDao {
     public void cancelaReservaPorCiudadano(String id, String mot){
         jdbcTemplate.update("UPDATE Reservation SET state = ?, cancellationreason = ? WHERE reservationNumber =?", ReservationState.cancelledCitizen.name(), mot, Integer.parseInt(id));
     }
+
+    public void cancelaReservaPorMunicipal(String id, String mot){
+        jdbcTemplate.update("UPDATE Reservation SET state = ?, cancellationreason = ? WHERE reservationNumber =?", ReservationState.cancelledMunicipalManager.name(), mot, Integer.parseInt(id));
+    }
+
+    public List<ReservaDatos> getReservasNaturalArea(String naturalArea) {
+        try {
+            return jdbcTemplate.query("SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea, slot.beginningtime, slot.endtime " +
+                            "FROM reservation AS res " +
+                            "JOIN reservationofzone AS ro ON res.reservationnumber = ro.reservationnumber " +
+                            "JOIN zone AS zone ON ro.zoneid = zone.id " +
+                            "JOIN timeslot AS slot ON res.timeslotid = slot.id " +
+                            "WHERE zone.naturalarea = ? AND (res.state = 'created' OR res.state = 'inUse')",
+                    new ReservaDatosRowMapper(), naturalArea);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<ReservaDatos>();
+        }
+    }
 }

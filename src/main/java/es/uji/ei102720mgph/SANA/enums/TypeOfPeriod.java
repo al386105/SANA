@@ -1,7 +1,7 @@
 package es.uji.ei102720mgph.SANA.enums;
 
 public enum TypeOfPeriod {
-    daily("Por dia"),
+    daily("Por día"),
     monthly("Por mes"),
     annual("Por año");
 

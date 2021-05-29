@@ -11,6 +11,8 @@ public class Comment implements Comparable<Comment> {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private String citizenEmail;
+    private String citizenName;
+    private String citizenSurname;
     private String naturalArea;
     private static int contador = 1;
 
@@ -78,6 +80,22 @@ public class Comment implements Comparable<Comment> {
         Comment.contador++;
     }
 
+    public String getCitizenName() {
+        return citizenName;
+    }
+
+    public void setCitizenName(String citizenName) {
+        this.citizenName = citizenName;
+    }
+
+    public String getCitizenSurname() {
+        return citizenSurname;
+    }
+
+    public void setCitizenSurname(String citizenSurname) {
+        this.citizenSurname = citizenSurname;
+    }
+
     @Override
     public int compareTo(Comment altre) {
         return -this.getDate().compareTo(altre.getDate());
@@ -91,6 +109,8 @@ public class Comment implements Comparable<Comment> {
                 ", score=" + score +
                 ", date=" + date +
                 ", citizenEmail='" + citizenEmail + '\'' +
+                ", citizenName='" + citizenName + '\'' +
+                ", citizenSurname='" + citizenSurname + '\'' +
                 ", naturalArea='" + naturalArea + '\'' +
                 '}';
     }

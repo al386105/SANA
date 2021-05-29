@@ -36,6 +36,8 @@ public class CommentController {
         Comment comment = new Comment();
         comment.setNaturalArea(naturalArea);
         comment.setCitizenEmail(citizen.getEmail());
+        comment.setCitizenName(citizen.getName());
+        comment.setCitizenSurname(citizen.getSurname());
         session.setAttribute("section", "#comments");
         model.addAttribute("comment", comment);
         return "comment/add";

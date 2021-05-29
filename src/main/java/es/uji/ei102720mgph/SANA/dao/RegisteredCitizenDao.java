@@ -34,7 +34,7 @@ public class RegisteredCitizenDao {
                 fmt = new Formatter();
                 jdbcTemplate.update("INSERT INTO RegisteredCitizen VALUES(?, ?, ?, ?, ?, ?)",
                         registeredCitizen.getEmail(), registeredCitizen.getIdNumber(),
-                        registeredCitizen.getMobilePhoneNumber(), "" + fmt.format("%06d", RegisteredCitizen.getContador()),
+                        registeredCitizen.getMobilePhoneNumber(), "ci" + fmt.format("%04d", RegisteredCitizen.getContador()),
                         registeredCitizen.getPin(), registeredCitizen.getAddressId()
                 );
                 excepcion = false;

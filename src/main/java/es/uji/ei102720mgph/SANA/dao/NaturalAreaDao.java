@@ -75,7 +75,7 @@ public class NaturalAreaDao {
 
     public  List<NaturalArea> getNaturalAreaSearch(String patron) {
         try {
-            return jdbcTemplate.query("SELECT * FROM NaturalArea WHERE name LIKE '%"+patron+"%'",
+            return jdbcTemplate.query("SELECT * FROM NaturalArea WHERE UPPER(name) LIKE '%"+patron.toUpperCase()+"%'",
                     new NaturalAreaRowMapper());
         }
         catch(EmptyResultDataAccessException e) {

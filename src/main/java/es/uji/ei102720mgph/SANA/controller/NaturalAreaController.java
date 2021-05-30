@@ -608,7 +608,6 @@ public class NaturalAreaController {
 
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasTodasNaturalArea(naturalArea);
         model.addAttribute("reservas", listaReservas);
-        model.addAttribute("naturalArea", naturalArea);
         return "naturalArea/reservasTodas";
     }
 }

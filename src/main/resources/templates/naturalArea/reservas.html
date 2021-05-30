@@ -4,88 +4,80 @@
 <div th:replace="fragments/headerManager"></div>
 
 <section id="reservas">
-    <div class="container">
-        <h2 class="text-uppercase text-center text-secondary mb-0">Reservas activas en <span
-                th:text="${naturalArea}"></span></h2>
-        <br>
-        <hr class="barra-normal">
-        <br>
-        <div th:if="${#lists.isEmpty(reservas)}">
-            <h4 style="text-align: center">No existe ninguna reserva activa para esta zona en estos momentos</h4>
-            <br>
-            <br>
-        </div>
-        <div th:unless="${#lists.isEmpty(reservas)}">
-            <div th:each="reserva: ${#lists.sort(reservas)}">
-                <div class="card-horizontal">
-                    <div class="img-square-wrapper">
-                        <img style="height: 240px" class="" th:src="${'/' + reserva.QRcode + '.png'}"
-                             alt="Código QR de la reserva">
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title" th:text="${reserva.naturalArea}"></h4>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            <span th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></span>
-                        </h6>
-                        <p style="font-weight: bold" class="card-text">
+  <div class="container">
+    <h2 class="text-uppercase text-center text-secondary mb-0">Reservas activas en <span th:text="${naturalArea}"></span></h2>
+    <br>
+    <hr class="barra-normal">
+    <br>
+    <div th:if="${#lists.isEmpty(reservas)}">
+      <h4 style="text-align: center">No existe ninguna reserva activa para esta zona en estos momentos</h4>
+      <br>
+      <br>
+    </div>
+    <div th:unless="${#lists.isEmpty(reservas)}">
+      <div th:each="reserva: ${#lists.sort(reservas)}">
+        <div class="card-horizontal">
+          <div class="img-square-wrapper">
+            <img style="height: 240px" class="" th:src="${'/' + reserva.QRcode + '.png'}" alt="Código QR de la reserva">
+          </div>
+          <div class="card-body">
+            <h4 class="card-title" th:text="${reserva.naturalArea}"></h4>
+            <h6 class="card-subtitle mb-2 text-muted">
+              <span th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></span>
+            </h6>
+            <p style="font-weight: bold" class="card-text">
                             <span style="font-weight: bold"
                                   th:text="${#temporals.format(reserva.beginningTime, 'HH:mm')}"></span>
-                            <span>/</span>
-                            <span style="font-weight: bold"
-                                  th:text="${#temporals.format(reserva.endTime, 'HH:mm')}"></span>
-                        </p>
-                        <p class="card-text"><span th:text="${reserva.numberOfPeople}"></span> personas</p>
-                        <p class="card-text" style="float: left">Zona:
-                            <span th:text="${reserva.zoneNumber}"></span>
-                            <span th:text="${reserva.letter}"></span>
-                        </p>
-                        <button style="float: right" type="button" class="btn btn-primary" data-toggle="modal"
-                                th:data-target="${'#miModal' + reserva.reservationNumber}">Cancelar reserva
-                        </button>
-                    </div>
-                </div>
-                <br>
-
-                <!-- VENTANA EMERGENTE CANCELAR-->
-                <div class="modal" th:id="${'miModal' + reserva.reservationNumber}">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Cancelar reserva</h5>
-                                <button style="font-size:x-large; color: #b86f52" type="button" class="close"
-                                        data-dismiss="modal" aria-label="Close">&times;
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Indique, si lo desea, el motivo de su cancelación:</p>
-                            </div>
-                            <form action="#"
-                                  th:action="${'/naturalArea/cancelarReservaMunicipal/' + naturalArea + '/' + reserva.reservationNumber}"
-                                  th:object="${motivo}">
-                                <input class="form-control motivo" id="motivo" th:field="${motivo.mot}"
-                                       placeholder="Motivo">
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Cancelar reserva</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
+              <span>/</span>
+              <span style="font-weight: bold"
+                    th:text="${#temporals.format(reserva.endTime, 'HH:mm')}"></span>
+            </p>
+            <p class="card-text"><span th:text="${reserva.numberOfPeople}"></span> personas</p>
+            <p class="card-text" style="float: left">Zona:
+              <span th:text="${reserva.zoneNumber}"></span>
+              <span th:text="${reserva.letter}"></span>
+            </p>
+            <button style="float: right" type="button" class="btn btn-primary" data-toggle="modal"
+                    th:data-target="${'#miModal' + reserva.reservationNumber}">Cancelar reserva
+            </button>
+          </div>
         </div>
         <br>
-        <div>
-            <a style="float: left" href="/naturalArea/listManagers" class="btn btn-primary">Atrás</a>
-            <a style="float: right" th:href="${'/naturalArea/reservasTodas/' + naturalArea}" class="btn btn-primary">Mostrar
-                historial de reservas</a>
-            <br>
-            <br>
+
+        <!-- VENTANA EMERGENTE CANCELAR-->
+        <div class="modal" th:id="${'miModal' + reserva.reservationNumber}">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Cancelar reserva</h5>
+                <button style="font-size:x-large; color: #b86f52" type="button" class="close"
+                        data-dismiss="modal" aria-label="Close">&times;
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Indique, si lo desea, el motivo de su cancelación:</p>
+              </div>
+              <form action="#" th:action="${'/naturalArea/cancelarReservaMunicipal/' + naturalArea + '/' + reserva.reservationNumber}"
+                    th:object="${motivo}">
+                <input class="form-control motivo" id="motivo" th:field="${motivo.mot}"
+                       placeholder="Motivo">
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Cancelar reserva</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
 
+
+      </div>
     </div>
+    <br>
+    <a style="align-content: center" th:href="${'/naturalArea/reservasTodas/' + naturalArea}" class="btn btn-primary">Mostrar
+      historial de reservas</a>
+
+  </div>
 </section>
 
 <div th:replace="fragments/footer"></div>

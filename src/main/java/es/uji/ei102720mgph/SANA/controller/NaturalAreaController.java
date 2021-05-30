@@ -182,7 +182,7 @@ public class NaturalAreaController {
         }
         model.addAttribute("serviceDates", services);
     }
-    
+
     // metodo para anyadir al modelo los datos del selector de municipio
     @ModelAttribute("municipalityList")
     public List<String> municipalityList() {

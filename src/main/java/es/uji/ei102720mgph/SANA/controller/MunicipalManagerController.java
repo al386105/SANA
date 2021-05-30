@@ -5,7 +5,6 @@ import es.uji.ei102720mgph.SANA.dao.MunicipalManagerDao;
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
 import es.uji.ei102720mgph.SANA.model.*;
-import javafx.scene.control.skin.PaginationSkin;
 import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;

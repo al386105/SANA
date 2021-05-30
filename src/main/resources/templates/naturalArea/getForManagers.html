@@ -105,38 +105,7 @@
     <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
         <button type="button" class="btn btn-warning edit">Editar datos</button> </a>
     </td>
-
-    <!-- SECCION DE COMENTARIOS DEL AREA NATURAL -->
-    <section id="comments">
-        <hr class="lineaVerde">
-        <h3>Comentarios</h3>
-        <div th:if="${#lists.isEmpty(comments)}">
-            <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
-        </div>
-        <div th:unless="${#lists.isEmpty(comments)}" class="container">
-            <div th:each="comment: ${#lists.sort(comments)}" class="row" >
-                <div class="col-sm-2">
-                    <th:block th:each="i: ${#numbers.sequence(1, 5)}">
-                        <img th:if="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/starBlack.png" class="fotoBoton" alt="X">
-                        <img th:unless="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/star.png" class="fotoBoton" alt="O">
-                    </th:block>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row" th:text="${comment.commentBody}"></div>
-                    <div class="row"><br/></div>
-                </div>
-
-                <div class="col-sm-3">
-                    <div class="row" th:text="${comment.citizenEmail}"></div>
-                    <div class="row" th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></div>
-                </div>
-
-            </div>
-        </div>
-        <br/>
-    </section>
-
-
+    
 
     <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
     <hr class="lineaVerde">
@@ -185,6 +154,54 @@
             <br><br>
         </form>
     </div>
+
+    <!-- SECCION DE COMENTARIOS   -->
+    <section id="comments">
+        <hr class="lineaVerde">
+        <div class="container text-center">
+            <h3>Comentarios</h3>
+            <br/>
+            <div th:if="${#lists.isEmpty(comments)}">
+                <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
+            </div>
+            <div th:unless="${#lists.isEmpty(comments)}" class="container">
+                <div th:each="comment: ${#lists.sort(comments)}" class="container" >
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <th:block th:each="i: ${#numbers.sequence(1, 5)}">
+                                <img th:if="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/starBlack.png" class="fotoBoton" alt="X">
+                                <img th:unless="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/star.png" class="fotoBoton" alt="O">
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <br>
+                    </div>
+
+                    <div class="row">
+                        <div class="col align-self-center">
+                                <span>
+                                    <p th:text="${comment.commentBody}"></p>
+                                </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col align-self-center">
+                                <span>
+                                    <p th:text="${comment.citizenName} + ' ' + ${comment.citizenSurname} + ' - ' +
+                                    ${#temporals.format(comment.date,'dd/MM/yyyy')}"></p>
+                                </span>
+                        </div>
+                    </div>
+
+                    <div class="row"><br/></div>
+                </div>
+            </div>
+            <br/>
+        </div>
+    </section>
 
     <h4> Ponemos por aqui botones para gestión de servicios, zonas, etc ?? </h4>
 

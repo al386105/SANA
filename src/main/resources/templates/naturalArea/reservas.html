@@ -23,6 +23,9 @@
                              alt="Código QR de la reserva">
                     </div>
                     <div class="card-body">
+                        <h5 style="float: right" class="card-title text-muted" th:text="${reserva.surname}"></h5>
+                        <h5 style="float: right" class="card-title text-muted">&nbsp;</h5>
+                        <h5 style="float: right" class="card-title text-muted" th:text="${reserva.name}"></h5>
                         <h4 class="card-title" th:text="${reserva.naturalArea}"></h4>
                         <h6 class="card-subtitle mb-2 text-muted">
                             <span th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></span>

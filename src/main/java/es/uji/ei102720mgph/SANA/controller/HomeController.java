@@ -138,9 +138,11 @@ public class HomeController {
                 registeredCitizen.setDateOfBirth(registrationCitizen.getDateOfBirth());
                 registeredCitizen.setTypeOfUser(TypeOfUser.registeredCitizen);
                 registeredCitizen.setIdNumber(registrationCitizen.getDni());
+                fmt = new Formatter();
                 int citizenCode = registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
                 registeredCitizen.setUsername("ci" + fmt.format("%04d" , citizenCode));
 
+                fmt = new Formatter();
                 // Envia correo electrónico
                 String destinatario = registeredCitizen.getEmail();
                 String asunto = "Bienvenido a SANA";

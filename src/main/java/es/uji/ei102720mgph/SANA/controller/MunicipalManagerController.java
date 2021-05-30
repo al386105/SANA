@@ -5,6 +5,8 @@ import es.uji.ei102720mgph.SANA.dao.MunicipalManagerDao;
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
 import es.uji.ei102720mgph.SANA.model.*;
+import javafx.scene.control.skin.PaginationSkin;
+import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -155,9 +157,10 @@ public class MunicipalManagerController {
     }
 
     private MunicipalManager pasoAMunicipalManager(MunicipalManagerForm managerForm) {
+        BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
         MunicipalManager manager = new MunicipalManager();
         manager.setMunicipality(managerForm.getMunicipality());
-        manager.setPassword(managerForm.getPassword());
+        manager.setPassword(encryptor.encryptPassword(managerForm.getPassword()));
         manager.setUsername(managerForm.getUsername());
         manager.setDateOfBirth(managerForm.getDateOfBirth());
         manager.setEmail(managerForm.getEmail());
@@ -180,11 +183,12 @@ public class MunicipalManagerController {
         quitarAtributoSeccion(session);
         MunicipalManager manager = municipalManagerDao.getMunicipalManager(email);
 
+        BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
         // Pasar al objeto de MunicipalManagerForm para el formulario
         MunicipalManagerForm municipalManagerForm = new MunicipalManagerForm();
         municipalManagerForm.setName(manager.getName());
         municipalManagerForm.setSurname(manager.getSurname());
-        municipalManagerForm.setPassword(manager.getPassword());
+        municipalManagerForm.setPassword(encryptor.encryptPassword(manager.getPassword()));
         municipalManagerForm.setDateOfBirth(manager.getDateOfBirth());
         municipalManagerForm.setEmail(manager.getEmail());
         municipalManagerForm.setMunicipality(manager.getMunicipality());

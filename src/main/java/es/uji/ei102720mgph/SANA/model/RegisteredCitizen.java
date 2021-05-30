@@ -5,7 +5,7 @@ public class RegisteredCitizen extends SanaUser {
     private String mobilePhoneNumber;
     private String username;
     private String citizenCode;
-    private int pin;
+    private String pin;
     private String addressId;
     private static int contador = 1;
 
@@ -37,11 +37,11 @@ public class RegisteredCitizen extends SanaUser {
         this.citizenCode = citizenCode;
     }
 
-    public int getPin() {
+    public String getPin() {
         return pin;
     }
 
-    public void setPin(int pin) {
+    public void setPin(String pin) {
         this.pin = pin;
     }
 

@@ -126,10 +126,11 @@ public class HomeController {
 
                 //Añadimos el ciudadano a RegisteredCitizen
                 Formatter fmt = new Formatter();
+                BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
                 RegisteredCitizen registeredCitizen = new RegisteredCitizen();
                 registeredCitizen.setAddressId(addressDao.getAddress("ad" + fmt.format("%07d", Address.getContador() - 1)).getId());
                 registeredCitizen.setName(registrationCitizen.getNombre());
-                registeredCitizen.setPin(Integer.parseInt(registrationCitizen.getPassword()));
+                registeredCitizen.setPin(encryptor.encryptPassword(registrationCitizen.getPassword()));
                 registeredCitizen.setSurname(registrationCitizen.getApellidos());
                 registeredCitizen.setEmail(registrationCitizen.getEmail());
                 registeredCitizen.setMobilePhoneNumber(registrationCitizen.getTelefono());
@@ -166,20 +167,20 @@ public class HomeController {
     public String autenticationProcess(@ModelAttribute("userLogin") UserLogin userLogin, BindingResult bindingResult, HttpSession session){
         UserValidator userValidator = new UserValidator();
         userValidator.validate(userLogin, bindingResult);
+        BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
         if (bindingResult.hasErrors())
             return "inicio/login"; //tornem al formulari d'inici de sessió
 
         //Acceso del responsable
         try{
             String archivo = "responsableMedioambiental.txt";
-            BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
             FileReader fileReader = new FileReader(archivo);
             BufferedReader b = new BufferedReader(fileReader);
             String r_email = b.readLine().trim();
             String r_pass = b.readLine().trim();
             b.close();
 
-            if(userLogin.getUsername().equals(r_email) && passwordEncryptor.checkPassword(userLogin.getPassword(), r_pass)) {
+            if(userLogin.getUsername().equals(r_email) && encryptor.checkPassword(userLogin.getPassword(), r_pass)) {
                 session.setAttribute("environmentalManager", "dentro");
                 String nextUrl = (String) session.getAttribute("nextUrl");
                 if (nextUrl != null) {
@@ -209,7 +210,7 @@ public class HomeController {
                     return "inicio/login";
                 }
                 // Gestor municipal dado de alta
-                if (municipalManager.getPassword().equals(userLogin.getPassword())){
+                if (encryptor.checkPassword(userLogin.getPassword(), municipalManager.getPassword())){
                     //Contraseña correcta
                     session.setAttribute("municipalManager", municipalManager);
                     // Comprova si l'usuari volia accedir a una altra pagina
@@ -247,7 +248,7 @@ public class HomeController {
                     if (registeredCitizen == null)
                         registeredCitizen = registeredCitizenDao.getRegisteredCitizen(sanaUser.getEmail());
 
-                    if (registeredCitizen.getPin()  == Integer.parseInt(userLogin.getPassword())) {
+                    if (encryptor.checkPassword(userLogin.getPassword(), registeredCitizen.getPin())) {
                         //Contraseña Correcta
                         session.setAttribute("registeredCitizen", registeredCitizen);
                         // Comprova si l'usuari volia accedir a una altra pagina

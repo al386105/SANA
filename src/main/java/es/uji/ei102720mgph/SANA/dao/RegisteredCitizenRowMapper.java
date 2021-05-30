@@ -25,7 +25,7 @@ public final class RegisteredCitizenRowMapper implements RowMapper<RegisteredCit
         registeredCitizen.setLeavingDate(d != null ? d.toLocalDate() : null);
         registeredCitizen.setIdNumber(rs.getString("idNumber"));
         registeredCitizen.setMobilePhoneNumber(rs.getString("mobilePhoneNumber"));
-        registeredCitizen.setPin(rs.getInt("pin"));
+        registeredCitizen.setPin(rs.getString("pin"));
         registeredCitizen.setAddressId(rs.getString("addressId"));
         return registeredCitizen;
     }

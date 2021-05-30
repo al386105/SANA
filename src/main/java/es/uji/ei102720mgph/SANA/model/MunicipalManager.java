@@ -1,5 +1,7 @@
 package es.uji.ei102720mgph.SANA.model;
 
+import org.jasypt.util.password.BasicPasswordEncryptor;
+
 public class MunicipalManager extends SanaUser implements Comparable<MunicipalManager> {
     private String username;
     private String password;

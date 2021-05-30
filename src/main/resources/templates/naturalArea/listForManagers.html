@@ -76,6 +76,9 @@
                     <th scope="col">Municipio</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
 
@@ -89,6 +92,15 @@
                     </td>
                     <td><a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
                         <button type="button" class="btn btn-secondary">Reservas</button> </a>
+                    </td>
+                    <td><a th:href="@{getForManagersServices/{naturalArea}(naturalArea=${naturalArea.name})}">
+                        <button type="button" class="btn btn-secondary">Servicios</button> </a>
+                    </td>
+                    <td><a th:href="@{getForManagersTimeSlots/{naturalArea}(naturalArea=${naturalArea.name})}">
+                        <button type="button" class="btn btn-secondary">Franjas Horarias</button> </a>
+                    </td>
+                    <td><a th:href="@{getForManagersZones/{naturalArea}(naturalArea=${naturalArea.name})}">
+                        <button type="button" class="btn btn-secondary">Zonas</button> </a>
                     </td>
                 </tr>
                 </tbody>

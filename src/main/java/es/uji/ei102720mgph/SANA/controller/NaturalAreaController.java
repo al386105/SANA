@@ -267,7 +267,7 @@ public class NaturalAreaController {
         return naturalAreas;
     }
 
-    @RequestMapping(value="/listEnvironmental")
+    @RequestMapping(value="/listForEnvironmental")
     public String listNaturalAreasEnvironmental(HttpSession session, Model model, @RequestParam(value="patron",required=false) String patron,
                                                 @RequestParam(value="typeOfArea",required=false) String typeOfArea,
                                                 @RequestParam(value="typeOfAccess",required=false) String typeOfAccess,
@@ -275,15 +275,15 @@ public class NaturalAreaController {
                                                 @RequestParam("page") Optional<Integer> page){
         if(session.getAttribute("environmentalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/listEnvironmental");
+            session.setAttribute("nextUrl", "/naturalArea/listForEnvironmental");
             return "redirect:/inicio/login";
         }
         quitarAtributoSeccion(session);
         paginacionSinFotos(model, patron, typeOfArea, typeOfAccess, municipality, page);
-        return "naturalArea/listEnvironmental";
+        return "naturalArea/listForEnvironmental";
     }
 
-    @RequestMapping(value="/listManagers")
+    @RequestMapping(value="/listForManagers")
     public String listNaturalAreasManagers(Model model, @RequestParam(value="patron",required=false) String patron,
                                            @RequestParam(value="typeOfArea",required=false) String typeOfArea,
                                            @RequestParam(value="typeOfAccess",required=false) String typeOfAccess,
@@ -291,12 +291,12 @@ public class NaturalAreaController {
                                            @RequestParam("page") Optional<Integer> page, HttpSession session){
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/listManagers");
+            session.setAttribute("nextUrl", "/naturalArea/listForManagers");
             return "redirect:/inicio/login";
         }
         paginacionSinFotos(model, patron, typeOfArea, typeOfAccess, municipality, page);
         quitarAtributoSeccion(session);
-        return "naturalArea/listManagers";
+        return "naturalArea/listForManagers";
     }
 
     private void paginacionSinFotos(Model model, String patron, String typeOfArea, String typeOfAccess,

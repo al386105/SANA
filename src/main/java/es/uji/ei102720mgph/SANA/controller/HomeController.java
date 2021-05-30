@@ -362,6 +362,8 @@ public class HomeController {
             model.addAttribute("userLogin", new UserLogin() {});
             return "redirect:/inicio/login";
         }
+        RegisteredCitizen registeredCitizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("username", registeredCitizen.getUsername());
         return "inicio/welcome";
     }
 

@@ -4,92 +4,93 @@
 <body>
 <div th:replace="fragments/headerManager"></div>
 
-<div class="container" th:object ="${municipalManager}">
+<section class="perfil">
+    <div class="container" th:object ="${municipalManager}">
 
-    <h2 class="text-uppercase text-center text-secondary mb-0">Mi Perfil</h2>
-    <br><hr class="barra-normal"><br>
+        <h2 class="text-uppercase text-center text-secondary mb-0">Mi Perfil</h2>
+        <br><hr class="barra-normal"><br>
 
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-4">
-            <h3 class="colorMarron">Nombre:</h3>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <h3 class="colorMarron">Nombre:</h3>
+            </div>
+            <div class="col-md-auto">
+                <h3 class="colorTierra" th:text="*{name}"></h3>
+            </div>
         </div>
-        <div class="col-md-auto">
-            <h3 class="colorTierra" th:text="*{name}"></h3>
+
+        <br>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <h3 class="colorMarron">Apellidos:</h3>
+            </div>
+            <div class="col-md-auto">
+                <h3 class="colorTierra" th:text="*{surname}"></h3>
+            </div>
         </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <h3 class="colorMarron">Correo:</h3>
+            </div>
+            <div class="col-md-auto">
+                <h3 class="colorTierra" th:text="*{email}"></h3>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <h3 class="colorMarron">Nombre de usuario:</h3>
+            </div>
+            <div class="col-md-auto">
+                <h3 class="colorTierra" th:text="*{username}"></h3>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <h3 class="colorMarron">Fecha de nacimiento:</h3>
+            </div>
+            <div class="col-md-auto">
+                <h3 class="colorTierra" th:text="${#temporals.format(municipalManager.dateOfBirth,'dd/MM/yyyy')}"></h3>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <h3 class="colorMarron">Municipio:</h3>
+            </div>
+            <div class="col-md-auto">
+                <h3 class="colorTierra" th:text="*{municipality}"></h3>
+            </div>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="row justify-content-center">
+            <div class="col-md-auto" >
+                <a style="float: right; margin-left: 15px" href="/logout" role="button" class="btn btn-primary btn-xl">
+                    <img class="fotoBoton" src="/assets/img/logout.png">Cerrar sesión</a>
+            </div>
+        </div><br><br>
     </div>
-
-    <br>
-
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-4">
-            <h3 class="colorMarron">Apellidos:</h3>
-        </div>
-        <div class="col-md-auto">
-            <h3 class="colorTierra" th:text="*{surname}"></h3>
-        </div>
-    </div>
-
-    <br>
-
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-4">
-            <h3 class="colorMarron">Correo:</h3>
-        </div>
-        <div class="col-md-auto">
-            <h3 class="colorTierra" th:text="*{email}"></h3>
-        </div>
-    </div>
-
-    <br>
-
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-4">
-            <h3 class="colorMarron">Nombre de usuario:</h3>
-        </div>
-        <div class="col-md-auto">
-            <h3 class="colorTierra" th:text="*{username}"></h3>
-        </div>
-    </div>
-
-    <br>
-
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-4">
-            <h3 class="colorMarron">Fecha de nacimiento:</h3>
-        </div>
-        <div class="col-md-auto">
-            <h3 class="colorTierra" th:text="${#temporals.format(municipalManager.dateOfBirth,'dd/MM/yyyy')}"></h3>
-        </div>
-    </div>
-
-    <br>
-
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-4">
-            <h3 class="colorMarron">Municipio:</h3>
-        </div>
-        <div class="col-md-auto">
-            <h3 class="colorTierra" th:text="*{municipality}"></h3>
-        </div>
-    </div>
-
-    <br>
-    <br>
-
-    <div class="row justify-content-center">
-        <div class="col-md-auto" >
-            <a style="float: right; margin-left: 15px" href="/logout" role="button" class="btn btn-primary btn-xl">
-                <img class="fotoBoton" src="/assets/img/logout.png">Cerrar sesión</a>
-        </div>
-    </div><br><br>
-</div>
-
+</section>
 <div th:replace="fragments/footer"></div>
 </body>
 </html>

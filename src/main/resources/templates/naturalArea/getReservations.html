@@ -55,7 +55,7 @@
             <td th:text="${reservation.cancellationReason}"></td>
             <td th:text="${reservation.citizenEmail}"></td>
             <td th:text="${reservation.timeSlotId}"></td>
-            <td><a th:href="@{/reservation/getManagers/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
+            <td><a th:href="@{/reservation/getForManagers/{reservationNumber}(reservationNumber=${reservation.reservationNumber})}">
                 <button type="button" class="btn btn-warning">Más información</button>
             </a>
             </td>
@@ -72,7 +72,7 @@
     </table>
     </div>
     <br>
-    <a href="/naturalArea/listManagers"><button type="button" class="btn btn-primary">Volver</button></a>
+    <a href="/naturalArea/listForManagers"><button type="button" class="btn btn-primary">Volver</button></a>
     <br><br>
 </div>
 

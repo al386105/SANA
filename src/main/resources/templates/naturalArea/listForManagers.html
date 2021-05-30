@@ -84,7 +84,7 @@
                     <td th:text="${naturalArea.name}"></td>
                     <td th:text="${naturalArea.typeOfAccess.descripcion}"></td>
                     <td th:text="${naturalArea.municipality}"></td>
-                    <td><a th:href="@{getManagers/{naturalArea}(naturalArea=${naturalArea.name})}">
+                    <td><a th:href="@{getForManagers/{naturalArea}(naturalArea=${naturalArea.name})}">
                         <button type="button" class="btn btn-primary">Gestionar</button> </a>
                     </td>
                     <td><a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
@@ -102,7 +102,7 @@
             <li th:class="page-item" th:if="${#lists.size(naturalAreasPaged) > 0}"
                 th:each="pageNumber : ${pageNumbers}"
                 th:classappend="${pageNumber==selectedPage+1} ? active">
-                <a th:href="@{/naturalArea/listManagers?page={sele}(sele=${pageNumber-1})}"
+                <a th:href="@{/naturalArea/listForManagers?page={sele}(sele=${pageNumber-1})}"
                    th:text=${pageNumber}
                    th:class="page-link">
                 </a>

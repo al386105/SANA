@@ -139,7 +139,7 @@ public class HomeController {
                 registeredCitizen.setTypeOfUser(TypeOfUser.registeredCitizen);
                 registeredCitizen.setIdNumber(registrationCitizen.getDni());
                 int citizenCode = registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
-                registeredCitizen.setUsername("ci" + fmt.format("%04d ", citizenCode));
+                registeredCitizen.setUsername("ci" + fmt.format("%04d" , citizenCode));
 
                 // Envia correo electrónico
                 String destinatario = registeredCitizen.getEmail();

@@ -120,8 +120,8 @@
                     <h3>Imágenes <img src="/assets/img/photo.png" class="fotoBoton" alt="Menú"></h3>
                 </div>
             </div>
-            <div class="row align-center">
-                <div class="col">
+            <div class="row ">
+                <div class="col align-self-center">
                     <div th:if="${#lists.isEmpty(pictures)}">
                         <p><b>¡Este área natural no tiene ninguna imagen publicada!</b></p>
                     </div>
@@ -160,103 +160,128 @@
         <br/><br/>
 
         <!-- SECCION DE COMENTARIOS DEL AREA NATURAL -->
+
         <section id="comments">
             <hr class="lineaVerde">
-            <h3>Comentarios</h3>
-            <div th:if="${#lists.isEmpty(comments)}">
-                <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
-            </div>
-            <div th:unless="${#lists.isEmpty(comments)}" class="container">
-                <div th:each="comment: ${#lists.sort(comments)}" class="row" >
-                    <div class="col-sm-2">
-                        <th:block th:each="i: ${#numbers.sequence(1, 5)}">
-                            <img th:if="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/starBlack.png" class="fotoBoton" alt="X">
-                            <img th:unless="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/star.png" class="fotoBoton" alt="O">
-                        </th:block>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="row" th:text="${comment.commentBody}"></div>
+            <div class="container text-center">
+                <h3>Comentarios</h3>
+                <br/>
+                <div th:if="${#lists.isEmpty(comments)}">
+                    <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
+                </div>
+                <div th:unless="${#lists.isEmpty(comments)}" class="container">
+                    <div th:each="comment: ${#lists.sort(comments)}" class="container" >
+                        <div class="row">
+                            <div class="col align-self-center">
+                                <th:block th:each="i: ${#numbers.sequence(1, 5)}">
+                                    <img th:if="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/starBlack.png" class="fotoBoton" alt="X">
+                                    <img th:unless="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/star.png" class="fotoBoton" alt="O">
+                                </th:block>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <br>
+                        </div>
+
+                        <div class="row">
+                            <div class="col align-self-center">
+                                <span>
+                                    <p th:text="${comment.commentBody}"></p>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col align-self-center">
+                                <span>
+                                    <p th:text="${comment.citizenName} + ' ' + ${comment.citizenSurname} + ' - ' +
+                                    ${#temporals.format(comment.date,'dd/MM/yyyy')}"></p>
+                                </span>
+                            </div>
+                        </div>
+
                         <div class="row"><br/></div>
                     </div>
-
-                    <div class="col-sm-3">
-                        <div class="row" th:text="${comment.citizenName}"></div>
-                        <div class="row" th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></div>
-                    </div>
-
                 </div>
-            </div>
-            <br/>
-            <!-- solo los ciudadanos registrados pueden hacer comentarios -->
-            <div th:if="${#strings.equals(typeUser, 'registered')}">
-                <a th:href="@{/comment/add/{naturalArea}(naturalArea=${naturalArea.name})}">
-                    <button type="button" class="btn btn-success okey">Añadir valoración</button> </a>
-            </div>
-            <div th:unless="${#strings.equals(typeUser, 'registered')}">
-                <p><b>¡Inicie sesión para poder hacer comentarios!</b></p>
+                <br/>
+                <!-- solo los ciudadanos registrados pueden hacer comentarios -->
+                <div th:if="${#strings.equals(typeUser, 'registered')}">
+                    <a th:href="@{/comment/add/{naturalArea}(naturalArea=${naturalArea.name})}">
+                        <button type="button" class="btn btn-success okey">Añadir valoración</button> </a>
+                </div>
+                <div th:unless="${#strings.equals(typeUser, 'registered')}">
+                    <p><b>¡Inicie sesión para poder hacer comentarios!</b></p>
+                </div>
             </div>
         </section>
 
         <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
         <hr class="lineaVerde">
-        <h3>Servicios fijos</h3>
-        <div th:if="${#lists.isEmpty(serviceDates)}">
-            <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
+        <div class="container text-center">
+            <h3>Servicios fijos</h3>
+            <br>
+            <div th:if="${#lists.isEmpty(serviceDates)}">
+                <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
+            </div>
+            <div th:unless="${#lists.isEmpty(serviceDates)}" class="container">
+
+                <div class="row text-left">
+                    <div class="col"><b>Servicio</b></div>
+                    <div class="col"><b>Descripción</b></div>
+                    <div class="col"><b>Lugar de contratación</b></div>
+                </div>
+                <div class="row">
+                    <br>
+                </div>
+                <div class="row text-left" th:each="serviceDate: ${#lists.sort(serviceDates)}">
+                    <div class="col"><i th:text="${serviceDate.nameOfService}"></i></div>
+                    <div class="col"><p th:text="${serviceDate.description}"></p></div>
+                    <div class="col"><p th:text="${serviceDate.hiringPlace}"></p></div>
+                </div>
+            </div>
         </div>
-        <table th:unless="${#lists.isEmpty(serviceDates)}" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Servicio</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Sitio de contratación</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="serviceDate: ${#lists.sort(serviceDates)}">
-                <td th:text="${serviceDate.nameOfService}"></td>
-                <td th:text="${serviceDate.description}"></td>
-                <td th:text="${serviceDate.hiringPlace}"></td>
-            </tr>
-            </tbody>
-        </table>
 
         <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
         <section id="temporalServices">
             <hr class="lineaVerde">
-            <h3>Servicios temporales</h3>
-            <div th:if="${#lists.isEmpty(temporalServices)}">
-                <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
+            <div class="container text-center">
+                <h3>Servicios temporales</h3>
+                <br>
+                <div th:if="${#lists.isEmpty(temporalServices)}">
+                    <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
+                </div>
+                <div th:unless="${#lists.isEmpty(temporalServices)}" class="container">
+                    <div class="row text-left">
+                        <div class="col"><b>Servicio</b></div>
+                        <div class="col"><b>Hora de inicio</b></div>
+                        <div class="col"><b>Hora de fin</b></div>
+                        <div class="col"><b>Fecha de inicio</b></div>
+                        <div class="col"><b>Fecha de fin</b></div>
+                        <div class="col"></div>
+                    </div>
+
+                    <div class="row"><br/></div>
+
+                    <div class="row text-left" th:each="temporalService: ${#lists.sort(temporalServices)}">
+                        <div class="col"><i th:text="${temporalService.service}"></i></div>
+                        <div class="col" th:text="${temporalService.beginningTime}"></div>
+                        <div class="col" th:text="${temporalService.endTime}"></div>
+                        <div class="col" th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></div>
+                        <div class="col" th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></div>
+                        <div class="col">
+                            <a th:href="@{/temporalService/get/{id}(id=${temporalService.id})}">
+                            <button type="button" class="btn btn-primary">Más información</button></a>
+                        </div>
+                    </div>
+                    </tbody>
+                </div>
             </div>
-            <table th:unless="${#lists.isEmpty(temporalServices)}" class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">Servicio</th>
-                    <th scope="col">Hora de inicio</th>
-                    <th scope="col">Hora de fin</th>
-                    <th scope="col">Fecha de inicio</th>
-                    <th scope="col">Fecha de fin</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="temporalService: ${#lists.sort(temporalServices)}">
-                    <td th:text="${temporalService.service}"></td>
-                    <td th:text="${temporalService.beginningTime}"></td>
-                    <td th:text="${temporalService.endTime}"></td>
-                    <td th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></td>
-                    <td th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></td>
-                    <td><a th:href="@{/temporalService/get/{id}(id=${temporalService.id})}">
-                        <button type="button" class="btn btn-primary">Más información</button>
-                    </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
         </section>
 
-    <br><br>
-    <a href="/naturalArea/pagedlist"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
-</div>
+        <br><br>
+        <a href="/naturalArea/pagedlist"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
+    </div>
 </section>
 
 <div th:replace="fragments/footer"></div>

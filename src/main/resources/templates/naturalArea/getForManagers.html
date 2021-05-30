@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:replace="fragments/headerManager"></div>
+
+<section id="perfil">
+<div class="container">
+    <h2 class="text-uppercase text-center text-secondary mb-0"><span th:text="${naturalArea.name}"></span></h2>
+    <br><hr class="barra-normal"><br>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Municipio:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.municipality}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Acceso:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.typeOfAccess.descripcion}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Área:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.typeOfArea.descripcion}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Localización:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.geographicalLocation}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Largo:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.length}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Ancho:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.width}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Características físicas:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.physicalCharacteristics}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Descripción:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.description}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <h5 class="colorMarron">Orientación:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="*{naturalArea.orientation.descripcion}"></h5>
+        </div>
+    </div>
+
+    <div class="row" th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
+        <div class="col-3">
+            <h5 class="colorMarron">Restringido hasta:</h5>
+        </div>
+        <div class="col-6">
+            <h5 class="colorTierra" th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></h5>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Botones -->
+    <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
+        <button type="button" class="btn btn-warning edit">Editar datos</button> </a>
+    </td>
+    
+
+    <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
+    <hr class="lineaVerde">
+    <h3>Imágenes</h3>
+    <div th:if="${#lists.isEmpty(pictures)}">
+        <p><b>¡Todavía no ha publicado ninguna imagen de este área natural!</b></p>
+    </div>
+    <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
+        <tr th:each="picture,iterador : ${pictures}">
+            <td scope="row"><img class="fotoListado" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
+            <td style="vertical-align:middle;"><button type="button" class="btn btn-danger delete" data-toggle="modal" th:data-target="${'#miModal' + iterador.index}">
+                Elimina</button></td>
+            <!-- VENTANA EMERGENTE -->
+            <div class="modal" th:id="${'miModal' + iterador.index}">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Eliminar imagen</h5>
+                            <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Seguro que desea borrar esta imagen?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a th:href="@{/picture/delete/{picturePath}(picturePath=${picture.picturePath})}">
+                                <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tr>
+        </tbody>
+    </table>
+    <!-- TODO gestionar error si la foto es demasiado grande -->
+    <!-- selector de imagenes -->
+    <div class="container">
+        <form class="form-horizontal" action="#" th:action="@{/picture/add/{naturalArea}(naturalArea=${naturalArea.name})}"
+              enctype="multipart/form-data" th:object="${picture}" method="post">
+            <input required type="file" name="file" id="file" /> <br/><br/>
+            <div class="form-group row">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-success okey"><img src="/assets/img/photo.png" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
+                </div>
+            </div>
+            <br><br>
+        </form>
+    </div>
+
+    <!-- SECCION DE COMENTARIOS   -->
+    <section id="comments">
+        <hr class="lineaVerde">
+        <div class="container text-center">
+            <h3>Comentarios</h3>
+            <br/>
+            <div th:if="${#lists.isEmpty(comments)}">
+                <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
+            </div>
+            <div th:unless="${#lists.isEmpty(comments)}" class="container">
+                <div th:each="comment: ${#lists.sort(comments)}" class="container" >
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <th:block th:each="i: ${#numbers.sequence(1, 5)}">
+                                <img th:if="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/starBlack.png" class="fotoBoton" alt="X">
+                                <img th:unless="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/star.png" class="fotoBoton" alt="O">
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <br>
+                    </div>
+
+                    <div class="row">
+                        <div class="col align-self-center">
+                                <span>
+                                    <p th:text="${comment.commentBody}"></p>
+                                </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col align-self-center">
+                                <span>
+                                    <p th:text="${comment.citizenName} + ' ' + ${comment.citizenSurname} + ' - ' +
+                                    ${#temporals.format(comment.date,'dd/MM/yyyy')}"></p>
+                                </span>
+                        </div>
+                    </div>
+
+                    <div class="row"><br/></div>
+                </div>
+            </div>
+            <br/>
+        </div>
+    </section>
+
+    <h4> Ponemos por aqui botones para gestión de servicios, zonas, etc ?? </h4>
+
+    <a href="/naturalArea/listForManagers"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
+</div>
+</section>
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

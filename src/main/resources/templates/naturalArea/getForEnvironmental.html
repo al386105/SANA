@@ -149,91 +149,54 @@
         </div>
     </div>
 
-
-    <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
-        <!-- SECCION DE ZONAS DEL AREA NATURAL -->
-        <h3>Lista de Zonas</h3>
-        <div th:if="${#lists.isEmpty(zones)}">
-            <p><b>¡Este área natural restringida todavía no tiene zonas!</b></p>
-        </div>
-        <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Número zona</th>
-                <th scope="col">Letra</th>
-                <th scope="col">Capacidad máx.</th>
-                <th scope="col">Fecha creación</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="zone: ${#lists.sort(zones)}">
-                <td th:text="${zone.zoneNumber}"></td>
-                <td th:text="${zone.letter}"></td>
-                <td th:text="${zone.maximumCapacity}"></td>
-                <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <hr class="lineaVerde">
-
-        <!-- SECCION DE FRANJAS HORARIAS DEL AREA NATURAL -->
-        <h3>Franjas horarias</h3>
-        <div th:if="${#lists.isEmpty(timeSlots)}">
-            <p><b>¡Este área natural restringida todavía no tiene franjas horarias asignadas!</b></p>
-        </div>
-        <table th:unless="${#lists.isEmpty(timeSlots)}" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Núm. franja horaria</th>
-                <th scope="col">Fecha de inicio</th>
-                <th scope="col">Fecha de fin</th>
-                <th scope="col">Hora de inicio</th>
-                <th scope="col">Hora de fin</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="timeSlot: ${#lists.sort(timeSlots)}">
-                <td scope="row" th:text="${timeSlot.id}"></td>
-                <td th:text="${#temporals.format(timeSlot.beginningDate,'dd/MM/yyyy')}"></td>
-                <td th:text="${#temporals.format(timeSlot.endDate,'dd/MM/yyyy')}"></td>
-                <td th:text="${timeSlot.beginningTime}"></td>
-                <td th:text="${timeSlot.endTime}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <hr class="lineaVerde">
-    </div>
-
-
-    <!-- SECCION DE COMENTARIOS DEL AREA NATURAL -->
+    <!-- SECCION DE COMENTARIOS   -->
     <section id="comments">
         <hr class="lineaVerde">
-        <h3>Comentarios</h3>
-        <div th:if="${#lists.isEmpty(comments)}">
-            <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
-        </div>
-        <div th:unless="${#lists.isEmpty(comments)}" class="container">
-            <div th:each="comment: ${#lists.sort(comments)}" class="row" >
-                <div class="col-sm-2">
-                    <th:block th:each="i: ${#numbers.sequence(1, 5)}">
-                        <img th:if="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/starBlack.png" class="fotoBoton" alt="X">
-                        <img th:unless="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/star.png" class="fotoBoton" alt="O">
-                    </th:block>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row" th:text="${comment.commentBody}"></div>
+        <div class="container text-center">
+            <h3>Comentarios</h3>
+            <br/>
+            <div th:if="${#lists.isEmpty(comments)}">
+                <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
+            </div>
+            <div th:unless="${#lists.isEmpty(comments)}" class="container">
+                <div th:each="comment: ${#lists.sort(comments)}" class="container" >
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <th:block th:each="i: ${#numbers.sequence(1, 5)}">
+                                <img th:if="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/starBlack.png" class="fotoBoton" alt="X">
+                                <img th:unless="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/star.png" class="fotoBoton" alt="O">
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <br>
+                    </div>
+
+                    <div class="row">
+                        <div class="col align-self-center">
+                                <span>
+                                    <p th:text="${comment.commentBody}"></p>
+                                </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col align-self-center">
+                                <span>
+                                    <p th:text="${comment.citizenName} + ' ' + ${comment.citizenSurname} + ' - ' +
+                                    ${#temporals.format(comment.date,'dd/MM/yyyy')}"></p>
+                                </span>
+                        </div>
+                    </div>
+
                     <div class="row"><br/></div>
                 </div>
-
-                <div class="col-sm-3">
-                    <div class="row" th:text="${comment.citizenEmail}"></div>
-                    <div class="row" th:text="${#temporals.format(comment.date,'dd/MM/yyyy')}"></div>
-                </div>
-
             </div>
+            <br/>
         </div>
-        <br/>
     </section>
+
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
     <section id="serviceDates">
@@ -299,9 +262,63 @@
         </table>
     </section>
 
+    <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
+        <!-- SECCION DE ZONAS DEL AREA NATURAL -->
+        <h3>Lista de Zonas</h3>
+        <div th:if="${#lists.isEmpty(zones)}">
+            <p><b>¡Este área natural restringida todavía no tiene zonas!</b></p>
+        </div>
+        <table th:unless="${#lists.isEmpty(zones)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Número zona</th>
+                <th scope="col">Letra</th>
+                <th scope="col">Capacidad máx.</th>
+                <th scope="col">Fecha creación</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="zone: ${#lists.sort(zones)}">
+                <td th:text="${zone.zoneNumber}"></td>
+                <td th:text="${zone.letter}"></td>
+                <td th:text="${zone.maximumCapacity}"></td>
+                <td th:text="${#temporals.format(zone.creationDate,'dd/MM/yyyy')}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <hr class="lineaVerde">
+
+        <!-- SECCION DE FRANJAS HORARIAS DEL AREA NATURAL -->
+        <h3>Franjas horarias</h3>
+        <div th:if="${#lists.isEmpty(timeSlots)}">
+            <p><b>¡Este área natural restringida todavía no tiene franjas horarias asignadas!</b></p>
+        </div>
+        <table th:unless="${#lists.isEmpty(timeSlots)}" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Núm. franja horaria</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha de fin</th>
+                <th scope="col">Hora de inicio</th>
+                <th scope="col">Hora de fin</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="timeSlot: ${#lists.sort(timeSlots)}">
+                <td scope="row" th:text="${timeSlot.id}"></td>
+                <td th:text="${#temporals.format(timeSlot.beginningDate,'dd/MM/yyyy')}"></td>
+                <td th:text="${#temporals.format(timeSlot.endDate,'dd/MM/yyyy')}"></td>
+                <td th:text="${timeSlot.beginningTime}"></td>
+                <td th:text="${timeSlot.endTime}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <hr class="lineaVerde">
+    </div>
+
     <hr class="lineaVerde">
     <br><br>
-    <a href="/naturalArea/listEnvironmental"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
+    <a href="/naturalArea/listForEnvironmental"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
 </div>
 </section>
 

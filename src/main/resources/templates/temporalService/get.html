@@ -16,10 +16,25 @@
     </h2>
     <br><hr class="barra-normal"><br>
 
-    <ul>
-        <li><b>Descripción:</b> <span th:text="${service.description}"></span></li>
-        <li><b>Sitio de contratación:</b> <span th:text="${service.hiringPlace}"></span></li>
-    </ul>
+    <div class="row">
+        <div class="col-md-auto">
+            <h5 class="colorMarron">Descripción:</h5>
+        </div>
+        <div class="col-md-auto">
+            <h5 class="colorTierra" th:text="${service.description}"></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-auto">
+            <h5 class="colorMarron">Sitio de contratación:</h5>
+        </div>
+        <div class="col-md-auto">
+            <h5 class="colorTierra" th:text="${service.hiringPlace}"></h5>
+        </div>
+    </div>
+
+    <br/>
 
     <div class="card-horizontal">
         <div class="card-body">

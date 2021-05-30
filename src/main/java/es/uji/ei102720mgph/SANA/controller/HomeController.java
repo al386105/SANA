@@ -101,7 +101,8 @@ public class HomeController {
     }
 
     @RequestMapping("inicio/register_form/registration")
-    public String registrationProcess(@ModelAttribute("registrationCitizen") RegistrationCitizen registrationCitizen,BindingResult bindingResult, HttpSession session ){
+    public String registrationProcess(@ModelAttribute("registrationCitizen") RegistrationCitizen registrationCitizen,
+                                      BindingResult bindingResult, HttpSession session ){
 
         // TODO el validador no va, hay que ver por qué
         //RegistrationValidator registrationValidator = new RegistrationValidator();
@@ -112,7 +113,7 @@ public class HomeController {
 
         SanaUser sanaUser = sanaUserDao.getSanaUser(registrationCitizen.getEmail());
         if (sanaUser == null){
-            if (Integer.parseInt(registrationCitizen.getPassword()) == Integer.parseInt(registrationCitizen.getPasswordComprovation())) {
+            if (registrationCitizen.getPassword().equals(registrationCitizen.getPasswordComprovation())) {
                 //Usuario no registrado antes
                 //Añadimos la dirección a las tablas
                 Address address = new Address();
@@ -137,7 +138,9 @@ public class HomeController {
                 registeredCitizen.setDateOfBirth(registrationCitizen.getDateOfBirth());
                 registeredCitizen.setTypeOfUser(TypeOfUser.registeredCitizen);
                 registeredCitizen.setIdNumber(registrationCitizen.getDni());
+                fmt = new Formatter();
                 int citizenCode = registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
+                registeredCitizen.setUsername("ci" + fmt.format("%04d" , citizenCode));
 
                 fmt = new Formatter();
                 // Envia correo electrónico
@@ -149,7 +152,8 @@ public class HomeController {
                 Email emailObjeto = enviarMail(destinatario, asunto, cuerpo);
                 emailDao.addEmail(emailObjeto);
 
-                return "redirect:/inicio/login";
+                session.setAttribute("registeredCitizen", registeredCitizen);
+                return "redirect:/inicio/welcome";
 
             }else {
                 //Usuario ya registrado en el sistema
@@ -351,4 +355,16 @@ public class HomeController {
         }
         return email;
     }
+
+    @RequestMapping(value="inicio/welcome")
+    public String welcome(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null){
+            model.addAttribute("userLogin", new UserLogin() {});
+            return "redirect:/inicio/login";
+        }
+        RegisteredCitizen registeredCitizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("username", registeredCitizen.getName());
+        return "inicio/welcome";
+    }
+
 }

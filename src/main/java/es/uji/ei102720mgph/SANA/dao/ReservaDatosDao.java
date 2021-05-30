@@ -2,6 +2,7 @@ package es.uji.ei102720mgph.SANA.dao;
 
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.ReservaDatos;
+import es.uji.ei102720mgph.SANA.model.ReservaDatosMunicipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -76,33 +77,35 @@ public class ReservaDatosDao {
         jdbcTemplate.update("UPDATE Reservation SET state = ?, cancellationreason = ? WHERE reservationNumber =?", ReservationState.cancelledMunicipalManager.name(), mot, Integer.parseInt(id));
     }
 
-    public List<ReservaDatos> getReservasNaturalArea(String naturalArea) {
+    public List<ReservaDatosMunicipal> getReservasNaturalArea(String naturalArea) {
         try {
-            return jdbcTemplate.query("SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea, slot.beginningtime, slot.endtime " +
+            return jdbcTemplate.query("SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea, slot.beginningtime, slot.endtime, cit.name, cit.surname " +
                             "FROM reservation AS res " +
                             "JOIN reservationofzone AS ro ON res.reservationnumber = ro.reservationnumber " +
                             "JOIN zone AS zone ON ro.zoneid = zone.id " +
                             "JOIN timeslot AS slot ON res.timeslotid = slot.id " +
+                            "JOIN sanauser AS cit ON res.citizenemail = cit.email " +
                             "WHERE zone.naturalarea = ? AND (res.state = 'created' OR res.state = 'inUse')",
-                    new ReservaDatosRowMapper(), naturalArea);
+                    new ReservaDatosMunicipalRowMapper(), naturalArea);
         }
         catch(EmptyResultDataAccessException e) {
-            return new ArrayList<ReservaDatos>();
+            return new ArrayList<ReservaDatosMunicipal>();
         }
     }
 
-    public List<ReservaDatos> getReservasTodasNaturalArea(String naturalArea) {
+    public List<ReservaDatosMunicipal> getReservasTodasNaturalArea(String naturalArea) {
         try {
-            return jdbcTemplate.query("SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea, slot.beginningtime, slot.endtime " +
+            return jdbcTemplate.query("SELECT res.reservationnumber, res.reservationdate, res.numberofpeople, res.state, res.qrcode, zone.zonenumber, zone.letter, zone.naturalarea, slot.beginningtime, slot.endtime, cit.name, cit.surname " +
                             "FROM reservation AS res " +
                             "JOIN reservationofzone AS ro ON res.reservationnumber = ro.reservationnumber " +
                             "JOIN zone AS zone ON ro.zoneid = zone.id " +
                             "JOIN timeslot AS slot ON res.timeslotid = slot.id " +
+                            "JOIN sanauser AS cit ON res.citizenemail = cit.email " +
                             "WHERE zone.naturalarea = ?",
-                    new ReservaDatosRowMapper(), naturalArea);
+                    new ReservaDatosMunicipalRowMapper(), naturalArea);
         }
         catch(EmptyResultDataAccessException e) {
-            return new ArrayList<ReservaDatos>();
+            return new ArrayList<ReservaDatosMunicipal>();
         }
     }
 }

@@ -91,8 +91,8 @@ public class InicioRegistradoController {
             return "redirect:/inicio/login";
         }
         String mot = motivo.getMot();
-        mot = mot.substring(0, mot.length()-1);
         reservaDatosDao.cancelaReservaPorCiudadano(id, mot);
+
 
         // Actualizar QR con la cancelacion
         Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
@@ -108,6 +108,8 @@ public class InicioRegistradoController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
 
         return "redirect:/inicio/registrado/reservas";
     }

@@ -681,7 +681,6 @@ public class NaturalAreaController {
             return "redirect:/inicio/login";
         }
         String mot = motivo.getMot();
-        mot = mot.substring(0, mot.length()-1);
         reservaDatosDao.cancelaReservaPorMunicipal(id, mot);
 
         return "redirect:/naturalArea/getReservations/" + naturalArea;
@@ -695,7 +694,7 @@ public class NaturalAreaController {
             return "redirect:/inicio/login";
         }
 
-        List<ReservaDatos> listaReservas = reservaDatosDao.getReservasTodasNaturalArea(naturalArea);
+        List<ReservaDatosMunicipal> listaReservas = reservaDatosDao.getReservasTodasNaturalArea(naturalArea);
         model.addAttribute("reservas", listaReservas);
         model.addAttribute("naturalArea", naturalArea);
         return "naturalArea/reservasTodas";

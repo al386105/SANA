@@ -91,8 +91,21 @@ public class NaturalAreaController {
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
-        model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
-        model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
+
+        // Mostrar sólo los servicios fijos operativos (fecha de inicio anterior a fecha actual)
+        List<ServiceDate> serviceDates = serviceDateDao.getServiceDatesOfNaturalAreaOperativos(naturalArea);
+        serviceDates.removeIf(service -> service.getBeginningDate().isAfter(LocalDate.now()));
+
+        // No nos interesa la fecha de inicio, asiq le pasamos directamente el servicio para la tabla y punto
+        List<Service> servicios = new ArrayList<>();
+        for(ServiceDate serviceDate : serviceDates)
+            servicios.add(serviceDao.getService(serviceDate.getService()));
+        model.addAttribute("serviceDates", servicios);
+
+        // Mostrar sólo los servicios temporales operativos (fecha actual entre inicio y fin)
+        List<TemporalService> temporalServices = temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea);
+        temporalServices.removeIf(service -> service.getBeginningDate().isAfter(LocalDate.now()) || service.getEndDate().isBefore(LocalDate.now()));
+        model.addAttribute("temporalServices", temporalServices);
 
         if(session.getAttribute("section") != null) {
             String section = (String) session.getAttribute("section");
@@ -114,7 +127,7 @@ public class NaturalAreaController {
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
-        model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
+        serviceDateLista(model, naturalArea);
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
         model.addAttribute("serviceDatesFaltan", serviceDao.getServiceDatesNotInNaturalArea(naturalArea));
@@ -140,8 +153,8 @@ public class NaturalAreaController {
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
-        model.addAttribute("serviceDates", serviceDateDao.getServiceDatesOfNaturalArea(naturalArea));
         model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
+        serviceDateLista(model, naturalArea);
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
 
         if(session.getAttribute("section") != null) {
@@ -153,6 +166,23 @@ public class NaturalAreaController {
         return "/naturalArea/getEnvironmental";
     }
 
+    private void serviceDateLista(Model model, String naturalArea) {
+        //transformar los serviceDates a ServiceDateList para que tengan más atributos (los de las tablas)
+        List<ServiceDate> serviceDates = serviceDateDao.getServiceDatesOfNaturalAreaOperativos(naturalArea);
+        List<ServiceDateList> services = new ArrayList<>();
+        for(ServiceDate serviceDate : serviceDates) {
+            Service servicio = serviceDao.getService(serviceDate.getService());
+            ServiceDateList s = new ServiceDateList();
+            s.setNameOfService(serviceDate.getService());
+            s.setBeginningDate(serviceDate.getBeginningDate());
+            s.setDescription(servicio.getDescription());
+            s.setHiringPlace(servicio.getHiringPlace());
+            s.setId(serviceDate.getId());
+            services.add(s);
+        }
+        model.addAttribute("serviceDates", services);
+    }
+    
     // metodo para anyadir al modelo los datos del selector de municipio
     @ModelAttribute("municipalityList")
     public List<String> municipalityList() {

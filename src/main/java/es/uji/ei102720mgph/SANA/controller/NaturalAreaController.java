@@ -199,31 +199,7 @@ public class NaturalAreaController {
         return "/naturalArea/getForManagersZones";
     }
 
-    @RequestMapping(value="/getForManagers/{naturalArea}")
-    public String getNaturalAreaManagers(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/getForManagers/" + naturalArea);
-            return "redirect:/inicio/login";
-        }
-        model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
-        model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
-        model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
-        model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
-        serviceDateLista(model, naturalArea);
-        model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
-        model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
-        model.addAttribute("serviceDatesFaltan", serviceDao.getServiceDatesNotInNaturalArea(naturalArea));
-        model.addAttribute("service", new Service());
 
-        if(session.getAttribute("section") != null) {
-            String section = (String) session.getAttribute("section");
-            // Eliminar atribut de la sessio
-            session.removeAttribute("section");
-            return "redirect:/naturalArea/getForManagers/" + naturalArea + section;
-        }
-        return "/naturalArea/getForManagers";
-    }
 
     @RequestMapping(value="/getForEnvironmental/{naturalArea}")
     public String getNaturalAreaEnvironmental(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){

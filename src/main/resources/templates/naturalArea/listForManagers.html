@@ -100,7 +100,7 @@
 
                                 <a th:href="@{getForManagersTimeSlots/{naturalArea}(naturalArea=${naturalArea.name})}">
                                     <button style="float: right; margin-left: 20px" th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}"
-                                            type="button" class="btn btn-primary">Franjas horarias
+                                            type="button" class="btn btn-primary">Horario
                                     </button>
                                 </a>
 
@@ -132,12 +132,13 @@
                 </ul>
             </nav>
             <a href="/">
-                <button type="button" class="btn btn-primary"><img src="/assets/img/home.png" class="fotoBoton"
+                <button type="button" class="btn btn-primary"><img src="/assets/img/home.png" style="margin-right: 10px" class="fotoBoton"
                                                                    alt="Menú">Volver al menú
                 </button>
             </a>
         </div>
         <br><br>
+    </div>
 </section>
 
 <div th:replace="fragments/footer"></div>

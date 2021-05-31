@@ -79,6 +79,8 @@ public class ReservationController {
             session.setAttribute("nextUrl", "/reservation/add/" + naturalArea);
             return "redirect:/inicio/login";
         }
+        if(session.getAttribute("nextUrl") != null)
+            session.removeAttribute("nextUrl");
         model.addAttribute("reservation", new NuevaReserva());
         model.addAttribute("naturalArea", naturalArea);
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalAreaActuales(naturalArea));
@@ -218,11 +220,4 @@ public class ReservationController {
 
         return "redirect:/reservation/listManagers/";
     }
-
-    // Operació esborrar
-    /*@RequestMapping(value="/delete/{reservationNumber}")
-    public String processDelete(@PathVariable int reservationNumber) {
-        reservationDao.deleteReservation(reservationNumber);
-        return "redirect:../list";
-    }*/
 }

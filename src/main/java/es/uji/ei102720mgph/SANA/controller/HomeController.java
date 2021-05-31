@@ -90,7 +90,6 @@ public class HomeController {
     @RequestMapping("inicio/login")
     public String redirigirLogin(Model model, HttpSession session) {
         model.addAttribute("userLogin", new UserLogin() {});
-        session.removeAttribute("nextUrl");
         return "inicio/login";
     }
 

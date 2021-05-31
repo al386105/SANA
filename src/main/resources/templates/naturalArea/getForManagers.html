@@ -101,10 +101,12 @@
 
     <br>
 
-    <!-- Botones -->
-    <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
-        <button type="button" class="btn btn-warning edit">Editar datos</button> </a>
-    </td>
+    <!-- Botón -->
+    <div style="text-align:center">
+        <td><a th:href="@{/naturalArea/update/{naturalArea}(naturalArea=${naturalArea.name})}">
+            <button type="button" class="btn btn-warning edit">Editar datos</button> </a>
+        </td>
+    </div><br><br>
     
 
     <!-- SECCION DE IMAGENES DEL AREA NATURAL -->
@@ -159,7 +161,7 @@
     <section id="comments">
         <hr class="lineaVerde">
         <div class="container text-center">
-            <h3>Comentarios</h3>
+            <h3>Comentarios <img src="/assets/img/comentari.png" class="fotoTitulo" alt="Icono comentario"></h3>
             <br/>
             <div th:if="${#lists.isEmpty(comments)}">
                 <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
@@ -202,9 +204,6 @@
             <br/>
         </div>
     </section>
-
-    <h4> Ponemos por aqui botones para gestión de servicios, zonas, etc ?? </h4>
-
     <a href="/naturalArea/listForManagers"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
 </div>
 </section>

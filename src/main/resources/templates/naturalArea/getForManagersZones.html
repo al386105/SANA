@@ -12,7 +12,6 @@
     <!-- solo se pueden gestionar las zonas y franjas horarias de los espacios restringidos -->
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
         <section id="zones">
-            <hr class="lineaVerde">
             <!-- SECCION DE ZONAS DEL AREA NATURAL -->
             <h3>Lista de Zonas</h3>
             <div th:if="${#lists.isEmpty(zones)}">

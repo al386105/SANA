@@ -117,17 +117,17 @@
         <div class="container text-center">
             <div class="row">
                 <div class="col">
-                    <h3>Imágenes <img src="/assets/img/photo.png" class="fotoBoton" alt="Menú"></h3>
+                    <h3>Imágenes <img src="/assets/img/photo.png" class="fotoTitulo" alt="Icono imagen"></h3>
                 </div>
             </div>
-            <div class="row ">
-                <div class="col align-self-center">
+            <div class="row justify-content-center">
+                <div class="col-sm-8">
                     <div th:if="${#lists.isEmpty(pictures)}">
                         <p><b>¡Este área natural no tiene ninguna imagen publicada!</b></p>
                     </div>
                     <br>
                     <!-- Carousel de imagenes -->
-                    <div id="miCarrusel" class="carousel slide w-50" data-ride="carousel">
+                    <div id="miCarrusel" class="carousel slide" data-ride="carousel">
                         <!-- activar la imagen 0 -->
                         <ol  class="carousel-indicators">
                             <li  th:each="picture,iterstat: ${pictures}"
@@ -164,7 +164,7 @@
         <section id="comments">
             <hr class="lineaVerde">
             <div class="container text-center">
-                <h3>Comentarios</h3>
+                <h3>Comentarios <img src="/assets/img/comentari.png" class="fotoTitulo" alt="Icono comentario"></h3>
                 <br/>
                 <div th:if="${#lists.isEmpty(comments)}">
                     <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
@@ -263,7 +263,7 @@
 
                     <div class="row"><br/></div>
 
-                    <div class="row text-left" th:each="temporalService: ${#lists.sort(temporalServices)}">
+                    <div class="row text-left" style="height:50px" th:each="temporalService: ${#lists.sort(temporalServices)}">
                         <div class="col"><i th:text="${temporalService.service}"></i></div>
                         <div class="col" th:text="${temporalService.beginningTime}"></div>
                         <div class="col" th:text="${temporalService.endTime}"></div>
@@ -280,7 +280,12 @@
         </section>
 
         <br><br>
-        <a href="/naturalArea/pagedlist"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
+        <div class="row justify-content-center">
+            <div class="col-md-auto" >
+                <a href="/naturalArea/pagedlist">
+                    <button type="button" class="btn btn-primary">Atrás</button></a><br><br>
+            </div>
+        </div><br>
     </div>
 </section>
 

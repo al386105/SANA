@@ -11,7 +11,6 @@
 
     <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
     <section id="serviceDates">
-        <hr class="lineaVerde">
         <h3>Servicios fijos</h3>
         <div th:if="${#lists.isEmpty(serviceDates)}">
             <p><b>¡Todavía no ha asignado ningún servicio fijo a este área natural!</b></p>
@@ -127,7 +126,7 @@
                 </div>
             </div>
         </form>
-    </div>
+    </div><br>
 
 
     <a href="/naturalArea/listForManagers"><button type="button" class="btn btn-primary">Volver</button></a><br><br>

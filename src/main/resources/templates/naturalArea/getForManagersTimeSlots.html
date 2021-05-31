@@ -12,7 +12,6 @@
     <div th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}">
     <!-- SECCION DE FRANJAS HORARIAS DEL AREA NATURAL -->
         <section id="timeSlots">
-            <hr class="lineaVerde">
             <h3>Franjas horarias</h3>
             <div th:if="${#lists.isEmpty(timeSlots)}">
                 <p><b>¡Todavía no ha asignado ninguna franja horaria a este área natural!</b></p>
@@ -45,7 +44,7 @@
             </table>
             <td><a th:href="@{/timeSlot/add/{naturalArea}(naturalArea=${naturalArea.name})}">
                 <button type="button" class="btn btn-success okey">Asignar franja horaria</button>
-            </a></td><br><br><br>
+            </a></td><br>
         </section>
     </div>
 

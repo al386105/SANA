@@ -235,7 +235,11 @@ h5.colorMarron {
 }
 
 .fotoBoton {
-    height:20px;
+    height:22px;
+}
+
+.fotoTitulo {
+    height:30px;
 }
 
 .form-control-corto {

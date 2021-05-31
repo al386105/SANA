@@ -64,18 +64,18 @@
     <!-- dependiendo del usuario que sea, querrá volver a un sitio o a otro -->
     <div th:switch="${typeUser}">
         <td th:case="'manager'">
-            <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
-                <button type="submit" class="btn btn-primary">Volver al área natural</button>
+            <a th:href="@{/naturalArea/getForManagersServices/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
+                <button type="submit" class="btn btn-primary">Volver</button>
             </a>
         </td>
         <td th:case="'environmental'">
-            <a th:href="@{/naturalArea/getEnvironmental/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
-                <button type="submit" class="btn btn-primary">Volver al área natural</button>
+            <a th:href="@{/naturalArea/getForEnvironmental/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
+                <button type="submit" class="btn btn-primary">Volver</button>
             </a>
         </td>
         <td th:case="*">
             <a th:href="@{/naturalArea/get/{naturalAreaName}(naturalAreaName=${temporalService.naturalArea})}">
-                <button type="submit" class="btn btn-primary">Volver al área natural</button>
+                <button type="submit" class="btn btn-primary">Atrás</button>
             </a>
         </td>
     </div>

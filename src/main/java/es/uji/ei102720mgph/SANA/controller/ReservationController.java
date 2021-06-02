@@ -99,10 +99,6 @@ public class ReservationController {
         model.addAttribute("naturalArea", naturalArea);
         if (reservation.getReservationDate().isEqual(LocalDate.now())) {
             TimeSlot timeSlot = timeSlotDao.getTimeSlot(reservation.getTimeSlotId());
-            /*System.out.println(timeSlot.getBeginningTime());
-            System.out.println(timeSlot.getBeginningTime().minusHours(1));
-            System.out.println(LocalTime.now());
-            System.out.println();*/
             if (timeSlot.getBeginningTime().minusHours(1).isAfter(LocalTime.now())) {
                 model.addAttribute("puedeReservar", true);
             } else {

@@ -210,8 +210,6 @@ public class NaturalAreaController {
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
         model.addAttribute("pictures", pictureDao.getPicturesOfNaturalArea(naturalArea));
-        model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
-        serviceDateLista(model, naturalArea);
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
 
         if(session.getAttribute("section") != null) {
@@ -221,6 +219,25 @@ public class NaturalAreaController {
             return "redirect:/naturalArea/getForEnvironmental/" + naturalArea + section;
         }
         return "/naturalArea/getForEnvironmental";
+    }
+
+    @RequestMapping(value="/getServices/{naturalArea}")
+    public String getServices(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/getServices/" + naturalArea);
+            return "redirect:/inicio/login";
+        }
+        model.addAttribute("naturalArea", naturalArea);
+        model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
+        serviceDateLista(model, naturalArea);
+        if(session.getAttribute("section") != null) {
+            String section = (String) session.getAttribute("section");
+            // Eliminar atribut de la sessio
+            session.removeAttribute("section");
+            return "redirect:/naturalArea/getServices/" + naturalArea + section;
+        }
+        return "/naturalArea/getServices";
     }
 
     private void serviceDateLista(Model model, String naturalArea) {

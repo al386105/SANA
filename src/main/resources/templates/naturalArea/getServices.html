@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!-- es para el carrusel de imágenes -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="fragments/headerEnvironmental"></div>
+
+<section id="perfil">
+    <div class="container">
+
+        <h2 class="text-uppercase text-center text-secondary mb-0"><span th:text="${naturalArea}"> </span></h2>
+        <br><hr class="barra-normal"><br><br><br>
+
+        <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
+        <div class="container text-center">
+            <h3>Servicios fijos</h3>
+            <br>
+            <div th:if="${#lists.isEmpty(serviceDates)}">
+                <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
+            </div>
+            <div th:unless="${#lists.isEmpty(serviceDates)}" class="container">
+
+                <div class="row text-left">
+                    <div class="col"><b>Servicio</b></div>
+                    <div class="col"><b>Descripción</b></div>
+                    <div class="col"><b>Lugar de contratación</b></div>
+                </div>
+                <div class="row">
+                    <br>
+                </div>
+                <div class="row text-left" th:each="serviceDate: ${#lists.sort(serviceDates)}">
+                    <div class="col"><i th:text="${serviceDate.nameOfService}"></i></div>
+                    <div class="col"><p th:text="${serviceDate.description}"></p></div>
+                    <div class="col"><p th:text="${serviceDate.hiringPlace}"></p></div>
+                </div>
+            </div>
+        </div><br><br>
+
+        <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
+        <section id="temporalServices">
+            <hr class="lineaVerde">
+            <div class="container text-center">
+                <h3>Servicios temporales</h3>
+                <br>
+                <div th:if="${#lists.isEmpty(temporalServices)}">
+                    <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
+                </div>
+                <div th:unless="${#lists.isEmpty(temporalServices)}" class="container">
+                    <div class="row text-left">
+                        <div class="col"><b>Servicio</b></div>
+                        <div class="col"><b>Hora de inicio</b></div>
+                        <div class="col"><b>Hora de fin</b></div>
+                        <div class="col"><b>Fecha de inicio</b></div>
+                        <div class="col"><b>Fecha de fin</b></div>
+                        <div class="col"></div>
+                    </div>
+
+                    <div class="row"><br/></div>
+
+                    <div class="row text-left" style="height:50px" th:each="temporalService: ${#lists.sort(temporalServices)}">
+                        <div class="col"><i th:text="${temporalService.service}"></i></div>
+                        <div class="col" th:text="${temporalService.beginningTime}"></div>
+                        <div class="col" th:text="${temporalService.endTime}"></div>
+                        <div class="col" th:text="${#temporals.format(temporalService.beginningDate,'dd/MM/yyyy')}"></div>
+                        <div class="col" th:text="${#temporals.format(temporalService.endDate,'dd/MM/yyyy')}"></div>
+                        <div class="col">
+                            <a th:href="@{/temporalService/get/{id}(id=${temporalService.id})}">
+                                <button type="button" class="btn btn-primary">Más información</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <br><br>
+        <a href="/naturalArea/listForEnvironmental"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
+    </div>
+</section>
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>
+

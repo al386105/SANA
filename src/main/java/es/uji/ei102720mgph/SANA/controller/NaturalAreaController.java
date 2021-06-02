@@ -590,7 +590,6 @@ public class NaturalAreaController {
         return "redirect:/naturalArea/getForManagers/" + naturalAreaForm.getName();
     }
 
-
     // Vista de paneles de información para ciudadanos registrados o no registrados
     @RequestMapping(value="/getInfo")
     public String getInfoPaneles(Model model, HttpSession session){
@@ -601,7 +600,6 @@ public class NaturalAreaController {
                 occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
         return "naturalArea/getInfo";
     }
-
 
     // Historico de ocupacion de áreas naturales para el gestor municipal
     @RequestMapping(value="/occupancy", method=RequestMethod.GET)
@@ -686,19 +684,6 @@ public class NaturalAreaController {
         model.addAttribute("motivo", new MotivoCancelancion());
         model.addAttribute("naturalArea", naturalArea);
         return "naturalArea/reservas";
-    }
-
-    @RequestMapping("/cancelarReservaMunicipal/{naturalArea}/{id}")
-    public String cancelarReserva(@ModelAttribute("motivo") MotivoCancelancion motivo, @PathVariable String naturalArea, @PathVariable String id, Model model, HttpSession session) {
-        if (session.getAttribute("municipalManager") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/getReservations/" + naturalArea);
-            return "redirect:/inicio/login";
-        }
-        String mot = motivo.getMot();
-        reservaDatosDao.cancelaReservaPorMunicipal(id, mot);
-
-        return "redirect:/naturalArea/getReservations/" + naturalArea;
     }
 
     @RequestMapping(value="/reservasTodas/{naturalArea}")

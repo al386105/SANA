@@ -10,10 +10,8 @@ public class ReservationSvc implements ReservationService {
     @Autowired
     ReservationDao reservationDao;
 
-
     @Override
     public void addReservation(Reservation reservation) {
-
         String nombreImagenQR = reservation.getQRcode();
         reservation.setQRcode("assets/img/qrCodes/" + nombreImagenQR);
         reservationDao.addReservation(reservation); //usem el dao per a inserir el reservation

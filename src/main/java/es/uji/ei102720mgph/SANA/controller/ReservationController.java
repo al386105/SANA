@@ -1,12 +1,7 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
-import es.uji.ei102720mgph.SANA.dao.ReservationDao;
-import es.uji.ei102720mgph.SANA.dao.TimeSlotDao;
-import es.uji.ei102720mgph.SANA.dao.ZoneDao;
-import es.uji.ei102720mgph.SANA.enums.ReservationState;
+import es.uji.ei102720mgph.SANA.dao.*;
 import es.uji.ei102720mgph.SANA.model.*;
-import es.uji.ei102720mgph.SANA.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -35,9 +30,10 @@ public class ReservationController {
 
     private ReservationDao reservationDao;
     private NaturalAreaDao naturalAreaDao;
-    private ReservationService reservationService;
+    private ReservaDatosDao reservaDatosDao;
     private TimeSlotDao timeSlotDao;
     private ZoneDao zoneDao;
+    private EmailDao emailDao;
 
     @Autowired
     public void setReservationDao(ReservationDao reservationDao) {
@@ -55,8 +51,8 @@ public class ReservationController {
     }
 
     @Autowired
-    public void setReservationService(ReservationService reservationService){
-        this.reservationService = reservationService;
+    public void setReservaDatosDao(ReservaDatosDao reservaDatosDao){
+        this.reservaDatosDao = reservaDatosDao;
     }
 
     @Autowired
@@ -64,12 +60,11 @@ public class ReservationController {
         this.timeSlotDao = timeSlotDao;
     }
 
-    // Operació llistar
-    @RequestMapping("/listManagers")
-    public String listManagersReservations(Model model) {
-        model.addAttribute("reservations", reservationDao.getReservations());
-        return "reservation/listManagers";
+    @Autowired
+    public void setEmailDao(EmailDao emailDao) {
+        this.emailDao = emailDao;
     }
+
 
     // Operació crear
     @RequestMapping(value="/add/{naturalArea}")
@@ -85,8 +80,7 @@ public class ReservationController {
         model.addAttribute("naturalArea", naturalArea);
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalAreaActuales(naturalArea));
         LocalDate[] fechas = new LocalDate[3];
-        fechas[0] = LocalDate.now(); //PARA ESE MISMO DIA SE PUEDE RESERVAR ?? TODO
-        // Sip, hasta 1 hora antes del inicio de la franja horaria
+        fechas[0] = LocalDate.now();
         fechas[1] = LocalDate.now().plusDays(1);
         fechas[2] = LocalDate.now().plusDays(2);
         model.addAttribute("fechas", fechas);
@@ -137,7 +131,7 @@ public class ReservationController {
 
             int numRes = reservationDao.addReservationPocosValores(reservation);
             reservationDao.addReservationOfZone(numRes, reservation.getZoneid());
-            String naturalArea = naturalAreaDao.getNaturalAreaOfZone(reservation.getZoneid()).getName(); //TODO dara problemas
+            String naturalArea = naturalAreaDao.getNaturalAreaOfZone(partes[0]).getName();
             String timeSlotId = reservation.getTimeSlotId();
             TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
 
@@ -147,7 +141,6 @@ public class ReservationController {
             File f = new File("qr" + fmt.format("%07d", numRes) + ".png");
             String text = "Reserva por " + reservation.getCitizenEmail() + " en " + naturalArea + ", de fecha " + reservation.getReservationDate()
                     + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
-
             try {
                 qr.generateQR(f, text, 300, 300);
                 byte[] bytes = Files.readAllBytes(f.toPath());
@@ -156,64 +149,129 @@ public class ReservationController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            // Enviar mail con la reserva
+            String destinatario = reservation.getCitizenEmail();
+            String asunto = "Reserva completada";
+            String cuerpo = "Reserva realizada correctamente el día " + reservation.getReservationDate() +
+            " para " + reservation.getNumberOfPeople()  + " personas. \n\nUn cordial saludo del equipo de SANA.";
+            Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
+            emailDao.addEmail(email);
         }
-        return "redirect:/inicio/registrado/reservas"; //redirigim a la lista per a veure el reservation afegit, post/redirect/get
+        return "redirect:/inicio/registrado/reservas"; //redirigim a la lista per a veure el reservation afegit
     }
 
-    // todo SI ACTUALIZAMOS, GENERAR DE NUEVO EL QR PQ SU INFO CAMBIA
-    // Operació actualitzar
-    @RequestMapping(value="/update/{reservationNumber}", method = RequestMethod.GET)
-    public String editReservation(Model model, @PathVariable int reservationNumber) {
-        model.addAttribute("reservation", reservationDao.getReservation(reservationNumber));
-        return "reservation/update";
+
+    @RequestMapping("/cancelarReserva/{id}")
+    public String cancelarReserva(@ModelAttribute("motivo") MotivoCancelancion motivo, @PathVariable String id, Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicio/registrado/reservas");
+            return "redirect:/inicio/login";
+        }
+        String mot = motivo.getMot();
+        reservaDatosDao.cancelaReservaPorCiudadano(id, mot);
+
+        // Actualizar QR con la cancelacion
+        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
+        Formatter fmt = new Formatter();
+        QRCode qr = new QRCode();
+        File f = new File("qr" + fmt.format("%07d", Integer.parseInt(id)) + ".png");
+        String text = "Reserva cancelada por " + reservation.getCitizenEmail() + " de fecha " + reservation.getReservationDate() + ".";
+        try {
+            qr.generateQR(f, text, 300, 300);
+            byte[] bytes = Files.readAllBytes(f.toPath());
+            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
+            Files.write(path, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Enviar mail con la cancelacion de la reserva
+        String destinatario = reservation.getCitizenEmail();
+        String asunto = "Reserva cancelada";
+        String cuerpo = "Ha cancelado su reserva correctamente del día " + reservation.getReservationDate() +
+                " para " + reservation.getNumberOfPeople()  + " personas. \n\nUn cordial saludo del equipo de SANA.";
+        Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
+        emailDao.addEmail(email);
+        return "redirect:/inicio/registrado/reservas";
     }
 
-    // Resposta de modificació d'objectes
-    @RequestMapping(value="/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("reservation") Reservation reservation,
-                                      BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "reservation/update";
-        reservationDao.updateReservation(reservation);
-        return "redirect:list";
+    //TODO
+    @RequestMapping("/editarReserva/{id}")
+    public String editarReserva(@ModelAttribute("personas") PersonasReserva personas, @PathVariable String id, Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/inicio/registrado/reservas");
+            return "redirect:/inicio/login";
+        }
+
+        int pers = personas.getNum();
+        System.out.println(pers);
+        //reservaDatosDao.cancelaReservaPorCiudadano(id, personas);
+
+        // Actualizar QR con los nuevos datos de la reserva
+        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
+        String timeSlotId = reservation.getTimeSlotId();
+        TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
+        Formatter fmt = new Formatter();
+        QRCode qr = new QRCode();
+        File f = new File("qr" + fmt.format("%07d", Integer.parseInt(id)) + ".png");
+        String text = "Reserva por " + reservation.getCitizenEmail() + ", de fecha " + reservation.getReservationDate()
+                + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
+        try {
+            qr.generateQR(f, text, 300, 300);
+            byte[] bytes = Files.readAllBytes(f.toPath());
+            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
+            Files.write(path, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Enviar mail con la modificacion de la reserva
+        String destinatario = reservation.getCitizenEmail();
+        String asunto = "Reserva actualizada";
+        String cuerpo = "Ha actualizado correctamente los datos de la reserva del día " + reservation.getReservationDate() +
+                " para " + reservation.getNumberOfPeople()  + " personas. \n\nUn cordial saludo del equipo de SANA.";
+        Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
+        emailDao.addEmail(email);
+        return "redirect:/inicio/registrado/reservas";
     }
 
-    // Operació actualitzar per municipal manager
-    @RequestMapping(value="/updateManagers/{reservationNumber}", method = RequestMethod.GET)
-    public String editReservationManagers(Model model, @PathVariable int reservationNumber) {
-        model.addAttribute("reservation", reservationDao.getReservation(reservationNumber));
-        return "reservation/updateManagers";
-    }
 
-    // Resposta de modificació d'objectes
-    @RequestMapping(value="/updateManagers", method = RequestMethod.POST)
-    public String processUpdateSubmitManagers(@ModelAttribute("reservation") Reservation reservation,
-                                              BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "reservation/update";
-        reservationDao.updateReservation(reservation);
-        return "redirect:/reservation/listManagers";
-    }
+    @RequestMapping("/cancelarReservaMunicipal/{naturalArea}/{id}")
+    public String cancelarReserva(@ModelAttribute("motivo") MotivoCancelancion motivo, @PathVariable String naturalArea, @PathVariable String id, Model model, HttpSession session) {
+        if (session.getAttribute("municipalManager") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/naturalArea/getReservations/" + naturalArea);
+            return "redirect:/inicio/login";
+        }
+        String mot = motivo.getMot();
+        reservaDatosDao.cancelaReservaPorMunicipal(id, mot);
 
-    // Operació cancel·lar pel municipal manager
-    @RequestMapping(value="/cancelManagers/{reservationNumber}")
-    public String processCancelManagers(@PathVariable int reservationNumber) {
-        Reservation reservation = reservationDao.getReservation(reservationNumber);
-        reservation.setState(ReservationState.cancelledMunicipalManager);
-        return "reservation/cancelManagers";
-    }
+        // Actualizar QR con la cancelacion
+        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
+        Formatter fmt = new Formatter();
+        QRCode qr = new QRCode();
+        File f = new File("qr" + fmt.format("%07d", Integer.parseInt(id)) + ".png");
+        String text = "Reserva cancelada por gestor municipal a " + reservation.getCitizenEmail() + " de fecha " + reservation.getReservationDate() + ".";
+        try {
+            qr.generateQR(f, text, 300, 300);
+            byte[] bytes = Files.readAllBytes(f.toPath());
+            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
+            Files.write(path, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    // Resposta de modificació d'objectes
-    @RequestMapping(value="/cancelManagers", method = RequestMethod.POST)
-    public String processCancelManagersSubmit(@ModelAttribute("reservation") Reservation reservation,
-                                      BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "reservation/update";
-        reservation.setCancellationDate(LocalDate.now());
-        reservationDao.updateReservation(reservation);
-
-        // GENERAR DE NUEVO QR (mirar lo que he puesto en un QR de cancelado por gestor municipal
-
-        return "redirect:/reservation/listManagers/";
+        // Enviar mail con la cancelacion de la reserva
+        String destinatario = reservation.getCitizenEmail();
+        String asunto = "Reserva cancelada";
+        String cuerpo = "Su reserva del día " + reservation.getReservationDate() +
+                " para " + reservation.getNumberOfPeople()  + " personas ha sido cancelada por el gestor municipal." +
+                "\n\nUn cordial saludo del equipo de SANA.";
+        Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
+        emailDao.addEmail(email);
+        return "redirect:/naturalArea/getReservations/" + naturalArea;
     }
 }

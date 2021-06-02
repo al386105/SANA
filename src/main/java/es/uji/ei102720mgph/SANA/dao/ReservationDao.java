@@ -74,11 +74,13 @@ public class ReservationDao {
 
     public void addReservationOfZone(int numRes, String zoneNumber) {
         boolean excepcion;
+        Formatter fmt;
         do {
             try {
+                fmt = new Formatter();
                 jdbcTemplate.update(
                         "INSERT INTO ReservationOfZone VALUES(?, ?, ?)",
-                        ReservationOfZone.getContador(), numRes, zoneNumber);
+                        "" + fmt.format("%06d", ReservationOfZone.getContador()), numRes, zoneNumber);
 
                 excepcion = false;
             } catch (DuplicateKeyException e) {

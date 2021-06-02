@@ -26,20 +26,8 @@ public class InicioRegistradoController {
     @Value("${upload.file.directory}")
     private String uploadDirectory;
 
-    private NaturalAreaDao naturalAreaDao;
-    private TimeSlotDao timeSlotDao;
     private ReservaDatosDao reservaDatosDao;
     private ReservationDao reservationDao;
-
-    @Autowired
-    public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){
-        this.naturalAreaDao = naturalAreaDao;
-    }
-
-    @Autowired
-    public void setTimeSlotDao(TimeSlotDao timeSlotDao){
-        this.timeSlotDao = timeSlotDao;
-    }
 
     @Autowired
     public void setReservationDao(ReservationDao reservationDao){
@@ -72,81 +60,15 @@ public class InicioRegistradoController {
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
-        for (int i = 0; i < listaReservas.size(); i++) {
-            Reservation res = reservationDao.getReservation(listaReservas.get(i).getReservationNumber());
+        for (ReservaDatos listaReserva : listaReservas) {
+            Reservation res = reservationDao.getReservation(listaReserva.getReservationNumber());
             int max = reservationDao.getMaximumCapacity(res.getReservationNumber());
-            model.addAttribute("maxPersonas" + listaReservas.get(i).getReservationNumber(), max);
+            model.addAttribute("maxPersonas" + listaReserva.getReservationNumber(), max);
         }
         model.addAttribute("motivo", new MotivoCancelancion());
         model.addAttribute("personas", new PersonasReserva());
         model.addAttribute("reservas", listaReservas);
         return "inicioRegistrado/reservas";
-    }
-
-    @RequestMapping("/cancelarReserva/{id}")
-    public String cancelarReserva(@ModelAttribute("motivo") MotivoCancelancion motivo, @PathVariable String id, Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicio/registrado/reservas");
-            return "redirect:/inicio/login";
-        }
-        String mot = motivo.getMot();
-        reservaDatosDao.cancelaReservaPorCiudadano(id, mot);
-
-
-        // Actualizar QR con la cancelacion
-        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
-        Formatter fmt = new Formatter();
-        QRCode qr = new QRCode();
-        File f = new File("qr" + fmt.format("%07d", id) + ".png");
-        String text = "Reserva cancelada por " + reservation.getCitizenEmail() + " de fecha " + reservation.getReservationDate() + ".";
-        try {
-            qr.generateQR(f, text, 300, 300);
-            byte[] bytes = Files.readAllBytes(f.toPath());
-            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
-            Files.write(path, bytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-
-        return "redirect:/inicio/registrado/reservas";
-    }
-
-    @RequestMapping("/editarReserva/{id}")
-    public String editarReserva(@ModelAttribute("personas") PersonasReserva personas, @PathVariable String id, Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicio/registrado/reservas");
-            return "redirect:/inicio/login";
-        }
-
-        int pers = personas.getNum();
-        System.out.println(pers);
-        //reservaDatosDao.cancelaReservaPorCiudadano(id, personas);
-
-
-        // Actualizar QR con los nuevos datos de la reserva
-        /*Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
-        String naturalArea = naturalAreaDao.getNaturalAreaOfZone(reservation.getZoneid()).getName(); // TODO da problemas con varias zonas
-        String timeSlotId = reservation.getTimeSlotId();
-        TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
-        Formatter fmt = new Formatter();
-        QRCode qr = new QRCode();
-        File f = new File("qr" + fmt.format("%07d", id) + ".png");
-        String text = "Reserva por " + reservation.getCitizenEmail() + " en " + naturalArea + ", de fecha " + reservation.getReservationDate()
-                + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
-        try {
-            qr.generateQR(f, text, 300, 300);
-            byte[] bytes = Files.readAllBytes(f.toPath());
-            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
-            Files.write(path, bytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-        return "redirect:/inicio/registrado/reservas";
     }
 
     @RequestMapping("/reservasTodas")

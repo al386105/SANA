@@ -58,7 +58,7 @@
                             <div class="modal-body">
                                 <p>Indique, si lo desea, el motivo de su cancelación:</p>
                             </div>
-                            <form action="#" th:action="@{cancelarReserva/} + ${reserva.reservationNumber}"
+                            <form action="#" th:action="@{/reservation/cancelarReserva/} + ${reserva.reservationNumber}"
                                   th:object="${motivo}">
                                 <input class="form-control motivo" id="motivo" th:field="${motivo.mot}"
                                        placeholder="Motivo">
@@ -84,10 +84,10 @@
                             <div class="modal-body">
                                 <p>Indique el número de personas que finalmente acudirán:</p>
                             </div>
-                            <form th:action="@{editarReserva/} + ${reserva.reservationNumber}" th:object="${personas}">
+                            <form th:action="@{/reservation/editarReserva/} + ${reserva.reservationNumber}" th:object="${personas}">
                                 <input type="number" min="1" th:max="${'maxPersonas' + reserva.reservationNumber}" class="form-control motivo" id="personas"
                                        th:field="${personas.num}">
-                                <!-- No funciona el numero max del input de arriba-->
+                                <!-- TODO No funciona el numero max del input de arriba-->
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Confirmar</button>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>

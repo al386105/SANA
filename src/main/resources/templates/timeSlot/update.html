@@ -21,8 +21,6 @@
             </div>
         </div>
 
-        <input required type="hidden" th:field ="*{id}"/>
-
         <div class="form-group row">
             <label class="control-label col-sm-2" for="beginningDate">Fecha de inicio:</label>
             <div class="col-sm-4">
@@ -63,10 +61,10 @@
 
     </form>
 
-    <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${timeSlot.naturalArea})}">
-        <button type="submit" class="btn btn-primary">Volver al área natural</button>
+    <a th:href="@{/timeSlot/getForManagersTimeSlots/{naturalAreaName}(naturalAreaName=${timeSlot.naturalArea})}">
+        <button type="submit" class="btn btn-primary">Volver</button>
     </a>
-    <br><br>
+    <br><br><br>
 </div>
 
 <div th:replace="fragments/footer"></div>

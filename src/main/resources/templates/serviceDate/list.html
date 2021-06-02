@@ -12,74 +12,69 @@
 
         <h2 class="text-uppercase text-center text-secondary mb-0">Servicios fijos</h2>
         <br><hr class="barra-normal"><br>
-
-        <!-- filtro buscador -->
-        <div class="box" style="padding-bottom: 20px; padding-top: 20px">
-            <form>
-                <div class="container">
-                    <div class="row">
-
-                        <div class="col">
-                            <h5><span th:text="${areaNatural}"></span></h5>
-                        </div>
-
-                        <div class="col-5">
-                            <div style="float: right;">
-                                <span class="icon"><i class="fa fa-search"></i></span>
-                                <input th:name="patron" style="border-radius: 25px; background-color: #e8e6e8" type="search" id="search" placeholder=" Buscar..." />
-                                <button style="border-radius: 25px;" type="submit" class="btn btn-primary">Buscar</button>
-                                <a th:href="@{/serviceDate/list}">
-                                    <button style="border-radius: 25px; text-color:white" type="submit" class="btn btn-secondary">Resetear</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+        <h4 style="text-align: center"><span th:text="${areaNatural}"></span></h4>
 
         <div th:if="${#lists.isEmpty(services)}">
-            ¡No hay todavía ningún servicio asignado!
+            <h4 style="text-align: center">Todavía no hay ningún servicio fijo asignado</h4>
+            <br>
+            <br>
         </div>
-        <table th:unless="${#lists.isEmpty(services)}" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Servicio</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Sitio de contratación</th>
-                <th scope="col">Fecha de inicio</th>
-                <th scope="col">Fecha de fin</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="service: ${#lists.sort(services)}">
-                <td th:text="${service.nameOfService}"></td>
-                <td th:text="${service.description}"></td>
-                <td th:text="${service.hiringPlace}"></td>
-                <td th:text="${#temporals.format(service.beginningDate,'dd/MM/yyyy')}"></td>
-                <td th:if="${service.endDate != null}">
-                    <span th:text="${#temporals.format(service.endDate,'dd/MM/yyyy')}"></span>
-                </td>
-                <td th:if="${service.endDate == null}">
-                    <span>Operativo</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+
+        <div th:unless="${#lists.isEmpty(services)}">
+            <!-- filtro buscador -->
+            <div class="box" style="padding-bottom: 20px; padding-top: 20px">
+                <form>
+                    <div style="float: right;">
+                        <span class="icon"><i class="fa fa-search"></i></span>
+                        <input th:name="patron" style="border-radius: 25px; background-color: #e8e6e8" type="search" id="search" placeholder=" Buscar..." />
+                        <button style="border-radius: 25px;" type="submit" class="btn btn-primary">Buscar</button>
+                        <a th:href="@{/serviceDate/list}">
+                            <button style="border-radius: 25px; text-color:white" type="submit" class="btn btn-secondary">Resetear</button>
+                        </a>
+                    </div><br><br>
+                </form>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Servicio</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Sitio de contratación</th>
+                    <th scope="col">Fecha de inicio</th>
+                    <th scope="col">Fecha de fin</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="service: ${#lists.sort(services)}">
+                    <td th:text="${service.nameOfService}"></td>
+                    <td th:text="${service.description}"></td>
+                    <td th:text="${service.hiringPlace}"></td>
+                    <td th:text="${#temporals.format(service.beginningDate,'dd/MM/yyyy')}"></td>
+                    <td th:if="${service.endDate != null}">
+                        <span th:text="${#temporals.format(service.endDate,'dd/MM/yyyy')}"></span>
+                    </td>
+                    <td th:if="${service.endDate == null}">
+                        <span>Operativo</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
         <div th:switch="${typeUser}">
             <td th:case="'environmental'">
-                <a th:href="@{/naturalArea/getEnvironmental/{naturalAreaName}(naturalAreaName=${areaNatural})}">
-                    <button type="submit" class="btn btn-primary">Volver al área natural</button>
+                <a th:href="@{/naturalArea/getForEnvironmentalServices/{naturalAreaName}(naturalAreaName=${areaNatural})}">
+                    <button type="submit" class="btn btn-primary">Volver</button>
                 </a>
             </td>
             <td th:case="manager">
-                <a th:href="@{/naturalArea/getManagers/{naturalAreaName}(naturalAreaName=${areaNatural})}">
-                    <button type="submit" class="btn btn-primary">Volver al área natural</button>
+                <a th:href="@{/service/getForManagersServices/{naturalAreaName}(naturalAreaName=${areaNatural})}">
+                    <button type="submit" class="btn btn-primary">Volver</button>
                 </a>
             </td>
         </div>
-        <br><br><br>
+        <br><br>
     </div>
 </section>
 

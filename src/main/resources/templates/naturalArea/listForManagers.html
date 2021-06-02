@@ -65,14 +65,10 @@
                                     </a>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
-
                 </form>
             </div>
-
 
             <div th:if="${#lists.isEmpty(naturalAreas)}">
                 <p><b>¡No ha añadido todavía ningún área natural de este tipo!</b></p>
@@ -90,21 +86,21 @@
                                     <button style="float: right; margin-left: 20px" type="button" class="btn btn-primary">Información</button>
                                 </a>
 
-                                <a th:href="@{getReservations/{naturalArea}(naturalArea=${naturalArea.name})}">
+                                <a th:href="@{/reservation/reservasArea/{naturalArea}(naturalArea=${naturalArea.name})}">
                                     <button style="float: right; margin-left: 20px" type="button" class="btn btn-primary">Reservas</button>
                                 </a>
 
-                                <a th:href="@{getForManagersServices/{naturalArea}(naturalArea=${naturalArea.name})}">
+                                <a th:href="@{/service/getForManagersServices/{naturalArea}(naturalArea=${naturalArea.name})}">
                                     <button style="float: right; margin-left: 20px" type="button" class="btn btn-primary">Servicios</button>
                                 </a>
 
-                                <a th:href="@{getForManagersTimeSlots/{naturalArea}(naturalArea=${naturalArea.name})}">
+                                <a th:href="@{/timeSlot/getForManagersTimeSlots/{naturalArea}(naturalArea=${naturalArea.name})}">
                                     <button style="float: right; margin-left: 20px" th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}"
                                             type="button" class="btn btn-primary">Horario
                                     </button>
                                 </a>
 
-                                <a th:href="@{getForManagersZones/{naturalArea}(naturalArea=${naturalArea.name})}">
+                                <a th:href="@{/zone/getForManagersZones/{naturalArea}(naturalArea=${naturalArea.name})}">
                                     <button style="float: right; margin-left: 20px" th:if="${#strings.equals(naturalArea.typeOfAccess.name(), 'restricted')}"
                                             type="button" class="btn btn-primary">Zonas
                                     </button>

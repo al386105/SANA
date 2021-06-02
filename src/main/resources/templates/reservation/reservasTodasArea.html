@@ -6,18 +6,19 @@
 
 <section id="reservas">
     <div class="container">
-        <h2 class="text-uppercase text-center text-secondary mb-0">Todas las reservas de <span
-                th:text="${naturalArea}"></span></h2>
+        <h2 class="text-uppercase text-center text-secondary mb-0">Todas las reservas</h2>
         <br>
         <hr class="barra-normal">
+        <h4 style="text-align: center"><i><span th:text="${naturalArea}"></span></i></h4>
         <br>
+
         <div th:if="${#lists.isEmpty(reservas)}">
             <h4 style="text-align: center"> No existen reservas antiguas </h4>
             <br>
         </div>
         <div th:unless="${#lists.isEmpty(reservas)}">
             <div>
-                <a th:href="${'/naturalArea/getReservations/' + naturalArea}"
+                <a th:href="${'/reservation/reservasArea/' + naturalArea}"
                    class="btn btn-primary">Atrás</a>
                 <br>
                 <br>
@@ -56,7 +57,7 @@
                 <br>
             </div>
         </div>
-        <a style="float: left" th:href="${'/naturalArea/getReservations/' + naturalArea}"
+        <a style="float: left" th:href="${'/reservation/reservasArea/' + naturalArea}"
            class="btn btn-primary">Volver</a>
         <br>
         <br>

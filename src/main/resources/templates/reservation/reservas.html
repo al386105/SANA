@@ -2,31 +2,24 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-<div th:replace="fragments/headerManager"></div>
+<div th:replace="fragments/headerRegistered"></div>
 
-<section id="reservas">
+<section id="perfil">
     <div class="container">
-        <h2 class="text-uppercase text-center text-secondary mb-0">Reservas activas en <span
-                th:text="${naturalArea}"></span></h2>
+        <h2 class="text-uppercase text-center text-secondary mb-0">Mis Reservas</h2>
         <br>
         <hr class="barra-normal">
         <br>
         <div th:if="${#lists.isEmpty(reservas)}">
-            <h4 style="text-align: center">No existe ninguna reserva activa para esta zona en estos momentos</h4>
-            <br>
-            <br>
+            <h4 style="text-align: center">¡No tiene pendiente ninguna reserva! Haga una en tan sólo dos minutos.</h4>
         </div>
         <div th:unless="${#lists.isEmpty(reservas)}">
             <div th:each="reserva: ${#lists.sort(reservas)}">
                 <div class="card-horizontal">
                     <div class="img-square-wrapper">
-                        <img style="height: 240px" class="" th:src="${'/' + reserva.QRcode + '.png'}"
-                             alt="Código QR de la reserva">
+                        <img style="height: 240px" class="" th:src="${'/' + reserva.QRcode + '.png'}" alt="Código QR de la reserva">
                     </div>
                     <div class="card-body">
-                        <h5 style="float: right" class="card-title text-muted" th:text="${reserva.surname}"></h5>
-                        <h5 style="float: right" class="card-title text-muted">&nbsp;</h5>
-                        <h5 style="float: right" class="card-title text-muted" th:text="${reserva.name}"></h5>
                         <h4 class="card-title" th:text="${reserva.naturalArea}"></h4>
                         <h6 class="card-subtitle mb-2 text-muted">
                             <span th:text="${#temporals.format(reserva.reservationDate,'dd/MM/yyyy')}"></span>
@@ -46,10 +39,12 @@
                         <button style="float: right" type="button" class="btn btn-primary" data-toggle="modal"
                                 th:data-target="${'#miModal' + reserva.reservationNumber}">Cancelar reserva
                         </button>
+                        <button style="float: right; margin-right: 10px" type="button" class="btn btn-secondary"
+                                data-toggle="modal" th:data-target="${'#miModal2' + reserva.reservationNumber}">Modificar reserva
+                        </button>
                     </div>
                 </div>
                 <br>
-
                 <!-- VENTANA EMERGENTE CANCELAR-->
                 <div class="modal" th:id="${'miModal' + reserva.reservationNumber}">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -63,8 +58,7 @@
                             <div class="modal-body">
                                 <p>Indique, si lo desea, el motivo de su cancelación:</p>
                             </div>
-                            <form action="#"
-                                  th:action="${'/reservation/cancelarReservaMunicipal/' + naturalArea + '/' + reserva.reservationNumber}"
+                            <form action="#" th:action="@{/reservation/cancelarReserva/} + ${reserva.reservationNumber}"
                                   th:object="${motivo}">
                                 <input class="form-control motivo" id="motivo" th:field="${motivo.mot}"
                                        placeholder="Motivo">
@@ -76,16 +70,37 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- VENTANA EMERGENTE EDITAR-->
+                <div class="modal" th:id="${'miModal2' + reserva.reservationNumber}">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Editar reserva</h5>
+                                <button style="font-size:x-large; color: #b86f52" type="button" class="close"
+                                        data-dismiss="modal" aria-label="Close">&times;
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Indique el número de personas que finalmente acudirán:</p>
+                            </div>
+                            <form th:action="@{/reservation/editarReserva/} + ${reserva.reservationNumber}" th:object="${personas}">
+                                <input type="number" min="1" th:max="${'maxPersonas' + reserva.reservationNumber}" class="form-control motivo" id="personas"
+                                       th:field="${personas.num}">
+                                <!-- TODO No funciona el numero max del input de arriba-->
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <br>
-        <div>
-            <a style="float: left" href="/naturalArea/listForManagers" class="btn btn-primary">Volver</a>
-            <a style="float: right" th:href="${'/naturalArea/reservasTodas/' + naturalArea}" class="btn btn-primary">Mostrar
-                historial de reservas</a>
-            <br>
-            <br>
-        </div>
+        <a style="align-content: center" href="/reservation/reservasTodas" class="btn btn-primary">Mostrar
+            historial de reservas</a>
 
     </div>
 </section>

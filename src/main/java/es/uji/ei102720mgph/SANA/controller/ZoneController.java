@@ -37,7 +37,7 @@ public class ZoneController {
         Zone zone = new Zone();
         zone.setNaturalArea(naturalArea);
         model.addAttribute("zone", zone);
-        session.setAttribute("section", "#zones");
+        model.addAttribute("naturalArea", naturalArea);
         return "zone/add";
     }
 
@@ -58,7 +58,7 @@ public class ZoneController {
             model.addAttribute("claveRepetida", "repetida");
             return "zone/add";
         }
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
+        return "redirect:/zone/getForManagersZones/" + naturalAreaName;
     }
 
     // Operació actualitzar
@@ -70,7 +70,6 @@ public class ZoneController {
             return "redirect:/inicio/login";
         }
         model.addAttribute("zone", zoneDao.getZone(id));
-        session.setAttribute("section", "#zones");
         return "zone/update";
     }
 
@@ -83,7 +82,7 @@ public class ZoneController {
         if (bindingResult.hasErrors())
             return "zone/update";
         zoneDao.updateZone(zone);
-        return "redirect:/naturalArea/getManagers/" + zone.getNaturalArea();
+        return "redirect:/zone/getForManagersZones/" + zone.getNaturalArea();
     }
 
     // Operacio de llistar totes les zones d'un area natural
@@ -91,6 +90,18 @@ public class ZoneController {
     public String listZonesOfNaturalArea(Model model, @PathVariable String naturalArea) {
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         return "zone/porNaturalArea";
+    }
+
+    @RequestMapping(value="/getForManagersZones/{naturalArea}")
+    public String getZonesForManagers(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/zone/getForManagersZones/" + naturalArea);
+            return "redirect:/inicio/login";
+        }
+        model.addAttribute("naturalArea", naturalArea);
+        model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
+        return "/zone/getForManagersZones";
     }
 }
 

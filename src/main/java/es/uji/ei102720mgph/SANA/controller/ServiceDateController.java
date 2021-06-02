@@ -49,7 +49,6 @@ public class ServiceDateController {
         List<String> namesServices = toUseServices.stream()
                 .map(Service::getNameOfService)
                 .collect(Collectors.toList());
-        session.setAttribute("section", "#serviceDates");
         model.addAttribute("serviceList", namesServices);
         model.addAttribute("serviceDate", serviceDate);
         return "serviceDate/add";
@@ -72,6 +71,7 @@ public class ServiceDateController {
                     .map(Service::getNameOfService)
                     .collect(Collectors.toList());
             model.addAttribute("serviceList", namesServices);
+            model.addAttribute("naturalArea", naturalAreaName);
             return "serviceDate/add"; //tornem al formulari per a que el corregisca
         }
 
@@ -88,7 +88,7 @@ public class ServiceDateController {
             model.addAttribute("serviceList", namesServices);
             return "serviceDate/add";
         }
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
+        return "redirect:/service/getForManagersServices/" + naturalAreaName;
     }
 
     // Operació actualitzar
@@ -99,7 +99,6 @@ public class ServiceDateController {
             session.setAttribute("nextUrl", "/serviceDate/update/" + id);
             return "redirect:/inicio/login";
         }
-        session.setAttribute("section", "#serviceDates");
         ServiceDate serviceDate = serviceDateDao.getServiceDate(id);
         // servicios fijos no asignados ya al área natural
         List<Service> toUseServices = serviceDao.getServiceDatesNotInNaturalArea(serviceDate.getNaturalArea());
@@ -129,16 +128,16 @@ public class ServiceDateController {
             return "serviceDate/update";
         }
         serviceDateDao.updateServiceDate(serviceDate);
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
+        return "redirect:/service/getForManagersServices/" + naturalAreaName;
     }
 
-    // información de un servicio dijo
+    // información de un servicio fijo
     @RequestMapping(value="/list/{naturalArea}")
     public String getServiceDateNaturalArea(Model model, @PathVariable String naturalArea, HttpSession session,
                                             @RequestParam(value="patron",required=false) String patron){
         if(session.getAttribute("municipalManager") ==  null && session.getAttribute("environmentalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/serviceDate/list");
+            session.setAttribute("nextUrl", "/serviceDate/list" + naturalArea);
             return "redirect:/inicio/login";
         }
         // Pasar qué tipo de usuario es para mostrar unos botones u otros en la misma vista
@@ -186,6 +185,6 @@ public class ServiceDateController {
         String naturalAreaName = serviceDate.getNaturalArea();
         serviceDateDao.updateServiceDate(serviceDate);
         session.setAttribute("section", "#serviceDates");
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
+        return "redirect:/service/getForManagersServices/" + naturalAreaName;
     }
 }

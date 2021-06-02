@@ -59,6 +59,7 @@ public class TemporalServiceController {
         temporalService.setNaturalArea(naturalArea);
         session.setAttribute("section", "#temporalServices");
         model.addAttribute("temporalService", temporalService);
+        model.addAttribute("naturalArea", naturalArea);
         return "temporalService/add";
     }
 
@@ -80,7 +81,7 @@ public class TemporalServiceController {
             model.addAttribute("selector", "noSeleccionado");
             return "temporalService/add";
         }
-        return "redirect:/naturalArea/getManagers/" + temporalService.getNaturalArea();
+        return "redirect:/service/getForManagersServices/" + temporalService.getNaturalArea();
     }
 
     // Operació actualitzar
@@ -140,7 +141,7 @@ public class TemporalServiceController {
 
         temporalServiceDao.updateTemporalService(temporalService);
         String naturalAreaName = temporalService.getNaturalArea();
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
+        return "redirect:/service/getForManagersServices/" + naturalAreaName;
     }
 
     // información de un servicio temporal

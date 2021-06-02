@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:replace="fragments/headerManager"></div>
+
+<section id="perfil">
+<div class="container">
+    <h2 class="text-uppercase text-center text-secondary mb-0"><span th:text="${naturalArea}"></span></h2>
+    <br><hr class="barra-normal"><br>
+
+    <!-- SECCION DE FRANJAS HORARIAS DEL AREA NATURAL -->
+    <div th:if="${#lists.isEmpty(timeSlots)}">
+        <h4 style="text-align: center">¡Todavía no ha añadido ninguna franja horaria a este área natural!</h4>
+        <br>
+        <br>
+    </div>
+    <div th:unless="${#lists.isEmpty(timeSlots)}">
+        <h3>Franjas horarias</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Núm. franja horaria</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha de fin</th>
+                <th scope="col">Hora de inicio</th>
+                <th scope="col">Hora de fin</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="timeSlot: ${#lists.sort(timeSlots)}">
+                <td scope="row" th:text="${timeSlot.id}"></td>
+                <td th:text="${#temporals.format(timeSlot.beginningDate,'dd/MM/yyyy')}"></td>
+                <td th:text="${#temporals.format(timeSlot.endDate,'dd/MM/yyyy')}"></td>
+                <td th:text="${timeSlot.beginningTime}"></td>
+                <td th:text="${timeSlot.endTime}"></td>
+                <td><a th:href="@{/timeSlot/update/{id}(id=${timeSlot.id})}">
+                    <button type="button" class="btn btn-warning edit">Edita</button>
+                </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <td><a th:href="@{/timeSlot/add/{naturalArea}(naturalArea=${naturalArea})}">
+        <button type="button" class="btn btn-success okey">Asignar franja horaria</button>
+    </a></td>
+
+    <a href="/naturalArea/listForManagers"><button type="button" class="btn btn-primary">Volver</button></a><br><br>
+
+</div>
+</section>
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

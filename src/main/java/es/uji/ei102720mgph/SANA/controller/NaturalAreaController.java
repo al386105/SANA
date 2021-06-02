@@ -14,10 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,18 +33,12 @@ public class NaturalAreaController {
     private ServiceDateDao serviceDateDao;
     private TemporalServiceDao temporalServiceDao;
     private ServiceDao serviceDao;
-    private ReservaDatosDao reservaDatosDao;
 
     private final int pageLength = 5;
 
     @Autowired
     public void setOccupationService(OccupationService occupationService){
         this.occupationService = occupationService;
-    }
-
-    @Autowired
-    public void setReservaDatosDao(ReservaDatosDao reservaDatosDao) {
-        this.reservaDatosDao = reservaDatosDao;
     }
 
     @Autowired
@@ -137,68 +127,6 @@ public class NaturalAreaController {
         return "/naturalArea/getForManagers";
     }
 
-    @RequestMapping(value="/getForManagersServices/{naturalArea}")
-    public String getServicesForManagers(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/getForManagersServices/" + naturalArea);
-            return "redirect:/inicio/login";
-        }
-        model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
-        serviceDateLista(model, naturalArea);
-        model.addAttribute("temporalServices", temporalServiceDao.getTemporalServicesOfNaturalArea(naturalArea));
-        model.addAttribute("serviceDatesFaltan", serviceDao.getServiceDatesNotInNaturalArea(naturalArea));
-        model.addAttribute("service", new Service());
-
-        if(session.getAttribute("section") != null) {
-            String section = (String) session.getAttribute("section");
-            // Eliminar atribut de la sessio
-            session.removeAttribute("section");
-            return "redirect:/naturalArea/getForManagersServices/" + naturalArea + section;
-        }
-        return "/naturalArea/getForManagersServices";
-    }
-
-    @RequestMapping(value="/getForManagersTimeSlots/{naturalArea}")
-    public String getTimeSlotsForManagers(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/getForManagersTimeSlots/" + naturalArea);
-            return "redirect:/inicio/login";
-        }
-        model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
-        serviceDateLista(model, naturalArea);
-        model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
-
-        if(session.getAttribute("section") != null) {
-            String section = (String) session.getAttribute("section");
-            // Eliminar atribut de la sessio
-            session.removeAttribute("section");
-            return "redirect:/naturalArea/getForManagersTimeSlots/" + naturalArea + section;
-        }
-        return "/naturalArea/getForManagersTimeSlots";
-    }
-
-    @RequestMapping(value="/getForManagersZones/{naturalArea}")
-    public String getZonesForManagers(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/getForManagersZones/" + naturalArea);
-            return "redirect:/inicio/login";
-        }
-        model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
-        model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
-        serviceDateLista(model, naturalArea);
-
-        if(session.getAttribute("section") != null) {
-            String section = (String) session.getAttribute("section");
-            // Eliminar atribut de la sessio
-            session.removeAttribute("section");
-            return "redirect:/naturalArea/getForManagersZones/" + naturalArea + section;
-        }
-        return "/naturalArea/getForManagersZones";
-    }
-
     @RequestMapping(value="/getForEnvironmental/{naturalArea}")
     public String getNaturalAreaEnvironmental(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
         if(session.getAttribute("environmentalManager") ==  null) {
@@ -221,11 +149,11 @@ public class NaturalAreaController {
         return "/naturalArea/getForEnvironmental";
     }
 
-    @RequestMapping(value="/getServices/{naturalArea}")
-    public String getServices(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
+    @RequestMapping(value="/getForEnvironmentalServices/{naturalArea}")
+    public String getForEnvironmentalServices(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
         if(session.getAttribute("environmentalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/getServices/" + naturalArea);
+            session.setAttribute("nextUrl", "/naturalArea/getForEnvironmentalServices/" + naturalArea);
             return "redirect:/inicio/login";
         }
         model.addAttribute("naturalArea", naturalArea);
@@ -235,9 +163,9 @@ public class NaturalAreaController {
             String section = (String) session.getAttribute("section");
             // Eliminar atribut de la sessio
             session.removeAttribute("section");
-            return "redirect:/naturalArea/getServices/" + naturalArea + section;
+            return "redirect:/naturalArea/getForEnvironmentalServices/" + naturalArea + section;
         }
-        return "/naturalArea/getServices";
+        return "/naturalArea/getForEnvironmentalServices";
     }
 
     private void serviceDateLista(Model model, String naturalArea) {
@@ -646,7 +574,6 @@ public class NaturalAreaController {
         if (bindingResult.hasErrors())
             return "naturalArea/occupancyPlotForm";
 
-
         switch (occupancyFormData.getTypeOfPeriod().getDescripcion()) {
             case "Por dia":
                 model.addAttribute("plot",
@@ -671,32 +598,5 @@ public class NaturalAreaController {
     private void quitarAtributoSeccion(HttpSession session) {
         if(session.getAttribute("section") != null)
             session.removeAttribute("section");
-    }
-
-    @RequestMapping(value="/getReservations/{naturalArea}")
-    public String getReservations(Model model, @PathVariable String naturalArea, HttpSession session) {
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/getReservations/" + naturalArea);
-            return "redirect:/inicio/login";
-        }
-        model.addAttribute("reservas", reservaDatosDao.getReservasNaturalArea(naturalArea));
-        model.addAttribute("motivo", new MotivoCancelancion());
-        model.addAttribute("naturalArea", naturalArea);
-        return "naturalArea/reservas";
-    }
-
-    @RequestMapping(value="/reservasTodas/{naturalArea}")
-    public String todasReservasnaturalArea(Model model, @PathVariable String naturalArea, HttpSession session) {
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/naturalArea/getReservations/" + naturalArea);
-            return "redirect:/inicio/login";
-        }
-
-        List<ReservaDatosMunicipal> listaReservas = reservaDatosDao.getReservasTodasNaturalArea(naturalArea);
-        model.addAttribute("reservas", listaReservas);
-        model.addAttribute("naturalArea", naturalArea);
-        return "naturalArea/reservasTodas";
     }
 }

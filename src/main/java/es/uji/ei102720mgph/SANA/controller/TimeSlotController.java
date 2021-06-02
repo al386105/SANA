@@ -35,7 +35,7 @@ public class TimeSlotController {
         TimeSlot timeSlot = new TimeSlot();
         timeSlot.setNaturalArea(naturalArea);
         model.addAttribute("timeSlot", timeSlot);
-        session.setAttribute("section", "#timeSlots");
+        model.addAttribute("naturalArea", naturalArea);
         return "timeSlot/add";
     }
 
@@ -49,7 +49,7 @@ public class TimeSlotController {
             return "timeSlot/add";
         timeSlotDao.addTimeSlot(timeSlot);
         String naturalAreaName = timeSlot.getNaturalArea();
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
+        return "redirect:/timeSlot/getForManagersTimeSlots/" + naturalAreaName;
     }
 
     @RequestMapping(value="/update/{id}", method = RequestMethod.GET)
@@ -60,7 +60,6 @@ public class TimeSlotController {
             return "redirect:/inicio/login";
         }
         model.addAttribute("timeSlot", timeSlotDao.getTimeSlot(id));
-        session.setAttribute("section", "#timeSlots");
         return "timeSlot/update";
     }
 
@@ -74,6 +73,18 @@ public class TimeSlotController {
             return "timeSlot/update";
         timeSlotDao.updateTimeSlot(timeSlot);
         String naturalAreaName = timeSlot.getNaturalArea();
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
+        return "redirect:/timeSlot/getForManagersTimeSlots/" + naturalAreaName;
+    }
+
+    @RequestMapping(value="/getForManagersTimeSlots/{naturalArea}")
+    public String getTimeSlotsForManagers(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session){
+        if(session.getAttribute("municipalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/timeSlot/getForManagersTimeSlots/" + naturalArea);
+            return "redirect:/inicio/login";
+        }
+        model.addAttribute("naturalArea", naturalArea);
+        model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalArea(naturalArea));
+        return "/timeSlot/getForManagersTimeSlots";
     }
 }

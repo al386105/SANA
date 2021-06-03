@@ -1,5 +1,6 @@
 package es.uji.ei102720mgph.SANA.services;
 
+import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.model.OccupancyData;
 import es.uji.ei102720mgph.SANA.dao.ReservationDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
@@ -12,10 +13,14 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -23,6 +28,11 @@ import java.util.List;
 
 @Service
 public class OccupationSvc implements OccupationService{
+    @Value("${upload.file.directory}")
+    private String uploadDirectory;
+
+    @Autowired
+    MunicipalityDao municipalityDao;
 
     @Autowired
     ReservationDao reservationDao;
@@ -83,14 +93,13 @@ public class OccupationSvc implements OccupationService{
     }
 
     public String getOccupancyPlotByYear(String naturalArea, int year) {
-        String pathPicture = "/assets/img/plots/" +  naturalArea + year + ".png";
-        String path = "src/main/resources/static" + pathPicture;
-        File file = new File(path);
+        String plotName = naturalArea + year + ".png";
+        String path = uploadDirectory + "plots/" + plotName;
 
-        //comprobamos que el gráfico no se haya generado previamente????
-        //if (file.exists()){
-        //    return pathPicture;
-        //}
+//        String pathPicture = "/assets/img/plots/" + plotName;
+//        String path = "src/main/resources/static" + pathPicture;
+
+        File file = new File(path);
 
         //Generamos el dataSet:
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -105,7 +114,7 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupacion en  " + naturalArea + " durante " + year,
+                "Ocupación en  " + naturalArea + " durante " + year,
                 "Mes",
                 "Ocupación",
                 dataset,
@@ -114,18 +123,15 @@ public class OccupationSvc implements OccupationService{
 
         saveChart(file, chart);
 
-        return pathPicture;
+
+        return "/assets/img/plots/" + file.getName();
     }
 
     public String getOccupancyPlotByMonth(String naturalArea, int year, int month) {
-        String pathPicture = "/assets/img/plots/" +  naturalArea + year + "-" + month + ".png";
+        String plotName = naturalArea + year + "-" + month + ".png";
+        String pathPicture = "/assets/img/plots/" +  plotName;
         String path = "src/main/resources/static" + pathPicture;
         File file = new File(path);
-
-        //comprobamos que el gráfico no se haya generado previamente????
-        //if (file.exists()){
-        //    return pathPicture;
-        //}
 
         //Generamos el dataSet:
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -141,7 +147,7 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupacion en  " + naturalArea + " durante " + month + "/" + year,
+                "Ocupación en  " + naturalArea + " durante " + month + "/" + year,
                 "Dia",
                 "Ocupación",
                 dataset,
@@ -154,14 +160,10 @@ public class OccupationSvc implements OccupationService{
     }
 
     public String getOccupancyPlotByDay(String naturalArea, LocalDate day) {
-        String pathPicture = "/assets/img/plots/" +  naturalArea + day + ".png";
+        String plotName = naturalArea + day + ".png";
+        String pathPicture = "/assets/img/plots/" +  plotName;
         String path = "src/main/resources/static" + pathPicture;
         File file = new File(path);
-
-        //comprobamos que el gráfico no se haya generado previamente????
-        //if (file.exists()){
-        //    return pathPicture;
-        //}
 
         //Generamos el dataSet:
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -177,7 +179,7 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupacion en  " + naturalArea + " durante el dia " + day.toString(),
+                "Ocupación en  " + naturalArea + " durante el día " + day.toString(),
                 "Hora",
                 "Ocupación",
                 dataset,
@@ -188,6 +190,7 @@ public class OccupationSvc implements OccupationService{
 
         return pathPicture;
     }
+
 
 
 }

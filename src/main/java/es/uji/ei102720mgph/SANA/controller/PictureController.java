@@ -27,13 +27,9 @@ public class PictureController {
     private String uploadDirectory;
 
     private PictureDao pictureDao;
-    private NaturalAreaDao naturalAreaDao;
 
     @Autowired
     public void setPictureDao(PictureDao pictureDao){ this.pictureDao = pictureDao; }
-
-    @Autowired
-    public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){ this.naturalAreaDao = naturalAreaDao; }
 
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value="/add/{naturalArea}", method= RequestMethod.POST)

@@ -17,11 +17,17 @@ import java.util.List;
 @RequestMapping("/occupancy")
 public class OccupancyController {
     private OccupationService occupationService;
+    private MunicipalityDao municipalityDao;
     private NaturalAreaDao naturalAreaDao;
 
     @Autowired
     public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao){
         this.naturalAreaDao = naturalAreaDao;
+    }
+
+    @Autowired
+    public void setMunicipalityDao(MunicipalityDao municipalityDao){
+        this.municipalityDao = municipalityDao;
     }
 
     @Autowired
@@ -41,9 +47,33 @@ public class OccupancyController {
     }
 
 
+    // Histórico de ocupación de municipios para responsable del medio ambiente
+    @RequestMapping(value="/environmentalManager" ,method=RequestMethod.GET)
+    public String getOccupancyEnvironmentalManager(Model model, HttpSession session,
+                                                   @RequestParam(value="municipality",required=false) String municipality){
+        if(session.getAttribute("environmentalManager") ==  null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/occupancy/environmentalManager");
+            return "redirect:/inicio/login";
+        }
+        List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
+        List<Municipality> municipalities = municipalityDao.getMunicipalities();
+
+        // filtrar por municipio
+        if (municipality != null && !municipality.equals("todos"))
+            naturalAreas.removeIf(naturalArea -> !naturalArea.getMunicipality().equals(municipality));
+
+        model.addAttribute("municipalities", municipalities);
+        model.addAttribute("naturalAreas", naturalAreas);
+        model.addAttribute("occupancyDataOfNaturalAreas",
+                occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
+        return "occupancy/environmentalManager";
+    }
+
+
     // Historico de ocupacion de áreas naturales para el gestor municipal
     @RequestMapping(value="/municipalManager", method=RequestMethod.GET)
-    public String getOccupancy(Model model, HttpSession session) {
+    public String getOccupancyMunicipalManager(Model model, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/occupancy/municipalManager");

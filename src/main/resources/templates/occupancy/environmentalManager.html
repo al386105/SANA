@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:replace="fragments/headerManager"></div>
+
+<section id="perfil">
+<div class="container">
+
+    <h2 class="text-uppercase text-center text-secondary mb-0" >Ocupación</h2>
+    <br><hr class="barra-normal"><br>
+    <form th:action="@{/occupancy/environmentalManager}" method="get" >
+        <div class="row">
+            <div class="col">
+                <!-- por municipio -->
+                <select class="form-control mx-sm-3 mb-2" style="width:90%;" id="municipality" type="text"  th:name="municipality">
+                    <option value="todos">Municipio</option>
+                    <option th:each="municipality : ${municipalities}"
+                            th:value="${municipality.name}"
+                            th:text="${municipality.name}"></option>
+                </select>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col">
+                <button style="border-radius: 25px;" type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Área natural</th>
+            <th scope="col">Municipio</th>
+            <th scope="col">Ocupación actual</th>
+            <th scope="col">Capacidad máxima</th>
+            <th scope="col">Total de accesos</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="occupancyData: ${occupancyDataOfNaturalAreas}">
+            <td> <b th:text="${occupancyData.naturalArea.name}"> </b>  </td>
+            <td> <span th:text="${occupancyData.naturalArea.municipality}"> </span>  </td>
+            <td> <span th:text="${occupancyData.occupancyRate}"> </span> % </td>
+            <td> <span th:text="${occupancyData.maxCapacity}"> </span> </td>
+            <td> <span th:text="${occupancyData.totalOccupancy}"> </span> </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+
+    <a href="/"><button type="button" class="btn btn-primary"><img src="/assets/img/home.png" style="margin-right: 10px" class="fotoBoton" alt="Menú">Volver al menú</button></a>
+
+    <br><br>
+</div>
+</section>
+
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

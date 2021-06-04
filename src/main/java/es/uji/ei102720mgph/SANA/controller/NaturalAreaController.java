@@ -22,7 +22,6 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("/naturalArea")
 public class NaturalAreaController {
-    private OccupationService occupationService;
     private NaturalAreaDao naturalAreaDao;
     private NaturalAreaService naturalAreaService;
     private ZoneDao zoneDao;
@@ -35,11 +34,6 @@ public class NaturalAreaController {
     private ServiceDao serviceDao;
 
     private final int pageLength = 5;
-
-    @Autowired
-    public void setOccupationService(OccupationService occupationService){
-        this.occupationService = occupationService;
-    }
 
     @Autowired
     public void setNaturalAreaService(NaturalAreaService naturalAreaService){
@@ -123,6 +117,14 @@ public class NaturalAreaController {
             // Eliminar atribut de la sessio
             session.removeAttribute("section");
             return "redirect:/naturalArea/getForManagers/" + naturalArea + section;
+        }
+        // si el nombre de la imagen ya existe o si es muy grande (+ de 10MB)...
+        if(session.getAttribute("claveRepetida") != null) {
+            model.addAttribute("claveRepetida", "claveRepetida");
+            session.removeAttribute("claveRepetida");
+        } if(session.getAttribute("grande") != null) {
+            model.addAttribute("grande", "grande");
+            session.removeAttribute("grande");
         }
         return "/naturalArea/getForManagers";
     }

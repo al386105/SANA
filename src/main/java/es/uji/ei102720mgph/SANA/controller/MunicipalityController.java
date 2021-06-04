@@ -68,6 +68,17 @@ public class MunicipalityController {
             session.setAttribute("nextUrl", "/municipality/get/" + name);
             return "redirect:/inicio/login";
         }
+
+        // si el formulario de anyadir codigo postal ha obtenido un error...
+        if(session.getAttribute("claveRepetida") != null) {
+            model.addAttribute("claveRepetida", "claveRepetida");
+            session.removeAttribute("claveRepetida");
+        }
+        else if(session.getAttribute("incorrecto") != null) {
+            model.addAttribute("incorrecto", "incorrecto");
+            session.removeAttribute("incorrecto");
+        }
+
         model.addAttribute("municipality", municipalityDao.getMunicipality(name));
         model.addAttribute("municipalManagers", municipalManagerDao.getManagersOfMunicipality(name));
         model.addAttribute("postalCodes", postalCodeMunicipalityDao.getPostalCodeOfMuni(name));

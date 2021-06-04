@@ -5,6 +5,7 @@ import es.uji.ei102720mgph.SANA.enums.TypeOfUser;
 import es.uji.ei102720mgph.SANA.model.*;
 import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -101,19 +102,18 @@ public class HomeController {
 
     @RequestMapping("inicio/register_form/registration")
     public String registrationProcess(@ModelAttribute("registrationCitizen") RegistrationCitizen registrationCitizen,
-                                      BindingResult bindingResult, HttpSession session ){
-
-        // TODO el validador no va, hay que ver por qué
-        //RegistrationValidator registrationValidator = new RegistrationValidator();
-        //registrationValidator.validate(registrationCitizen, bindingResult);
+                                      BindingResult bindingResult, HttpSession session, Model model){
+        RegistrationValidator registrationValidator = new RegistrationValidator();
+        registrationValidator.validate(registrationCitizen, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "inicio/login"; //tornem al formulari d'inici de sessió
+            return "/inicio/register_form"; //tornem al formulari d'inici de sessió
 
         SanaUser sanaUser = sanaUserDao.getSanaUser(registrationCitizen.getEmail());
         if (sanaUser == null){
+            //Usuario no registrado antes
+            // las contraseñas introducidas son iguales
             if (registrationCitizen.getPassword().equals(registrationCitizen.getPasswordComprovation())) {
-                //Usuario no registrado antes
                 //Añadimos la dirección a las tablas
                 Address address = new Address();
                 address.setStreet(registrationCitizen.getStreet());
@@ -122,13 +122,13 @@ public class HomeController {
                 address.setPostalCode(registrationCitizen.getPostalCode());
                 address.setCity(registrationCitizen.getCity());
                 address.setCountry(registrationCitizen.getCountry());
-                addressDao.addAddress(address);
+                String addressId = "" + addressDao.addAddress(address);
 
                 //Añadimos el ciudadano a RegisteredCitizen
                 Formatter fmt = new Formatter();
                 BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
                 RegisteredCitizen registeredCitizen = new RegisteredCitizen();
-                registeredCitizen.setAddressId(addressDao.getAddress("ad" + fmt.format("%07d", Address.getContador() - 1)).getId());
+                registeredCitizen.setAddressId(addressId);
                 registeredCitizen.setName(registrationCitizen.getNombre());
                 registeredCitizen.setPin(encryptor.encryptPassword(registrationCitizen.getPassword()));
                 registeredCitizen.setSurname(registrationCitizen.getApellidos());
@@ -138,31 +138,46 @@ public class HomeController {
                 registeredCitizen.setTypeOfUser(TypeOfUser.registeredCitizen);
                 registeredCitizen.setIdNumber(registrationCitizen.getDni());
                 fmt = new Formatter();
-                int citizenCode = registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
-                registeredCitizen.setUsername("ci" + fmt.format("%04d" , citizenCode));
 
-                fmt = new Formatter();
-                // Envia correo electrónico
-                String destinatario = registeredCitizen.getEmail();
-                String asunto = "Bienvenido a SANA";
-                String cuerpo = "Registro completado con éxito en SANA, " + registeredCitizen.getName()+
-                        ".\nSu código de usuario es: ci" + fmt.format("%04d", citizenCode) +
-                        ".\n\nUn cordial saludo del equipo de SANA.";
-                Email emailObjeto = enviarMail(destinatario, asunto, cuerpo);
-                emailDao.addEmail(emailObjeto);
+                try {
+                    int citizenCode = registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
+                    String username = "ci" + fmt.format("%04d" , citizenCode);
+                    registeredCitizen.setUsername(username);
 
-                session.setAttribute("registeredCitizen", registeredCitizen);
-                return "redirect:/inicio/welcome";
+                    // Envia correo electrónico
+                    String destinatario = registeredCitizen.getEmail();
+                    String asunto = "Bienvenido a SANA";
+                    String cuerpo = "Registro completado con éxito en SANA, " + registeredCitizen.getName()+
+                            ".\nSu código de usuario es: " + username +
+                            ".\n\nUn cordial saludo del equipo de SANA.";
+                    Email emailObjeto = enviarMail(destinatario, asunto, cuerpo);
+                    emailDao.addEmail(emailObjeto);
+
+                    session.setAttribute("registeredCitizen", registeredCitizen);
+                    return "redirect:/inicio/welcome";
+
+                } catch (DataIntegrityViolationException e) {
+                    // borrar los anyadidos
+                    sanaUserDao.deleteSanaUser(registrationCitizen.getEmail());
+                    addressDao.deleteAddress(addressId);
+                    // alguna clave alternativa repetida, ver cuál es
+                    if(registeredCitizenDao.getRegisteredCitizenNIE(registeredCitizen.getIdNumber()) != null)
+                        model.addAttribute("NIERepetido", "NIE ya registrado");
+                    if(registeredCitizenDao.getRegisteredCitizenTelf(registeredCitizen.getMobilePhoneNumber()) != null)
+                        model.addAttribute("telfRepetido", "Teléfono ya registrado");
+                    return "/inicio/register_form";
+                }
 
             }else {
-                //Usuario ya registrado en el sistema
+                //Contrasenyas no coinciden TODO esto lo debería hacer el validador
                 bindingResult.rejectValue("passwordComprovation", "badpass", "Contraseñas diferentes");
-                return "redirect:/inicio/login";
+                // TODO no va
+                return "/inicio/register_form";
             }
         }else {
             //Usuario ya registrado en el sistema
-            bindingResult.rejectValue("email", "bademail", "Usuario ya registrado");
-            return "redirect:/inicio/login";
+            bindingResult.rejectValue("email", "bademail", "Email ya registrado");
+            return "/inicio/register_form";
         }
     }
 

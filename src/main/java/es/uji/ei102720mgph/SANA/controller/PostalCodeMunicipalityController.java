@@ -45,49 +45,23 @@ public class PostalCodeMunicipalityController {
         this.pcD = postalCodeDao;
     }
 
-    @RequestMapping(value="/add")
-    public String addPostalCode(Model model, @PathVariable String municipality, HttpSession session) {
-        if(session.getAttribute("environmentalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/postalCode/add");
-            return "redirect:/inicio/login";
-        }
-        model.addAttribute("postalCode", new PostalCodeMunicipality());
-        session.setAttribute("section", "#postalCodes");
-        return "postalCode/add";
-    }
-
     @RequestMapping(value="/add", method= RequestMethod.POST)
     public String processAddSubmit(Model model, @ModelAttribute("postalCode") PostalCodeMunicipality pc,
-                                   BindingResult bindingResult) {
+                                   BindingResult bindingResult, HttpSession session) {
         PostalCodeMunicipalityValidator postalCodeMunicipalityValidator = new PostalCodeMunicipalityValidator();
         postalCodeMunicipalityValidator.validate(pc, bindingResult);
-        if(model.getAttribute("claveRepetida") != null)
-            model.addAttribute("claveRepetida", null);
 
         String municipality = pc.getMunicipality();
         if (bindingResult.hasErrors()) {
-            recargaGet(model, municipality);
-            return "/municipality/get/" + municipality; //TODO NO VA
-        }
-        try {
+            session.setAttribute("incorrecto", "Formato incorrecto. Deben ser 5 dígitos numéricos.");
+            return "redirect:/municipality/get/" + municipality;
+        } try {
             pcD.addPostalCode(pc);
         } catch (DataIntegrityViolationException e) {
-            model.addAttribute("claveRepetida", "repetida");
-            recargaGet(model, municipality);
-            return "/municipality/get/" + municipality; //TODO NO VA
+            session.setAttribute("claveRepetida", "El código postal ya existe");
+            return "redirect:/municipality/get/" + municipality;
         }
         return "redirect:/municipality/get/" + municipality;
-    }
-
-    // en realidad no entiendo por q habría que hacerlo
-    public void recargaGet(Model model, String name) {
-        model.addAttribute("municipality", municipalityDao.getMunicipality(name));
-        model.addAttribute("municipalManagers", municipalManagerDao.getManagersOfMunicipality(name));
-        model.addAttribute("postalCodes", postalCodeMunicipalityDao.getPostalCodeOfMuni(name));
-        PostalCodeMunicipality postalCode = new PostalCodeMunicipality();
-        postalCode.setMunicipality(name);
-        model.addAttribute("postalCode", postalCode);
     }
 
     @RequestMapping(value="/delete/{municipality}/{postalCode}")

@@ -147,9 +147,11 @@
         <form class="form-horizontal" action="#" th:action="@{/picture/add/{naturalArea}(naturalArea=${naturalArea.name})}"
               enctype="multipart/form-data" th:object="${picture}" method="post">
             <input required type="file" name="file" id="file" /> <br/><br/>
+            <td th:if="${#strings.equals(claveRepetida, 'claveRepetida')}">El nombre de la imagen ya existe<br></td>
+            <td th:if="${#strings.equals(grande, 'grande')}">El tamaño de la imagen es muy grande<br></td>
             <div class="form-group row">
                 <div class="col-sm-offset-2 col-sm-4">
-                    <button type="submit" class="btn btn-success okey"><img src="/assets/img/photo.png" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
+                    <button type="submit" class="btn btn-success okey"><img src="/assets/img/photo.png" style="margin-right: 10px" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
                 </div>
             </div>
         </form>

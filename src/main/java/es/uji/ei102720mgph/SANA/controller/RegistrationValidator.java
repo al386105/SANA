@@ -56,7 +56,7 @@ public class RegistrationValidator implements Validator {
 
         // Número de teléfono de 9 dígitos
         if(registrationCitizen.getTelefono().trim().length() != 9)
-            errors.rejectValue("telefono", "incorrecto", "El número de teléfono debe tener 9 dígitos");
+            errors.rejectValue("telefono", "noCorrecto", "El número de teléfono debe tener 9 dígitos");
 
         // Calle obligatoria
         if (registrationCitizen.getStreet().trim().equals(""))
@@ -84,7 +84,7 @@ public class RegistrationValidator implements Validator {
 
         // Código postal de 5 dígitos
         if(registrationCitizen.getPostalCode().trim().length() != 5)
-            errors.rejectValue("postalCode", "incorrecto", "El código postal debe tener 5 dígitos");
+            errors.rejectValue("postalCode", "noCorrecto", "El código postal debe tener 5 dígitos");
 
         // País obligatorio
         if (registrationCitizen.getCountry().trim().equals(""))
@@ -100,7 +100,7 @@ public class RegistrationValidator implements Validator {
 
         // Contraseña de 4 dígitos
         if(registrationCitizen.getPassword().trim().length() != 4)
-            errors.rejectValue("password", "incorrecto", "La contraseña debe tener 4 dígitos");
+            errors.rejectValue("password", "noCorrecto", "La contraseña debe tener 4 dígitos");
 
         // Repetir contraseña obligatorio
         if (registrationCitizen.getPasswordComprovation().trim().equals(""))

@@ -50,4 +50,9 @@ public class AddressDao {
             return null;
         }
     }
+
+    public void deleteAddress(String idAddress) {
+        jdbcTemplate.update("DELETE FROM Address WHERE id =?", idAddress);
+    }
+
 }

@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/zone")
 public class ZoneController {
-
     private ZoneDao zoneDao;
 
     @Autowired

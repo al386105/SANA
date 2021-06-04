@@ -24,6 +24,8 @@ public class SanaConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/img/**").addResourceLocations("file:src/main/resources/static/assets/img/");
+        //registry.addResourceHandler("/img/**").addResourceLocations("file:src/main/resources/static/assets/img/");
+        registry.addResourceHandler("/img/**").addResourceLocations("file:img/");
+
     }
 }

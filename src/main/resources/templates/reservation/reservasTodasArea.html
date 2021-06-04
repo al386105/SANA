@@ -26,7 +26,7 @@
             <div th:each="reserva: ${#lists.sort(reservas)}">
                 <div class="card-horizontal">
                     <div class="img-square-wrapper">
-                        <img style="height: 240px" class="" th:src="${'/' + reserva.QRcode + '.png'}"
+                        <img style="height: 240px" class="" th:src="${'../../../../img/' + reserva.QRcode + '.png'}"
                              alt="Card image cap">
                     </div>
                     <div class="card-body">

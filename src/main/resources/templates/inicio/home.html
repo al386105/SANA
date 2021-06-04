@@ -4,10 +4,17 @@
 
 <body>
 
-    <div th:replace="fragments/header"></div>
+    <div th:switch="${typeUser}">
+        <td th:case="'registeredCitizen'">
+            <div th:replace="fragments/headerRegistered"></div>
+        </td>
+        <td th:case="*">
+            <div th:replace="fragments/header"></div>
+        </td>
+    </div>
 
     <header class="text-center text-white bg-primary">
-        <div class="container"><img class="img-fluid d-block mx-auto mb-5" src="../assets/img/LOGO_mono.png">
+        <div class="container"><img class="img-fluid d-block mx-auto mb-5" src="../../../../img/LOGO_mono.png">
             <h2 style="font-size:40px">¡Bienvenido a SANA!</h2>
             <h2><i>Safe Access to Natural Areas</i></h2>
             <br>
@@ -27,13 +34,13 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                <img style="height: auto; width: 100%; border-radius:100%;" src="../assets/img/homePicture1.jpg"/>
+                <img style="height: auto; width: 100%; border-radius:100%;" src="../../../../img/homePicture1.jpg"/>
             </div>
             <div class="col-sm">
-                <img style="height: auto; width: 100%; border-radius:100%;" src="../assets/img/homePicture2.jpg"/>
+                <img style="height: auto; width: 100%; border-radius:100%;" src="../../../../img/homePicture2.jpg"/>
             </div>
             <div class="col-sm">
-                <img style="height: auto; width: 90%; border-radius:100%;" src="../assets/img/homePicture3.jpg"/>
+                <img style="height: auto; width: 90%; border-radius:100%;" src="../../../../img/homePicture3.jpg"/>
             </div>
         </div>
     </div>

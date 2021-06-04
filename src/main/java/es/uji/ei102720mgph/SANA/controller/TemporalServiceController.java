@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/temporalService")
 public class TemporalServiceController {
-
     private TemporalServiceDao temporalServiceDao;
     private ServiceDao serviceDao;
 

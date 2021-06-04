@@ -7,6 +7,7 @@ import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
 import es.uji.ei102720mgph.SANA.model.*;
 import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,6 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/municipalManager")
 public class MunicipalManagerController {
-
     private MunicipalManagerDao municipalManagerDao;
     private EmailDao emailDao;
     private SanaUserDao sanaUserDao;
@@ -66,7 +66,6 @@ public class MunicipalManagerController {
             managers = municipalManagerDao.getMunicipalManagersOperativosSearch(patron);
         else
             managers = municipalManagerDao.getMunicipalManagersOperativos();
-
         model.addAttribute("municipalManagers", managers);
         quitarAtributoSeccion(session);
         return "municipalManager/list";
@@ -85,7 +84,6 @@ public class MunicipalManagerController {
             managers = municipalManagerDao.getMunicipalManagersSearch(patron);
         else
             managers = municipalManagerDao.getMunicipalManagers();
-
         model.addAttribute("municipalManagers", managers);
         return "municipalManager/listTodos";
     }

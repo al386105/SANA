@@ -1,6 +1,7 @@
 package es.uji.ei102720mgph.SANA.services;
 
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
+import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.OccupancyData;
 import es.uji.ei102720mgph.SANA.dao.ReservationDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
@@ -43,7 +44,11 @@ public class OccupationSvc implements OccupationService{
     private int getOccupancy(List<Reservation> reservations){
         int occupancy = 0;
         for(Reservation reservation: reservations){
-            if(reservation.getState().getDescripcion().equals("Usada")) occupancy += reservation.getNumberOfPeople();
+            if(reservation.getState().getDescripcion().equals("Creada") ||
+                    reservation.getState().getDescripcion().equals("Usada") ||
+                    reservation.getState().getDescripcion().equals("En uso")){
+                occupancy += reservation.getNumberOfPeople();
+            }
         }
         return occupancy;
     }
@@ -114,7 +119,7 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupación en  " + naturalArea + " durante " + year,
+                "Ocupación en " + naturalArea + " durante " + year,
                 "Mes",
                 "Ocupación",
                 dataset,
@@ -123,8 +128,7 @@ public class OccupationSvc implements OccupationService{
 
         saveChart(file, chart);
 
-
-        return "/assets/img/plots/" + file.getName();
+        return  "plots/" + file.getName();
     }
 
     public String getOccupancyPlotByMonth(String naturalArea, int year, int month) {
@@ -147,7 +151,7 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupación en  " + naturalArea + " durante " + month + "/" + year,
+                "Ocupación en " + naturalArea + " durante " + month + "/" + year,
                 "Dia",
                 "Ocupación",
                 dataset,
@@ -156,7 +160,7 @@ public class OccupationSvc implements OccupationService{
 
         saveChart(file, chart);
 
-        return pathPicture;
+        return "plots/" + file.getName();
     }
 
     public String getOccupancyPlotByDay(String naturalArea, LocalDate day) {
@@ -179,7 +183,7 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupación en  " + naturalArea + " durante el día " + day.toString(),
+                "Ocupación en " + naturalArea + " durante el día " + day.toString(),
                 "Hora",
                 "Ocupación",
                 dataset,
@@ -188,7 +192,7 @@ public class OccupationSvc implements OccupationService{
 
         saveChart(file, chart);
 
-        return pathPicture;
+        return "plots/" + file.getName();
     }
 
 

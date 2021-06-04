@@ -8,6 +8,7 @@ import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.PostalCodeMunicipality;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/municipality")
 public class MunicipalityController {
-
     private MunicipalityDao municipalityDao;
     private MunicipalManagerDao municipalManagerDao;
     private PostalCodeMunicipalityDao postalCodeMunicipalityDao;
@@ -68,6 +68,17 @@ public class MunicipalityController {
             session.setAttribute("nextUrl", "/municipality/get/" + name);
             return "redirect:/inicio/login";
         }
+
+        // si el formulario de anyadir codigo postal ha obtenido un error...
+        if(session.getAttribute("claveRepetida") != null) {
+            model.addAttribute("claveRepetida", "claveRepetida");
+            session.removeAttribute("claveRepetida");
+        }
+        else if(session.getAttribute("incorrecto") != null) {
+            model.addAttribute("incorrecto", "incorrecto");
+            session.removeAttribute("incorrecto");
+        }
+
         model.addAttribute("municipality", municipalityDao.getMunicipality(name));
         model.addAttribute("municipalManagers", municipalManagerDao.getManagersOfMunicipality(name));
         model.addAttribute("postalCodes", postalCodeMunicipalityDao.getPostalCodeOfMuni(name));

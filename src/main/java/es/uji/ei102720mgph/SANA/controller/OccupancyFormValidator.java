@@ -20,21 +20,19 @@ public class OccupancyFormValidator implements Validator {
             errors.rejectValue("naturalArea", "obligatorio", "Es obligatorio introducir el área natural");
 
         // TypeOfPeriod obligatorio
-        if (occupancyFormData.getTypeOfPeriod() == null) {
+        if (occupancyFormData.getTypeOfPeriod() == null)
             errors.rejectValue("typeOfPeriod", "obligatorio", "Es obligatorio introducir el tipo de periodo");
-        }
 
         // Si busca por año, nos aseguramos que es valido
-        if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por año") && occupancyFormData.getYear() <= 2010){
-            errors.rejectValue("year", "obligatorio", "Es obligatorio introducir el año correcto para obtener el gráfico");
-        }
+        if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por año") && occupancyFormData.getYear() <= 2019)
+            errors.rejectValue("year", "incorrecto", "El año debe ser posterior a 2019");
 
         // Si busca por mes, nos aseguramos que es valido el año y el mes
-        if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por mes") && occupancyFormData.getYear() <= 2010) {
-            errors.rejectValue("year", "obligatorio", "Es obligatorio introducir el año correcto para obtener el gráfico");
-            if (occupancyFormData.getMonth() <= 0 || occupancyFormData.getMonth() > 12) {
-                errors.rejectValue("month", "obligatorio", "Es obligatorio introducir el mes correctamente para obtener el gráfico");
-            }
+        if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por mes")) {
+            if(occupancyFormData.getYear() <= 2019)
+                errors.rejectValue("year", "incorrecto", "El año debe ser posterior a 2019");
+            if(occupancyFormData.getMonth().getNum() <= 0 || occupancyFormData.getMonth().getNum() > 12)
+                errors.rejectValue("month", "incorrecto", "El mes es incorrecto");
         }
 
         // Si busca por dia, nos aseguramos que es valida la fecha

@@ -1,16 +1,16 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.dao.PictureDao;
 import es.uji.ei102720mgph.SANA.model.Picture;
 import es.uji.ei102720mgph.SANA.model.UserLogin;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -43,12 +43,15 @@ public class PictureController {
         }
         try {
             // Obtener el fichero y guardarlo
+            picture.setPicturePath("naturalAreas/" + file.getOriginalFilename());
+            picture.setNaturalArea(naturalArea);
+            pictureDao.addPicture(picture);
             byte[] bytes = file.getBytes();
             Path path = Paths.get(uploadDirectory + "naturalAreas/" + file.getOriginalFilename());
             Files.write(path, bytes);
-            picture.setPicturePath("/assets/img/naturalAreas/" + file.getOriginalFilename());
-            picture.setNaturalArea(naturalArea);
-            pictureDao.addPicture(picture);
+        } catch (DataIntegrityViolationException e) {
+            session.setAttribute("claveRepetida", "El nombre de la imagen ya existe");
+            return "redirect:/naturalArea/getForManagers/" + naturalArea;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,16 +59,16 @@ public class PictureController {
     }
 
     // Operació esborrar
-    @RequestMapping(value="/delete/assets/img/naturalAreas/{pictureName}")
+    @RequestMapping(value="/delete/naturalAreas/{pictureName}")
     public String processDelete(Model model, @PathVariable String pictureName, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/picture/delete/assets/img/naturalAreas/" + pictureName);
+            session.setAttribute("nextUrl", "/picture/naturalAreas/" + pictureName);
             return "redirect:/inicio/login";
         }
-        Picture picture = pictureDao.getPicture("/assets/img/naturalAreas/" + pictureName);
+        Picture picture = pictureDao.getPicture("naturalAreas/" + pictureName);
         String naturalAreaName = picture.getNaturalArea();
-        pictureDao.deletePicture("/assets/img/naturalAreas/" + pictureName);
+        pictureDao.deletePicture("naturalAreas/" + pictureName);
         return "redirect:/naturalArea/getForManagers/" + naturalAreaName;
     }
 }

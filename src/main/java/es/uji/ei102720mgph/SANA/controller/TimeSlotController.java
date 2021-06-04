@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/timeSlot")
 public class TimeSlotController {
-
     private TimeSlotDao timeSlotDao;
 
     @Autowired

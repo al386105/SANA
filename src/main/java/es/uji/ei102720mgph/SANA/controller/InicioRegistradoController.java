@@ -1,6 +1,7 @@
 package es.uji.ei102720mgph.SANA.controller;
 
 import es.uji.ei102720mgph.SANA.model.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,6 @@ public class InicioRegistradoController {
             return "redirect:/inicio/login";
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-
         model.addAttribute("citizen", citizen);
         return "inicioRegistrado/perfil";
     }
@@ -61,5 +61,16 @@ public class InicioRegistradoController {
         model.addAttribute("citizen", registeredCitizen);
         session.setAttribute("registeredCitizen", registeredCitizen);
         return "redirect:perfil";
+    }
+
+    @RequestMapping(value="/welcome")
+    public String welcome(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null){
+            model.addAttribute("userLogin", new UserLogin() {});
+            return "redirect:/inicio/login";
+        }
+        RegisteredCitizen registeredCitizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("username", registeredCitizen.getName());
+        return "inicioRegistrado/welcome";
     }
 }

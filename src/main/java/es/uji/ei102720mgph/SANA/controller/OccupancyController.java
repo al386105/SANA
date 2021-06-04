@@ -4,14 +4,16 @@ import es.uji.ei102720mgph.SANA.dao.*;
 import es.uji.ei102720mgph.SANA.model.*;
 import es.uji.ei102720mgph.SANA.services.OccupationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-
 
 @Controller
 @RequestMapping("/occupancy")
@@ -88,6 +90,15 @@ public class OccupancyController {
         return "occupancy/municipalManager";
     }
 
+    // metodo para anyadir al modelo los datos de anyos posibles
+    @ModelAttribute("yearList")
+    public List<Integer> yearList() {
+        List<Integer> yearList = new ArrayList<>();
+        for(int i = LocalDate.now().getYear(); i >= 2020; i--)
+            yearList.add(i);
+        return yearList;
+    }
+
     // Formulario para obtener el gráfico de ocupación para el municipal manager
     @RequestMapping(value="/plotForm")
     public String occupancyPlotFormGet(Model model, HttpSession session,
@@ -126,7 +137,7 @@ public class OccupancyController {
             case "Por mes":
                 model.addAttribute("plot",
                         occupationService.getOccupancyPlotByMonth(occupancyFormData.getNaturalArea(),
-                                occupancyFormData.getYear(), occupancyFormData.getMonth()));
+                                occupancyFormData.getYear(), occupancyFormData.getMonth().getNum()));
                 break;
             case "Por año":
                 model.addAttribute("plot",

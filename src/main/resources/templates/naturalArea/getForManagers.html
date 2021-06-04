@@ -117,7 +117,7 @@
     </div>
     <table th:unless="${#lists.isEmpty(pictures)}" class="table table-striped">
         <tr th:each="picture,iterador : ${pictures}">
-            <td scope="row"><img class="fotoListado" th:src="${picture.picturePath}" alt="Foto del espacio natural"/></td>
+            <td scope="row"><img class="fotoListado" th:src="${'../../../../img/' + picture.picturePath}" alt="Foto del espacio natural"/></td>
             <td style="vertical-align:middle;"><button type="button" class="btn btn-danger delete" data-toggle="modal" th:data-target="${'#miModal' + iterador.index}">
                 Elimina</button></td>
             <!-- VENTANA EMERGENTE -->
@@ -147,9 +147,11 @@
         <form class="form-horizontal" action="#" th:action="@{/picture/add/{naturalArea}(naturalArea=${naturalArea.name})}"
               enctype="multipart/form-data" th:object="${picture}" method="post">
             <input required type="file" name="file" id="file" /> <br/><br/>
+            <td th:if="${#strings.equals(claveRepetida, 'claveRepetida')}">El nombre de la imagen ya existe<br></td>
+            <td th:if="${#strings.equals(grande, 'grande')}">El tamaño de la imagen es muy grande<br></td>
             <div class="form-group row">
                 <div class="col-sm-offset-2 col-sm-4">
-                    <button type="submit" class="btn btn-success okey"><img src="/assets/img/photo.png" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
+                    <button type="submit" class="btn btn-success okey"><img src="../../../../img/photo.png" style="margin-right: 10px" class="fotoBoton" alt="Icono de imagen">Añadir imagen</button>
                 </div>
             </div>
         </form>
@@ -159,7 +161,7 @@
     <section id="comments">
         <hr class="lineaVerde">
         <div class="container text-center">
-            <h3>Comentarios <img src="/assets/img/comentari.png" class="fotoTitulo" alt="Icono comentario"></h3>
+            <h3>Comentarios <img src="../../../../img/comentari.png" class="fotoTitulo" alt="Icono comentario"></h3>
             <br/>
             <div th:if="${#lists.isEmpty(comments)}">
                 <p><b>¡Este área natural todavía no tiene comentarios!</b></p>
@@ -169,8 +171,8 @@
                     <div class="row">
                         <div class="col align-self-center">
                             <th:block th:each="i: ${#numbers.sequence(1, 5)}">
-                                <img th:if="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/starBlack.png" class="fotoBoton" alt="X">
-                                <img th:unless="${comment.score >= i}"  style="margin-left:2px" src="/assets/img/star.png" class="fotoBoton" alt="O">
+                                <img th:if="${comment.score >= i}"  style="margin-left:2px" src="../../../../img/starBlack.png" class="fotoBoton" alt="X">
+                                <img th:unless="${comment.score >= i}"  style="margin-left:2px" src="../../../../img/star.png" class="fotoBoton" alt="O">
                             </th:block>
                         </div>
                     </div>

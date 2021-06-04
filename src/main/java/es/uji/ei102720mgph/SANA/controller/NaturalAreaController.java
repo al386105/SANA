@@ -5,8 +5,8 @@ import es.uji.ei102720mgph.SANA.enums.TypeOfAccess;
 import es.uji.ei102720mgph.SANA.enums.TypeOfArea;
 import es.uji.ei102720mgph.SANA.model.*;
 import es.uji.ei102720mgph.SANA.services.NaturalAreaService;
-import es.uji.ei102720mgph.SANA.services.OccupationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +22,6 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("/naturalArea")
 public class NaturalAreaController {
-    private OccupationService occupationService;
     private NaturalAreaDao naturalAreaDao;
     private NaturalAreaService naturalAreaService;
     private ZoneDao zoneDao;
@@ -35,11 +34,6 @@ public class NaturalAreaController {
     private ServiceDao serviceDao;
 
     private final int pageLength = 5;
-
-    @Autowired
-    public void setOccupationService(OccupationService occupationService){
-        this.occupationService = occupationService;
-    }
 
     @Autowired
     public void setNaturalAreaService(NaturalAreaService naturalAreaService){
@@ -123,6 +117,14 @@ public class NaturalAreaController {
             // Eliminar atribut de la sessio
             session.removeAttribute("section");
             return "redirect:/naturalArea/getForManagers/" + naturalArea + section;
+        }
+        // si el nombre de la imagen ya existe o si es muy grande (+ de 10MB)...
+        if(session.getAttribute("claveRepetida") != null) {
+            model.addAttribute("claveRepetida", "claveRepetida");
+            session.removeAttribute("claveRepetida");
+        } if(session.getAttribute("grande") != null) {
+            model.addAttribute("grande", "grande");
+            session.removeAttribute("grande");
         }
         return "/naturalArea/getForManagers";
     }
@@ -233,9 +235,10 @@ public class NaturalAreaController {
         int currentPage = page.orElse(0);
         model.addAttribute("selectedPage", currentPage);
 
-        if (session.getAttribute("registeredCitizen") == null)
-            return "inicio/areasNaturales";
-        return "inicioRegistrado/areasNaturales";
+        if (session.getAttribute("registeredCitizen") != null)
+            model.addAttribute("typeUser", "registeredCitizen");
+
+        return "naturalArea/pagedList";
     }
 
     // filtros para lista de natural areas de ciuadadanos

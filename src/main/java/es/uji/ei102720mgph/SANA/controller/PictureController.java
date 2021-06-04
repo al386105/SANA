@@ -52,7 +52,7 @@ public class PictureController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "redirect:/naturalArea/getManagers/" + naturalArea;
+        return "redirect:/naturalArea/getForManagers/" + naturalArea;
     }
 
     // Operació esborrar
@@ -66,6 +66,6 @@ public class PictureController {
         Picture picture = pictureDao.getPicture("/assets/img/naturalAreas/" + pictureName);
         String naturalAreaName = picture.getNaturalArea();
         pictureDao.deletePicture("/assets/img/naturalAreas/" + pictureName);
-        return "redirect:/naturalArea/getManagers/" + naturalAreaName;
+        return "redirect:/naturalArea/getForManagers/" + naturalAreaName;
     }
 }

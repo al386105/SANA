@@ -42,12 +42,11 @@ public class OccupancyController {
     public String getInfoPaneles(Model model, HttpSession session){
         // si es null es que no esta registrado
         model.addAttribute("registered", session.getAttribute("registeredCitizen"));
-        List<NaturalArea> naturalAreas = naturalAreaDao.getNaturalAreas();
+        List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedAndNonNaturalAreas();
         model.addAttribute("occupancyDataOfNaturalAreas",
                 occupationService.getOccupancyDataOfNaturalAreas(naturalAreas));
         return "occupancy/panel";
     }
-
 
     // Histórico de ocupación de municipios para responsable del medio ambiente
     @RequestMapping(value="/environmentalManager" ,method=RequestMethod.GET)
@@ -81,6 +80,12 @@ public class OccupancyController {
             session.setAttribute("nextUrl", "/occupancy/municipalManager");
             return "redirect:/inicio/login";
         }
+
+        if(session.getAttribute("selector") != null) {
+            model.addAttribute("selector", "noSeleccionado");
+            session.removeAttribute("selector");
+        }
+
         OccupancyFormData occupancyFormData = new OccupancyFormData();
         model.addAttribute("occupancyFormData", occupancyFormData);
         List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
@@ -97,6 +102,19 @@ public class OccupancyController {
         for(int i = LocalDate.now().getYear(); i >= 2020; i--)
             yearList.add(i);
         return yearList;
+    }
+
+    @RequestMapping(value="/plotForm1", method=RequestMethod.POST)
+    public String occupancyPlotForm1(HttpSession session,
+                                      @ModelAttribute("occupancyFormData") OccupancyFormData occupancyFormData,
+                                      BindingResult bindingResult){
+        OccupancyValidator occupancyValidator = new OccupancyValidator();
+        occupancyValidator.validate(occupancyFormData, bindingResult);
+        if (bindingResult.hasErrors()) {
+            session.setAttribute("selector", "noSeleccionado");
+            return "redirect:/occupancy/municipalManager";
+        }
+        return "occupancy/plotForm";
     }
 
     // Formulario para obtener el gráfico de ocupación para el municipal manager

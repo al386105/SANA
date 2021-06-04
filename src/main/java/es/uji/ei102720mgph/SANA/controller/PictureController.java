@@ -44,6 +44,7 @@ public class PictureController {
         try {
             // Obtener el fichero y guardarlo
             picture.setPicturePath("naturalAreas/" + file.getOriginalFilename());
+
             picture.setNaturalArea(naturalArea);
             pictureDao.addPicture(picture);
             byte[] bytes = file.getBytes();

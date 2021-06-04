@@ -33,9 +33,9 @@
     <br>
 
     <!-- Apartado del form para ver histórico de ocupación    -->
-    <h3>Ver gráficos de históricos de ocupación</h3>
-    <form class="form-horizontal" action="#" th:action="@{/occupancy/plotForm}"
-          th:object="${occupancyFormData}" method="get">
+    <h3>Ver gráficos de históricos de ocupación</h3><br>
+    <form class="form-horizontal" action="#" th:action="@{/occupancy/plotForm1}"
+          th:object="${occupancyFormData}" method="post">
         <div class="form-group row">
             <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
             <div class="col-sm-4">
@@ -46,6 +46,7 @@
                             th:text="${naturalArea.name}"></option>
                 </select>
                 <td th:if="${#fields.hasErrors('naturalArea')}" th:errors="*{naturalArea}"></td>
+                <td th:if="${#strings.equals(selector, 'noSeleccionado')}"><b>No ha seleccionado un área natural</b></td>
             </div>
         </div>
 

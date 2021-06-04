@@ -15,14 +15,6 @@ public class OccupancyFormValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         OccupancyFormData occupancyFormData = (OccupancyFormData) obj;
 
-        // Area natural obligatorio
-        if (occupancyFormData.getNaturalArea().trim().equals("") || occupancyFormData.getNaturalArea().equals("No seleccionado"))
-            errors.rejectValue("naturalArea", "obligatorio", "Es obligatorio introducir el área natural");
-
-        // TypeOfPeriod obligatorio
-        if (occupancyFormData.getTypeOfPeriod() == null)
-            errors.rejectValue("typeOfPeriod", "obligatorio", "Es obligatorio introducir el tipo de periodo");
-
         // Si busca por año, nos aseguramos que es valido
         if (occupancyFormData.getTypeOfPeriod().getDescripcion().equals("Por año") && occupancyFormData.getYear() <= 2019)
             errors.rejectValue("year", "incorrecto", "El año debe ser posterior a 2019");

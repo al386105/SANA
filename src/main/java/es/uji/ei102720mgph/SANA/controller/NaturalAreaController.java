@@ -185,16 +185,6 @@ public class NaturalAreaController {
         model.addAttribute("serviceDates", services);
     }
 
-    // metodo para anyadir al modelo los datos del selector de municipio
-    @ModelAttribute("municipalityList")
-    public List<String> municipalityList() {
-        List<Municipality> municipalityList = municipalityDao.getMunicipalities();
-        List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
-                .map(Municipality::getName)
-                .collect(Collectors.toList());
-        return namesMunicipalities;
-    }
-
     @RequestMapping(value="/pagedlist")
     public String listNaturalAreasPaged(Model model, HttpSession session, @RequestParam(value="patron",required=false) String patron,
                                         @RequestParam(value="typeOfArea",required=false) String typeOfArea,
@@ -248,6 +238,7 @@ public class NaturalAreaController {
         return "inicioRegistrado/areasNaturales";
     }
 
+    // filtros para lista de natural areas de ciuadadanos
     private List<NaturalArea> filtrar(List<NaturalArea> naturalAreas, String patron, String typeOfArea, String typeOfAccess, String municipality) {
         if (patron != null && !patron.equals(""))
             naturalAreas = naturalAreaDao.getNaturalAreaSearch(patron);
@@ -301,6 +292,7 @@ public class NaturalAreaController {
         return "naturalArea/listForManagers";
     }
 
+    // paginacion para listManagers y listEnvironmental
     private void paginacionSinFotos(Model model, String patron, String typeOfArea, String typeOfAccess,
                                     String municipality, @RequestParam("page") Optional<Integer> page) {
         // Paso 1: Crear la lista paginada de naturalAreas
@@ -335,6 +327,16 @@ public class NaturalAreaController {
         // Paso 3: selectedPage: usar parametro opcional page, o en su defecto, 1
         int currentPage = page.orElse(0);
         model.addAttribute("selectedPage", currentPage);
+    }
+
+    // metodo para anyadir al modelo los datos del selector de municipio para el add natural area
+    @ModelAttribute("municipalityList")
+    public List<String> municipalityList() {
+        List<Municipality> municipalityList = municipalityDao.getMunicipalities();
+        List<String> namesMunicipalities = municipalityList.stream()          // sols els seus noms
+                .map(Municipality::getName)
+                .collect(Collectors.toList());
+        return namesMunicipalities;
     }
 
     @RequestMapping(value="/add")
@@ -409,7 +411,7 @@ public class NaturalAreaController {
         return "redirect:/naturalArea/getForManagers/" + naturalAreaForm.getName();
     }
 
-    // Convierte de NaturalAreaForm a NaturalArea
+    // Convierte de NaturalAreaForm a NaturalArea, ha sido necesario por el formato de las coordenadas
     private NaturalArea pasoANaturalArea(NaturalAreaForm naturalAreaForm) {
         NaturalArea naturalArea = new NaturalArea();
         naturalArea.setName(naturalAreaForm.getName());
@@ -434,6 +436,7 @@ public class NaturalAreaController {
         return naturalArea;
     }
 
+    // Convierte de NaturalArea a NaturalAreaForm, ha sido necesario por el formato de las coordenadas
     private NaturalAreaForm pasoDeNaturalAreaAForm(NaturalArea naturalArea) {
         NaturalAreaForm naturalAreaForm = new NaturalAreaForm();
         naturalAreaForm.setName(naturalArea.getName());

@@ -1,5 +1,6 @@
 package es.uji.ei102720mgph.SANA.model;
 
+import es.uji.ei102720mgph.SANA.enums.Months;
 import es.uji.ei102720mgph.SANA.enums.TypeOfPeriod;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,7 +11,7 @@ public class OccupancyFormData {
     private TypeOfPeriod typeOfPeriod;
     private String naturalArea;
     private int year;
-    private int month;
+    private Months month;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate day;
 
@@ -41,11 +42,11 @@ public class OccupancyFormData {
         this.year = year;
     }
 
-    public int getMonth() {
+    public Months getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(Months month) {
         this.month = month;
     }
 

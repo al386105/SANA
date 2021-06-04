@@ -32,16 +32,20 @@
             <div th:if="${occupancyFormData.typeOfPeriod.descripcion == 'Por año' or occupancyFormData.typeOfPeriod.descripcion == 'Por mes'}" class="form-group row">
                 <label class="control-label col-sm-2" for="year">Año:</label>
                 <div class="col-sm-4">
-                    <input type="number" min="2010" class="form-control" id="year" th:field="*{year}" value="1"/>
-                    <td th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></td>
+                    <select class="form-control" required id="year" type="text" th:field="*{year}">
+                        <option th:each="yearvalue: ${yearList}"
+                                th:value="${yearvalue}" th:text="${yearvalue}"></option>
+                    </select>
                 </div>
             </div>
 
             <div th:if="${occupancyFormData.typeOfPeriod.descripcion == 'Por mes'}" class="form-group row">
                 <label class="control-label col-sm-2" for="month">Mes:</label>
                 <div class="col-sm-4">
-                    <input type="number" min="1" max="12" class="form-control" id="month" th:field="*{month}" value="1"/>
-                    <td th:if="${#fields.hasErrors('month')}" th:errors="*{month}"></td>
+                    <select class="form-control" required id="month" type="text" th:field="*{month}">
+                        <option th:each="monthvalue: ${T(es.uji.ei102720mgph.SANA.enums.Months).values()}"
+                                th:value="${monthvalue}" th:text="${monthvalue.descripcion}"></option>
+                    </select>
                 </div>
             </div>
 

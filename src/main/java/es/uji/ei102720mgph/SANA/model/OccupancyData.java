@@ -1,7 +1,5 @@
 package es.uji.ei102720mgph.SANA.model;
 
-import es.uji.ei102720mgph.SANA.model.NaturalArea;
-
 public class OccupancyData {
     private NaturalArea naturalArea;
     private float occupancyRate;

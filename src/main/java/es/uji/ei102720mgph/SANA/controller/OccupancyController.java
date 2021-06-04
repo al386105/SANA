@@ -13,8 +13,6 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Controller
 @RequestMapping("/occupancy")
@@ -95,7 +93,7 @@ public class OccupancyController {
     @ModelAttribute("yearList")
     public List<Integer> yearList() {
         List<Integer> yearList = new ArrayList<>();
-        for(int i = LocalDate.now().getYear(); i >= 2018; i--)
+        for(int i = LocalDate.now().getYear(); i >= 2020; i--)
             yearList.add(i);
         return yearList;
     }

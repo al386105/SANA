@@ -114,7 +114,7 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupación en  " + naturalArea + " durante " + year,
+                "Ocupación en " + naturalArea + " durante " + year,
                 "Mes",
                 "Ocupación",
                 dataset,
@@ -147,7 +147,7 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupación en  " + naturalArea + " durante " + month + "/" + year,
+                "Ocupación en " + naturalArea + " durante " + month + "/" + year,
                 "Dia",
                 "Ocupación",
                 dataset,
@@ -179,7 +179,7 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupación en  " + naturalArea + " durante el día " + day.toString(),
+                "Ocupación en " + naturalArea + " durante el día " + day.toString(),
                 "Hora",
                 "Ocupación",
                 dataset,

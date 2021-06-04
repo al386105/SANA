@@ -103,7 +103,10 @@
         <div class="form-group row">
             <label class="control-label col-sm-2" for="typeOfArea">Tipo de área:</label>
             <div class="col-sm-4">
-                <input type="text" readonly="readonly" required class="form-control" id="typeOfArea" th:field="*{typeOfArea}" />
+                <select class="form-control" required id="typeOfArea" type="text" th:field="*{typeOfArea}">
+                    <option th:each="typeOfAreavalue: ${T(es.uji.ei102720mgph.SANA.enums.TypeOfArea).values()}"
+                            th:value="${typeOfAreavalue}" th:text="${typeOfAreavalue.descripcion}"></option>
+                </select>
                 <td th:if="${#fields.hasErrors('typeOfArea')}" th:errors="*{typeOfArea}"></td>
             </div>
         </div>

@@ -130,14 +130,4 @@ public class MunicipalityController {
         return "redirect:/municipality/get/" + municipality.getName();
     }
 
-    // Histórico de ocupación de municipios para responsable del medio ambiente
-    @RequestMapping(value="/occupancy")
-    public String getOccupancy(Model model, HttpSession session){
-        if(session.getAttribute("environmentalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/municipality/occupancy");
-            return "redirect:/inicio/login";
-        }
-        return "/municipality/occupancy";
-    }
 }

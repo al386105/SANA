@@ -31,7 +31,6 @@
                 <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
                 <div class="col-sm-4">
                     <input type="text" required maxlength="30" readonly="readonly" class="form-control" id="naturalArea" th:field="*{naturalArea}" />
-                    <td th:if="${#fields.hasErrors('naturalArea')}" th:errors="*{naturalArea}"></td>
                 </div>
             </div>
 

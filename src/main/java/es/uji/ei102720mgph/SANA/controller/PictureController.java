@@ -43,7 +43,7 @@ public class PictureController {
         }
         try {
             // Obtener el fichero y guardarlo
-            picture.setPicturePath("/assets/img/naturalAreas/" + file.getOriginalFilename());
+            picture.setPicturePath("/naturalAreas/" + file.getOriginalFilename());
             picture.setNaturalArea(naturalArea);
             pictureDao.addPicture(picture);
             byte[] bytes = file.getBytes();
@@ -59,16 +59,16 @@ public class PictureController {
     }
 
     // Operació esborrar
-    @RequestMapping(value="/delete/assets/img/naturalAreas/{pictureName}")
+    @RequestMapping(value="/delete/naturalAreas/{pictureName}")
     public String processDelete(Model model, @PathVariable String pictureName, HttpSession session) {
         if(session.getAttribute("municipalManager") ==  null) {
             model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/picture/delete/assets/img/naturalAreas/" + pictureName);
+            session.setAttribute("nextUrl", "/picture/naturalAreas/" + pictureName);
             return "redirect:/inicio/login";
         }
-        Picture picture = pictureDao.getPicture("/assets/img/naturalAreas/" + pictureName);
+        Picture picture = pictureDao.getPicture("naturalAreas/" + pictureName);
         String naturalAreaName = picture.getNaturalArea();
-        pictureDao.deletePicture("/assets/img/naturalAreas/" + pictureName);
+        pictureDao.deletePicture("naturalAreas/" + pictureName);
         return "redirect:/naturalArea/getForManagers/" + naturalAreaName;
     }
 }

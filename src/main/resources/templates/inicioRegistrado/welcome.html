@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<body>
+
+    <div th:replace="fragments/headerRegistered"></div>
+
+    <header class="text-center text-white bg-primary">
+        <div class="container"><img class="img-fluid d-block mx-auto mb-5" src="/assets/img/LOGO_mono.png">
+            <h2 style="font-size:40px"> ¡Bienvenido a SANA <span th:text="${username}"></span>! </h2>
+            <h2><i>Safe Access to Natural Areas</i></h2>
+            <br>
+            <hr class="barra-normal">
+            <br>
+            <br>
+            <h4 class="font-weight-light mb-0"> ¡El registro se ha completado satisfactoriamente! </h4>
+            <br>
+            <h5 class="font-weight-light mb-0"> En breves momentos recibirá un correo con la confirmación del registro. </h5>
+            <h5 class="font-weight-light mb-0"> Muchas gracias por confíar en SANA. </h5>
+            <br><br>
+            <hr class="barra-normal">
+            <br>
+            <h4 class="font-weight-light mb-0"> Ahora ya puede realizar reservas y acceder de forma segura y controlada a los espacios naturales de la Comunidad Valenciana. </h4>
+            <br><br>
+        </div>
+    </header>
+
+    <br>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <img style="height: auto; width: 100%; border-radius:100%;" src="/assets/img/homePicture1.jpg"/>
+            </div>
+            <div class="col-sm">
+                <img style="height: auto; width: 100%; border-radius:100%;" src="/assets/img/homePicture2.jpg"/>
+            </div>
+            <div class="col-sm">
+                <img style="height: auto; width: 90%; border-radius:100%;" src="/assets/img/homePicture3.jpg"/>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+
+    <div th:replace="fragments/footer"></div>
+
+</body>
+</html>

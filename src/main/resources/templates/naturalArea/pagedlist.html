@@ -4,6 +4,15 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
 
+<div th:switch="${typeUser}">
+    <td th:case="'registeredCitizen'">
+        <div th:replace="fragments/headerRegistered"></div>
+    </td>
+    <td th:case="*">
+        <div th:replace="fragments/header"></div>
+    </td>
+</div>
+
 <section id="perfil">
 <div class="container">
 
@@ -119,5 +128,7 @@
 
 </div>
 </section>
+
+<div th:replace="fragments/footer"></div>
 </body>
 

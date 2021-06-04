@@ -235,9 +235,9 @@ public class NaturalAreaController {
         int currentPage = page.orElse(0);
         model.addAttribute("selectedPage", currentPage);
 
-        if (session.getAttribute("registeredCitizen") == null)
-            return "inicio/areasNaturales";
-        return "inicioRegistrado/areasNaturales";
+        if (session.getAttribute("registeredCitizen") != null)
+            model.addAttribute("typeUser", "registeredCitizen");
+        return "naturalArea/pagedList";
     }
 
     // filtros para lista de natural areas de ciuadadanos

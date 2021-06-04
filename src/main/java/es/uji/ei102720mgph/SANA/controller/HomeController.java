@@ -112,68 +112,59 @@ public class HomeController {
         SanaUser sanaUser = sanaUserDao.getSanaUser(registrationCitizen.getEmail());
         if (sanaUser == null){
             //Usuario no registrado antes
-            // las contraseñas introducidas son iguales
-            if (registrationCitizen.getPassword().equals(registrationCitizen.getPasswordComprovation())) {
-                //Añadimos la dirección a las tablas
-                Address address = new Address();
-                address.setStreet(registrationCitizen.getStreet());
-                address.setNumber(registrationCitizen.getNumber());
-                address.setFloorDoor(registrationCitizen.getFloorDoor());
-                address.setPostalCode(registrationCitizen.getPostalCode());
-                address.setCity(registrationCitizen.getCity());
-                address.setCountry(registrationCitizen.getCountry());
-                String addressId = "" + addressDao.addAddress(address);
+            //Añadimos la dirección a las tablas
+            Address address = new Address();
+            address.setStreet(registrationCitizen.getStreet());
+            address.setNumber(registrationCitizen.getNumber());
+            address.setFloorDoor(registrationCitizen.getFloorDoor());
+            address.setPostalCode(registrationCitizen.getPostalCode());
+            address.setCity(registrationCitizen.getCity());
+            address.setCountry(registrationCitizen.getCountry());
+            String addressId = addressDao.addAddress(address);
 
-                //Añadimos el ciudadano a RegisteredCitizen
-                Formatter fmt = new Formatter();
-                BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
-                RegisteredCitizen registeredCitizen = new RegisteredCitizen();
-                registeredCitizen.setAddressId(addressId);
-                registeredCitizen.setName(registrationCitizen.getNombre());
-                registeredCitizen.setPin(encryptor.encryptPassword(registrationCitizen.getPassword()));
-                registeredCitizen.setSurname(registrationCitizen.getApellidos());
-                registeredCitizen.setEmail(registrationCitizen.getEmail());
-                registeredCitizen.setMobilePhoneNumber(registrationCitizen.getTelefono());
-                registeredCitizen.setDateOfBirth(registrationCitizen.getDateOfBirth());
-                registeredCitizen.setTypeOfUser(TypeOfUser.registeredCitizen);
-                registeredCitizen.setIdNumber(registrationCitizen.getDni());
-                fmt = new Formatter();
+            //Añadimos el ciudadano a RegisteredCitizen
+            BasicPasswordEncryptor encryptor = new BasicPasswordEncryptor();
+            RegisteredCitizen registeredCitizen = new RegisteredCitizen();
+            registeredCitizen.setAddressId(addressId);
+            registeredCitizen.setName(registrationCitizen.getNombre());
+            registeredCitizen.setPin(encryptor.encryptPassword(registrationCitizen.getPassword()));
+            registeredCitizen.setSurname(registrationCitizen.getApellidos());
+            registeredCitizen.setEmail(registrationCitizen.getEmail());
+            registeredCitizen.setMobilePhoneNumber(registrationCitizen.getTelefono());
+            registeredCitizen.setDateOfBirth(registrationCitizen.getDateOfBirth());
+            registeredCitizen.setTypeOfUser(TypeOfUser.registeredCitizen);
+            registeredCitizen.setIdNumber(registrationCitizen.getDni());
+            Formatter fmt = new Formatter();
 
-                try {
-                    int citizenCode = registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
-                    String username = "ci" + fmt.format("%04d" , citizenCode);
-                    registeredCitizen.setUsername(username);
+            try {
+                int citizenCode = registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
+                String username = "ci" + fmt.format("%04d" , citizenCode);
+                registeredCitizen.setUsername(username);
 
-                    // Envia correo electrónico
-                    String destinatario = registeredCitizen.getEmail();
-                    String asunto = "Bienvenido a SANA";
-                    String cuerpo = "Registro completado con éxito en SANA, " + registeredCitizen.getName()+
-                            ".\nSu código de usuario es: " + username +
-                            ".\n\nUn cordial saludo del equipo de SANA.";
-                    Email emailObjeto = enviarMail(destinatario, asunto, cuerpo);
-                    emailDao.addEmail(emailObjeto);
+                // Envia correo electrónico
+                String destinatario = registeredCitizen.getEmail();
+                String asunto = "Bienvenido a SANA";
+                String cuerpo = "Registro completado con éxito en SANA, " + registeredCitizen.getName()+
+                        ".\nSu código de usuario es: " + username +
+                        ".\n\nUn cordial saludo del equipo de SANA.";
+                Email emailObjeto = enviarMail(destinatario, asunto, cuerpo);
+                emailDao.addEmail(emailObjeto);
 
-                    session.setAttribute("registeredCitizen", registeredCitizen);
-                    return "redirect:/inicio/welcome";
+                session.setAttribute("registeredCitizen", registeredCitizen);
+                return "redirect:/inicio/registrado/welcome";
 
-                } catch (DataIntegrityViolationException e) {
-                    // borrar los anyadidos
-                    sanaUserDao.deleteSanaUser(registrationCitizen.getEmail());
-                    addressDao.deleteAddress(addressId);
-                    // alguna clave alternativa repetida, ver cuál es
-                    if(registeredCitizenDao.getRegisteredCitizenNIE(registeredCitizen.getIdNumber()) != null)
-                        model.addAttribute("NIERepetido", "NIE ya registrado");
-                    if(registeredCitizenDao.getRegisteredCitizenTelf(registeredCitizen.getMobilePhoneNumber()) != null)
-                        model.addAttribute("telfRepetido", "Teléfono ya registrado");
-                    return "/inicio/register_form";
-                }
-
-            }else {
-                //Contrasenyas no coinciden TODO esto lo debería hacer el validador
-                bindingResult.rejectValue("passwordComprovation", "badpass", "Contraseñas diferentes");
-                // TODO no va
+            } catch (DataIntegrityViolationException e) {
+                // borrar los anyadidos
+                sanaUserDao.deleteSanaUser(registrationCitizen.getEmail());
+                addressDao.deleteAddress(addressId);
+                // alguna clave alternativa repetida, ver cuál es
+                if(registeredCitizenDao.getRegisteredCitizenNIE(registeredCitizen.getIdNumber()) != null)
+                    model.addAttribute("NIERepetido", "repetido");
+                if(registeredCitizenDao.getRegisteredCitizenTelf(registeredCitizen.getMobilePhoneNumber()) != null)
+                    model.addAttribute("telfRepetido", "repetido");
                 return "/inicio/register_form";
             }
+
         }else {
             //Usuario ya registrado en el sistema
             bindingResult.rejectValue("email", "bademail", "Email ya registrado");
@@ -368,17 +359,6 @@ public class HomeController {
             me.printStackTrace();   //Si se produce un error
         }
         return email;
-    }
-
-    @RequestMapping(value="inicio/welcome")
-    public String welcome(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null){
-            model.addAttribute("userLogin", new UserLogin() {});
-            return "redirect:/inicio/login";
-        }
-        RegisteredCitizen registeredCitizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        model.addAttribute("username", registeredCitizen.getName());
-        return "inicio/welcome";
     }
 
 }

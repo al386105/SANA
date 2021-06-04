@@ -20,7 +20,7 @@ public class AddressDao {
     }
 
     /* Afegeix el address a la base de dades */
-    public int addAddress(Address address) {
+    public String addAddress(Address address) {
         boolean excepcion;
         Formatter fmt;
         do {
@@ -36,7 +36,8 @@ public class AddressDao {
                 Address.incrementaContador();
             }
         } while (excepcion);
-        return Address.getContador()-1;
+        fmt = new Formatter();
+        return "ad" + fmt.format("%07d", Address.getContador()-1);
     }
 
     /* Obté el address amb el id donat. Torna null si no existeix. */

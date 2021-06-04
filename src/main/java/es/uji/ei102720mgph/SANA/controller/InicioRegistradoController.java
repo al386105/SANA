@@ -62,4 +62,15 @@ public class InicioRegistradoController {
         session.setAttribute("registeredCitizen", registeredCitizen);
         return "redirect:perfil";
     }
+
+    @RequestMapping(value="/welcome")
+    public String welcome(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null){
+            model.addAttribute("userLogin", new UserLogin() {});
+            return "redirect:/inicio/login";
+        }
+        RegisteredCitizen registeredCitizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("username", registeredCitizen.getName());
+        return "inicioRegistrado/welcome";
+    }
 }

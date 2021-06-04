@@ -67,12 +67,12 @@ public class HomeController {
 
     @RequestMapping("/")
     public String home(Model model, HttpSession session) {
-        if(session.getAttribute("registeredCitizen") != null)
-            return "inicioRegistrado/home";
-        else if (session.getAttribute("environmentalManager") != null)
+        if (session.getAttribute("environmentalManager") != null)
             return "environmentalManager/home";
         else if (session.getAttribute("municipalManager") != null)
             return "municipalManager/home";
+        else if (session.getAttribute("registeredCitizen") != null)
+            model.addAttribute("typeUser", "registeredCitizen");
         return "inicio/home";
     }
 

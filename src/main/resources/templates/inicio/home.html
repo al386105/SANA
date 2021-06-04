@@ -4,7 +4,14 @@
 
 <body>
 
-    <div th:replace="fragments/header"></div>
+    <div th:switch="${typeUser}">
+        <td th:case="'registeredCitizen'">
+            <div th:replace="fragments/headerRegistered"></div>
+        </td>
+        <td th:case="*">
+            <div th:replace="fragments/header"></div>
+        </td>
+    </div>
 
     <header class="text-center text-white bg-primary">
         <div class="container"><img class="img-fluid d-block mx-auto mb-5" src="../assets/img/LOGO_mono.png">

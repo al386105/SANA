@@ -36,6 +36,7 @@
                         <option th:each="yearvalue: ${yearList}"
                                 th:value="${yearvalue}" th:text="${yearvalue}"></option>
                     </select>
+                    <td th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></td>
                 </div>
             </div>
 
@@ -46,6 +47,7 @@
                         <option th:each="monthvalue: ${T(es.uji.ei102720mgph.SANA.enums.Months).values()}"
                                 th:value="${monthvalue}" th:text="${monthvalue.descripcion}"></option>
                     </select>
+                    <td th:if="${#fields.hasErrors('month')}" th:errors="*{month}"></td>
                 </div>
             </div>
 

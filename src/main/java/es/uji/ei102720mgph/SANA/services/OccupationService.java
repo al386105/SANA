@@ -12,5 +12,7 @@ public interface OccupationService {
     String getOccupancyPlotByYear(String naturalArea, int year);
     String getOccupancyPlotByMonth(String naturalArea, int year, int month);
     String getOccupancyPlotByDay(String naturalArea, LocalDate day);
+    public String getMunicipalitiesPlot();
+    public String getMunicipalityPlot(String municipality);
 
     }

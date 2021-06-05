@@ -33,7 +33,12 @@
 
     </form>
 
-    <table class="table table-striped">
+    <div th:if="${#lists.isEmpty(occupancyDataOfNaturalAreas)}">
+        <br>
+        <h4 style="text-align: center">¡No existen areas naturales con acceso controlado en este municipio!</h4>
+    </div>
+
+    <table th:unless="${#lists.isEmpty(occupancyDataOfNaturalAreas)}" class="table table-striped">
         <thead>
         <tr>
             <th scope="col">Área natural restringida</th>
@@ -54,6 +59,14 @@
         </tr>
         </tbody>
     </table>
+
+    <br>
+
+    <div th:unless="${#lists.isEmpty(occupancyDataOfNaturalAreas)}" class="row justify-content-center">
+        <div class="col-sm-8">
+            <img  th:src="@{ '../../../../img/' + ${plot}}" alt="Grafico"/>
+        </div>
+    </div>
 
     <br>
 

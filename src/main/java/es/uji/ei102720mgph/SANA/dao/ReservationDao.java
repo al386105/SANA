@@ -128,6 +128,26 @@ public class ReservationDao {
         }
     }
 
+
+    /**
+     * Devuelve todas las reservas realizadas en todas las areas naturales de un municipio
+     * */
+    public List<Reservation> getReservationsOfMunicipality(String municipality) {
+        try {
+            return jdbcTemplate.query("SELECT * from reservation " +
+                            "join reservationofzone on reservation.reservationnumber = reservationofzone.reservationnumber " +
+                            "join zone on reservationofzone.zoneid = zone.id " +
+                            "join naturalarea on zone.naturalArea = naturalArea.name " +
+                            "WHERE naturalarea.municipality = ? ",
+                    new ReservationRowMapper(),
+                    municipality);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ArrayList<Reservation>();
+        }
+    }
+
+
     /**
      * Devuelve todas las reservas realizadas en el area natural
      * */

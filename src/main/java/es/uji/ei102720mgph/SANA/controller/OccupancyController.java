@@ -61,8 +61,13 @@ public class OccupancyController {
         List<Municipality> municipalities = municipalityDao.getMunicipalities();
 
         // filtrar por municipio
-        if (municipality != null && !municipality.equals("todos"))
+        if (municipality != null && !municipality.equals("todos")){
             naturalAreas.removeIf(naturalArea -> !naturalArea.getMunicipality().equals(municipality));
+            model.addAttribute("plot", occupationService.getMunicipalityPlot(municipality));
+        }
+        else {
+            model.addAttribute("plot", occupationService.getMunicipalitiesPlot());
+        }
 
         model.addAttribute("municipalities", municipalities);
         model.addAttribute("naturalAreas", naturalAreas);
@@ -128,6 +133,7 @@ public class OccupancyController {
         }
         return "occupancy/plotForm";
     }
+
 
     @RequestMapping(value="/plotForm", method=RequestMethod.POST)
     public String occupancyPlotSubmit(Model model, HttpSession session,

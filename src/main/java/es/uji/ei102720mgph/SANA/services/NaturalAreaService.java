@@ -10,4 +10,4 @@ public interface NaturalAreaService {
     List<String> getImageOfNaturalAreas(List<NaturalArea> naturalAreas);
     List<String> getNameOfNaturalAreas();
     List<String> getNameOfRestrictedNaturalAreas();
-}
+    }

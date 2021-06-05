@@ -1,13 +1,11 @@
 package es.uji.ei102720mgph.SANA.services;
 
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
+import es.uji.ei102720mgph.SANA.dao.NaturalAreaDao;
 import es.uji.ei102720mgph.SANA.enums.Months;
-import es.uji.ei102720mgph.SANA.model.OccupancyData;
+import es.uji.ei102720mgph.SANA.model.*;
 import es.uji.ei102720mgph.SANA.dao.ReservationDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
-import es.uji.ei102720mgph.SANA.model.NaturalArea;
-import es.uji.ei102720mgph.SANA.model.Reservation;
-import es.uji.ei102720mgph.SANA.model.Zone;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -17,6 +15,7 @@ import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,6 +31,9 @@ import java.util.List;
 public class OccupationSvc implements OccupationService{
     @Value("${upload.file.directory}")
     private String uploadDirectory;
+
+    @Autowired
+    NaturalAreaDao naturalAreaDao;
 
     @Autowired
     MunicipalityDao municipalityDao;
@@ -205,6 +207,66 @@ public class OccupationSvc implements OccupationService{
         return "plots/" + plotName;
     }
 
+    public String getMunicipalitiesPlot() {
+        String plotName = "municipalities.png";
+        String path = uploadDirectory + "plots/" + plotName;
 
+        File file = new File(path);
+
+        List<Municipality> municipalities = municipalityDao.getMunicipalities();
+
+        //Generamos el dataSet:
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        int occupancy;
+
+        for(Municipality municipality: municipalities){
+            occupancy = getOccupancy(
+                    reservationDao.getReservationsOfMunicipality(municipality.getName()));
+            if (occupancy > 0) dataset.setValue(municipality.getName(), occupancy);
+        }
+
+        //Generamos el chart
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Accesos totales a las areas naturalaes de los distintos municipios",
+                dataset,
+                false, true, false);
+
+        saveChart(file, chart);
+
+        return "plots/" + plotName;
+    }
+
+    public String getMunicipalityPlot(String municipality){
+        String plotName = "municipality.png";
+        String path = uploadDirectory + "plots/" + plotName;
+
+        File file = new File(path);
+
+        List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
+
+
+        //Generamos el dataSet:
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        int occupancy;
+
+        for(NaturalArea naturalArea: naturalAreas){
+            if (naturalArea.getMunicipality().equals(municipality)){
+                occupancy = getOccupancy(
+                        reservationDao.getReservationsOfNaturalArea(naturalArea.getName()));
+                if (occupancy > 0) dataset.setValue(naturalArea.getName(), occupancy);
+            }
+
+        }
+
+        //Generamos el chart
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Accesos totales en las distintas areas naturales de " + municipality,
+                dataset,
+                false, true, false);
+
+        saveChart(file, chart);
+
+        return "plots/" + plotName;
+    }
 
 }

@@ -15,12 +15,7 @@
                 dos minutos.</h4>
         </div>
         <div th:unless="${#lists.isEmpty(reservas)}">
-            <div>
-                <a href="/reservation/reservas"
-                   class="btn btn-primary">Atrás</a>
-                <br>
-                <br>
-            </div>
+
             <div th:each="reserva: ${#lists.sort(reservas)}">
                 <div class="card-horizontal">
                     <div class="img-square-wrapper">

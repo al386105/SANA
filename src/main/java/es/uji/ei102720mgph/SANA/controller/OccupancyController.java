@@ -145,7 +145,6 @@ public class OccupancyController {
         if (bindingResult.hasErrors())
             return "occupancy/plotForm";
 
-
         switch (occupancyFormData.getTypeOfPeriod().getDescripcion()) {
             case "Por día":
                 model.addAttribute("plot",

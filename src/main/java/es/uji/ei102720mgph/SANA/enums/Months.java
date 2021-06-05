@@ -26,5 +26,12 @@ public enum Months {
         return descripcion;
     }
 
+    public String getDescripcionOfValue(int value) {
+        for(Months mes : Months.values())
+            if(mes.getNum() == value)
+                return descripcion;
+        return "noEncontrado";
+    }
+
     public int getNum() { return num; }
 }

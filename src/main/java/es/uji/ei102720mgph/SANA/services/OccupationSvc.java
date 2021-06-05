@@ -2,7 +2,6 @@ package es.uji.ei102720mgph.SANA.services;
 
 import es.uji.ei102720mgph.SANA.dao.MunicipalityDao;
 import es.uji.ei102720mgph.SANA.enums.Months;
-import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import es.uji.ei102720mgph.SANA.model.OccupancyData;
 import es.uji.ei102720mgph.SANA.dao.ReservationDao;
 import es.uji.ei102720mgph.SANA.dao.ZoneDao;
@@ -12,6 +11,8 @@ import es.uji.ei102720mgph.SANA.model.Zone;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -94,7 +91,7 @@ public class OccupationSvc implements OccupationService{
     private void saveChart(File file, JFreeChart chart){
         //Guardamos la imagen
         try {
-            ChartUtilities.saveChartAsPNG(file, chart, 500, 500);
+            ChartUtilities.saveChartAsPNG(file, chart, 700, 400);
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -113,7 +110,7 @@ public class OccupationSvc implements OccupationService{
         for(int month = 1; month <= months; month++){
             date = LocalDate.of(year, month, 1);
             occupancy = getOccupancy(reservationDao.getReservationsOfNaturalAreaOfMonth(naturalArea, date));
-            dataset.addValue(occupancy, naturalArea, month  + "");
+            dataset.addValue(occupancy, naturalArea, Months.values()[month - 1].getDescripcion());
         }
 
         //Generamos el chart
@@ -124,6 +121,10 @@ public class OccupationSvc implements OccupationService{
                 dataset,
                 PlotOrientation.VERTICAL,
                 false, true, false);
+
+        //Establecemos valores enteros en el eje y
+        CategoryPlot plot = chart.getCategoryPlot();
+        plot.getRangeAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
         saveChart(file, chart);
         return  "plots/" + file.getName();
@@ -155,6 +156,10 @@ public class OccupationSvc implements OccupationService{
                 PlotOrientation.VERTICAL,
                 false, true, false);
 
+        //Establecemos valores enteros en el eje y
+        CategoryPlot plot = chart.getCategoryPlot();
+        plot.getRangeAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
         saveChart(file, chart);
         return "plots/" + plotName;
     }
@@ -185,6 +190,10 @@ public class OccupationSvc implements OccupationService{
                 dataset,
                 PlotOrientation.VERTICAL,
                 false, true, false);
+
+        //Establecemos valores enteros en el eje y
+        CategoryPlot plot = chart.getCategoryPlot();
+        plot.getRangeAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
         saveChart(file, chart);
         return "plots/" + plotName;

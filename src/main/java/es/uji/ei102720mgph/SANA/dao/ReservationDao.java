@@ -60,7 +60,7 @@ public class ReservationDao {
                         "INSERT INTO Reservation VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                         Reservation.getContador(), reservation.getReservationDate(), LocalDate.now(),
                         LocalTime.now(), reservation.getNumberOfPeople(), ReservationState.created.name(),
-                        "assets/img/qrCodes/qr"+ fmt.format("%07d", Reservation.getContador()), null, null, reservation.getCitizenEmail(), reservation.getTimeSlotId());
+                        "qrCodes/qr"+ fmt.format("%07d", Reservation.getContador()), null, null, reservation.getCitizenEmail(), reservation.getTimeSlotId());
 
                 excepcion = false;
             } catch (DuplicateKeyException e) {

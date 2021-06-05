@@ -289,6 +289,7 @@ public class ReservationController {
             int max = reservationDao.getMaximumCapacity(res.getReservationNumber());
             model.addAttribute("maxPersonas" + listaReserva.getReservationNumber(), max);
         }
+
         model.addAttribute("motivo", new MotivoCancelancion());
         model.addAttribute("personas", new PersonasReserva());
         model.addAttribute("reservas", listaReservas);

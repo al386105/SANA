@@ -46,7 +46,7 @@ public class NaturalAreaSvc implements NaturalAreaService  {
             }
             else{
                 //Si no tiene imagenes, añadimos una imagen por defecto asociada
-                    pictures.add("/assets/img/naturalAreas/noPicture.png");
+                    pictures.add("naturalAreas/noPicture.png");
 
             }
         }

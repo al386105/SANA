@@ -101,9 +101,6 @@ public class OccupationSvc implements OccupationService{
         String plotName = naturalArea + year + ".png";
         String path = uploadDirectory + "plots/" + plotName;
 
-//        String pathPicture = "/assets/img/plots/" + plotName;
-//        String path = "src/main/resources/static" + pathPicture;
-
         File file = new File(path);
 
         //Generamos el dataSet:
@@ -133,8 +130,8 @@ public class OccupationSvc implements OccupationService{
 
     public String getOccupancyPlotByMonth(String naturalArea, int year, int month) {
         String plotName = naturalArea + year + "-" + month + ".png";
-        String pathPicture = "/assets/img/plots/" +  plotName;
-        String path = "src/main/resources/static" + pathPicture;
+        String path = uploadDirectory + "plots/" + plotName;
+
         File file = new File(path);
 
         //Generamos el dataSet:
@@ -165,8 +162,8 @@ public class OccupationSvc implements OccupationService{
 
     public String getOccupancyPlotByDay(String naturalArea, LocalDate day) {
         String plotName = naturalArea + day + ".png";
-        String pathPicture = "/assets/img/plots/" +  plotName;
-        String path = "src/main/resources/static" + pathPicture;
+        String path = uploadDirectory + "plots/" + plotName;
+
         File file = new File(path);
 
         //Generamos el dataSet:

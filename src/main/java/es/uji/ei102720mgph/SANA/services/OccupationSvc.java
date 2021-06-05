@@ -11,9 +11,7 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +102,6 @@ public class OccupationSvc implements OccupationService{
     public String getOccupancyPlotByYear(String naturalArea, int year) {
         String plotName = naturalArea + year + ".png";
         String path = uploadDirectory + "plots/" + plotName;
-
         File file = new File(path);
 
         //Generamos el dataSet:
@@ -131,14 +129,12 @@ public class OccupationSvc implements OccupationService{
         plot.getRangeAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
         saveChart(file, chart);
-
         return  "plots/" + file.getName();
     }
 
     public String getOccupancyPlotByMonth(String naturalArea, int year, int month) {
         String plotName = naturalArea + year + "-" + month + ".png";
         String path = uploadDirectory + "plots/" + plotName;
-
         File file = new File(path);
 
         //Generamos el dataSet:
@@ -155,8 +151,8 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupación en " + naturalArea + " durante " + month + "/" + year,
-                "Dia",
+                "Ocupación en " + naturalArea + " durante " + getNombreMes(month) + " de " + year,
+                "Día",
                 "Número de reservas",
                 dataset,
                 PlotOrientation.VERTICAL,
@@ -167,14 +163,20 @@ public class OccupationSvc implements OccupationService{
         plot.getRangeAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
         saveChart(file, chart);
-
         return "plots/" + plotName;
+    }
+
+    public String getNombreMes(int value) {
+        for(Months mes : Months.values())
+            if(mes.getNum() == value)
+                return mes.getDescripcion();
+        return "noEncontrado";
     }
 
     public String getOccupancyPlotByDay(String naturalArea, LocalDate day) {
         String plotName = naturalArea + day + ".png";
         String path = uploadDirectory + "plots/" + plotName;
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         File file = new File(path);
 
         //Generamos el dataSet:
@@ -191,7 +193,7 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createBarChart(
-                "Ocupación en " + naturalArea + " durante el día " + day.toString(),
+                "Ocupación en " + naturalArea + " durante el día " + day.format(formatter),
                 "Hora",
                 "Número de reservas",
                 dataset,
@@ -203,7 +205,6 @@ public class OccupationSvc implements OccupationService{
         plot.getRangeAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
         saveChart(file, chart);
-
         return "plots/" + plotName;
     }
 

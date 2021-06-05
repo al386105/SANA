@@ -147,7 +147,7 @@ public class OccupancyController {
 
 
         switch (occupancyFormData.getTypeOfPeriod().getDescripcion()) {
-            case "Por dia":
+            case "Por día":
                 model.addAttribute("plot",
                         occupationService.getOccupancyPlotByDay(occupancyFormData.getNaturalArea(),
                                 occupancyFormData.getDay()));

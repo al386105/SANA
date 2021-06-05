@@ -157,7 +157,7 @@ public class OccupationSvc implements OccupationService{
 
         saveChart(file, chart);
 
-        return "plots/" + file.getName();
+        return "plots/" + plotName;
     }
 
     public String getOccupancyPlotByDay(String naturalArea, LocalDate day) {
@@ -189,7 +189,7 @@ public class OccupationSvc implements OccupationService{
 
         saveChart(file, chart);
 
-        return "plots/" + file.getName();
+        return "plots/" + plotName;
     }
 
 

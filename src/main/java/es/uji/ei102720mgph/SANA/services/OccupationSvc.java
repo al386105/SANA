@@ -211,9 +211,7 @@ public class OccupationSvc implements OccupationService{
     public String getMunicipalitiesPlot() {
         String plotName = "municipalities.png";
         String path = uploadDirectory + "plots/" + plotName;
-
         File file = new File(path);
-
         List<Municipality> municipalities = municipalityDao.getMunicipalities();
 
         //Generamos el dataSet:
@@ -228,46 +226,38 @@ public class OccupationSvc implements OccupationService{
 
         //Generamos el chart
         JFreeChart chart = ChartFactory.createPieChart(
-                "Accesos totales a las areas naturalaes de los distintos municipios",
+                "Accesos totales a las áreas naturales de los distintos municipios",
                 dataset,
                 false, true, false);
 
         saveChart(file, chart);
-
         return "plots/" + plotName;
     }
 
     public String getMunicipalityPlot(String municipality){
         String plotName = "municipality.png";
         String path = uploadDirectory + "plots/" + plotName;
-
         File file = new File(path);
-
         List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedNaturalAreas();
-
 
         //Generamos el dataSet:
         DefaultPieDataset dataset = new DefaultPieDataset();
         int occupancy;
 
-        for(NaturalArea naturalArea: naturalAreas){
+        for(NaturalArea naturalArea: naturalAreas)
             if (naturalArea.getMunicipality().equals(municipality)){
                 occupancy = getOccupancy(
                         reservationDao.getReservationsOfNaturalArea(naturalArea.getName()));
                 if (occupancy > 0) dataset.setValue(naturalArea.getName(), occupancy);
             }
 
-        }
-
         //Generamos el chart
         JFreeChart chart = ChartFactory.createPieChart(
-                "Accesos totales en las distintas areas naturales de " + municipality,
+                "Accesos totales en las distintas áreas naturales de " + municipality,
                 dataset,
                 false, true, false);
 
         saveChart(file, chart);
-
         return "plots/" + plotName;
     }
-
 }

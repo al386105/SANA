@@ -37,12 +37,12 @@ public class ReservationController {
 
     @Autowired
     public void setReservationDao(ReservationDao reservationDao) {
-        this.reservationDao=reservationDao;
+        this.reservationDao = reservationDao;
     }
 
     @Autowired
     public void setNaturalAreaDao(NaturalAreaDao naturalAreaDao) {
-        this.naturalAreaDao=naturalAreaDao;
+        this.naturalAreaDao = naturalAreaDao;
     }
 
     @Autowired
@@ -51,12 +51,12 @@ public class ReservationController {
     }
 
     @Autowired
-    public void setReservaDatosDao(ReservaDatosDao reservaDatosDao){
+    public void setReservaDatosDao(ReservaDatosDao reservaDatosDao) {
         this.reservaDatosDao = reservaDatosDao;
     }
 
     @Autowired
-    public void setTimeSlotDao(TimeSlotDao timeSlotDao){
+    public void setTimeSlotDao(TimeSlotDao timeSlotDao) {
         this.timeSlotDao = timeSlotDao;
     }
 
@@ -67,14 +67,15 @@ public class ReservationController {
 
 
     // Operació crear
-    @RequestMapping(value="/add/{naturalArea}")
+    @RequestMapping(value = "/add/{naturalArea}")
     public String addReservation(Model model, @PathVariable String naturalArea, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null)  {
-            model.addAttribute("userLogin", new UserLogin() {});
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {
+            });
             session.setAttribute("nextUrl", "/reservation/add/" + naturalArea);
             return "redirect:/inicio/login";
         }
-        if(session.getAttribute("nextUrl") != null)
+        if (session.getAttribute("nextUrl") != null)
             session.removeAttribute("nextUrl");
         model.addAttribute("reservation", new NuevaReserva());
         model.addAttribute("naturalArea", naturalArea);
@@ -87,7 +88,7 @@ public class ReservationController {
         return "reservation/add";
     }
 
-    @RequestMapping(value="/add2/{naturalArea}")
+    @RequestMapping(value = "/add2/{naturalArea}")
     public String addReservation2(@ModelAttribute("reservation") NuevaReserva reservation, @PathVariable String naturalArea, Model model, HttpSession session) {
         model.addAttribute("reservation", reservation);
         model.addAttribute("naturalArea", naturalArea);
@@ -98,8 +99,7 @@ public class ReservationController {
             } else {
                 model.addAttribute("puedeReservar", false);
             }
-        }
-        else {
+        } else {
             model.addAttribute("puedeReservar", true);
         }
         List<Zone> zonas = zoneDao.getZoneDisponibles(reservation.getReservationDate(), reservation.getTimeSlotId(), reservation.getNumberOfPeople(), (String) model.getAttribute("naturalArea"));
@@ -108,7 +108,7 @@ public class ReservationController {
     }
 
     // Gestió de la resposta del formulari de creació d'objectes
-    @RequestMapping(value="/add", method=RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("reservation") NuevaReserva reservation,
                                    BindingResult bindingResult, HttpSession session) {
         // TODO VALIDADOR RESERVA
@@ -154,7 +154,7 @@ public class ReservationController {
             String destinatario = reservation.getCitizenEmail();
             String asunto = "Reserva completada";
             String cuerpo = "Reserva realizada correctamente el día " + reservation.getReservationDate() +
-            " para " + reservation.getNumberOfPeople()  + " personas. \n\nUn cordial saludo del equipo de SANA.";
+                    " para " + reservation.getNumberOfPeople() + " personas. \n\nUn cordial saludo del equipo de SANA.";
             Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
             emailDao.addEmail(email);
         }
@@ -165,7 +165,8 @@ public class ReservationController {
     @RequestMapping("/cancelarReserva/{id}")
     public String cancelarReserva(@ModelAttribute("motivo") MotivoCancelancion motivo, @PathVariable String id, Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
+            model.addAttribute("userLogin", new UserLogin() {
+            });
             session.setAttribute("nextUrl", "/reservation/reservas");
             return "redirect:/inicio/login";
         }
@@ -191,7 +192,7 @@ public class ReservationController {
         String destinatario = reservation.getCitizenEmail();
         String asunto = "Reserva cancelada";
         String cuerpo = "Ha cancelado su reserva correctamente del día " + reservation.getReservationDate() +
-                " para " + reservation.getNumberOfPeople()  + " personas. \n\nUn cordial saludo del equipo de SANA.";
+                " para " + reservation.getNumberOfPeople() + " personas. \n\nUn cordial saludo del equipo de SANA.";
         Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
         emailDao.addEmail(email);
         return "redirect:/reservation/reservas";
@@ -207,8 +208,7 @@ public class ReservationController {
         }
 
         int pers = personas.getNum();
-        System.out.println(pers);
-        //reservaDatosDao.cancelaReservaPorCiudadano(id, personas);
+        reservaDatosDao.modificaReservaPersonas(id, pers);
 
         // Actualizar QR con los nuevos datos de la reserva
         Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
@@ -232,17 +232,58 @@ public class ReservationController {
         String destinatario = reservation.getCitizenEmail();
         String asunto = "Reserva actualizada";
         String cuerpo = "Ha actualizado correctamente los datos de la reserva del día " + reservation.getReservationDate() +
-                " para " + reservation.getNumberOfPeople()  + " personas. \n\nUn cordial saludo del equipo de SANA.";
+                " para " + reservation.getNumberOfPeople() + " personas. \n\nUn cordial saludo del equipo de SANA.";
         Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
         emailDao.addEmail(email);
         return "redirect:/reservation/reservas";
+    }
+
+    @RequestMapping("/editarReservaMuni/{naturalArea}/{id}")
+    public String editarReservaMuni(@ModelAttribute("personas") PersonasReserva personas, @PathVariable String naturalArea, @PathVariable String id, Model model, HttpSession session) {
+        if (session.getAttribute("municipalManager") == null) {
+            model.addAttribute("userLogin", new UserLogin() {});
+            session.setAttribute("nextUrl", "/reservation/reservas");
+            return "redirect:/inicio/login";
+        }
+
+        int pers = personas.getNum();
+        reservaDatosDao.modificaReservaPersonas(id, pers);
+
+        // Actualizar QR con los nuevos datos de la reserva
+        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
+        String timeSlotId = reservation.getTimeSlotId();
+        TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
+        Formatter fmt = new Formatter();
+        QRCode qr = new QRCode();
+        File f = new File("qr" + fmt.format("%07d", Integer.parseInt(id)) + ".png");
+        String text = "Reserva por " + reservation.getCitizenEmail() + ", de fecha " + reservation.getReservationDate()
+                + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
+        try {
+            qr.generateQR(f, text, 300, 300);
+            byte[] bytes = Files.readAllBytes(f.toPath());
+            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
+            Files.write(path, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Enviar mail con la modificacion de la reserva
+        String destinatario = reservation.getCitizenEmail();
+        String asunto = "Reserva actualizada";
+        String cuerpo = "Debido a las restricciones de aforo en el area natural: " + naturalArea +
+                "se ha modificado el número de personas que podrán acudir a dicha reserva con fecha" + reservation.getReservationDate() +
+                " y se ha visto modificada a " + reservation.getNumberOfPeople() + " personas asistentes. \n\nUn cordial saludo del equipo de SANA.";
+        Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
+        emailDao.addEmail(email);
+        return "redirect:/reservation/reservasArea/" + naturalArea;
     }
 
 
     @RequestMapping("/cancelarReservaMunicipal/{naturalArea}/{id}")
     public String cancelarReservaMunicipal(@ModelAttribute("motivo") MotivoCancelancion motivo, @PathVariable String naturalArea, @PathVariable String id, Model model, HttpSession session) {
         if (session.getAttribute("municipalManager") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
+            model.addAttribute("userLogin", new UserLogin() {
+            });
             session.setAttribute("nextUrl", "/reservation/reservasArea/" + naturalArea);
             return "redirect:/inicio/login";
         }
@@ -268,7 +309,7 @@ public class ReservationController {
         String destinatario = reservation.getCitizenEmail();
         String asunto = "Reserva cancelada";
         String cuerpo = "Su reserva del día " + reservation.getReservationDate() +
-                " para " + reservation.getNumberOfPeople()  + " personas ha sido cancelada por el gestor municipal." +
+                " para " + reservation.getNumberOfPeople() + " personas ha sido cancelada por el gestor municipal." +
                 "\n\nUn cordial saludo del equipo de SANA.";
         Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
         emailDao.addEmail(email);
@@ -278,7 +319,8 @@ public class ReservationController {
     @RequestMapping("/reservas")
     public String redirigirRegistradoReservas(Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
+            model.addAttribute("userLogin", new UserLogin() {
+            });
             session.setAttribute("nextUrl", "/reservation/reservas");
             return "redirect:/inicio/login";
         }
@@ -299,7 +341,8 @@ public class ReservationController {
     @RequestMapping("/reservasTodas")
     public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
+            model.addAttribute("userLogin", new UserLogin() {
+            });
             session.setAttribute("nextUrl", "/reservation/reservasTodas");
             return "redirect:/inicio/login";
         }
@@ -309,23 +352,26 @@ public class ReservationController {
         return "/reservation/reservasTodas";
     }
 
-    @RequestMapping(value="/reservasArea/{naturalArea}")
+    @RequestMapping(value = "/reservasArea/{naturalArea}")
     public String reservasArea(Model model, @PathVariable String naturalArea, HttpSession session) {
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
+        if (session.getAttribute("municipalManager") == null) {
+            model.addAttribute("userLogin", new UserLogin() {
+            });
             session.setAttribute("nextUrl", "/reservation/reservasArea/" + naturalArea);
             return "redirect:/inicio/login";
         }
         model.addAttribute("reservas", reservaDatosDao.getReservasNaturalArea(naturalArea));
         model.addAttribute("motivo", new MotivoCancelancion());
+        model.addAttribute("personas", new PersonasReserva());
         model.addAttribute("naturalArea", naturalArea);
         return "reservation/reservasArea";
     }
 
-    @RequestMapping(value="/reservasTodasArea/{naturalArea}")
+    @RequestMapping(value = "/reservasTodasArea/{naturalArea}")
     public String todasReservasnaturalArea(Model model, @PathVariable String naturalArea, HttpSession session) {
-        if(session.getAttribute("municipalManager") ==  null) {
-            model.addAttribute("userLogin", new UserLogin() {});
+        if (session.getAttribute("municipalManager") == null) {
+            model.addAttribute("userLogin", new UserLogin() {
+            });
             session.setAttribute("nextUrl", "/reservation/reservasTodasArea/" + naturalArea);
             return "redirect:/inicio/login";
         }

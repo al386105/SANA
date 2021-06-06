@@ -64,9 +64,11 @@ public class OccupancyController {
         if (municipality != null && !municipality.equals("todos")){
             naturalAreas.removeIf(naturalArea -> !naturalArea.getMunicipality().equals(municipality));
             model.addAttribute("plot", occupationService.getMunicipalityPlot(municipality));
+            model.addAttribute("municipality", municipality);
         }
         else {
             model.addAttribute("plot", occupationService.getMunicipalitiesPlot());
+            model.addAttribute("municipality", "");
         }
 
         model.addAttribute("municipalities", municipalities);

@@ -53,6 +53,4 @@ public class CommentDao {
             return new ArrayList<Comment>();
         }
     }
-
-
 }

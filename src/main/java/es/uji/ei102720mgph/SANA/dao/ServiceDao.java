@@ -20,26 +20,26 @@ public class ServiceDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    /* Afegeix el address a la base de dades */
+    /* Afegeix el servei a la base de dades */
     public void addService(Service service) {
         jdbcTemplate.update(
                 "INSERT INTO Service VALUES(?, ?, ?, ?)", service.getNameOfService(),
                 service.getTemporality().name(), service.getDescription(), service.getHiringPlace());
     }
 
-    /* Esborra el address de la base de dades */
+    /* Esborra el servei de la base de dades */
     public void deleteService(String nameOfService) {
         jdbcTemplate.update("DELETE FROM Service WHERE nameOfService =?", nameOfService);
     }
 
-    /* Actualitza els atributs del address (excepte el id, que és la clau primària) */
+    /* Actualitza els atributs del servei (excepte el nom, que és la clau primària) */
     public void updateService(Service service) {
         jdbcTemplate.update("UPDATE Service SET temporality = ?, description = ?, hiringPlace = ?  WHERE nameOfService = ?",
                 service.getTemporality().name(), service.getDescription(), service.getHiringPlace(),
                 service.getNameOfService());
     }
 
-    /* Obté el address amb el id donat. Torna null si no existeix. */
+    /* Obté el servei amb el nom donat. Torna null si no existeix. */
     public Service getService(String nameOfService) {
         try {
             return jdbcTemplate.queryForObject(
@@ -51,7 +51,7 @@ public class ServiceDao {
         }
     }
 
-    /* Obté tots els addresss. Torna una llista buida si no n'hi ha cap. */
+    /* Obté tots els serveis. Torna una llista buida si no n'hi ha cap. */
     public List<Service> getServices() {
         try {
             return jdbcTemplate.query(

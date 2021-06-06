@@ -22,6 +22,7 @@
         <!--INFORMACIÓN DEL AREA NATURAL  -->
         <div class="container">
             <div class="row">
+                <div class="col-2"></div>
                 <div class="col-3">
                     <h5 class="colorMarron">Municipio:</h5>
                 </div>
@@ -31,6 +32,7 @@
             </div>
 
             <div class="row">
+                <div class="col-2"></div>
                 <div class="col-3">
                     <h5 class="colorMarron">Acceso:</h5>
                 </div>
@@ -40,6 +42,7 @@
             </div>
 
             <div class="row">
+                <div class="col-2"></div>
                 <div class="col-3">
                     <h5 class="colorMarron">Área:</h5>
                 </div>
@@ -49,6 +52,7 @@
             </div>
 
             <div class="row">
+                <div class="col-2"></div>
                 <div class="col-3">
                     <h5 class="colorMarron">Localización:</h5>
                 </div>
@@ -58,6 +62,7 @@
             </div>
 
             <div class="row">
+                <div class="col-2"></div>
                 <div class="col-3">
                     <h5 class="colorMarron">Largo:</h5>
                 </div>
@@ -67,6 +72,7 @@
             </div>
 
             <div class="row">
+                <div class="col-2"></div>
                 <div class="col-3">
                     <h5 class="colorMarron">Ancho:</h5>
                 </div>
@@ -76,24 +82,27 @@
             </div>
 
             <div class="row">
+                <div class="col-2"></div>
                 <div class="col-3">
                     <h5 class="colorMarron">Características físicas:</h5>
                 </div>
-                <div class="col-8">
+                <div class="col-6">
                     <h5 class="colorTierra" th:text="*{naturalArea.physicalCharacteristics}"></h5>
                 </div>
             </div>
 
             <div class="row">
+                <div class="col-2"></div>
                 <div class="col-3">
                     <h5 class="colorMarron">Descripción:</h5>
                 </div>
-                <div class="col-8">
+                <div class="col-6">
                     <h5 class="colorTierra" th:text="*{naturalArea.description}"></h5>
                 </div>
             </div>
 
             <div class="row">
+                <div class="col-2"></div>
                 <div class="col-3">
                     <h5 class="colorMarron">Orientación:</h5>
                 </div>
@@ -103,6 +112,7 @@
             </div>
 
             <div class="row" th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
+                <div class="col-2"></div>
                 <div class="col-3">
                     <h5 class="colorMarron">Restringido hasta:</h5>
                 </div>
@@ -217,40 +227,34 @@
         </section>
 
         <!-- SECCION DE SERVICIOS FIJOS DEL AREA NATURAL -->
-        <hr class="lineaVerde">
-        <div class="container text-center">
-            <h3>Servicios fijos</h3>
+        <div th:unless="${#lists.isEmpty(serviceDates)}" class="container text-center">
+            <hr class="lineaVerde">
+            <h3>Servicios fijos disponibles</h3>
             <br>
-            <div th:if="${#lists.isEmpty(serviceDates)}">
-                <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
-            </div>
-            <div th:unless="${#lists.isEmpty(serviceDates)}" class="container">
-
                 <div class="row text-left">
-                    <div class="col"><b>Servicio</b></div>
-                    <div class="col"><b>Descripción</b></div>
-                    <div class="col"><b>Lugar de contratación</b></div>
+                    <div class="col-2"></div>
+                    <div class="col-2"><b>Servicio</b></div>
+                    <div class="col-3"><b>Descripción</b></div>
+                    <div class="col-3"><b>Lugar de contratación</b></div>
                 </div>
                 <div class="row">
                     <br>
                 </div>
                 <div class="row text-left" th:each="serviceDate: ${#lists.sort(serviceDates)}">
-                    <div class="col"><i th:text="${serviceDate.nameOfService}"></i></div>
-                    <div class="col"><p th:text="${serviceDate.description}"></p></div>
-                    <div class="col"><p th:text="${serviceDate.hiringPlace}"></p></div>
+                    <div class="col-2"></div>
+                    <div class="col-2"><i th:text="${serviceDate.nameOfService}"></i></div>
+                    <div class="col-3"><p th:text="${serviceDate.description}"></p></div>
+                    <div class="col-3"><p th:text="${serviceDate.hiringPlace}"></p></div>
                 </div>
             </div>
         </div>
 
         <!-- SECCION DE SERVICIOS TEMPORALES DEL AREA NATURAL -->
-        <section id="temporalServices">
+        <div th:unless="${#lists.isEmpty(temporalServices)}" class="container">
             <hr class="lineaVerde">
             <div class="container text-center">
-                <h3>Servicios temporales</h3>
+                <h3>Servicios temporales disponibles</h3>
                 <br>
-                <div th:if="${#lists.isEmpty(temporalServices)}">
-                    <p><b>¡Este espacio natural no tiene asignado ningún servicio temporal!</b></p>
-                </div>
                 <div th:unless="${#lists.isEmpty(temporalServices)}" class="container">
                     <div class="row text-left">
                         <div class="col"><b>Servicio</b></div>
@@ -276,7 +280,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
         <br><br>
         <div class="row justify-content-center">

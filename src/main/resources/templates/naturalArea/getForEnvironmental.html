@@ -15,95 +15,109 @@
     <h2 class="text-uppercase text-center text-secondary mb-0"><span th:text="${naturalArea.name}"> </span></h2>
     <br><hr class="barra-normal"><br>
 
-    <div class="row">
-        <div class="col-3">
-            <h5 class="colorMarron">Municipio:</h5>
+    <!--INFORMACIÓN DEL AREA NATURAL  -->
+    <div class="container">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-3">
+                <h5 class="colorMarron">Municipio:</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="colorTierra" th:text="*{naturalArea.municipality}"></h5>
+            </div>
         </div>
-        <div class="col-6">
-            <h5 class="colorTierra" th:text="*{naturalArea.municipality}"></h5>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-3">
+                <h5 class="colorMarron">Acceso:</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="colorTierra" th:text="*{naturalArea.typeOfAccess.descripcion}"></h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-3">
+                <h5 class="colorMarron">Área:</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="colorTierra" th:text="*{naturalArea.typeOfArea.descripcion}"></h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-3">
+                <h5 class="colorMarron">Localización:</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="colorTierra" th:text="*{naturalArea.geographicalLocation}"></h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-3">
+                <h5 class="colorMarron">Largo:</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="colorTierra" th:text="*{naturalArea.length}"></h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-3">
+                <h5 class="colorMarron">Ancho:</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="colorTierra" th:text="*{naturalArea.width}"></h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-3">
+                <h5 class="colorMarron">Características físicas:</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="colorTierra" th:text="*{naturalArea.physicalCharacteristics}"></h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-3">
+                <h5 class="colorMarron">Descripción:</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="colorTierra" th:text="*{naturalArea.description}"></h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-3">
+                <h5 class="colorMarron">Orientación:</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="colorTierra" th:text="*{naturalArea.orientation.descripcion}"></h5>
+            </div>
+        </div>
+
+        <div class="row" th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
+            <div class="col-2"></div>
+            <div class="col-3">
+                <h5 class="colorMarron">Restringido hasta:</h5>
+            </div>
+            <div class="col-6">
+                <h5 class="colorTierra" th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></h5>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-3">
-            <h5 class="colorMarron">Acceso:</h5>
-        </div>
-        <div class="col-6">
-            <h5 class="colorTierra" th:text="*{naturalArea.typeOfAccess.descripcion}"></h5>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-3">
-            <h5 class="colorMarron">Área:</h5>
-        </div>
-        <div class="col-6">
-            <h5 class="colorTierra" th:text="*{naturalArea.typeOfArea.descripcion}"></h5>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-3">
-            <h5 class="colorMarron">Localización:</h5>
-        </div>
-        <div class="col-6">
-            <h5 class="colorTierra" th:text="*{naturalArea.geographicalLocation}"></h5>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-3">
-            <h5 class="colorMarron">Largo:</h5>
-        </div>
-        <div class="col-6">
-            <h5 class="colorTierra" th:text="*{naturalArea.length}"></h5>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-3">
-            <h5 class="colorMarron">Ancho:</h5>
-        </div>
-        <div class="col-6">
-            <h5 class="colorTierra" th:text="*{naturalArea.width}"></h5>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-3">
-            <h5 class="colorMarron">Características físicas:</h5>
-        </div>
-        <div class="col-6">
-            <h5 class="colorTierra" th:text="*{naturalArea.physicalCharacteristics}"></h5>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-3">
-            <h5 class="colorMarron">Descripción:</h5>
-        </div>
-        <div class="col-6">
-            <h5 class="colorTierra" th:text="*{naturalArea.description}"></h5>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-3">
-            <h5 class="colorMarron">Orientación:</h5>
-        </div>
-        <div class="col-6">
-            <h5 class="colorTierra" th:text="*{naturalArea.orientation.descripcion}"></h5>
-        </div>
-    </div>
-
-    <div class="row" th:if="${naturalArea.typeOfAccess.name() == 'restricted'}">
-        <div class="col-3">
-            <h5 class="colorMarron">Restringido hasta:</h5>
-        </div>
-        <div class="col-6">
-            <h5 class="colorTierra" th:text="${#temporals.format(naturalArea.restrictionTimePeriod,'dd/MM/yyyy')}"></h5>
-        </div>
-    </div>
     <br><br>
 
     <!-- SECCION DE IMAGENES DEL AREA NATURAL -->

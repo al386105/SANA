@@ -20,22 +20,24 @@
             <h3>Servicios fijos</h3>
             <br>
             <div th:if="${#lists.isEmpty(serviceDates)}">
-                <p><b>¡Este espacio natural no tiene asignado ningún servicio fijo!</b></p>
+                <h4>¡Este espacio natural no tiene asignado ningún servicio fijo!</h4>
             </div>
             <div th:unless="${#lists.isEmpty(serviceDates)}" class="container">
 
                 <div class="row text-left">
-                    <div class="col"><b>Servicio</b></div>
-                    <div class="col"><b>Descripción</b></div>
-                    <div class="col"><b>Lugar de contratación</b></div>
+                    <div class="col-2"></div>
+                    <div class="col-2"><b>Servicio</b></div>
+                    <div class="col-3"><b>Descripción</b></div>
+                    <div class="col-3"><b>Lugar de contratación</b></div>
                 </div>
                 <div class="row">
                     <br>
                 </div>
                 <div class="row text-left" th:each="serviceDate: ${#lists.sort(serviceDates)}">
-                    <div class="col"><i th:text="${serviceDate.nameOfService}"></i></div>
-                    <div class="col"><p th:text="${serviceDate.description}"></p></div>
-                    <div class="col"><p th:text="${serviceDate.hiringPlace}"></p></div>
+                    <div class="col-2"></div>
+                    <div class="col-2"><i th:text="${serviceDate.nameOfService}"></i></div>
+                    <div class="col-3"><p th:text="${serviceDate.description}"></p></div>
+                    <div class="col-3"><p th:text="${serviceDate.hiringPlace}"></p></div>
                 </div>
             </div>
         </div><br><br>

@@ -35,7 +35,8 @@
 
     <div th:if="${#lists.isEmpty(occupancyDataOfNaturalAreas)}">
         <br>
-        <h4 style="text-align: center">¡No existen areas naturales con acceso controlado en este municipio!</h4>
+        <h4 th:if="${municipality != ''}" style="text-align: center">¡No existen areas naturales con acceso controlado en <span th:text="${municipality}"></span>!</h4>
+        <h4 th:unless="${municipality != ''}" style="text-align: center">¡No hay registradas areas naturales con acceso controlado!</h4>
     </div>
 
     <table th:unless="${#lists.isEmpty(occupancyDataOfNaturalAreas)}" class="table table-striped">

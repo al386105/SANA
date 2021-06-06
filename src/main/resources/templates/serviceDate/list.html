@@ -15,9 +15,13 @@
         <h4 style="text-align: center"><span th:text="${areaNatural}"></span></h4>
 
         <div th:if="${#lists.isEmpty(services)}">
-            <h4 style="text-align: center">Todavía no hay ningún servicio fijo asignado</h4>
-            <br>
-            <br>
+            <br/>
+            <div class="row">
+                <div class="col">
+                    <h4>¡Todavía no hay registrado ningún servicio que coincida con esa búsqueda!</h4>
+                </div>
+            </div>
+            <br/>
         </div>
 
         <div th:unless="${#lists.isEmpty(services)}">

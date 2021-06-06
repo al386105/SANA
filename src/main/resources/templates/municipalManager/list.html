@@ -25,7 +25,13 @@
     </div>
 
     <div th:if="${#lists.isEmpty(municipalManagers)}">
-        ¡No ha añadido todavía ningún gestor municipal!
+        <br/>
+        <div class="row">
+            <div class="col-sm-8">
+                <h4>¡Todavía no hay registrado ningún manager que coincida con esa búsqueda!</h4>
+            </div>
+        </div>
+        <br/>
     </div>
     <table th:unless="${#lists.isEmpty(municipalManagers)}" class="table table-striped">
         <thead>

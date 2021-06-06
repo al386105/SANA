@@ -320,7 +320,6 @@ public class ReservationController {
         return "reservation/reservasTodasArea";
     }
 
-
     private void generarQr (String text, String id) {
         Formatter fmt = new Formatter();
         QRCode qr = new QRCode();
@@ -329,6 +328,8 @@ public class ReservationController {
             qr.generateQR(f, text, 300, 300);
             byte[] bytes = Files.readAllBytes(f.toPath());
             Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
+            // Lo eliminamos de la carpeta errónea
+            f.delete();
             Files.write(path, bytes);
         } catch (Exception e) {
             e.printStackTrace();

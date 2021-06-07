@@ -2,11 +2,15 @@ package es.uji.ei102720mgph.SANA.model;
 
 import es.uji.ei102720mgph.SANA.enums.ReservationState;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.servlet.view.document.AbstractPdfView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Map;
 
-public class ReservaDatos implements Comparable<ReservaDatos>{
+public class ReservaDatos implements Comparable<ReservaDatos>  {
     private int reservationNumber;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reservationDate;
@@ -119,4 +123,6 @@ public class ReservaDatos implements Comparable<ReservaDatos>{
     public int compareTo(ReservaDatos otra) {
         return -this.getReservationDate().compareTo(otra.getReservationDate());
     }
+
+
 }

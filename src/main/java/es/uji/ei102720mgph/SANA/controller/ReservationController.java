@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.view.document.AbstractPdfView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.nio.file.Files;
@@ -21,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Formatter;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/reservation")
@@ -112,6 +116,7 @@ public class ReservationController {
     public String processAddSubmit(@ModelAttribute("reservation") NuevaReserva reservation, HttpSession session) {
 
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        GeneratePDFController generatePDF = new GeneratePDFController();
         reservation.setCitizenEmail(citizen.getEmail());
         String zonas = reservation.getZoneid();
         String[] partes = zonas.split(",");
@@ -131,11 +136,18 @@ public class ReservationController {
             generarQr(text, "" + numRes);
         }
 
+        //Datos para pasar al email
+        NaturalArea naturalArea = naturalAreaDao.getNaturalAreaOfZone(partes[0]);
+
         // Enviar mail con la reserva
+        String path = uploadDirectory  +"/reservasPdf" + citizen.getName() + ".pdf";
+        generatePDF.createPDF(new File(path), citizen, reservation, naturalArea);
         String destinatario = reservation.getCitizenEmail();
         String asunto = "Reserva completada";
         String cuerpo = "Reserva realizada correctamente el día " + reservation.getReservationDate() +
                 " para " + reservation.getNumberOfPeople() + " personas. \n\nUn cordial saludo del equipo de SANA.";
+
+
         envioMailReserva(destinatario, asunto, cuerpo);
 
         return "redirect:/reservation/reservas"; //redirigim a la lista per a veure el reservation afegit

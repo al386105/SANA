@@ -3,6 +3,7 @@ package es.uji.ei102720mgph.SANA.model;
 public class OccupancyData {
     private NaturalArea naturalArea;
     private float occupancyRate;
+    private float occupancyRateNextDay;
     private int maxCapacity;
     private int totalOccupancy;
 
@@ -23,6 +24,14 @@ public class OccupancyData {
 
     public void setOccupancyRate(float occupancyRate) {
         this.occupancyRate = occupancyRate;
+    }
+
+    public float getOccupancyRateNextDay() {
+        return occupancyRateNextDay;
+    }
+
+    public void setOccupancyRateNextDay(float occupancyRateNextDay) {
+        this.occupancyRateNextDay = occupancyRateNextDay;
     }
 
     public int getMaxCapacity() {

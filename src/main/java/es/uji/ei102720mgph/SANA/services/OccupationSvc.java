@@ -68,7 +68,8 @@ public class OccupationSvc implements OccupationService{
         int maxCapacity = getMaxCapacityOfNaturalArea(naturalArea);
         int occupancyOfHour = getOccupancy(
                 reservationDao.getReservationsOfNaturalAreaOfHour(naturalArea, date, time));
-        return ((float) occupancyOfHour / (float) maxCapacity) * 100;
+        float rateOccupancy = ((float) occupancyOfHour / (float) maxCapacity) * 100;
+        return Math.round(rateOccupancy * (float) 100) / (float) 100; //Redondeo a dos decimales
     }
 
     public int getTotalOccupancy(String naturalArea){

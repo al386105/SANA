@@ -88,7 +88,6 @@
                             <form th:action="@{/reservation/editarReserva/} + ${reserva.reservationNumber}" th:object="${personas}">
                                 <input type="number" min="1" th:max="${'maxPersonas' + reserva.reservationNumber}" class="form-control motivo" id="personas"
                                        th:field="${personas.num}">
-                                <!-- TODO No funciona el numero max del input de arriba-->
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Confirmar</button>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>

@@ -116,7 +116,7 @@
             <label class="control-label col-sm-2" for="passwordComprovation">Repetir pin:</label>
             <div class="col-sm-4">
                 <input style="width: 80%;" type="password" minlength="4" maxlength="4" placeholder="4 números" required class="form-control" id="passwordComprovation" th:field="*{passwordComprovation}" />
-                <div class="error" th:if="${#fields.hasErrors('passwordComprovation')}" th:errors="*{password}"></div>
+                <div class="error" th:if="${#fields.hasErrors('passwordComprovation')}" th:errors="*{passwordComprovation}"></div>
             </div>
         </div>
 

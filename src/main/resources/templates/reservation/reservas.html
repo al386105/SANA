@@ -86,7 +86,7 @@
                                 <p>Indique el número de personas que finalmente acudirán:</p>
                             </div>
                             <form th:action="@{/reservation/editarReserva/} + ${reserva.reservationNumber}" th:object="${personas}">
-                                <input type="number" min="1" th:max="${'maxPersonas' + reserva.reservationNumber}" class="form-control motivo" id="personas"
+                                <input type="number" min="1" class="form-control motivo" id="personas"
                                        th:field="${personas.num}">
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Confirmar</button>

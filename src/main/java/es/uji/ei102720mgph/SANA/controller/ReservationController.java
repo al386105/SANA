@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
@@ -115,20 +116,19 @@ public class ReservationController {
         reservation.setCitizenEmail(citizen.getEmail());
         String zonas = reservation.getZoneid();
         String[] partes = zonas.split(",");
+        int numRes = reservationDao.addReservationPocosValores(reservation);
+        String naturalAreaName = naturalAreaDao.getNaturalAreaOfZone(partes[0]).getName();
+        String timeSlotId = reservation.getTimeSlotId();
+        TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
+
+        // Generar QR
+        String text = "Reserva por " + reservation.getCitizenEmail() + " en " + naturalAreaName + ", de fecha " + reservation.getReservationDate()
+                + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
+        generarQr(text, "" + numRes);
 
         for (String zon : partes) {
             reservation.setZoneid(zon);
-
-            int numRes = reservationDao.addReservationPocosValores(reservation);
             reservationDao.addReservationOfZone(numRes, reservation.getZoneid());
-            String naturalArea = naturalAreaDao.getNaturalAreaOfZone(partes[0]).getName();
-            String timeSlotId = reservation.getTimeSlotId();
-            TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
-
-            // Generar QR
-            String text = "Reserva por " + reservation.getCitizenEmail() + " en " + naturalArea + ", de fecha " + reservation.getReservationDate()
-                    + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
-            generarQr(text, "" + numRes);
         }
 
         //Datos para pasar al email
@@ -271,14 +271,36 @@ public class ReservationController {
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
-        for (ReservaDatos listaReserva : listaReservas) {
-            Reservation res = reservationDao.getReservation(listaReserva.getReservationNumber());
-            int max = reservationDao.getMaximumCapacity(res.getReservationNumber());
-            model.addAttribute("maxPersonas" + listaReserva.getReservationNumber(), max);
+        List<ReservaDatosAgrupada> listaReservasAgrupadas = new ArrayList<>();
+        for (ReservaDatos res : listaReservas){
+            boolean esta = false;
+            for ( ReservaDatosAgrupada agrupada : listaReservasAgrupadas) {
+                if (agrupada.getReservationNumber() == res.getReservationNumber()) {
+                    esta = true;
+                    List<String> zonas = agrupada.getZonas();
+                    zonas.add(res.getZoneNumber() + " " + res.getLetter());
+                    agrupada.setZonas(zonas);
+                    break;
+                }
+            }
+            if (!esta){
+                ReservaDatosAgrupada nuevaReserva = new ReservaDatosAgrupada();
+                nuevaReserva.setReservationNumber(res.getReservationNumber());
+                nuevaReserva.setReservationDate(res.getReservationDate());
+                nuevaReserva.setNumberOfPeople(res.getNumberOfPeople());
+                nuevaReserva.setState(res.getState());
+                nuevaReserva.setQRcode(res.getQRcode());
+                List<String> zones = new ArrayList<>();
+                zones.add(res.getZoneNumber() + " " + res.getLetter());
+                nuevaReserva.setZonas(zones);
+                nuevaReserva.setNaturalArea(res.getNaturalArea());
+                nuevaReserva.setBeginningTime(res.getBeginningTime());
+                nuevaReserva.setEndTime(res.getEndTime());
+            }
         }
         model.addAttribute("motivo", new MotivoCancelancion());
         model.addAttribute("personas", new PersonasReserva());
-        model.addAttribute("reservas", listaReservas);
+        model.addAttribute("reservas", listaReservasAgrupadas);
         return "/reservation/reservas";
     }
 

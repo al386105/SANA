@@ -91,6 +91,7 @@ public class ReservationDao {
         } while (excepcion);
     }
 
+
     /* Actualitza els atributs del reservation */
     public void updateReservation(Reservation reservation) {
         jdbcTemplate.update("UPDATE Reservation SET reservationDate = ?, creationDate = ?, creationTime = ?, " +
@@ -114,19 +115,7 @@ public class ReservationDao {
         }
     }
 
-    public Integer getMaximumCapacity(int reservationNumber) {
-        try {
-            return jdbcTemplate.queryForObject(
-                    "SELECT z.maximumcapacity FROM reservation AS r " +
-                            "JOIN reservationofzone AS res ON r.reservationnumber = res.reservationnumber " +
-                            "JOIN zone AS z ON res.zoneid = z.id " +
-                            "WHERE r.reservationnumber = ?",
-                    Integer.class, reservationNumber);
-        }
-        catch(EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
+
 
 
     /**
@@ -247,6 +236,25 @@ public class ReservationDao {
         }
         catch(EmptyResultDataAccessException e) {
             return new ArrayList<Reservation>();
+        }
+    }
+
+    /**
+     * Calcula la maxima capacidad posible de las zonas de una reserva.
+     * La máxima capacidad será el minimo de las capacidades de las zonas de la reserva
+     */
+    public Integer getMaximumCapacityOfReservation(int reservationNumber){
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT MIN(maximumcapacity) " +
+                            "FROM reservation " +
+                            "JOIN reservationofzone ON reservation.reservationnumber = reservationofzone.reservationnumber " +
+                            "JOIN zone ON zone.id = reservationofzone.zoneid " +
+                            "WHERE reservation.reservationnumber = ? ",
+                    Integer.class, reservationNumber);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return null;
         }
     }
 }

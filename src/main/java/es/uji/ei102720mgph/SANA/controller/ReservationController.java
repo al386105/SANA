@@ -89,7 +89,8 @@ public class ReservationController {
     }
 
     @RequestMapping(value = "/add2/{naturalArea}")
-    public String addReservation2(@ModelAttribute("reservation") NuevaReserva reservation, @PathVariable String naturalArea, Model model, HttpSession session) {
+    public String addReservation2(@ModelAttribute("reservation") NuevaReserva reservation,
+                                  @PathVariable String naturalArea, Model model, HttpSession session) {
         model.addAttribute("reservation", reservation);
         model.addAttribute("naturalArea", naturalArea);
         if (reservation.getReservationDate().isEqual(LocalDate.now())) {
@@ -109,7 +110,8 @@ public class ReservationController {
 
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("reservation") NuevaReserva reservation, HttpSession session) {
+    public String processAddSubmit(@ModelAttribute("reservation") NuevaReserva reservation,
+                                   HttpSession session) {
 
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         GeneratePDFController generatePDF = new GeneratePDFController();
@@ -175,7 +177,8 @@ public class ReservationController {
     }
 
     @RequestMapping("/editarReserva/{id}")
-    public String editarReserva(@ModelAttribute("personas") PersonasReserva personas, @PathVariable String id, Model model, HttpSession session) {
+    public String editarReserva(@ModelAttribute("personas") PersonasReserva personas,
+                                @PathVariable String id, Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/reservation/reservas");
@@ -183,22 +186,30 @@ public class ReservationController {
         }
 
         int pers = personas.getNum();
-        reservaDatosDao.modificaReservaPersonas(id, pers);
+        //Validamos que el número de personas es correcto:
+        int reservationId = Integer.parseInt(id);
+        int max = reservationDao.getMaximumCapacityOfReservation(reservationId);
+        if (pers > max){
+            //Esto es que no puede reservar,
+        }
+        else{
+            reservaDatosDao.modificaReservaPersonas(id, pers);
 
-        // Actualizar QR con los nuevos datos de la reserva
-        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
-        String timeSlotId = reservation.getTimeSlotId();
-        TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
-        String text = "Reserva por " + reservation.getCitizenEmail() + ", de fecha " + reservation.getReservationDate()
-                + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
-        generarQr(text, id);
+            // Actualizar QR con los nuevos datos de la reserva
+            Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
+            String timeSlotId = reservation.getTimeSlotId();
+            TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
+            String text = "Reserva por " + reservation.getCitizenEmail() + ", de fecha " + reservation.getReservationDate()
+                    + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
+            generarQr(text, id);
 
-        // Enviar mail con la modificacion de la reserva
-        String destinatario = reservation.getCitizenEmail();
-        String asunto = "Reserva actualizada";
-        String cuerpo = "Ha actualizado correctamente los datos de la reserva del día " + reservation.getReservationDate() +
-                " para " + reservation.getNumberOfPeople() + " personas. \n\nUn cordial saludo del equipo de SANA.";
-        envioMailReserva(destinatario, asunto, cuerpo);
+            // Enviar mail con la modificacion de la reserva
+            String destinatario = reservation.getCitizenEmail();
+            String asunto = "Reserva actualizada";
+            String cuerpo = "Ha actualizado correctamente los datos de la reserva del día " + reservation.getReservationDate() +
+                    " para " + reservation.getNumberOfPeople() + " personas. \n\nUn cordial saludo del equipo de SANA.";
+            envioMailReserva(destinatario, asunto, cuerpo);
+        }
 
         return "redirect:/reservation/reservas";
     }

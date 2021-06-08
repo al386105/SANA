@@ -190,7 +190,8 @@ public class ReservationController {
         int reservationId = Integer.parseInt(id);
         int max = reservationDao.getMaximumCapacityOfReservation(reservationId);
         if (pers > max){
-            //Esto es que no puede reservar,
+            //Esto es que no puede reservar
+
         }
         else{
             reservaDatosDao.modificaReservaPersonas(id, pers);

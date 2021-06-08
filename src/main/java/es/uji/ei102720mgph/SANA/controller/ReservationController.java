@@ -142,7 +142,6 @@ public class ReservationController {
         String cuerpo = "Reserva realizada correctamente el día " + reservation.getReservationDate() +
                 " para " + reservation.getNumberOfPeople() + " personas. \n\nUn cordial saludo del equipo de SANA.";
 
-
         envioMailReserva(destinatario, asunto, cuerpo);
 
         return "redirect:/reservation/reservas"; //redirigim a la lista per a veure el reservation afegit
@@ -345,6 +344,7 @@ public class ReservationController {
 
     private void envioMailReserva (String destinatario, String asunto, String cuerpo) {
         Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
+        System.out.println(email);
         emailDao.addEmail(email);
     }
 }

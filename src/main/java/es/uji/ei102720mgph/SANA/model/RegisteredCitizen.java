@@ -3,7 +3,6 @@ package es.uji.ei102720mgph.SANA.model;
 public class RegisteredCitizen extends SanaUser {
     private String idNumber;
     private String mobilePhoneNumber;
-    private String username;
     private String citizenCode;
     private String pin;
     private String addressId;
@@ -51,14 +50,6 @@ public class RegisteredCitizen extends SanaUser {
 
     public void setAddressId(String addressId) {
         this.addressId = addressId;
-    }
-
-    public  String getUsername() {
-        return username;
-    }
-
-    public  void setUsername(String username) {
-        this.username = username;
     }
 
     public static int getContador() {

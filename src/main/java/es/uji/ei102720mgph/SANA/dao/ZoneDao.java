@@ -79,7 +79,7 @@ public class ZoneDao {
                     "SELECT * FROM zone " +
                             "WHERE naturalArea = ? " +
                             "AND maximumcapacity >= ? " +
-                            "AND (zonenumber, letter) NOT IN (SELECT z.zonenumber, z.letter FROM reservation AS r JOIN reservationofzone AS rz ON rz.reservationnumber = r.reservationnumber JOIN zone AS z ON z.id = rz.zoneid WHERE CAST(reservationdate AS date) = CAST(? AS date) AND timeslotid = ?);",
+                            "AND (zonenumber, letter) NOT IN (SELECT z.zonenumber, z.letter FROM reservation AS r JOIN reservationofzone AS rz ON rz.reservationnumber = r.reservationnumber JOIN zone AS z ON z.id = rz.zoneid WHERE CAST(reservationdate AS date) = CAST(? AS date) AND timeslotid = ? AND (r.state = 'created' OR r.state = 'inUse'))",
                     new ZoneRowMapper(), natArea, personas, fecha, timeslot);
         }
         catch(EmptyResultDataAccessException e) {

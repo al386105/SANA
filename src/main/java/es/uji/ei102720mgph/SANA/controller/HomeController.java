@@ -140,14 +140,14 @@ public class HomeController {
 
             try {
                 int citizenCode = registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
-                String username = "ci" + fmt.format("%04d" , citizenCode);
-                registeredCitizen.setUsername(username);
+                String code = "ci" + fmt.format("%04d" , citizenCode);
+                registeredCitizen.setCitizenCode(code);
 
                 // Envia correo electrónico
                 String destinatario = registeredCitizen.getEmail();
                 String asunto = "Bienvenido a SANA";
                 String cuerpo = "Registro completado con éxito en SANA, " + registeredCitizen.getName()+
-                        ".\nSu código de usuario es: " + username +
+                        ".\nSu código de usuario es: " + code +
                         ".\n\nUn cordial saludo del equipo de SANA.";
                 Email emailObjeto = enviarMail(destinatario, asunto, cuerpo);
                 emailDao.addEmail(emailObjeto);

@@ -1,6 +1,8 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+import es.uji.ei102720mgph.SANA.dao.RegisteredCitizenDao;
 import es.uji.ei102720mgph.SANA.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,13 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/inicio/registrado")
 public class InicioRegistradoController {
+
+    private RegisteredCitizenDao registeredCitizenDao;
+
+    @Autowired
+    public void setRegisteredCitizenDao(RegisteredCitizenDao registeredCitizenDao){
+        this.registeredCitizenDao = registeredCitizenDao;
+    }
 
     @RequestMapping("/")
     public String redirigirRegistrado(Model model, HttpSession session) {
@@ -58,6 +67,10 @@ public class InicioRegistradoController {
         perfilValidator.validate(registeredCitizen, bindingResult);
         if (bindingResult.hasErrors())
             return "inicio/registrado/editarPerfil";
+        RegisteredCitizen oldRegisteredCitizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        System.out.println(oldRegisteredCitizen.getCitizenCode() + " " + oldRegisteredCitizen.getUsername());
+        registeredCitizen.setCitizenCode(oldRegisteredCitizen.getCitizenCode());
+        registeredCitizenDao.updateRegisteredCitizen(registeredCitizen);
         model.addAttribute("citizen", registeredCitizen);
         session.setAttribute("registeredCitizen", registeredCitizen);
         return "redirect:perfil";

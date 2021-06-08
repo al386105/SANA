@@ -116,7 +116,7 @@ public class ReservationController {
     public String processAddSubmit(@ModelAttribute("reservation") NuevaReserva reservation, HttpSession session) {
 
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        GeneratePDFController generatePDF = new GeneratePDFController();
+        //TODO GeneratePDFController generatePDF = new GeneratePDFController();
         reservation.setCitizenEmail(citizen.getEmail());
         String zonas = reservation.getZoneid();
         String[] partes = zonas.split(",");
@@ -141,7 +141,7 @@ public class ReservationController {
 
         // Enviar mail con la reserva
         String path = uploadDirectory  +"/reservasPdf" + citizen.getName() + ".pdf";
-        generatePDF.createPDF(new File(path), citizen, reservation, naturalArea);
+        //TODO generatePDF.createPDF(new File(path), citizen, reservation, naturalArea);
         String destinatario = reservation.getCitizenEmail();
         String asunto = "Reserva completada";
         String cuerpo = "Reserva realizada correctamente el día " + reservation.getReservationDate() +

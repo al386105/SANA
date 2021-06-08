@@ -1,6 +1,8 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+import es.uji.ei102720mgph.SANA.dao.SanaUserDao;
 import es.uji.ei102720mgph.SANA.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,18 +16,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/inicio/registrado")
 public class InicioRegistradoController {
-
-    @RequestMapping("/")
-    public String redirigirRegistrado(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicioRegistrado/areasNaturales");
-            return "redirect:/inicio/login";
-        }
-        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        model.addAttribute("citizen", citizen);
-        return "inicioRegistrado/areasNaturales";
-    }
 
     @RequestMapping("/perfil")
     public String redirigirRegistradoPerfil(Model model, HttpSession session) {

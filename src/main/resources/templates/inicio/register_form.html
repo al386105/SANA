@@ -15,8 +15,8 @@
     <br>
     <h3 style="text-align:center;">Bienvenido al registro de SANA</h3>
     <br>
-    <form class="form-center" th:action="@{register_form/registration}"  th:object="${registrationCitizen}" style=" background-color: #e8e6e8!important;position: relative;
-                    z-index: 1; background: #FFFFFF; max-width: 70%; margin: 0 auto auto; padding: 40px; text-align: center;">
+    <form class="form-center" th:action="@{/inicio/register_form}"  th:object="${registrationCitizen}" method="post"
+          style="background-color: #e8e6e8!important;position: relative; z-index: 1; background: #FFFFFF; max-width: 70%; margin: 0 auto auto; padding: 40px; text-align: center;">
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="nombre">Nombre:</label>

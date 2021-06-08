@@ -9,24 +9,15 @@
     <h2 class="text-uppercase text-center text-secondary mb-0" > Modificar servicio fijo </h2>
     <br><hr class="barra-normal"><br>
 
+    <h4 style="text-align: center"><i><span th:text="${serviceDate.service}"></span>
+        en <span th:text="${serviceDate.naturalArea}"></span></i></h4><br>
+
     <form class="form-horizontal" action="#" th:action="@{/serviceDate/update}"
           th:object="${serviceDate}" method="post">
 
         <input required type="hidden" th:field="*{id}" />
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
-            <div class="col-sm-4">
-                <input type="text" readonly="readonly" required class="form-control" id="naturalArea" th:field="*{naturalArea}"/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="service">Servicio fijo:</label>
-            <div class="col-sm-4">
-                <input type="text" required readonly="readonly" class="form-control" id="service" th:field="*{service}" />
-            </div>
-        </div>
+        <input required type="hidden" th:field="*{naturalArea}" />
+        <input required type="hidden" th:field="*{service}" />
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="beginningDate">Fecha de inicio:</label>

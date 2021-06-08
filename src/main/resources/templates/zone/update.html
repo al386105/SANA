@@ -12,41 +12,20 @@
     <form class="form-horizontal" action="#" th:action="@{/zone/update}"
           th:object="${zone}" th:field="*{creationDate}"method="post">
 
+        <h4 style="text-align: center"><i>Zona <span th:text="${zone.zoneNumber}"></span><span th:text="${zone.letter}"></span>
+         en <span th:text="${zone.naturalArea}"></span></i></h4><br>
+
         <input required type="hidden" th:field="*{id}" />
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="naturalArea">Área natural:</label>
-            <div class="col-sm-4">
-                <input type="text" required class="form-control" id="naturalArea" th:field="*{naturalArea}" readonly="readonly"/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="zoneNumber">Número zona:</label>
-            <div class="col-sm-4">
-                <input type="number" min="1" readonly="readonly" required class="form-control" id="zoneNumber" th:field="*{zoneNumber}" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="letter">Letra:</label>
-            <div class="col-sm-4">
-                <input type="text" placeholder="A" readonly="readonly" required maxlength="1" class="form-control" id="letter" th:field="*{letter}" />
-            </div>
-        </div>
+        <input required type="hidden" th:field="*{zoneNumber}" />
+        <input required type="hidden" th:field="*{letter}" />
+        <input required type="hidden" th:field ="*{creationDate}"/>
+        <input required type="hidden" th:field ="*{naturalArea}"/>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="maximumCapacity">Capacidad máx.:</label>
             <div class="col-sm-4">
                 <input type="number" required class="form-control" id="maximumCapacity" th:field="*{maximumCapacity}"/>
                 <td th:if="${#fields.hasErrors('maximumCapacity')}" th:errors="*{maximumCapacity}"></td>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="creationDate">Fecha creación:</label>
-            <div class="col-sm-4">
-                <input type="date" required class="form-control" id="creationDate" th:field="*{creationDate}" readonly="readonly"/>
             </div>
         </div>
 

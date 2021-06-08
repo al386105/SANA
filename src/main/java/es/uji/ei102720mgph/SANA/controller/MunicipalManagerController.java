@@ -138,6 +138,7 @@ public class MunicipalManagerController {
             emailDao.addEmail(email);
 
         } catch (DataIntegrityViolationException e) {
+            sanaUserDao.deleteSanaUser(managerForm.getEmail());
             // hay alguna clave primaria o alternativa repetida, ver cuál es
             if(sanaUserDao.getSanaUser(managerForm.getEmail()) != null)
                 model.addAttribute("emailRepetido", "repetido");

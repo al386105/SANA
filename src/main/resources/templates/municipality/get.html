@@ -9,48 +9,50 @@
         <h2 th:text="${municipality.name}" class="text-uppercase text-center text-secondary mb-0"></h2><br>
         <hr class="barra-normal"><br>
 
-        <h6>Registrado el <span th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></span></h6><br>
         <h5 class="text-center text-secondary mb-0"><i>"<span th:text="${municipality.description}"></span>"</i></h5><br>
+        <h6>Registrado el <span th:text="${#temporals.format(municipality.registrationDate,'dd/MM/yyyy')}"></span></h6><br>
 
         <!-- SECCION DE CODIGOS POSTALES DEL MUNICIPIO -->
         <div th:if="${#lists.isEmpty(postalCodes)}">
-            <p><b>¡Este municipio no tiene ningún código postal asignado!</b></p>
+            <h6 style="text-align: center">¡Este municipio no tiene ningún código postal asignado!</h6>
         </div>
-        <div class="scroll">
-        <table th:unless="${#lists.isEmpty(postalCodes)}" class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Código Postal</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="postalCodeMunicipality: ${#lists.sort(postalCodes)}">
-                <td scope="row" th:text="${postalCodeMunicipality.postalCode}"></td>
-                <td><button type="button" class="btn btn-danger delete" data-toggle="modal"
-                            th:data-target="${'#miModal' + postalCodeMunicipality.postalCode}">Elimina</button></td>
-                <!-- VENTANA EMERGENTE -->
-                <div class="modal" th:id="${'miModal' + postalCodeMunicipality.postalCode}">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Eliminar el código postal</h5>
-                                <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <p>¿Seguro que desea eliminar el código postal <span th:text="${postalCodeMunicipality.postalCode}"></span> del municipio <span th:text="${postalCodeMunicipality.municipality}"></span>?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a th:href="@{/postalCode/delete/{municipality}/{postalCode}(municipality=${postalCodeMunicipality.municipality}, postalCode=${postalCodeMunicipality.postalCode})}">
-                                    <button type="submit" class="btn btn-primary">Confirmar</button></a>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+        <div th:unless="${#lists.isEmpty(postalCodes)}">
+            <div class="scroll">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Código Postal</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="postalCodeMunicipality: ${#lists.sort(postalCodes)}">
+                    <td scope="row" th:text="${postalCodeMunicipality.postalCode}"></td>
+                    <td><button type="button" class="btn btn-danger delete" data-toggle="modal"
+                                th:data-target="${'#miModal' + postalCodeMunicipality.postalCode}">Elimina</button></td>
+                    <!-- VENTANA EMERGENTE -->
+                    <div class="modal" th:id="${'miModal' + postalCodeMunicipality.postalCode}">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Eliminar el código postal</h5>
+                                    <button style="font-size:x-large; color: #b86f52" type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>¿Seguro que desea eliminar el código postal <span th:text="${postalCodeMunicipality.postalCode}"></span> del municipio <span th:text="${postalCodeMunicipality.municipality}"></span>?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a th:href="@{/postalCode/delete/{municipality}/{postalCode}(municipality=${postalCodeMunicipality.municipality}, postalCode=${postalCodeMunicipality.postalCode})}">
+                                        <button type="submit" class="btn btn-primary">Confirmar</button></a>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atrás</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </tr>
-            </tbody>
-        </table>
+                </tr>
+                </tbody>
+            </table>
+            </div>
         </div>
         <br>
         <!-- añadir un nuevo codigo postal -->

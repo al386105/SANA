@@ -45,18 +45,13 @@ public class ZoneController {
     public String processAddSubmit(Model model, @ModelAttribute("zone") Zone zone, BindingResult bindingResult) {
         ZoneValidator zoneValidator = new ZoneValidator();
         zoneValidator.validate(zone, bindingResult);
-        if(model.getAttribute("claveRepetida") != null)
-            model.addAttribute("claveRepetida", null);
-
         if (bindingResult.hasErrors())
             return "zone/add"; //tornem al formulari per a que el corregisca
-        String naturalAreaName = zone.getNaturalArea();
-        try {
-            zoneDao.addZone(zone); //usem el dao per a inserir el zone
-        } catch (DataIntegrityViolationException e) {
-            model.addAttribute("claveRepetida", "repetida");
+        if(zoneDao.getZone(zone.getZoneNumber(), zone.getLetter()) != null) {
+            bindingResult.rejectValue("letter", "repetido", "La combinación de número y letra ya está en uso");
             return "zone/add";
         }
+        String naturalAreaName = zone.getNaturalArea();
         return "redirect:/zone/getForManagersZones/" + naturalAreaName;
     }
 

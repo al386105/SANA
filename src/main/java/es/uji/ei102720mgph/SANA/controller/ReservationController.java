@@ -271,6 +271,81 @@ public class ReservationController {
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
+        List<ReservaDatosAgrupada> listaReservasAgrupadas = agruparPorReserva(listaReservas);
+        model.addAttribute("motivo", new MotivoCancelancion());
+        model.addAttribute("personas", new PersonasReserva());
+        model.addAttribute("reservas", listaReservasAgrupadas);
+        return "/reservation/reservas";
+    }
+
+    @RequestMapping("/reservasTodas")
+    public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
+        if (session.getAttribute("registeredCitizen") == null) {
+            model.addAttribute("userLogin", new UserLogin() {
+            });
+            session.setAttribute("nextUrl", "/reservation/reservasTodas");
+            return "redirect:/inicio/login";
+        }
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        List<ReservaDatos> listaReservas = reservaDatosDao.getReservasTodasEmail(citizen.getEmail());
+        List<ReservaDatosAgrupada> listaReservasAgrupadas = agruparPorReserva(listaReservas);
+        model.addAttribute("reservas", listaReservasAgrupadas);
+        return "/reservation/reservasTodas";
+    }
+
+    @RequestMapping(value = "/reservasArea/{naturalArea}")
+    public String reservasArea(Model model, @PathVariable String naturalArea, HttpSession session) {
+        if (session.getAttribute("municipalManager") == null) {
+            model.addAttribute("userLogin", new UserLogin() {
+            });
+            session.setAttribute("nextUrl", "/reservation/reservasArea/" + naturalArea);
+            return "redirect:/inicio/login";
+        }
+        model.addAttribute("reservas", agruparPorReservaMuni(reservaDatosDao.getReservasNaturalArea(naturalArea)));
+        model.addAttribute("motivo", new MotivoCancelancion());
+        model.addAttribute("personas", new PersonasReserva());
+        model.addAttribute("naturalArea", naturalArea);
+        return "reservation/reservasArea";
+    }
+
+    @RequestMapping(value = "/reservasTodasArea/{naturalArea}")
+    public String todasReservasnaturalArea(Model model, @PathVariable String naturalArea, HttpSession session) {
+        if (session.getAttribute("municipalManager") == null) {
+            model.addAttribute("userLogin", new UserLogin() {
+            });
+            session.setAttribute("nextUrl", "/reservation/reservasTodasArea/" + naturalArea);
+            return "redirect:/inicio/login";
+        }
+
+        List<ReservaDatosMunicipal> listaReservas = reservaDatosDao.getReservasTodasNaturalArea(naturalArea);
+        List<ReservaDatosAgrupadaMunicipal> listaReservasAgrupada = agruparPorReservaMuni(listaReservas);
+        model.addAttribute("reservas", listaReservasAgrupada);
+        model.addAttribute("naturalArea", naturalArea);
+        return "reservation/reservasTodasArea";
+    }
+
+    private void generarQr (String text, String id) {
+        Formatter fmt = new Formatter();
+        QRCode qr = new QRCode();
+        File f = new File("qr" + fmt.format("%07d", Integer.parseInt(id)) + ".png");
+        try {
+            qr.generateQR(f, text, 300, 300);
+            byte[] bytes = Files.readAllBytes(f.toPath());
+            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
+            // Lo eliminamos de la carpeta errónea
+            f.delete();
+            Files.write(path, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void envioMailReserva (String destinatario, String asunto, String cuerpo) {
+        Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
+        emailDao.addEmail(email);
+    }
+
+    private List<ReservaDatosAgrupada> agruparPorReserva(List<ReservaDatos> listaReservas) {
         List<ReservaDatosAgrupada> listaReservasAgrupadas = new ArrayList<>();
         for (ReservaDatos res : listaReservas){
             boolean esta = false;
@@ -296,76 +371,43 @@ public class ReservationController {
                 nuevaReserva.setNaturalArea(res.getNaturalArea());
                 nuevaReserva.setBeginningTime(res.getBeginningTime());
                 nuevaReserva.setEndTime(res.getEndTime());
+                listaReservasAgrupadas.add(nuevaReserva);
             }
         }
-        model.addAttribute("motivo", new MotivoCancelancion());
-        model.addAttribute("personas", new PersonasReserva());
-        model.addAttribute("reservas", listaReservasAgrupadas);
-        return "/reservation/reservas";
+        return listaReservasAgrupadas;
     }
 
-    @RequestMapping("/reservasTodas")
-    public String redirigirRegistradoReservasTodas(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {
-            });
-            session.setAttribute("nextUrl", "/reservation/reservasTodas");
-            return "redirect:/inicio/login";
+    private List<ReservaDatosAgrupadaMunicipal> agruparPorReservaMuni(List<ReservaDatosMunicipal> listaReservas) {
+        List<ReservaDatosAgrupadaMunicipal> listaReservasAgrupadas = new ArrayList<>();
+        for (ReservaDatosMunicipal res : listaReservas){
+            boolean esta = false;
+            for ( ReservaDatosAgrupadaMunicipal agrupada : listaReservasAgrupadas) {
+                if (agrupada.getReservationNumber() == res.getReservationNumber()) {
+                    esta = true;
+                    List<String> zonas = agrupada.getZonas();
+                    zonas.add(res.getZoneNumber() + " " + res.getLetter());
+                    agrupada.setZonas(zonas);
+                    break;
+                }
+            }
+            if (!esta){
+                ReservaDatosAgrupadaMunicipal nuevaReserva = new ReservaDatosAgrupadaMunicipal();
+                nuevaReserva.setReservationNumber(res.getReservationNumber());
+                nuevaReserva.setReservationDate(res.getReservationDate());
+                nuevaReserva.setNumberOfPeople(res.getNumberOfPeople());
+                nuevaReserva.setState(res.getState());
+                nuevaReserva.setQRcode(res.getQRcode());
+                List<String> zones = new ArrayList<>();
+                zones.add(res.getZoneNumber() + " " + res.getLetter());
+                nuevaReserva.setZonas(zones);
+                nuevaReserva.setNaturalArea(res.getNaturalArea());
+                nuevaReserva.setBeginningTime(res.getBeginningTime());
+                nuevaReserva.setEndTime(res.getEndTime());
+                nuevaReserva.setName(res.getName());
+                nuevaReserva.setSurname(res.getSurname());
+                listaReservasAgrupadas.add(nuevaReserva);
+            }
         }
-        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        List<ReservaDatos> listaReservas = reservaDatosDao.getReservasTodasEmail(citizen.getEmail());
-        model.addAttribute("reservas", listaReservas);
-        return "/reservation/reservasTodas";
-    }
-
-    @RequestMapping(value = "/reservasArea/{naturalArea}")
-    public String reservasArea(Model model, @PathVariable String naturalArea, HttpSession session) {
-        if (session.getAttribute("municipalManager") == null) {
-            model.addAttribute("userLogin", new UserLogin() {
-            });
-            session.setAttribute("nextUrl", "/reservation/reservasArea/" + naturalArea);
-            return "redirect:/inicio/login";
-        }
-        model.addAttribute("reservas", reservaDatosDao.getReservasNaturalArea(naturalArea));
-        model.addAttribute("motivo", new MotivoCancelancion());
-        model.addAttribute("personas", new PersonasReserva());
-        model.addAttribute("naturalArea", naturalArea);
-        return "reservation/reservasArea";
-    }
-
-    @RequestMapping(value = "/reservasTodasArea/{naturalArea}")
-    public String todasReservasnaturalArea(Model model, @PathVariable String naturalArea, HttpSession session) {
-        if (session.getAttribute("municipalManager") == null) {
-            model.addAttribute("userLogin", new UserLogin() {
-            });
-            session.setAttribute("nextUrl", "/reservation/reservasTodasArea/" + naturalArea);
-            return "redirect:/inicio/login";
-        }
-
-        List<ReservaDatosMunicipal> listaReservas = reservaDatosDao.getReservasTodasNaturalArea(naturalArea);
-        model.addAttribute("reservas", listaReservas);
-        model.addAttribute("naturalArea", naturalArea);
-        return "reservation/reservasTodasArea";
-    }
-
-    private void generarQr (String text, String id) {
-        Formatter fmt = new Formatter();
-        QRCode qr = new QRCode();
-        File f = new File("qr" + fmt.format("%07d", Integer.parseInt(id)) + ".png");
-        try {
-            qr.generateQR(f, text, 300, 300);
-            byte[] bytes = Files.readAllBytes(f.toPath());
-            Path path = Paths.get(uploadDirectory + "qrCodes/" + f.getName());
-            // Lo eliminamos de la carpeta errónea
-            f.delete();
-            Files.write(path, bytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void envioMailReserva (String destinatario, String asunto, String cuerpo) {
-        Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
-        emailDao.addEmail(email);
+        return listaReservasAgrupadas;
     }
 }

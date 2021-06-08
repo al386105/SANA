@@ -33,9 +33,8 @@
                                   th:text="${#temporals.format(reserva.endTime, 'HH:mm')}"></span>
                         </p>
                         <p class="card-text"><span th:text="${reserva.numberOfPeople}"></span> personas</p>
-                        <p class="card-text" style="float: left">Zona:
-                            <span th:text="${reserva.zoneNumber}"></span>
-                            <span th:text="${reserva.letter}"></span>
+                        <p class="card-text" style="float: left">Zonas:
+                            <span th:text="${reserva.zonas}"></span>
                         </p>
                         <button style="float: right" type="button" class="btn btn-primary" data-toggle="modal"
                                 th:data-target="${'#miModal' + reserva.reservationNumber}">Cancelar reserva

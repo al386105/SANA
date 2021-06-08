@@ -35,9 +35,8 @@
                                   th:text="${#temporals.format(reserva.endTime, 'HH:mm')}"></span>
                         </p>
                         <p class="card-text"><span th:text="${reserva.numberOfPeople}"></span> personas</p>
-                        <p class="card-text" style="float: left">Zona:
-                            <span th:text="${reserva.zoneNumber}"></span>
-                            <span th:text="${reserva.letter}"></span>
+                        <p class="card-text" style="float: left">Zonas:
+                            <span th:text="${reserva.zonas}"></span>
                         </p>
                         <h6 style="float: right; color: #b86f52" class="card-subtitle mb-2 text-muted">
                             <span th:text="${reserva.state.descripcion}"></span>

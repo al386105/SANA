@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-public class ReservaDatosAgrupada implements Comparable<ReservaDatosAgrupada> {
+public class ReservaDatosAgrupadaMunicipal implements Comparable<ReservaDatosAgrupadaMunicipal>{
     private int reservationNumber;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reservationDate;
@@ -18,6 +18,8 @@ public class ReservaDatosAgrupada implements Comparable<ReservaDatosAgrupada> {
     private String naturalArea;
     private LocalTime beginningTime;
     private LocalTime endTime;
+    private String name;
+    private String surname;
 
     public int getReservationNumber() {
         return reservationNumber;
@@ -91,9 +93,25 @@ public class ReservaDatosAgrupada implements Comparable<ReservaDatosAgrupada> {
         this.endTime = endTime;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     @Override
     public String toString() {
-        return "ReservaDatosAgrupada{" +
+        return "ReservaDatosAgrupadaMunicipal{" +
                 "reservationNumber=" + reservationNumber +
                 ", reservationDate=" + reservationDate +
                 ", numberOfPeople=" + numberOfPeople +
@@ -103,12 +121,13 @@ public class ReservaDatosAgrupada implements Comparable<ReservaDatosAgrupada> {
                 ", naturalArea='" + naturalArea + '\'' +
                 ", beginningTime=" + beginningTime +
                 ", endTime=" + endTime +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
                 '}';
     }
 
     @Override
-    public int compareTo(ReservaDatosAgrupada otra) {
+    public int compareTo(ReservaDatosAgrupadaMunicipal otra) {
         return -this.getReservationDate().compareTo(otra.getReservationDate());
     }
-
 }

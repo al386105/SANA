@@ -344,7 +344,6 @@ public class ReservationController {
 
     private void envioMailReserva (String destinatario, String asunto, String cuerpo) {
         Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);
-        System.out.println(email);
         emailDao.addEmail(email);
     }
 }

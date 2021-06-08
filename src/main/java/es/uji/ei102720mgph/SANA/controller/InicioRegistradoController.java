@@ -3,7 +3,6 @@ package es.uji.ei102720mgph.SANA.controller;
 import es.uji.ei102720mgph.SANA.dao.RegisteredCitizenDao;
 import es.uji.ei102720mgph.SANA.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,18 +21,6 @@ public class InicioRegistradoController {
     @Autowired
     public void setRegisteredCitizenDao(RegisteredCitizenDao registeredCitizenDao){
         this.registeredCitizenDao = registeredCitizenDao;
-    }
-
-    @RequestMapping("/")
-    public String redirigirRegistrado(Model model, HttpSession session) {
-        if (session.getAttribute("registeredCitizen") == null) {
-            model.addAttribute("userLogin", new UserLogin() {});
-            session.setAttribute("nextUrl", "/inicioRegistrado/areasNaturales");
-            return "redirect:/inicio/login";
-        }
-        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        model.addAttribute("citizen", citizen);
-        return "inicioRegistrado/areasNaturales";
     }
 
     @RequestMapping("/perfil")

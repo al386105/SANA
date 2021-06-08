@@ -89,7 +89,7 @@ public class RegistrationValidator implements Validator {
         // País obligatorio
         if (registrationCitizen.getCountry().trim().equals(""))
             errors.rejectValue("country", "obligatorio", "Es obligatorio introducir el país");
-        /*
+
         // Contraseña obligatoria
         if (registrationCitizen.getPassword().trim().equals(""))
             errors.rejectValue("password", "obligatorio", "Es obligatorio introducir la contraseña");
@@ -97,7 +97,6 @@ public class RegistrationValidator implements Validator {
         // Contraseña numérica
         if(!esNumerico(registrationCitizen.getPassword()))
             errors.rejectValue("password", "incorrecto", "La contraseña es de cuatro dígitos numéricos");
-
 
         // Contraseña de 4 dígitos
         if(registrationCitizen.getPassword().trim().length() != 4)
@@ -110,8 +109,6 @@ public class RegistrationValidator implements Validator {
         // Contrasenya mal escrita
         if (!registrationCitizen.getPassword().trim().equals(registrationCitizen.getPasswordComprovation().trim()))
             errors.rejectValue("passwordComprovation", "incorrecto", "Las contraseñas no coinciden");
-
-         */
 
     }
 

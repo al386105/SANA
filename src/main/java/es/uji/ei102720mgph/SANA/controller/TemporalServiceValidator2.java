@@ -4,6 +4,8 @@ import es.uji.ei102720mgph.SANA.model.TemporalService2;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.time.LocalDate;
+
 public class TemporalServiceValidator2 implements Validator {
 
     @Override
@@ -35,6 +37,10 @@ public class TemporalServiceValidator2 implements Validator {
         // Fecha de inicio obligatoria
         if (temporalService.getBeginningDate() == null)
             errors.rejectValue("beginningDate", "obligatorio", "Es obligatorio introducir la fecha de inicio");
+
+        // Fecha de inicio posterior a hoy
+        if (temporalService.getBeginningDate() != null && temporalService.getBeginningDate().isBefore(LocalDate.now()))
+            errors.rejectValue("beginningDate", "incorrecto", "La fecha de inicio debe ser posterior a hoy");
 
         // Orden de fechas si hay fecha de fin (opcional)
         if (temporalService.getEndDate() != null && temporalService.getBeginningDate() != null

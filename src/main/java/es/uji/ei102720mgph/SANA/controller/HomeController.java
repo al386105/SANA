@@ -48,7 +48,7 @@ public class HomeController {
     }
 
     @Autowired
-    public void setSanaUsertDao(SanaUserDao sanaUserDao){
+    public void setSanaUserDao(SanaUserDao sanaUserDao){
         this.sanaUserDao = sanaUserDao;
     }
 
@@ -102,7 +102,7 @@ public class HomeController {
         return "inicio/register_form";
     }
 
-    @RequestMapping("inicio/register_form/registration")
+    @RequestMapping(value="/inicio/register_form", method= RequestMethod.POST)
     public String registrationProcess(@ModelAttribute("registrationCitizen") RegistrationCitizen registrationCitizen,
                                       BindingResult bindingResult, HttpSession session, Model model){
         RegistrationValidator registrationValidator = new RegistrationValidator();
@@ -114,6 +114,16 @@ public class HomeController {
         SanaUser sanaUser = sanaUserDao.getSanaUser(registrationCitizen.getEmail());
         if (sanaUser == null){
             //Usuario no registrado antes
+
+            if(registeredCitizenDao.getRegisteredCitizenNIE(registrationCitizen.getDni()) != null) {
+                bindingResult.rejectValue("dni", "repetido", "DNI/NIE ya registrado");
+                return "/inicio/register_form";
+            }
+            if(registeredCitizenDao.getRegisteredCitizenTelf(registrationCitizen.getTelefono()) != null) {
+                bindingResult.rejectValue("telefono", "repetido", "Teléfono ya registrado");
+                return "/inicio/register_form";
+            }
+
             //Añadimos la dirección a las tablas
             Address address = new Address();
             address.setStreet(registrationCitizen.getStreet());
@@ -138,34 +148,21 @@ public class HomeController {
             registeredCitizen.setIdNumber(registrationCitizen.getDni());
             Formatter fmt = new Formatter();
 
-            try {
-                int citizenCode = registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
-                String code = "ci" + fmt.format("%04d" , citizenCode);
-                registeredCitizen.setCitizenCode(code);
+            int citizenCode = registeredCitizenDao.addRegisteredCitizen(registeredCitizen);
+            String code = "ci" + fmt.format("%04d" , citizenCode);
+            registeredCitizen.setCitizenCode(code);
 
-                // Envia correo electrónico
-                String destinatario = registeredCitizen.getEmail();
-                String asunto = "Bienvenido a SANA";
-                String cuerpo = "Registro completado con éxito en SANA, " + registeredCitizen.getName()+
-                        ".\nSu código de usuario es: " + code +
-                        ".\n\nUn cordial saludo del equipo de SANA.";
-                Email emailObjeto = enviarMail(destinatario, asunto, cuerpo);
-                emailDao.addEmail(emailObjeto);
+            // Envia correo electrónico
+            String destinatario = registeredCitizen.getEmail();
+            String asunto = "Bienvenido a SANA";
+            String cuerpo = "Registro completado con éxito en SANA, " + registeredCitizen.getName()+
+                    ".\nSu código de usuario es: " + code +
+                    ".\n\nUn cordial saludo del equipo de SANA.";
+            Email emailObjeto = enviarMail(destinatario, asunto, cuerpo);
+            emailDao.addEmail(emailObjeto);
 
-                session.setAttribute("registeredCitizen", registeredCitizen);
-                return "redirect:/inicio/registrado/welcome";
-
-            } catch (DataIntegrityViolationException e) {
-                // borrar los anyadidos
-                sanaUserDao.deleteSanaUser(registrationCitizen.getEmail());
-                addressDao.deleteAddress(addressId);
-                // alguna clave alternativa repetida, ver cuál es
-                if(registeredCitizenDao.getRegisteredCitizenNIE(registeredCitizen.getIdNumber()) != null)
-                    model.addAttribute("NIERepetido", "repetido");
-                if(registeredCitizenDao.getRegisteredCitizenTelf(registeredCitizen.getMobilePhoneNumber()) != null)
-                    model.addAttribute("telfRepetido", "repetido");
-                return "/inicio/register_form";
-            }
+            session.setAttribute("registeredCitizen", registeredCitizen);
+            return "redirect:/inicio/registrado/welcome";
 
         }else {
             //Usuario ya registrado en el sistema
@@ -173,6 +170,7 @@ public class HomeController {
             return "/inicio/register_form";
         }
     }
+    
 
     @RequestMapping(value="inicio/login", method=RequestMethod.POST)
     public String autenticationProcess(@ModelAttribute("userLogin") UserLogin userLogin, BindingResult bindingResult, HttpSession session){

@@ -115,7 +115,7 @@ public class MunicipalityController {
             model.addAttribute("claveRepetida", "repetida");
             return "municipality/add";
         }
-        return "redirect:list"; //redirigim a la lista,
+        return "redirect:list"; //redirigim a la lista
     }
 
     @RequestMapping(value="/update/{name}", method = RequestMethod.GET)
@@ -138,7 +138,6 @@ public class MunicipalityController {
         if (bindingResult.hasErrors())
             return "municipality/update";
         municipalityDao.updateMunicipality(municipality);
-        return "redirect:/municipality/get/" + municipality.getName();
+        return "redirect:list"; //redirigim a la lista
     }
-
 }

@@ -8,17 +8,10 @@
     <h2 class="text-uppercase text-center text-secondary mb-0">Modificar municipio</h2>
     <br><hr class="barra-normal"><br>
 
+    <h4 style="text-align: center"><i><span th:text="${municipality.name}"></span></i></h4><br>
+
     <form class="form-horizontal" action="#" th:action="@{/municipality/update}"
           th:object="${municipality}" method="post">
-
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="name">Nombre:</label>
-            <div class="col-sm-4">
-                <input type="text" maxlength="30" required class="form-control" id="name" th:field="*{name}" readonly="readonly"
-                       placeholder="Nombre del municipio"/>
-                <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
-            </div>
-        </div>
 
         <div class="form-group row">
             <label class="control-label col-sm-2" for="description">Descripción:</label>
@@ -28,12 +21,8 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <label class="control-label col-sm-2" for="registrationDate">Fecha de registro:</label>
-            <div class="col-sm-4">
-                <input type="date" required class="form-control" id="registrationDate" th:field="*{registrationDate}" readonly="readonly"/>
-            </div>
-        </div>
+        <input required type="hidden" th:field="*{name}" />
+        <input required type="hidden" th:field="*{registrationDate}" />
 
         <div class="form-group row">
             <div class="col-sm-offset-2 col-sm-4">

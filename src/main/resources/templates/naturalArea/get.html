@@ -133,34 +133,37 @@
             <div class="row justify-content-center">
                 <div class="col-sm-8">
                     <div th:if="${#lists.isEmpty(pictures)}">
+                        <br>
                         <p><b>¡Este área natural no tiene ninguna imagen publicada!</b></p>
                     </div>
-                    <br>
-                    <!-- Carousel de imagenes -->
-                    <div id="miCarrusel" class="carousel slide" data-ride="carousel">
-                        <!-- activar la imagen 0 -->
-                        <ol  class="carousel-indicators">
-                            <li  th:each="picture,iterstat: ${pictures}"
-                                 data-target="#miCarrusel"
-                                 th:attr="data-slide-to=${iterstat.index}"
-                                 th:class="${iterstat.index}== 0 ? 'active':''"></li>
-                        </ol>
-                        <div class="carousel-inner">
-                            <div th:each="picture,iterstat: ${pictures}"
-                                 th:class="${iterstat.index}==0 ? 'carousel-item active':'carousel-item'">
-                                <img th:src="@{ '../../../../img/' + ${picture.picturePath}}" class="d-block w-100" alt="Foto del espacio natural">
+                    <div th:unless="${#lists.isEmpty(pictures)}">
+                        <br>
+                        <!-- Carousel de imagenes -->
+                        <div id="miCarrusel" class="carousel slide" data-ride="carousel">
+                            <!-- activar la imagen 0 -->
+                            <ol  class="carousel-indicators">
+                                <li  th:each="picture,iterstat: ${pictures}"
+                                     data-target="#miCarrusel"
+                                     th:attr="data-slide-to=${iterstat.index}"
+                                     th:class="${iterstat.index}== 0 ? 'active':''"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                                <div th:each="picture,iterstat: ${pictures}"
+                                     th:class="${iterstat.index}==0 ? 'carousel-item active':'carousel-item'">
+                                    <img th:src="@{'../../../../img/' + ${picture.picturePath}}" class="d-block w-100" alt="Foto del espacio natural">
+                                </div>
                             </div>
+                            <a class="carousel-control-prev" href="#miCarrusel"
+                               role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#miCarrusel"
+                               role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
                         </div>
-                        <a class="carousel-control-prev" href="#miCarrusel"
-                           role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#miCarrusel"
-                           role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
                     </div>
                 </div>
             </div>

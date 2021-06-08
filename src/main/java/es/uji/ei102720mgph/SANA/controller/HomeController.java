@@ -124,7 +124,7 @@ public class HomeController {
                 return "/inicio/register_form";
             }
 
-            //Añadimos la dirección a las tablas
+            //Añadimos la dirección a db
             Address address = new Address();
             address.setStreet(registrationCitizen.getStreet());
             address.setNumber(registrationCitizen.getNumber());
@@ -144,6 +144,7 @@ public class HomeController {
             registeredCitizen.setEmail(registrationCitizen.getEmail());
             registeredCitizen.setMobilePhoneNumber(registrationCitizen.getTelefono());
             registeredCitizen.setDateOfBirth(registrationCitizen.getDateOfBirth());
+            registeredCitizen.setRegistrationDate(LocalDate.now());
             registeredCitizen.setTypeOfUser(TypeOfUser.registeredCitizen);
             registeredCitizen.setIdNumber(registrationCitizen.getDni());
             Formatter fmt = new Formatter();
@@ -170,7 +171,7 @@ public class HomeController {
             return "/inicio/register_form";
         }
     }
-    
+
 
     @RequestMapping(value="inicio/login", method=RequestMethod.POST)
     public String autenticationProcess(@ModelAttribute("userLogin") UserLogin userLogin, BindingResult bindingResult, HttpSession session){

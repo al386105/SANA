@@ -55,7 +55,6 @@ public class InicioRegistradoController {
         if (bindingResult.hasErrors())
             return "inicio/registrado/editarPerfil";
         RegisteredCitizen oldRegisteredCitizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        System.out.println(oldRegisteredCitizen.getCitizenCode() + " " + oldRegisteredCitizen.getUsername());
         registeredCitizen.setCitizenCode(oldRegisteredCitizen.getCitizenCode());
         registeredCitizenDao.updateRegisteredCitizen(registeredCitizen);
         model.addAttribute("citizen", registeredCitizen);

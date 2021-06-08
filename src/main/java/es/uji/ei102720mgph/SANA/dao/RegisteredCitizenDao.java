@@ -25,7 +25,7 @@ public class RegisteredCitizenDao {
     public int addRegisteredCitizen(RegisteredCitizen registeredCitizen){
         jdbcTemplate.update("INSERT INTO SanaUser VALUES(?, ?, ?, ?, ?, ?, ?)",
                 registeredCitizen.getEmail(), registeredCitizen.getName(), registeredCitizen.getSurname(),
-                registeredCitizen.getDateOfBirth(), LocalDate.now(), null, TypeOfUser.registeredCitizen.name());
+                registeredCitizen.getDateOfBirth(), registeredCitizen.getRegistrationDate(), null, TypeOfUser.registeredCitizen.name());
 
         boolean excepcion;
         Formatter fmt;

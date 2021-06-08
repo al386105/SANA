@@ -19,9 +19,9 @@ public final class RegisteredCitizenRowMapper implements RowMapper<RegisteredCit
         registeredCitizen.setDateOfBirth(rs.getObject("dateOfBirth", LocalDate.class));
         registeredCitizen.setRegistrationDate(rs.getObject("registrationDate", LocalDate.class));
         registeredCitizen.setCitizenCode(rs.getString("citizenCode"));
-        Date d = rs.getDate("leavingDate");
         TypeOfUser typeOfUser = TypeOfUser.valueOf(rs.getString("typeOfUser"));
         registeredCitizen.setTypeOfUser(typeOfUser);
+        Date d = rs.getDate("leavingDate");
         registeredCitizen.setLeavingDate(d != null ? d.toLocalDate() : null);
         registeredCitizen.setIdNumber(rs.getString("idNumber"));
         registeredCitizen.setMobilePhoneNumber(rs.getString("mobilePhoneNumber"));

@@ -6,15 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.view.document.AbstractPdfView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.nio.file.Files;
@@ -24,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Formatter;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/reservation")
@@ -116,7 +111,7 @@ public class ReservationController {
     public String processAddSubmit(@ModelAttribute("reservation") NuevaReserva reservation, HttpSession session) {
 
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        //TODO GeneratePDFController generatePDF = new GeneratePDFController();
+        GeneratePDFController generatePDF = new GeneratePDFController();
         reservation.setCitizenEmail(citizen.getEmail());
         String zonas = reservation.getZoneid();
         String[] partes = zonas.split(",");
@@ -141,7 +136,7 @@ public class ReservationController {
 
         // Enviar mail con la reserva
         String path = uploadDirectory  +"/reservasPdf" + citizen.getName() + ".pdf";
-        //TODO generatePDF.createPDF(new File(path), citizen, reservation, naturalArea);
+        generatePDF.createPDF(new File(path), citizen, reservation, naturalArea);
         String destinatario = reservation.getCitizenEmail();
         String asunto = "Reserva completada";
         String cuerpo = "Reserva realizada correctamente el día " + reservation.getReservationDate() +

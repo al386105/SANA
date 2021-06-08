@@ -1,5 +1,6 @@
 package es.uji.ei102720mgph.SANA.controller;
 
+import es.uji.ei102720mgph.SANA.dao.EmailDao;
 import es.uji.ei102720mgph.SANA.dao.ServiceDao;
 import es.uji.ei102720mgph.SANA.dao.ServiceDateDao;
 import es.uji.ei102720mgph.SANA.dao.TemporalServiceDao;
@@ -25,10 +26,16 @@ public class ServiceController {
     private ServiceDateDao serviceDateDao;
     private ServiceDao serviceDao;
     private TemporalServiceDao temporalServiceDao;
+    private EmailDao emailDao;
 
     @Autowired
     public void setServiceDao(ServiceDao serviceDao) {
         this.serviceDao = serviceDao;
+    }
+
+    @Autowired
+    public void setEmailDao(EmailDao emailDao) {
+        this.emailDao = emailDao;
     }
 
     @Autowired
@@ -145,9 +152,10 @@ public class ServiceController {
         String asunto = "Solicitud de servicio";
         String cuerpo = "Se ha solicitado crear el servicio de " + service.getNameOfService() + " para poder asignarlo al área natural " +
                 naturalArea + ".";
-        enviarMail(destinatario, asunto, cuerpo);
+        Email email = enviarMail(destinatario, asunto, cuerpo);
+        emailDao.addEmail(email);
 
-        return "redirect:/service/getForManagersServices/" + naturalArea + "#temporalServices";
+        return "redirect:/service/getForManagersServices/" + naturalArea;
     }
 
     @RequestMapping(value="/getForManagersServices/{naturalArea}")

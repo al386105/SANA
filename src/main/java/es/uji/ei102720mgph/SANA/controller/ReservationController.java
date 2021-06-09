@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -136,9 +137,25 @@ public class ReservationController {
         //Datos para pasar al email
         NaturalArea naturalArea = naturalAreaDao.getNaturalAreaOfZone(partes[0]);
 
+        //Generamos el pdf
+        try {
+            Formatter formatter = new Formatter();
+            String qr = "qr" + formatter.format("%07d", Integer.parseInt(""+numRes)) + ".png";
+            Formatter fmt = new Formatter();
+            File f = new File("pdfReserva" + fmt.format("%07d", Integer.parseInt(""+numRes)) + ".pdf");
+            generatePDF.createPDF(f, citizen, reservation, naturalArea,qr);
+            byte[] bytes = Files.readAllBytes(f.toPath());
+            Path path = Paths.get(uploadDirectory + "pdfs/" + f.getName());
+            // Lo eliminamos de la carpeta errónea
+            f.delete();
+            Files.write(path, bytes);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         // Enviar mail con la reserva
-        String path = uploadDirectory  +"/reservasPdf" + citizen.getName() + ".pdf";
-        generatePDF.createPDF(new File(path), citizen, reservation, naturalArea);
         String destinatario = reservation.getCitizenEmail();
         String asunto = "Reserva completada";
         String cuerpo = "Reserva realizada correctamente el día " + reservation.getReservationDate() +
@@ -209,6 +226,7 @@ public class ReservationController {
             String asunto = "Reserva actualizada";
             String cuerpo = "Ha actualizado correctamente los datos de la reserva del día " + reservation.getReservationDate() +
                     " para " + reservation.getNumberOfPeople() + " personas. \n\nUn cordial saludo del equipo de SANA.";
+
             envioMailReserva(destinatario, asunto, cuerpo);
         }
 
@@ -351,6 +369,8 @@ public class ReservationController {
             e.printStackTrace();
         }
     }
+
+
 
     private void envioMailReserva (String destinatario, String asunto, String cuerpo) {
         Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);

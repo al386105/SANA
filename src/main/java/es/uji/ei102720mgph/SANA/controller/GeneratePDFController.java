@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 public class GeneratePDFController {
@@ -40,7 +41,6 @@ public class GeneratePDFController {
     private static final Font smallBold = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, granate);
 
     private static final String linea = "img/linea-roja.png";
-    private static final String logo = "img/LOGO2.png";
 
 
     /**
@@ -52,9 +52,10 @@ public class GeneratePDFController {
      * @param pdfNewFile <code>String</code>
      *                   pdf File we are going to write.
      *                   Fichero pdf en el que vamos a escribir.
+     * @param qr
 
      */
-    public void createPDF(File pdfNewFile, RegisteredCitizen registeredCitizen, NuevaReserva nuevaReserva, NaturalArea naturalArea) {
+    public void createPDF(File pdfNewFile, RegisteredCitizen registeredCitizen, NuevaReserva nuevaReserva, NaturalArea naturalArea, String qr) {
         // Aquí introduciremos el código para crear el PDF.
 
         // Creamos el documento e indicamos el nombre del fichero.
@@ -100,17 +101,18 @@ public class GeneratePDFController {
             }
 
             // AÑADIMOS EL LOGO DE LA EMPRESA
+
             Image image;
             try {
-                image = Image.getInstance(logo);
-                image.setWidthPercentage(100F);
-                image.setAbsolutePosition(700, 700);
-                chapter.add(image);
+               image = Image.getInstance("img/LOGO_mono.png");
+               image.setAbsolutePosition(70, 700);
+               chapter.add(image);
             } catch (BadElementException ex) {
                 System.out.println("Image BadElementException" + ex);
             } catch (IOException ex) {
                 System.out.println("Image IOException " + ex);
             }
+
 
             Paragraph fact = new Paragraph("Reserva", chapterFont);
             fact.setAlignment(Element.ALIGN_RIGHT);
@@ -159,9 +161,17 @@ public class GeneratePDFController {
             cliente.add(registeredCitizen.getEmail());
             chapter.add(cliente);
 
-            // AÑADIMOS EL PÁRRAFO AL CUAL TIENE QUE ALMACENAR LA TABLA
-            Paragraph parrafoTabla = new Paragraph("\n");
-            parrafoTabla.setFont(headerFont);
+            // AÑADIMOS EL LOGO DE LA EMPRESA
+            Image qrCode;
+            try {
+                qrCode = Image.getInstance("img/qrCodes/"+qr);
+                qrCode.setAlignment(Element.ALIGN_LEFT);
+                chapter.add(qrCode);
+            } catch (BadElementException ex) {
+                System.out.println("Image BadElementException" + ex);
+            } catch (IOException ex) {
+                System.out.println("Image IOException " + ex);
+            }
 
 
 

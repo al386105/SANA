@@ -143,7 +143,7 @@ public class ReservationController {
             String qr = "qr" + formatter.format("%07d", Integer.parseInt(""+numRes)) + ".png";
             Formatter fmt = new Formatter();
             File f = new File("pdfReserva" + fmt.format("%07d", Integer.parseInt(""+numRes)) + ".pdf");
-            generatePDF.createPDF(f, citizen, reservation, naturalArea,qr);
+            generatePDF.createPDF(f, citizen, reservation, naturalArea, qr, partes);
             byte[] bytes = Files.readAllBytes(f.toPath());
             Path path = Paths.get(uploadDirectory + "pdfs/" + f.getName());
             // Lo eliminamos de la carpeta errónea

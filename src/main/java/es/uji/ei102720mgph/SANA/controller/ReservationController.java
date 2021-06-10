@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,6 +94,7 @@ public class ReservationController {
     public String addReservation2(@ModelAttribute("reservation") NuevaReserva reservation,
                                   @PathVariable String naturalArea, Model model, HttpSession session) {
         model.addAttribute("reservation", reservation);
+        System.out.println(reservation);
         model.addAttribute("naturalArea", naturalArea);
         if (reservation.getReservationDate().isEqual(LocalDate.now())) {
             TimeSlot timeSlot = timeSlotDao.getTimeSlot(reservation.getTimeSlotId());
@@ -112,7 +114,14 @@ public class ReservationController {
     // Gestió de la resposta del formulari de creació d'objectes
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("reservation") NuevaReserva reservation,
-                                   HttpSession session) {
+                                   HttpSession session, Model model, BindingResult bindingResult) {
+        ReservationValidator resVal = new ReservationValidator();
+        resVal.validate(reservation, bindingResult);
+        if (bindingResult.hasErrors()) {
+            String nat = timeSlotDao.getTimeSlot(reservation.getTimeSlotId()).getNaturalArea();
+            model.addAttribute("naturalArea", nat);
+            return "reservation/noReserva";
+        }
 
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         GeneratePDFController generatePDF = new GeneratePDFController();
@@ -129,7 +138,12 @@ public class ReservationController {
                 + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
         generarQr(text, "" + numRes);
 
-        for (String zon : partes) {
+        String[] zonasBonito = new String[partes.length];
+
+        for (int i = 0; i < partes.length; i++) {
+            String zon = partes[i];
+            Zone z = zoneDao.getZone(zon);
+            zonasBonito[i] = z.getZoneNumber() + z.getLetter();
             reservation.setZoneid(zon);
             reservationDao.addReservationOfZone(numRes, reservation.getZoneid());
         }
@@ -143,7 +157,7 @@ public class ReservationController {
             String qr = "qr" + formatter.format("%07d", Integer.parseInt(""+numRes)) + ".png";
             Formatter fmt = new Formatter();
             File f = new File("pdfReserva" + fmt.format("%07d", Integer.parseInt(""+numRes)) + ".pdf");
-            generatePDF.createPDF(f, citizen, reservation, naturalArea, qr, partes);
+            generatePDF.createPDF(f, citizen, reservation, naturalArea, qr, zonasBonito);
             byte[] bytes = Files.readAllBytes(f.toPath());
             Path path = Paths.get(uploadDirectory + "pdfs/" + f.getName());
             // Lo eliminamos de la carpeta errónea

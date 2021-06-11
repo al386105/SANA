@@ -138,7 +138,6 @@ public class ReservationController {
         generarQr(text, "" + numRes);
 
         String[] zonasBonito = new String[partes.length];
-
         for (int i = 0; i < partes.length; i++) {
             String zon = partes[i];
             Zone z = zoneDao.getZone(zon);
@@ -147,33 +146,29 @@ public class ReservationController {
             reservationDao.addReservationOfZone(numRes, reservation.getZoneid());
         }
 
-        //Datos para pasar al email
         NaturalArea naturalArea = naturalAreaDao.getNaturalAreaOfZone(partes[0]);
 
         //Generamos el pdf
         try {
             Formatter formatter = new Formatter();
             String qr = "qr" + formatter.format("%07d", Integer.parseInt(""+numRes)) + ".png";
-            Formatter fmt = new Formatter();
-            File f = new File("pdfReserva" + fmt.format("%07d", Integer.parseInt(""+numRes)) + ".pdf");
+            formatter = new Formatter();
+            File f = new File("pdfReserva" + formatter.format("%07d", Integer.parseInt(""+numRes)) + ".pdf");
             generatePDF.createPDF(f, citizen, reservation, naturalArea, qr, zonasBonito);
             byte[] bytes = Files.readAllBytes(f.toPath());
             Path path = Paths.get(uploadDirectory + "pdfs/" + f.getName());
             // Lo eliminamos de la carpeta errónea
             f.delete();
             Files.write(path, bytes);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         // Enviar mail con la reserva
         String destinatario = reservation.getCitizenEmail();
         String asunto = "Reserva completada";
         String cuerpo = "Reserva realizada correctamente el día " + reservation.getReservationDate() +
                 " para " + reservation.getNumberOfPeople() + " personas. \n\nUn cordial saludo del equipo de SANA.";
-
         envioMailReserva(destinatario, asunto, cuerpo);
 
         return "redirect:/reservation/reservas"; //redirigim a la lista per a veure el reservation afegit
@@ -235,6 +230,7 @@ public class ReservationController {
         }
         else{
             reservaDatosDao.modificaReservaPersonas(id, reservation.getNumberOfPeople());
+
             // Actualizar QR con los nuevos datos de la reserva
             String timeSlotId = reservation.getTimeSlotId();
             TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
@@ -250,7 +246,6 @@ public class ReservationController {
 
             envioMailReserva(destinatario, asunto, cuerpo);
         }
-
         return "redirect:/reservation/reservas";
     }
 
@@ -391,8 +386,6 @@ public class ReservationController {
             e.printStackTrace();
         }
     }
-
-
 
     private void envioMailReserva (String destinatario, String asunto, String cuerpo) {
         Email email = HomeController.enviarMail(destinatario, asunto, cuerpo);

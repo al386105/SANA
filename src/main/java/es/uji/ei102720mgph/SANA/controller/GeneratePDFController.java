@@ -1,64 +1,33 @@
 package es.uji.ei102720mgph.SANA.controller;
 
-
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.NuevaReserva;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
-import es.uji.ei102720mgph.SANA.model.ReservaDatos;
-import org.apache.catalina.connector.Request;
-import org.springframework.stereotype.Service;
 
-
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 public class GeneratePDFController {
 
     private static final Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 26, Font.BOLD);
     private static final Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 9, Font.NORMAL);
 
-    private static final BaseColor granate = new BaseColor(203, 62, 62);
     private static final BaseColor verde = new BaseColor(105, 127, 64);
-    private static final BaseColor gris = new BaseColor(215, 215, 215);
 
-
-    private static final Font categoryFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-    private static final Font subcategoryFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
-    private static final Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, verde);
     private static final Font smallBold = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, verde);
-
 
     private static final String linea = "img/linea-verde.png";
 
-
-    /**
-     * We create a PDF document with iText using different elements to learn
-     * to use this library.
-     * Creamos un documento PDF con iText usando diferentes elementos para aprender
-     * a usar esta librería.
-     *
-     * @param pdfNewFile <code>String</code>
-     *                   pdf File we are going to write.
-     *                   Fichero pdf en el que vamos a escribir.
-     * @param qr
-
-     */
     public void createPDF(File pdfNewFile, RegisteredCitizen registeredCitizen, NuevaReserva nuevaReserva, NaturalArea naturalArea, String qr, String[] zonas) {
-        // Aquí introduciremos el código para crear el PDF.
 
         // Creamos el documento e indicamos el nombre del fichero.
         try {
@@ -67,17 +36,9 @@ public class GeneratePDFController {
             try {
                 writer = com.itextpdf.text.pdf.PdfWriter.getInstance(document, new FileOutputStream(pdfNewFile));
             } catch (FileNotFoundException fileNotFoundException) {
-                System.out.println("No such file was found to generate the PDF "
-                        + "(No se encontró el fichero para generar el pdf)" + fileNotFoundException);
+                System.out.println("No se encontró el fichero para generar el pdf)" + fileNotFoundException);
             }
             document.open();
-
-            // Creamos el manejador de evento de pagina, el cual agregara
-            // el encabezado y pie de pagina
-            //EventoPagina evento = new EventoPagina(document);
-            // Indicamos que el manejador se encargara del evento END_PAGE
-            //pdfDocument.addEventHandler(PdfDocumentEvent.END_PAGE, evento);
-            // Establecemos los margenes
 
             // Añadimos los metadatos del PDF
             document.addTitle("Reserva-" + nuevaReserva.getCitizenEmail());
@@ -88,22 +49,20 @@ public class GeneratePDFController {
 
             document.setMargins(70, 50, 35, 35);
 
-            // Primera página
-            // AÑADIMOS LA FRANJA GRANATE DE ARRIBA
+            // AÑADIMOS LA FRANJA VERDE DE ARRIBA
             Chapter chapter = new Chapter(0);
-            Image lineaArriba;
+            Image lineaColor;
             try {
-                lineaArriba = Image.getInstance(linea);
-                lineaArriba.setAbsolutePosition(0, 822);
-                chapter.add(lineaArriba);
+                lineaColor = Image.getInstance(linea);
+                lineaColor.setAbsolutePosition(0, 822);
+                chapter.add(lineaColor);
             } catch (BadElementException ex) {
                 System.out.println("Image BadElementException" + ex);
             } catch (IOException ex) {
                 System.out.println("Image IOException " + ex);
             }
 
-            // AÑADIMOS EL LOGO DE LA EMPRESA
-
+            // AÑADIMOS EL LOGO DE SANA
             Image image;
             try {
                image = Image.getInstance("img/LOGO_mono.png");
@@ -116,7 +75,7 @@ public class GeneratePDFController {
                 System.out.println("Image IOException " + ex);
             }
 
-
+            // TÍTULO
             Paragraph fact = new Paragraph("Reserva", chapterFont);
             fact.setAlignment(Element.ALIGN_RIGHT);
             chapter.add(fact);
@@ -128,21 +87,22 @@ public class GeneratePDFController {
             lineSeparator.setLineColor(BaseColor.BLACK);
             lineSeparator.setPercentage(20);
 
-            // PONEMOS LA FECHA Y EL Nº DE FACTURA
+            // SECCIÓN FECHA DE LA RESERVA
             Paragraph fecha = new Paragraph("\nFecha", smallBold);
             fecha.setAlignment(Element.ALIGN_RIGHT);
             fecha.add(lineSeparator);
             chapter.add(fecha);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String fechaFormateada = nuevaReserva.getReservationDate().format(formatter);
+            Paragraph fechaReserva = new Paragraph(fechaFormateada);
+            fechaReserva.setAlignment(Element.ALIGN_RIGHT);
+            chapter.add(fechaReserva);
 
-            Paragraph fechaInvoice = new Paragraph(nuevaReserva.getReservationDate().toString());
-            fechaInvoice.setAlignment(Element.ALIGN_RIGHT);
-            chapter.add(fechaInvoice);
-
+            // SECCIÓN LUGAR DE LA RESERVA: espacio natural, zonas y num. personas
             Paragraph hReserva = new Paragraph("\nLugar", smallBold);
             hReserva.setAlignment(Element.ALIGN_RIGHT);
             hReserva.add(lineSeparator);
             chapter.add(hReserva);
-
             String texto = naturalArea.getName() + "\nZonas: ";
             for (String z: zonas) {
                 texto += z + ", ";
@@ -153,24 +113,24 @@ public class GeneratePDFController {
             begginningTime.setAlignment(Element.ALIGN_RIGHT);
             chapter.add(begginningTime);
 
-            LineSeparator lineCliente = new LineSeparator();
-            lineCliente.setAlignment(0);
-            lineCliente.setOffset(-2);
-            lineCliente.setLineWidth(1);
-            lineCliente.setLineColor(BaseColor.BLACK);
-            lineCliente.setPercentage(100);
+            LineSeparator lineaUsuario = new LineSeparator();
+            lineaUsuario.setAlignment(0);
+            lineaUsuario.setOffset(-2);
+            lineaUsuario.setLineWidth(1);
+            lineaUsuario.setLineColor(BaseColor.BLACK);
+            lineaUsuario.setPercentage(100);
 
-            // DATOS DEL CLIENTE
-            Paragraph cliente = new Paragraph("\n\nDatos Cliente", smallBold);
+            // DATOS DEL USUARIO: nombre, telf, correo
+            Paragraph cliente = new Paragraph("\n\nDatos del usuario", smallBold);
             cliente.setAlignment(Element.ALIGN_LEFT);
-            cliente.add(lineCliente);
+            cliente.add(lineaUsuario);
             cliente.setFont(paragraphFont);
             cliente.add("\n" + registeredCitizen.getName() + " " + registeredCitizen.getSurname() + "\n");
             cliente.add(registeredCitizen.getMobilePhoneNumber() + "\n");
             cliente.add(registeredCitizen.getEmail());
             chapter.add(cliente);
 
-            // AÑADIMOS EL LOGO DE LA EMPRESA
+            // AÑADIMOS EL QR DE LA RESERVA
             Image qrCode;
             try {
                 qrCode = Image.getInstance("img/qrCodes/"+qr);
@@ -184,23 +144,19 @@ public class GeneratePDFController {
                 System.out.println("Image IOException " + ex);
             }
 
-
-
-            // AÑADIMOS LA FRANJA GRANATE ABAJO IGUAL QUE ARRIBA
+            // AÑADIMOS LA FRANJA VERDE ABAJO
             try {
-                lineaArriba = Image.getInstance(linea);
-                lineaArriba.setAbsolutePosition(0, 0);
-                chapter.add(lineaArriba);
+                lineaColor = Image.getInstance(linea);
+                lineaColor.setAbsolutePosition(0, 0);
+                chapter.add(lineaColor);
             } catch (BadElementException ex) {
                 System.out.println("Image BadElementException" + ex);
             } catch (IOException ex) {
                 System.out.println("Image IOException " + ex);
             }
-
             document.add(chapter);
 
-
-            //Añadimos los datos de la empresa
+            //Añadimos los datos de la empresa de SANA
             PdfContentByte over = writer.getDirectContent();
             try {
                 over.saveState();
@@ -210,7 +166,6 @@ public class GeneratePDFController {
                 over.setTextMatrix(140, 740);
                 over.showText("Conselleria de Medioambiente");
                 over.endText();
-
 
                 over.beginText();
                 over.setFontAndSize(paragraphFont.getBaseFont(), 9);
@@ -234,14 +189,10 @@ public class GeneratePDFController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             document.close();
-            System.out.println("Your PDF file has been generated!");
-
 
         } catch (DocumentException documentException) {
             System.out.println("The file not exists (Se ha producido un error al generar un documento): " + documentException);
         }
-
     }
 }

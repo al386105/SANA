@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 public class GeneratePDFController {
@@ -31,16 +32,17 @@ public class GeneratePDFController {
     private static final Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 9, Font.NORMAL);
 
     private static final BaseColor granate = new BaseColor(203, 62, 62);
+    private static final BaseColor verde = new BaseColor(105, 127, 64);
     private static final BaseColor gris = new BaseColor(215, 215, 215);
 
 
     private static final Font categoryFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
     private static final Font subcategoryFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
-    private static final Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, granate);
-    private static final Font smallBold = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, granate);
+    private static final Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, verde);
+    private static final Font smallBold = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, verde);
 
-    private static final String linea = "img/linea-roja.png";
-    private static final String logo = "img/LOGO2.png";
+
+    private static final String linea = "img/linea-verde.png";
 
 
     /**
@@ -52,9 +54,10 @@ public class GeneratePDFController {
      * @param pdfNewFile <code>String</code>
      *                   pdf File we are going to write.
      *                   Fichero pdf en el que vamos a escribir.
+     * @param qr
 
      */
-    public void createPDF(File pdfNewFile, RegisteredCitizen registeredCitizen, NuevaReserva nuevaReserva, NaturalArea naturalArea) {
+    public void createPDF(File pdfNewFile, RegisteredCitizen registeredCitizen, NuevaReserva nuevaReserva, NaturalArea naturalArea, String qr, String[] zonas) {
         // Aquí introduciremos el código para crear el PDF.
 
         // Creamos el documento e indicamos el nombre del fichero.
@@ -100,17 +103,19 @@ public class GeneratePDFController {
             }
 
             // AÑADIMOS EL LOGO DE LA EMPRESA
+
             Image image;
             try {
-                image = Image.getInstance(logo);
-                image.setWidthPercentage(100F);
-                image.setAbsolutePosition(700, 700);
-                chapter.add(image);
+               image = Image.getInstance("img/LOGO_mono.png");
+               image.setAbsolutePosition(58, 685);
+               image.scalePercent(10,10);
+               chapter.add(image);
             } catch (BadElementException ex) {
                 System.out.println("Image BadElementException" + ex);
             } catch (IOException ex) {
                 System.out.println("Image IOException " + ex);
             }
+
 
             Paragraph fact = new Paragraph("Reserva", chapterFont);
             fact.setAlignment(Element.ALIGN_RIGHT);
@@ -133,12 +138,18 @@ public class GeneratePDFController {
             fechaInvoice.setAlignment(Element.ALIGN_RIGHT);
             chapter.add(fechaInvoice);
 
-            Paragraph hReserva = new Paragraph("\nId de la Zona", smallBold);
+            Paragraph hReserva = new Paragraph("\nLugar", smallBold);
             hReserva.setAlignment(Element.ALIGN_RIGHT);
             hReserva.add(lineSeparator);
             chapter.add(hReserva);
 
-            Paragraph begginningTime = new Paragraph(nuevaReserva.getZoneid().toString());
+            String texto = naturalArea.getName() + "\nZonas: ";
+            for (String z: zonas) {
+                texto += z + ", ";
+            }
+            texto = texto.substring(0, texto.length()-2);
+            texto += "\n" + nuevaReserva.getNumberOfPeople() + " personas";
+            Paragraph begginningTime = new Paragraph(texto);
             begginningTime.setAlignment(Element.ALIGN_RIGHT);
             chapter.add(begginningTime);
 
@@ -159,9 +170,19 @@ public class GeneratePDFController {
             cliente.add(registeredCitizen.getEmail());
             chapter.add(cliente);
 
-            // AÑADIMOS EL PÁRRAFO AL CUAL TIENE QUE ALMACENAR LA TABLA
-            Paragraph parrafoTabla = new Paragraph("\n");
-            parrafoTabla.setFont(headerFont);
+            // AÑADIMOS EL LOGO DE LA EMPRESA
+            Image qrCode;
+            try {
+                qrCode = Image.getInstance("img/qrCodes/"+qr);
+                qrCode.setAlignment(Element.ALIGN_LEFT);
+                qrCode.scalePercent(80, 80);
+                qrCode.setAbsolutePosition(180, 300);
+                chapter.add(qrCode);
+            } catch (BadElementException ex) {
+                System.out.println("Image BadElementException" + ex);
+            } catch (IOException ex) {
+                System.out.println("Image IOException " + ex);
+            }
 
 
 

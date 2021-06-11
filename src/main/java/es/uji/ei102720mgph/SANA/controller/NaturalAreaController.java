@@ -69,8 +69,11 @@ public class NaturalAreaController {
 
     @RequestMapping(value="/get/{naturalArea}")
     public String getNaturalArea(Model model, @PathVariable("naturalArea") String naturalArea, HttpSession session) {
-        if(session.getAttribute("registeredCitizen") != null)
+        if(session.getAttribute("registeredCitizen") != null){
+            RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+            model.addAttribute("citizenName", citizen.getName());
             model.addAttribute("typeUser", "registered");
+        }
         model.addAttribute("naturalArea", naturalAreaDao.getNaturalArea(naturalArea));
         model.addAttribute("zones", zoneDao.getZonesOfNaturalArea(naturalArea));
         model.addAttribute("comments", commentDao.getCommentsOfNaturalArea(naturalArea));
@@ -235,8 +238,11 @@ public class NaturalAreaController {
         int currentPage = page.orElse(0);
         model.addAttribute("selectedPage", currentPage);
 
-        if (session.getAttribute("registeredCitizen") != null)
+        if (session.getAttribute("registeredCitizen") != null){
             model.addAttribute("typeUser", "registeredCitizen");
+            RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+            model.addAttribute("citizenName", citizen.getName());
+        }
 
         return "naturalArea/pagedList";
     }

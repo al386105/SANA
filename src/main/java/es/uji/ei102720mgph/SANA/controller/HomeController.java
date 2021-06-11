@@ -73,8 +73,11 @@ public class HomeController {
             return "environmentalManager/home";
         else if (session.getAttribute("municipalManager") != null)
             return "municipalManager/home";
-        else if (session.getAttribute("registeredCitizen") != null)
+        else if (session.getAttribute("registeredCitizen") != null){
             model.addAttribute("typeUser", "registeredCitizen");
+            RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+            model.addAttribute("citizenName", citizen.getName());
+        }
         return "inicio/home";
     }
 

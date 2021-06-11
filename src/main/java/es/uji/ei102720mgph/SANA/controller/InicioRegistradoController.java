@@ -32,6 +32,7 @@ public class InicioRegistradoController {
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         model.addAttribute("citizen", citizen);
+        model.addAttribute("citizenName", citizen.getName());
         return "inicioRegistrado/perfil";
     }
 
@@ -43,6 +44,7 @@ public class InicioRegistradoController {
             return "redirect:/inicio/login";
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("citizenName", citizen.getName());
         model.addAttribute("citizen", citizen);
         return "inicioRegistrado/editarPerfil";
     }
@@ -58,6 +60,7 @@ public class InicioRegistradoController {
         registeredCitizen.setCitizenCode(oldRegisteredCitizen.getCitizenCode());
         registeredCitizenDao.updateRegisteredCitizen(registeredCitizen);
         model.addAttribute("citizen", registeredCitizen);
+        model.addAttribute("citizenName", registeredCitizen.getName());
         session.setAttribute("registeredCitizen", registeredCitizen);
         return "redirect:perfil";
     }
@@ -70,6 +73,7 @@ public class InicioRegistradoController {
         }
         RegisteredCitizen registeredCitizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
         model.addAttribute("username", registeredCitizen.getName());
+        model.addAttribute("citizenName", registeredCitizen.getName());
         return "inicioRegistrado/welcome";
     }
 }

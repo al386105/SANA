@@ -79,6 +79,8 @@ public class ReservationController {
         }
         if (session.getAttribute("nextUrl") != null)
             session.removeAttribute("nextUrl");
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("citizenName", citizen.getName());
         model.addAttribute("reservation", new NuevaReserva());
         model.addAttribute("naturalArea", naturalArea);
         model.addAttribute("timeSlots", timeSlotDao.getTimeSlotNaturalAreaActuales(naturalArea));
@@ -95,6 +97,8 @@ public class ReservationController {
                                   @PathVariable String naturalArea, Model model, HttpSession session) {
         model.addAttribute("reservation", reservation);
         model.addAttribute("naturalArea", naturalArea);
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("citizenName", citizen.getName());
         if (reservation.getReservationDate().isEqual(LocalDate.now())) {
             TimeSlot timeSlot = timeSlotDao.getTimeSlot(reservation.getTimeSlotId());
             if (timeSlot.getBeginningTime().minusHours(1).isAfter(LocalTime.now())) {
@@ -214,6 +218,9 @@ public class ReservationController {
             return "redirect:/inicio/login";
         }
 
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("citizenName", citizen.getName());
+
         int reservationId = Integer.parseInt(id);
         int maxCapacity = reservationDao.getMaximumCapacityOfReservation(reservationId);
 
@@ -322,6 +329,7 @@ public class ReservationController {
             return "redirect:/inicio/login";
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("citizenName", citizen.getName());
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasEmail(citizen.getEmail());
         List<ReservaDatosAgrupada> listaReservasAgrupadas = agruparPorReserva(listaReservas);
         model.addAttribute("motivo", new MotivoCancelancion());
@@ -339,6 +347,7 @@ public class ReservationController {
             return "redirect:/inicio/login";
         }
         RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        model.addAttribute("citizenName", citizen.getName());
         List<ReservaDatos> listaReservas = reservaDatosDao.getReservasTodasEmail(citizen.getEmail());
         List<ReservaDatosAgrupada> listaReservasAgrupadas = agruparPorReserva(listaReservas);
         model.addAttribute("reservas", listaReservasAgrupadas);

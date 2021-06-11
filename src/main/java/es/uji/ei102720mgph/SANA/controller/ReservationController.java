@@ -94,7 +94,6 @@ public class ReservationController {
     public String addReservation2(@ModelAttribute("reservation") NuevaReserva reservation,
                                   @PathVariable String naturalArea, Model model, HttpSession session) {
         model.addAttribute("reservation", reservation);
-        System.out.println(reservation);
         model.addAttribute("naturalArea", naturalArea);
         if (reservation.getReservationDate().isEqual(LocalDate.now())) {
             TimeSlot timeSlot = timeSlotDao.getTimeSlot(reservation.getTimeSlotId());

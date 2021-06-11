@@ -11,7 +11,10 @@
         <hr class="barra-normal">
         <br>
         <div th:if="${#lists.isEmpty(reservas)}">
-            <h4 style="text-align: center">¡No tiene pendiente ninguna reserva! Haga una en tan sólo dos minutos.</h4>
+            <h4 style="text-align: center">¡No tiene pendiente ninguna reserva! Haga una en tan sólo dos minutos desde aquí:</h4>
+            <br>
+            <div style="text-align: center"><a href="/naturalArea/pagedlist"><button type="button" class="btn btn-secondary">Consultar áreas naturales</button></a></div>
+            <br>
         </div>
         <div th:unless="${#lists.isEmpty(reservas)}">
             <div th:each="reserva: ${#lists.sort(reservas)}">

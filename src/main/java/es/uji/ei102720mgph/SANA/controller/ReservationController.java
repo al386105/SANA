@@ -207,29 +207,36 @@ public class ReservationController {
         return "redirect:/reservation/reservas";
     }
 
-    @RequestMapping("/editarReserva/{id}")
-    public String editarReserva(@ModelAttribute("personas") PersonasReserva personas,
-                                @PathVariable String id, Model model, HttpSession session) {
+    @RequestMapping("/update/{id}")
+    public String updateReserva(@PathVariable String id, Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/reservation/reservas");
             return "redirect:/inicio/login";
         }
 
-        int pers = personas.getNum();
-        //Validamos que el número de personas es correcto:
         int reservationId = Integer.parseInt(id);
         int maxCapacity = reservationDao.getMaximumCapacityOfReservation(reservationId);
-        if (pers > maxCapacity || pers <= 0){
-            //Esto es que no puede reservar
-            //model.addAttribute("maxCapacity", maxCapacity);
-            //return "redirect:/reservation/editarReserva/" + id + "/#miModal2";
+
+        model.addAttribute("maxCapacity", maxCapacity);
+        model.addAttribute("reservation", reservationDao.getReservation(reservationId));
+
+        return "reservation/update";
+    }
+
+    @RequestMapping(value="/update", method= RequestMethod.POST)
+    public String updateReservaPOST(@ModelAttribute("reservation") Reservation reservation) {
+        int reservationId = reservation.getReservationNumber();
+        int maxCapacity = reservationDao.getMaximumCapacityOfReservation(reservationId);
+        String id = reservationId + "";
+
+        //Validamos que el número de personas es correcto:
+        if (reservation.getNumberOfPeople() > maxCapacity || reservation.getNumberOfPeople() <= 0){
+            return "reservation/update/" + reservationId;
         }
         else{
-            reservaDatosDao.modificaReservaPersonas(id, pers);
-
+            reservaDatosDao.modificaReservaPersonas(id, reservation.getNumberOfPeople());
             // Actualizar QR con los nuevos datos de la reserva
-            Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
             String timeSlotId = reservation.getTimeSlotId();
             TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
             String text = "Reserva por " + reservation.getCitizenEmail() + ", de fecha " + reservation.getReservationDate()
@@ -247,6 +254,7 @@ public class ReservationController {
 
         return "redirect:/reservation/reservas";
     }
+
 
     @RequestMapping("/editarReservaMuni/{naturalArea}/{id}")
     public String editarReservaMuni(@ModelAttribute("personas") PersonasReserva personas, @PathVariable String naturalArea, @PathVariable String id, Model model, HttpSession session) {

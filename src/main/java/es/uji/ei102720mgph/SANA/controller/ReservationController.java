@@ -188,10 +188,11 @@ public class ReservationController {
         int pers = personas.getNum();
         //Validamos que el número de personas es correcto:
         int reservationId = Integer.parseInt(id);
-        int max = reservationDao.getMaximumCapacityOfReservation(reservationId);
-        if (pers > max){
+        int maxCapacity = reservationDao.getMaximumCapacityOfReservation(reservationId);
+        if (pers > maxCapacity || pers <= 0){
             //Esto es que no puede reservar
-
+            //model.addAttribute("maxCapacity", maxCapacity);
+            //return "redirect:/reservation/editarReserva/" + id + "/#miModal2";
         }
         else{
             reservaDatosDao.modificaReservaPersonas(id, pers);

@@ -82,7 +82,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>Indique el número de personas que finalmente acudirán:</p>
+                                <p>Indique el número de personas que finalmente acudirán: </p>
                             </div>
                             <form th:action="@{/reservation/editarReserva/} + ${reserva.reservationNumber}" th:object="${personas}">
                                 <input type="number" min="1" class="form-control motivo" id="personas"

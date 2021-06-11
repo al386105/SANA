@@ -32,7 +32,6 @@ public class CommentController {
         if (citizen == null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/comment/add/" + naturalArea);
-            model.addAttribute("citizenName", citizen.getName());
             return "redirect:/inicio/login";
         }
         Comment comment = new Comment();
@@ -42,6 +41,7 @@ public class CommentController {
         comment.setCitizenSurname(citizen.getSurname());
         session.setAttribute("section", "#comments");
         model.addAttribute("comment", comment);
+        model.addAttribute("citizenName", citizen.getName());
         return "comment/add";
     }
 

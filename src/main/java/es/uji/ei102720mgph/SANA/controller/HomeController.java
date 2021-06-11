@@ -90,18 +90,30 @@ public class HomeController {
     @RequestMapping("inicio/contactanos")
     public String redirigirContactanos(Model model, HttpSession session) {
         model.addAttribute("email", new Email());
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        if(citizen != null){
+            model.addAttribute("citizenName", citizen.getName());
+        }
         return "inicio/contactanos";
     }
 
     @RequestMapping("inicio/login")
     public String redirigirLogin(Model model, HttpSession session) {
         model.addAttribute("userLogin", new UserLogin() {});
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        if(citizen != null){
+            model.addAttribute("citizenName", citizen.getName());
+        }
         return "inicio/login";
     }
 
     @RequestMapping("inicio/register_form")
-    public String redirigirRegistro(Model model) {
+    public String redirigirRegistro(Model model, HttpSession session) {
         model.addAttribute("registrationCitizen", new RegistrationCitizen());
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        if(citizen != null){
+            model.addAttribute("citizenName", citizen.getName());
+        }
         return "inicio/register_form";
     }
 

@@ -40,7 +40,10 @@ public class OccupancyController {
     // Vista de paneles de información para ciudadanos registrados o no registrados
     @RequestMapping(value="/panel")
     public String getInfoPaneles(Model model, HttpSession session){
-        // si es null es que no esta registrado
+        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+        if (citizen != null){
+            model.addAttribute("citizenName", citizen.getName());
+        }
         model.addAttribute("registered", session.getAttribute("registeredCitizen"));
         List<NaturalArea> naturalAreas = naturalAreaDao.getRestrictedAndNonNaturalAreas();
         model.addAttribute("occupancyDataOfNaturalAreas",

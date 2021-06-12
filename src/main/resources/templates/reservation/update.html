@@ -4,98 +4,41 @@
 <body>
 <div th:replace="fragments/headerRegistered"></div>
 
-
 <div class="container">
-    <h2 class="text-uppercase text-center text-secondary mb-0" >
-        Editar reserva
-    </h2>
-    <br><hr class="barra-normal">
-    <br>
+    <h2 class="text-uppercase text-center text-secondary mb-0" >Editar reserva</h2>
+    <br><hr class="barra-normal"><br>
+
+    <h4 style="text-align: center"><i>Reserva para el día <span th:text="${#temporals.format(reservation.reservationDate,'dd/MM/yyyy')}"></span></i></h4><br>
 
     <form class="form-horizontal" action="#" th:action="@{/reservation/update}"
            th:object="${reservation}" method="post">
 
         <!-- Necesario para no perder la informacion -->
-        <div hidden class="form-group row">
-            <label class="control-label col-sm-2">Id:</label>
-            <div class="col-sm-4">
-                <input readonly class="form-control" type="text" th:field="*{reservationNumber}">
-            </div>
-        </div>
+        <input required type="hidden" th:field ="*{reservationNumber}"/>
+        <input required type="hidden" th:field ="*{creationDate}"/>
+        <input required type="hidden" th:field ="*{creationTime}"/>
+        <input required type="hidden" th:field ="*{state}"/>
+        <input required type="hidden" th:field ="*{QRcode}"/>
+        <input required type="hidden" th:field ="*{citizenEmail}"/>
+        <input required type="hidden" th:field ="*{timeSlotId}"/>
+        <input required type="hidden" th:field ="*{reservationDate}"/>
 
         <div class="form-group row">
-            <label class="control-label col-sm-3">Reserva para el día:</label>
-            <div class="col-sm-2">
-                <input readonly placeholder="yyyy-MM-dd" type="text" class="form-control" th:field="*{reservationDate}"/>
-
-             </div>
-        </div>
-
-        <!-- Necesario para no perder la informacion -->
-        <div hidden class="form-group row">
-            <label class="control-label col-sm-2">Fecha creación:</label>
-            <div class="col-sm-5">
-                <input readonly  class="form-control" type="text" th:field="*{creationDate}">
-            </div>
-        </div>
-
-        <!-- Necesario para no perder la informacion -->
-        <div hidden class="form-group row">
-            <label class="control-label col-sm-2">Hora creación:</label>
-            <div class="col-sm-4">
-                <input readonly class="form-control" type="text" th:field="*{creationTime}">
-            </div>
-        </div>
-
-
-        <div class="form-group row">
-            <label class="control-label col-sm-3" for="numberOfPeople">Núm. personas que finalmente acudirán: </label>
+            <label class="control-label col-sm-4" for="numberOfPeople">Número de personas que finalmente acudirán: </label>
             <div class="col-sm-2">
                 <input type="number" min="1" th:max="${maxCapacity}" required class="form-control" id="numberOfPeople" th:field="*{numberOfPeople}" value="1"/>
             </div>
-        </div>
+        </div><br>
 
-        <!-- Necesario para no perder la informacion -->
-        <div hidden class="form-group row">
-            <label class="control-label col-sm-2">Estado:</label>
-            <div class="col-sm-4">
-                <input readonly class="form-control form-control-lg selectReserva" type="text" th:field="*{state}">
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-4">
+                <a href="/reservation/reservas">
+                    <button type="button" class="btn btn-secondary">Volver</button>
+                </a>
+                <button type="submit" class="btn btn-primary">Actualizar reserva</button><br><br>
             </div>
         </div>
-
-        <!-- Necesario para no perder la informacion -->
-        <div hidden class="form-group row">
-            <label class="control-label col-sm-2">Qr:</label>
-            <div class="col-sm-4">
-                <input readonly class="form-control form-control-lg selectReserva" type="text" th:field="*{QRcode}">
-            </div>
-        </div>
-
-        <!-- Necesario para no perder la informacion -->
-        <div hidden class="form-group row">
-            <label class="control-label col-sm-2">Email ciudadano:</label>
-            <div class="col-sm-4">
-                <input readonly class="form-control form-control-lg selectReserva" type="text" th:field="*{citizenEmail}">
-            </div>
-        </div>
-
-        <!-- Necesario para no perder la informacion -->
-        <div hidden class="form-group row">
-            <label class="control-label col-sm-3">Durante la franja horaria:</label>
-            <div class="col-sm-2">
-                <input readonly class="form-control form-control-lg selectReserva" type="text" th:field="*{timeSlotId}">
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Actualizar reserva</button>
-        <br><br>
-
     </form>
-
-    <a th:href="@{/reservation/reservas/}">
-        <button type="button" class="btn btn-primary">Volver</button></a>
-    <br><br>
-
 </div>
 
 <div th:replace="fragments/footer"></div>

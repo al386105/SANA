@@ -213,9 +213,6 @@ public class ReservationController {
             return "redirect:/inicio/login";
         }
 
-        RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
-        model.addAttribute("citizenName", citizen.getName());
-
         int reservationId = Integer.parseInt(id);
         int maxCapacity = reservationDao.getMaximumCapacityOfReservation(reservationId);
 
@@ -232,9 +229,8 @@ public class ReservationController {
         String id = reservationId + "";
 
         //Validamos que el número de personas es correcto:
-        if (reservation.getNumberOfPeople() > maxCapacity || reservation.getNumberOfPeople() <= 0){
+        if (reservation.getNumberOfPeople() > maxCapacity || reservation.getNumberOfPeople() <= 0)
             return "reservation/update/" + reservationId;
-        }
         else{
             reservaDatosDao.modificaReservaPersonas(id, reservation.getNumberOfPeople());
 
@@ -256,37 +252,53 @@ public class ReservationController {
         return "redirect:/reservation/reservas";
     }
 
-
-    @RequestMapping("/editarReservaMuni/{naturalArea}/{id}")
-    public String editarReservaMuni(@ModelAttribute("personas") PersonasReserva personas, @PathVariable String naturalArea, @PathVariable String id, Model model, HttpSession session) {
+    @RequestMapping("/updateManagers/{naturalArea}/{id}")
+    public String editarReservaMuni(@PathVariable String naturalArea, @PathVariable String id, Model model, HttpSession session) {
         if (session.getAttribute("municipalManager") == null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/reservation/reservas");
             return "redirect:/inicio/login";
         }
 
-        int pers = personas.getNum();
-        reservaDatosDao.modificaReservaPersonas(id, pers);
+        int reservationId = Integer.parseInt(id);
+        int maxCapacity = reservationDao.getMaximumCapacityOfReservation(reservationId);
 
-        // Actualizar QR con los nuevos datos de la reserva
-        Reservation reservation = reservationDao.getReservation(Integer.parseInt(id));
-        String timeSlotId = reservation.getTimeSlotId();
-        TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
-        String text = "Reserva por " + reservation.getCitizenEmail() + ", de fecha " + reservation.getReservationDate()
-                + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
-        generarQr(text, id);
+        model.addAttribute("maxCapacity", maxCapacity);
+        model.addAttribute("reservation", reservationDao.getReservation(reservationId));
+        model.addAttribute("naturalArea", naturalArea);
 
-        // Enviar mail con la modificacion de la reserva
-        String destinatario = reservation.getCitizenEmail();
-        String asunto = "Reserva actualizada";
-        String cuerpo = "Debido a las restricciones de aforo en el área natural: " + naturalArea +
-                "se ha modificado el número de personas que podrán acudir a dicha reserva con fecha" + reservation.getReservationDate() +
-                " y se ha visto modificada a " + reservation.getNumberOfPeople() + " personas asistentes. \n\nUn cordial saludo del equipo de SANA.";
-        envioMailReserva(destinatario, asunto, cuerpo);
-
-        return "redirect:/reservation/reservasArea/" + naturalArea;
+        return "reservation/updateManagers";
     }
 
+    @RequestMapping(value="/updateManagers/{naturalArea}", method= RequestMethod.POST)
+    public String updateManagersPOST(@PathVariable String naturalArea, @ModelAttribute("reservation") Reservation reservation) {
+        int reservationId = reservation.getReservationNumber();
+        int maxCapacity = reservationDao.getMaximumCapacityOfReservation(reservationId);
+        String id = reservationId + "";
+
+        //Validamos que el número de personas es correcto:
+        if (reservation.getNumberOfPeople() > maxCapacity || reservation.getNumberOfPeople() <= 0)
+            return "reservation/updateManagers/" + naturalArea + "/" + reservationId;
+        else{
+            reservaDatosDao.modificaReservaPersonas(id, reservation.getNumberOfPeople());
+
+            // Actualizar QR con los nuevos datos de la reserva
+            String timeSlotId = reservation.getTimeSlotId();
+            TimeSlot timeSlot = timeSlotDao.getTimeSlot(timeSlotId);
+            String text = "Reserva por " + reservation.getCitizenEmail() + ", de fecha " + reservation.getReservationDate()
+                    + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
+            generarQr(text, id);
+
+            // Enviar mail con la modificacion de la reserva
+            String destinatario = reservation.getCitizenEmail();
+            String asunto = "Reserva actualizada";
+            String cuerpo = "Debido a las restricciones de aforo en el área natural: " + naturalArea +
+                    "se ha modificado el número de personas que podrán acudir a dicha reserva con fecha" + reservation.getReservationDate() +
+                    " y se ha visto modificada a " + reservation.getNumberOfPeople() + " personas asistentes. \n\nUn cordial saludo del equipo de SANA.";
+            envioMailReserva(destinatario, asunto, cuerpo);
+        }
+        return "redirect:/reservation/reservasArea/" + naturalArea;
+    }
 
     @RequestMapping("/cancelarReservaMunicipal/{naturalArea}/{id}")
     public String cancelarReservaMunicipal(@ModelAttribute("motivo") MotivoCancelancion motivo, @PathVariable String naturalArea, @PathVariable String id, Model model, HttpSession session) {

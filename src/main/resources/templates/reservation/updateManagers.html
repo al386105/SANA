@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:replace="fragments/headerManager"></div>
+
+<div class="container">
+    <h2 class="text-uppercase text-center text-secondary mb-0" >Editar reserva</h2>
+    <br><hr class="barra-normal"><br>
+
+    <h4 style="text-align: center"><i>Reserva en <span th:text="${naturalArea}"></span>
+         para el día <span th:text="${#temporals.format(reservation.reservationDate,'dd/MM/yyyy')}"></span></i></h4><br>
+
+    <form class="form-horizontal" action="#" th:action="@{/reservation/updateManagers/{naturalAreaName}(naturalAreaName=${naturalArea})}"
+           th:object="${reservation}" method="post">
+
+        <!-- Necesario para no perder la informacion -->
+        <input required type="hidden" th:field ="*{reservationNumber}"/>
+        <input required type="hidden" th:field ="*{creationDate}"/>
+        <input required type="hidden" th:field ="*{creationTime}"/>
+        <input required type="hidden" th:field ="*{state}"/>
+        <input required type="hidden" th:field ="*{QRcode}"/>
+        <input required type="hidden" th:field ="*{citizenEmail}"/>
+        <input required type="hidden" th:field ="*{timeSlotId}"/>
+        <input required type="hidden" th:field ="*{reservationDate}"/>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-4" for="numberOfPeople">Número de personas de la reserva: </label>
+            <div class="col-sm-2">
+                <input type="number" min="1" th:max="${maxCapacity}" required class="form-control" id="numberOfPeople" th:field="*{numberOfPeople}" value="1"/>
+            </div>
+        </div><br>
+
+        <div class="form-group row">
+            <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-success okey">Actualizar reserva</button><br><br>
+            </div>
+        </div>
+    </form>
+
+    <a th:href="@{/reservation/reservasArea/{naturalAreaName}(naturalAreaName=${naturalArea})}">
+        <button type="submit" class="btn btn-primary">Volver</button>
+    </a><br><br>
+</div>
+
+<div th:replace="fragments/footer"></div>
+
+</body>
+</html>

@@ -45,6 +45,9 @@
 
                         <a style="float: right; margin-right: 10px" th:href="${'/reservation/update/' + reserva.reservationNumber}">
                             <button type="button" class="btn btn-secondary"> Modificar reserva</button></a>
+
+                        <a style="float: right; margin-right: 10px" th:href="@{'../../../../img//pdfs/pdfReserva' + ${reserva.reservationNumber} + '.pdf'}">
+                            <button type="button" class="btn btn-secondary"> Ver pdf</button></a>
                     </div>
                 </div>
                 <br>

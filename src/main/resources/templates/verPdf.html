@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{fragments/base}">
+<head>
+  <title>Gestionar Contratos</title>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/estilo.css}" href="static/css/estilo.css"/>
+</head>
+<body>
+<div layout:fragment="content">
+  <br>
+  <embed th:if="${!filename.isEmpty()}" th:src="@{${filename}}" width="100%" height="1200px" type="application/pdf"/>
+  <a id="estilo2" onclick="history.back()" class="btn btn btn-exit" role="button">Atrás</a>
+</div>
+</body>
+</html>

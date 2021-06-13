@@ -157,7 +157,7 @@ public class ReservationController {
             Formatter formatter = new Formatter();
             String qr = "qr" + formatter.format("%07d", Integer.parseInt(""+numRes)) + ".png";
             formatter = new Formatter();
-            File f = new File("pdfReserva" + formatter.format("%07d", Integer.parseInt(""+numRes)) + ".pdf");
+            File f = new File("pdfReserva" + numRes + ".pdf");
             generatePDF.createPDF(f, citizen, reservation, naturalArea, qr, zonasBonito);
             byte[] bytes = Files.readAllBytes(f.toPath());
             Path path = Paths.get(uploadDirectory + "pdfs/" + f.getName());

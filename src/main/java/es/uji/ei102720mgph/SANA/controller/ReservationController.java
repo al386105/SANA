@@ -150,8 +150,6 @@ public class ReservationController {
             reservationDao.addReservationOfZone(numRes, reservation.getZoneid());
         }
 
-        NaturalArea naturalArea = naturalAreaDao.getNaturalAreaOfZone(partes[0]);
-
         //Generamos el pdf
         try {
             Formatter formatter = new Formatter();
@@ -223,7 +221,7 @@ public class ReservationController {
     }
 
     @RequestMapping(value="/update", method= RequestMethod.POST)
-    public String updateReservaPOST(@ModelAttribute("reservation") Reservation reservation) {
+    public String updateReservaPOST(@ModelAttribute("reservation") Reservation reservation, HttpSession session) {
         int reservationId = reservation.getReservationNumber();
         int maxCapacity = reservationDao.getMaximumCapacityOfReservation(reservationId);
         String id = reservationId + "";
@@ -240,6 +238,34 @@ public class ReservationController {
             String text = "Reserva por " + reservation.getCitizenEmail() + ", de fecha " + reservation.getReservationDate()
                     + ", de " + timeSlot.getBeginningTime() + " a " + timeSlot.getEndTime() + ", para " + reservation.getNumberOfPeople() + " personas.";
             generarQr(text, id);
+
+            //Actualizamos el pdf con los nuevos datos
+            GeneratePDFController generatePDF = new GeneratePDFController();
+            List<ReservaDatos> listaReservas = reservaDatosDao.getReservaDatos(reservationId);
+            List<ReservaDatosAgrupada> listaReservasAgrupadas = agruparPorReserva(listaReservas);
+            ReservaDatosAgrupada reserva = listaReservasAgrupadas.get(0);
+            RegisteredCitizen citizen = (RegisteredCitizen) session.getAttribute("registeredCitizen");
+            List<String> zonas = reserva.getZonas();
+            String[] zonasBonito = new String[zonas.size()];
+            for (int i = 0; i < zonas.size(); i++)
+                zonasBonito[i] = zonas.get(i);
+            NuevaReserva nuevaReserva = new NuevaReserva();
+            nuevaReserva.setReservationDate(reservation.getReservationDate());
+            nuevaReserva.setNumberOfPeople(reservation.getNumberOfPeople());
+            nuevaReserva.setCitizenEmail(reservation.getCitizenEmail());
+            try {
+                Formatter formatter = new Formatter();
+                String qr = "qr" + formatter.format("%07d", Integer.parseInt(""+id)) + ".png";
+                File f = new File("pdfReserva" + id + ".pdf");
+                generatePDF.createPDF(f, citizen, nuevaReserva, qr, zonasBonito, timeSlot);
+                byte[] bytes = Files.readAllBytes(f.toPath());
+                Path path = Paths.get(uploadDirectory + "pdfs/" + f.getName());
+                // Lo eliminamos de la carpeta errónea
+                f.delete();
+                Files.write(path, bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             // Enviar mail con la modificacion de la reserva
             String destinatario = reservation.getCitizenEmail();

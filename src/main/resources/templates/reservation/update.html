@@ -11,7 +11,7 @@
     <h4 style="text-align: center"><i>Reserva en <span th:text="${naturalArea}"></span>
         para el día <span th:text="${#temporals.format(reservation.reservationDate,'dd/MM/yyyy')}"></span></i></h4><br>
 
-    <form class="form-horizontal" action="#" th:action="@{/reservation/update/{naturalAreaName}(naturalAreaName=${naturalArea})}"
+    <form class="form-horizontal" action="#" th:action="@{/reservation/update}"
            th:object="${reservation}" method="post">
 
         <!-- Necesario para no perder la informacion -->

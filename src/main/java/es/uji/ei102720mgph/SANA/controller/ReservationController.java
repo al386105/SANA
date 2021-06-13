@@ -156,9 +156,8 @@ public class ReservationController {
         try {
             Formatter formatter = new Formatter();
             String qr = "qr" + formatter.format("%07d", Integer.parseInt(""+numRes)) + ".png";
-            formatter = new Formatter();
             File f = new File("pdfReserva" + numRes + ".pdf");
-            generatePDF.createPDF(f, citizen, reservation, naturalArea, qr, zonasBonito);
+            generatePDF.createPDF(f, citizen, reservation, qr, zonasBonito, timeSlot);
             byte[] bytes = Files.readAllBytes(f.toPath());
             Path path = Paths.get(uploadDirectory + "pdfs/" + f.getName());
             // Lo eliminamos de la carpeta errónea
@@ -205,8 +204,8 @@ public class ReservationController {
         return "redirect:/reservation/reservas";
     }
 
-    @RequestMapping("/update/{id}")
-    public String updateReserva(@PathVariable String id, Model model, HttpSession session) {
+    @RequestMapping("/update/{naturalArea}/{id}")
+    public String updateReserva(@PathVariable String naturalArea, @PathVariable String id, Model model, HttpSession session) {
         if (session.getAttribute("registeredCitizen") == null) {
             model.addAttribute("userLogin", new UserLogin() {});
             session.setAttribute("nextUrl", "/reservation/reservas");
@@ -218,6 +217,7 @@ public class ReservationController {
 
         model.addAttribute("maxCapacity", maxCapacity);
         model.addAttribute("reservation", reservationDao.getReservation(reservationId));
+        model.addAttribute("naturalArea", naturalArea);
 
         return "reservation/update";
     }
@@ -342,6 +342,7 @@ public class ReservationController {
         model.addAttribute("motivo", new MotivoCancelancion());
         model.addAttribute("personas", new PersonasReserva());
         model.addAttribute("reservas", listaReservasAgrupadas);
+
         return "/reservation/reservas";
     }
 

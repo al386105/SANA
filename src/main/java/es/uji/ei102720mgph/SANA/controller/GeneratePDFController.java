@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 import es.uji.ei102720mgph.SANA.model.NaturalArea;
 import es.uji.ei102720mgph.SANA.model.NuevaReserva;
 import es.uji.ei102720mgph.SANA.model.RegisteredCitizen;
+import es.uji.ei102720mgph.SANA.model.TimeSlot;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,7 +28,7 @@ public class GeneratePDFController {
 
     private static final String linea = "img/linea-verde.png";
 
-    public void createPDF(File pdfNewFile, RegisteredCitizen registeredCitizen, NuevaReserva nuevaReserva, NaturalArea naturalArea, String qr, String[] zonas) {
+    public void createPDF(File pdfNewFile, RegisteredCitizen registeredCitizen, NuevaReserva nuevaReserva, String qr, String[] zonas, TimeSlot timeSlot) {
 
         // Creamos el documento e indicamos el nombre del fichero.
         try {
@@ -87,31 +88,32 @@ public class GeneratePDFController {
             lineSeparator.setLineColor(BaseColor.BLACK);
             lineSeparator.setPercentage(20);
 
-            // SECCIÓN FECHA DE LA RESERVA
-            Paragraph fecha = new Paragraph("\nFecha", smallBold);
+            // SECCIÓN FECHA Y HORA DE LA RESERVA
+            Paragraph fecha = new Paragraph("\nFecha y hora", smallBold);
             fecha.setAlignment(Element.ALIGN_RIGHT);
             fecha.add(lineSeparator);
             chapter.add(fecha);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String fechaFormateada = nuevaReserva.getReservationDate().format(formatter);
-            Paragraph fechaReserva = new Paragraph(fechaFormateada);
-            fechaReserva.setAlignment(Element.ALIGN_RIGHT);
-            chapter.add(fechaReserva);
+            String texto = nuevaReserva.getReservationDate().format(formatter);
+            texto += "\n" + timeSlot.getBeginningTime() + " - " + timeSlot.getEndTime();
+            Paragraph p1 = new Paragraph(texto);
+            p1.setAlignment(Element.ALIGN_RIGHT);
+            chapter.add(p1);
 
             // SECCIÓN LUGAR DE LA RESERVA: espacio natural, zonas y num. personas
             Paragraph hReserva = new Paragraph("\nLugar", smallBold);
             hReserva.setAlignment(Element.ALIGN_RIGHT);
             hReserva.add(lineSeparator);
             chapter.add(hReserva);
-            String texto = naturalArea.getName() + "\nZonas: ";
+            texto = timeSlot.getNaturalArea() + "\nZonas: ";
             for (String z: zonas) {
                 texto += z + ", ";
             }
             texto = texto.substring(0, texto.length()-2);
             texto += "\n" + nuevaReserva.getNumberOfPeople() + " personas";
-            Paragraph begginningTime = new Paragraph(texto);
-            begginningTime.setAlignment(Element.ALIGN_RIGHT);
-            chapter.add(begginningTime);
+            Paragraph p2 = new Paragraph(texto);
+            p2.setAlignment(Element.ALIGN_RIGHT);
+            chapter.add(p2);
 
             LineSeparator lineaUsuario = new LineSeparator();
             lineaUsuario.setAlignment(0);

@@ -42,12 +42,11 @@
                         <button style="float: right" type="button" class="btn btn-primary" data-toggle="modal"
                                 th:data-target="${'#miModal' + reserva.reservationNumber}">Cancelar reserva
                         </button>
-
-                        <a style="float: right; margin-right: 10px" th:href="${'/reservation/update/' + reserva.reservationNumber}">
+                        <a style="float: right; margin-right: 10px" th:href="${'/reservation/update/' + reserva.naturalArea + '/' + reserva.reservationNumber}">
                             <button type="button" class="btn btn-secondary"> Modificar reserva</button></a>
 
-                        <a style="float: right; margin-right: 10px" th:href="@{'../../../../img//pdfs/pdfReserva' + ${reserva.reservationNumber} + '.pdf'}">
-                            <button type="button" class="btn btn-secondary"> Ver pdf</button></a>
+                        <a style="float: right; margin-right: 10px" th:href="@{'../../../../img/pdfs/pdfReserva' + ${reserva.reservationNumber} + '.pdf'}">
+                            <button type="button" class="btn btn-secondary"> Descargar reserva en PDF</button></a>
                     </div>
                 </div>
                 <br>

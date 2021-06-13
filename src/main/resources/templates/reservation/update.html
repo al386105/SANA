@@ -8,9 +8,10 @@
     <h2 class="text-uppercase text-center text-secondary mb-0" >Editar reserva</h2>
     <br><hr class="barra-normal"><br>
 
-    <h4 style="text-align: center"><i>Reserva para el día <span th:text="${#temporals.format(reservation.reservationDate,'dd/MM/yyyy')}"></span></i></h4><br>
+    <h4 style="text-align: center"><i>Reserva en <span th:text="${naturalArea}"></span>
+        para el día <span th:text="${#temporals.format(reservation.reservationDate,'dd/MM/yyyy')}"></span></i></h4><br>
 
-    <form class="form-horizontal" action="#" th:action="@{/reservation/update}"
+    <form class="form-horizontal" action="#" th:action="@{/reservation/update/{naturalAreaName}(naturalAreaName=${naturalArea})}"
            th:object="${reservation}" method="post">
 
         <!-- Necesario para no perder la informacion -->
